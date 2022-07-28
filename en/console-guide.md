@@ -1,66 +1,66 @@
-## Storage > NAS > 콘솔 사용 가이드
+## Storage > NAS > Console User Guide
 
-### 스토리지 생성
+### Create Storage
 
-새로운 스토리지를 생성합니다. 생성된 스토리지는 NFS(network file system, 네트워크 파일 시스템) 프로토콜을 이용하여 인스턴스에서 접근할 수 있습니다.
+New storage is created. The created storage can be accessed from instances by using the network file system (NFS) protocol.
 
-| 항목 | 설명 | 
+| Item | Description | 
 | -- | -- | 
-| 이름 | 생성될 스토리지의 이름입니다. 스토리지 이름을 통해 NFS 접근 경로를 만듭니다. 이름은 100자 이내의 영문자와 숫자, 일부 기호('_')만 입력할 수 있습니다. |
-| 설명 | 스토리지에 대한 설명입니다. |
-| 크기 | 생성될 스토리지의 크기입니다. 최소 300GB부터 최대 10,000GB까지 입력할 수 있습니다. | 
-| VPC | 스토리지에 접근할 VPC(virtual private cloud, 가상 사설 클라우드)입니다. | 
-| 서브넷 | 스토리지에 접근할 서브넷입니다. 선택된 VPC의 서브넷만 선택할 수 있습니다. | 
-| 접근 제어 목록(ACL) | 읽기, 쓰기 권한을 허용할 IP 또는 IP 대역 목록입니다. | 
-| 스냅숏 자동 생성 | 매일 1회 지정된 시간에 자동으로 생성합니다. 최대 저장 개수에 도달하면 자동으로 생성된 스냅숏 중 가장 먼저 만들어진 스냅숏이 삭제됩니다.  |
-| 스냅숏 저장 용량 | 스냅숏 용량의 총합이 설정한 크기를 초과할 경우 모든 스냅숏 중 가장 먼저 만들어진 스냅숏이 삭제됩니다. |
+| Name | Name of the storage to be created. The NFS access path can be created with the storage name. Storage name is limited to less than 100 alphabetic characters, numbers, and some symbols (‘_’). |
+| Description | A description for storage |
+| Size | Size of the storage to be created. It can be entered from a minimum of 300 GB to a maximum of 10,000 GB. | 
+| VPC | The virtual private cloud (VPC) to access the storage. | 
+| Subnet | The subnet to access the storage. Only subnets in the selected VPC can be chosen. | 
+| Access Control List (ACL) | A list of the IPs or CIDR blocks that allow read and write permissions. | 
+| Snapshot auto creation | Snapshots are created automatically at a specified time once per day. When the maximum number of saves is reached, the first automatically created snapshot is deleted.  |
+| Snapshot storage capacity | If the sum of the snapshot capacity exceeds the set size, the first created snapshot among all snapshots is deleted. |
 
-> [참고] 2022년 7월 현재 지정된 서브넷에서만 NAS 스토리지에 접근할 수 있습니다.
+> [Note] The NAS service is only accessed from the specified subnet as of July 2022.
 
-> [참고] 2022년 7월 현재 프로젝트별로 사용 가능한 서브넷은 총 3개로 제한됩니다.
-
-
-
-### 스토리지 크기 변경
-
-NAS 스토리지의 크기를 변경합니다. 스토리지 사용 중에도 확장 및 축소가 가능합니다.
-
-### 접근 제어 목록 설정 변경
-
-스토리지의 접근 제어 목록(ACL) 설정을 변경합니다.
-
-### 스냅숏 설정 변경
-
-스냅숏 자동 생성 및 스냅숏 저장 용량에 대한 설정을 변경합니다.
+> [Note] The number of subnets available for each project is limited to 3 as of July 2022.
 
 
-### 스토리지 삭제
 
-NAS 스토리지를 삭제합니다.
-스토리지 삭제는 연결한 인스턴스와 마운트 해제 후 삭제하는 것을 권장합니다.
-스토리지 삭제 시 스냅숏을 포함한 모든 데이터가 삭제되며, 삭제 후 데이터를 복구할 수 없습니다. 
+### Change Storage Size
 
-### 스냅숏 생성
+NAS storage size is changed. Storage can be scaled up and down even while in use.
 
-NAS 스토리지의 스냅숏을 즉시 생성합니다.
+### Change Access Control List Settings
 
-### 스토리지 복원
+The settings for the storage’s access control list is changed.
 
-스토리지를 스냅숏이 생성된 시점으로 복원합니다.
-복원 시 복원 시점 이후에 생성된 스냅숏은 자동으로 삭제됩니다.
-2022년 7월 현재 스냅숏 복원은 고객센터 문의로 진행되고 있습니다.
+### Change Snapshot Settings
 
-### 스냅숏 삭제
-
-지정된 스냅숏을 삭제합니다.
-한번 삭제된 스냅숏은 다시 복구할 수 없습니다.
+The settings for snapshot auto creation and snapshot storage capacity is changed.
 
 
-### 스토리지 연결
-생성된 스토리지의 연결 정보를 이용하여 인스턴스에 마운트할 수 있습니다. 단 마운트할 인스턴스는 스토리지에 지정된 서브넷에 연결되어 있어야 합니다.
+### Delete Storage
+
+NAS storage is deleted. 
+It is recommended to delete the storage after unmounting the connected instance. 
+When storage is deleted, all data including snapshots are deleted, and data cannot be recovered after deletion. 
+
+### Create Snapshots
+
+Snapshots of NAS storage are created immediately.
+
+### Restore Storage
+
+Storage is restored to the point in time at which the snapshot was taken. 
+When restoring, snapshots created after the restore point are automatically deleted. 
+To restore snapshots, you need to contact the customer center as of July 2022.
+
+### Delete Snapshots
+
+A specified snapshot is deleted.
+Once deleted, snapshots cannot be recovered.
 
 
-#### nfs 패키지 설치
+### Connect Storage
+Storage can be mounted on instances by using the connection information of the created storage. However, the instance on which storage is mounted must be connected to the specified subnet.
+
+
+#### Install NFS Package 
 
 * Debian, Ubuntu: nfs-common, rpcbind  
   ```
@@ -71,20 +71,20 @@ NAS 스토리지의 스냅숏을 즉시 생성합니다.
   sudo yum install nfs-utils rpcbind
   ```
 
-#### rpcbind 서비스 실행
+#### Run rpcbind Service 
 
 ```
 sudo service rpcbind start
 ```
 
-#### NAS 스토리지 마운트
+#### Mount NAS Storage
 
 ```
 sudo mount -t nfs {nas source} {mount point}
 ```
 
-* nas source: NAS 스토리지 정보
-  예) 192.168.0.241:/data
-* mount point: NAS 스토리지를 마운트할 디렉터리
-  예) /mnt
+* nas source: NAS storage information 
+Example) 192.168.0.241:/data
+* mount point: Directory on which NAS storage is mounted 
+Example) /mnt
 
