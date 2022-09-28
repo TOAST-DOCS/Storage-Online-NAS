@@ -4,5 +4,5 @@
 
 #### New Service Release
 
-* NAS released for Korea (Pangyo) region
+* NAS has been released for Korea (Pangyo) region
 * NAS volume can be associated with an instance by using a project network.
