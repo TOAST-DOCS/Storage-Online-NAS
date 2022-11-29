@@ -12,8 +12,8 @@ New storage is created. The created storage can be accessed from instances by us
 | VPC | The virtual private cloud (VPC) to access the storage. | 
 | Subnet | The subnet to access the storage. Only subnets in the selected VPC can be chosen. | 
 | Access Control List (ACL) | A list of the IPs or CIDR blocks that allow read and write permissions. | 
-| Snapshot auto creation | Snapshots are created automatically at a specified time once per day. When the maximum number of saves is reached, the first automatically created snapshot is deleted.  |
-| Snapshot storage capacity | If the sum of the snapshot capacity exceeds the set size, the first created snapshot among all snapshots is deleted. |
+| Auto Create Snapshot | Snapshots are created automatically at a specified time once per day. When the maximum number of saves is reached, the first automatically created snapshot is deleted.  |
+| Snapshot Storage  | If the sum of the snapshot capacity exceeds the set size, the first created snapshot among all snapshots is deleted. |
 
 > [Note] The NAS service is only accessed from the specified subnet as of July 2022.
 
@@ -31,7 +31,7 @@ The settings for the storage’s access control list is changed.
 
 ### Change Snapshot Settings
 
-The settings for snapshot auto creation and snapshot storage capacity is changed.
+The settings for Auto Create Snapshot and Snapshot Storage are changed.
 
 
 ### Delete Storage
