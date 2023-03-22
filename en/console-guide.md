@@ -71,6 +71,7 @@ The default search period is the latest 1 hour, and you can search any period yo
 | Storage status | - | Display storage status. |
 | Number of client connections | - | Display the number of clients connected to storage. |
 
+
 ### Connect Storage
 
 Storage can be mounted on instances by using the connection information of the created storage. However, the instance on which storage is mounted must be connected to the specified subnet.
