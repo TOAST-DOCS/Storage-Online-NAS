@@ -55,17 +55,17 @@ A specified snapshot is deleted. Once deleted, snapshots cannot be recovered.
 
 ### Monitoring
 
-Check various indicators of NAS storage with graphs. After selecting the storage to check, click the **Monitoring** tab.
+Check various metrics of NAS storage with graphs. After selecting the storage to check, click the **Monitoring** tab.
 
-The default search period is the latest 1 hour, and you can search any period you want through the search period filter. Descriptions of monitoring indicators are found in the table below.
+The default search period is the latest 1 hour, and you can search any period you want through the search period filter. Descriptions of monitoring metrics are found in the table below.
 
-| Indicator | Unit | Description |
+| Metric | Unit | Description |
 | --- | --- | --- |
 | Storage capacity | byte | Display the total capacity of storage and the capacity in use. |
-| Storage Usage | % | Display the capacity in use as a percentage of the total storage capacity. |
+| Storage usage | % | Display the capacity in use as a percentage of the total storage capacity. |
 | IOPS | OPS | Display storage operations per second. |
 | Latency | usec | Display storage latency time. |
-| Snapshot number | - | Display the number of snapshots in storage |
+| Snapshot number | - | Display the number of snapshots in storage. |
 | Snapshot capacity | byte | Display the amount of capacity that storage is using for the snapshot. |
 | Inode | - | Display the number of storage inodes. |
 | Storage status | - | Display storage status. |

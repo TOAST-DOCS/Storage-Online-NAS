@@ -5,7 +5,7 @@
 #### Feature Added
 
 * NAS monitoring feature has been added.
-    * You can check various indicators of NAS storage with graphs.
+    * You can check various metrics of NAS storage with graphs.
     
 ### November 23, 2022
 
