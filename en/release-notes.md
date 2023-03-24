@@ -1,5 +1,12 @@
 ## Storage > NAS > Release Notes
 
+### March 28, 2023
+
+#### Feature Added
+
+* NAS monitoring feature has been added.
+    * You can check various metrics of NAS storage with graphs.
+    
 ### November 23, 2022
 
 #### New Region Added
