@@ -16,7 +16,7 @@ New storage is created. The created storage can be accessed from instances by us
 | Snapshot Storage  | If the sum of the snapshot capacity exceeds the set size, the first created snapshot among all snapshots is deleted. |
 
 > [Note] 
-> The number of subnets available for each project is limited to 3 as of March 2023. To increase the limit, contact the Customer Center.
+> The number of subnets available for each project is limited to 3 as of Februrary 2024. To increase the limit, contact the Customer Center.
 
 
 ### Change Storage Size
@@ -33,9 +33,11 @@ The settings for Auto Create Snapshot and Snapshot Storage are changed.
 
 ### Delete Storage
 
-NAS storage is deleted. It is recommended to unmount the storage from the associated instance before deleting.
+NAS storage is deleted.
 
 > [Caution]
+> It is recommended to unmount the storage from the associated instance before deleting. Deleting the storage while it is mounted may cause problems on the user's system.
+>
 > When deleting the storage, all data including snapshots are deleted. Deleted data cannot be recovered.
 
 ### Create Snapshots
