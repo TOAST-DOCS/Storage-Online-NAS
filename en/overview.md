@@ -3,7 +3,8 @@
 NAS offers easy data sharing by attaching shared storage to instances.
 
 
-> [Note] The NAS service is only available in Korea (Pangyo) as of January 2022.
+> [Note] 
+> The NAS service is only available in Korea (Pangyo) and Korea (Pyeongchon) regions as of March 2023.
 
 
 ## Features
