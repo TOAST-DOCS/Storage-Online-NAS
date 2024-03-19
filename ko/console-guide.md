@@ -21,16 +21,16 @@
 
 #### 암호화 키 저장소 설정
 
-NAS 암호화 스토리지는 암호화에 사용하는 대칭키를 NHN Cloud Secure Key Manager 서비스의 키 저장소에 저장합니다. 따라서 암호화 스토리지를 만들기 위해서는 미리 Secure Key Manager 서비스에서 [키 저장소를 생성](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_1)해야 합니다. [키 저장소의 ID를 확인](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_2)하여 암호화 키 저장소 설정에 입력합니다.
+NAS 암호화 스토리지는 암호화에 사용하는 대칭 키를 NHN Cloud Secure Key Manager 서비스의 키 저장소에 저장합니다. 따라서 암호화 스토리지를 만들기 위해서는 미리 Secure Key Manager 서비스에서 [키 저장소를 생성](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_1)해야 합니다. [키 저장소의 ID를 확인](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_2)하여 암호화 키 저장소 설정에 입력합니다.
 
-암호화 스토리지를 생성하면 설정한 키 저장소에 대칭키가 저장됩니다. NAS 서비스에 의해 키 저장소에 저장된 대칭키는 암호화 스토리지 사용 중에는 삭제할 수 없습니다. 암호화 스토리지를 삭제하면 대칭키도 자동으로 삭제됩니다.
+암호화 스토리지를 생성하면 설정한 키 저장소에 대칭 키가 저장됩니다. NAS 서비스에 의해 키 저장소에 저장된 대칭 키는 암호화 스토리지 사용 중에는 삭제할 수 없습니다. 암호화 스토리지를 삭제하면 대칭 키도 함께 삭제됩니다.
 
-키 저장소 ID를 변경하면 이후 생성하는 암호화 스토리지의 대칭키가 변경된 키 저장소에 저장됩니다. 기존 키 저장소에 저장된 대칭키는 유지됩니다.
+키 저장소 ID를 변경하면 이후 생성하는 암호화 스토리지의 대칭 키가 변경된 키 저장소에 저장됩니다. 기존 키 저장소에 저장된 대칭 키는 유지됩니다.
 
 > [참고]
 > Secure Key Manager 서비스 요금 정책에 따라 키 저장소 사용 요금이 청구됩니다. 이용 요금에 대한 자세한 사항은 [Secure Key Manager 요금 안내](https://www.nhncloud.com/kr/service/security/secure-key-manager#price)를 참고하세요.
 >
-> NAS 암호화 스토리지는 XTS-AES-256 알고리즘으로 메타데이터와 데이터를 암호화합니다. XTS(XEX-based tweaked-codebook mode with ciphertext stealing) 표준에 따라 IV 암호화와 블록 암호화에 서로 다른 대칭키를 사용합니다. 따라서 암호화 스토리지별로 대칭키 두 개씩을 키 저장소에 저장합니다.
+> NAS 암호화 스토리지는 XTS-AES-256 알고리즘으로 데이터를 암호화합니다. XTS(XEX-based tweaked-codebook mode with ciphertext stealing) 표준에 따라 IV 암호화와 블록 암호화에 서로 다른 대칭 키를 사용합니다. 따라서 암호화 스토리지마다 두 개의 대칭 키를 키 저장소에 저장합니다.
 
 ### 스토리지 크기 변경
 
