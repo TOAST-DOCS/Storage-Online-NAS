@@ -30,7 +30,7 @@ NAS 암호화 스토리지는 암호화에 사용하는 대칭 키를 NHN Cloud 
 > [참고]
 > Secure Key Manager 서비스 요금 정책에 따라 키 저장소 사용 요금이 청구됩니다. 이용 요금에 대한 자세한 사항은 [Secure Key Manager 요금 안내](https://www.nhncloud.com/kr/service/security/secure-key-manager#price)를 참고하세요.
 >
-> NAS 암호화 스토리지는 XTS-AES-256 알고리즘으로 데이터를 암호화합니다. XTS(XEX-based tweaked-codebook mode with ciphertext stealing) 표준에 따라 IV 암호화와 블록 암호화에 서로 다른 대칭 키를 사용합니다. 따라서 암호화 스토리지마다 두 개의 대칭 키를 키 저장소에 저장합니다.
+> NAS 암호화 스토리지는 XTS-AES-256 알고리즘으로 서로 다른 두 개의 대칭 키를 사용하여 데이터를 암호화합니다. 따라서 암호화 스토리지마다 두 개의 대칭 키를 키 저장소에 저장합니다.
 
 ### 스토리지 크기 변경
 
