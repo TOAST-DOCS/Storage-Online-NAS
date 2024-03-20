@@ -21,14 +21,14 @@ New storage is created. The created storage can be accessed from instances by us
 
 #### Encryption Key Store Settings
 
-NAS encrypted storage stores symmetric keys used for encryption in a key store in the NHN Cloud Secure Key Manager service. Therefore, to create encrypted storage, you must create a key store in the Secure Key Manager service in advance. Check the ID of the key store and enter it in the encryption key store settings.
+NAS encrypted storage stores symmetric keys used for encryption in a key store in the NHN Cloud Secure Key Manager service. Therefore, to create encrypted storage, you must [create a key store](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_1) in the Secure Key Manager service in advance. [Check the ID of the key store](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_2) and enter it in the encryption key store settings.
 
 When you create encrypted storage, the symmetric key is stored in the key store you set up. The symmetric key stored in the key store by the NAS service cannot be deleted while using encrypted storage. If you delete encrypted storage, the symmetric key is also deleted.
 
 When you change the key store ID, the symmetric key for encrypted storage you create in the future is stored in the changed key store. Symmetric keys stored in the existing key store are retained.
 
 > [Note]
-You will be charged for key store usage according to the Secure Key Manager service pricing policy. For more information, see [Secure Key Manager pricing](https://www.nhncloud.com/kr/service/security/secure-key-manager#price).
+> You will be charged for key store usage according to the Secure Key Manager service pricing policy. For more information, see [Secure Key Manager pricing](https://www.nhncloud.com/kr/service/security/secure-key-manager#price).
 >
 > NAS encrypted storage encrypts data with the XTS-AES-256 algorithm. The XTS (XEX-based tweaked-codebook mode with ciphertext stealing) standard uses different symmetric keys for IV encryption and block encryption. Therefore, two symmetric keys are stored in the key store for each encrypted storage.
 
