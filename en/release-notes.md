@@ -24,4 +24,4 @@
 #### New Service Release
 
 * NAS has been released for Korea (Pangyo) region
-* NAS volume can be associated with an instance by using a project network.
+* NAS storage can be attached to instances via a project's VPC network.

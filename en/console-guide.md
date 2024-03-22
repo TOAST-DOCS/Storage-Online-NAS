@@ -30,7 +30,7 @@ When you change the key store ID, the symmetric key for encrypted storage you cr
 > [Note]
 > You will be charged for key store usage according to the Secure Key Manager service pricing policy. For more information, see [Secure Key Manager pricing](https://www.nhncloud.com/kr/service/security/secure-key-manager#price).
 >
-> NAS encrypted storage encrypts data with the XTS-AES-256 algorithm. The XTS (XEX-based tweaked-codebook mode with ciphertext stealing) standard uses different symmetric keys for IV encryption and block encryption. Therefore, two symmetric keys are stored in the key store for each encrypted storage.
+> NAS encrypted storage encrypts data with the XTS-AES-256 algorithm using two different symmetric keys. Therefore, two symmetric keys are stored in the key store for each encrypted storage.
 
 ### Change Storage Size
 
