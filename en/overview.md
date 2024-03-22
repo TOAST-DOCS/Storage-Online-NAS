@@ -25,7 +25,7 @@ Storage capacity can be scaled up and down even while using in use.
 ### Secure  
 
 NAS storage is isolated from other projects’ networks because it is accessed through a project’s network.
-
+You can keep your data safe by encrypting it with the XTS-AES-256 algorithm.
 
 ## Glossary
 
