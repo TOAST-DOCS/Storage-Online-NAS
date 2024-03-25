@@ -30,7 +30,7 @@ NAS暗号化ストレージは、暗号化に使用する対称鍵をNHN Cloud S
 > [参考]
 > Secure Key Managerサービス料金ポリシーに基づいてキーストア使用料金が請求されます。利用料金の詳細については、 [Secure Key Manager料金案内](https://www.nhncloud.com/kr/service/security/secure-key-manager#price)を参照してください。
 >
-> NAS暗号化ストレージは、XTS-AES-256アルゴリズムでデータを暗号化します。 XTS(XEX-based tweaked-codebook mode with ciphertext stealing)規格に基づき、IV暗号化とブロック暗号化に異なる対称鍵を使用します。 したがって、暗号化ストレージごとに2つの対称鍵をキーストアに保存します。
+> NAS暗号化ストレージは、XTS-AES-256アルゴリズムで異なる2つの対称鍵を使用してデータを暗号化します。 したがって、暗号化ストレージごとに2つの対称鍵をキーストレージに保存します。
 
 ### ストレージサイズ変更
 
