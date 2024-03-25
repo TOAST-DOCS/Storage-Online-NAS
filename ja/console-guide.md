@@ -21,7 +21,7 @@
 
 #### 暗号化キーストア設定
 
-NAS暗号化ストレージは、暗号化に使用する対称鍵をNHN Cloud Secure Key Managerサービスのキーストアに保存します。したがって、暗号化ストレージを作成するためには、事前にSecure Key Managerサービスで[キーストアを作成](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_1)する必要があります。 [キーストアのIDを確認](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_2)して暗号化キーストア設定に入力します。
+NAS暗号化ストレージは、暗号化に使用する対称鍵をNHN Cloud Secure Key Managerサービスのキーストアに保存します。したがって、暗号化ストレージを作成するためには、事前にSecure Key Managerサービスで[キーストアを作成](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_1)する必要があります。 [キーストアのIDを確認](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_2)して暗号化キーストア設定に入力します。
 
 暗号化ストレージを作成すると、設定したキーストアに対称鍵が保存されます。NASサービスによってキーストアに保存された対称鍵は暗号化ストレージの使用中は削除できません。暗号化ストレージを削除すると、対称鍵も一緒に削除されます。
 
