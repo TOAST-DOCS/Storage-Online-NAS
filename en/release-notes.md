@@ -1,15 +1,21 @@
 ## Storage > NAS > Release Notes
 
+### March 26, 2024
+
+#### Added Features
+
+* Added the feature to create encrypted storage.
+
 ### March 28, 2023
 
-#### Feature Added
+#### Added Features
 
 * NAS monitoring feature has been added.
     * You can check various metrics of NAS storage with graphs.
     
 ### November 23, 2022
 
-#### New Region Added
+#### Added New Region
 
 * NAS has been released for Korea (Pyeongchon) region.
 
@@ -18,4 +24,4 @@
 #### New Service Release
 
 * NAS has been released for Korea (Pangyo) region
-* NAS volume can be associated with an instance by using a project network.
+* NAS storage can be attached to instances via a project's VPC network.
