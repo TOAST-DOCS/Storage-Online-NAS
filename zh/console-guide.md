@@ -1,90 +1,122 @@
-## Storage > NAS > 콘솔 사용 가이드
+## Storage > NAS > Console User Guide
 
-### 스토리지 생성
+### Create Storage
 
-새로운 스토리지를 생성합니다. 생성된 스토리지는 NFS(network file system, 네트워크 파일 시스템) 프로토콜을 이용하여 인스턴스에서 접근할 수 있습니다.
+New storage is created. The created storage can be accessed from instances by using the network file system (NFS) protocol.
 
-| 항목 | 설명 | 
-| -- | -- | 
-| 이름 | 생성될 스토리지의 이름입니다. 스토리지 이름을 통해 NFS 접근 경로를 만듭니다. 이름은 100자 이내의 영문자와 숫자, 일부 기호('_')만 입력할 수 있습니다. |
-| 설명 | 스토리지에 대한 설명입니다. |
-| 크기 | 생성될 스토리지의 크기입니다. 최소 300GB부터 최대 10,000GB까지 입력할 수 있습니다. | 
-| VPC | 스토리지에 접근할 VPC(virtual private cloud, 가상 사설 클라우드)입니다. | 
-| 서브넷 | 스토리지에 접근할 서브넷입니다. 선택된 VPC의 서브넷만 선택할 수 있습니다. | 
-| 접근 제어 목록(ACL) | 읽기, 쓰기 권한을 허용할 IP 또는 IP 대역 목록입니다. | 
-| 스냅숏 자동 생성 | 매일 1회 지정된 시간에 자동으로 생성합니다. 최대 저장 개수에 도달하면 자동으로 생성된 스냅숏 중 가장 먼저 만들어진 스냅숏이 삭제됩니다.  |
-| 스냅숏 저장 용량 | 스냅숏 용량의 총합이 설정한 크기를 초과할 경우 모든 스냅숏 중 가장 먼저 만들어진 스냅숏이 삭제됩니다. |
+| Item | Description |
+| -- | -- |
+| Name | Name of the storage to be created. The NFS access path can be created with the storage name. Storage name is limited to less than 100 alphabetic characters, numbers, and some symbols ('-', '_'). |
+| Description | A description for storage |
+| Size | Size of the storage to be created. It can be entered from a minimum of 300 GB to a maximum of 10,000 GB. |
+| VPC | The virtual private cloud (VPC) to access the storage. |
+| Subnet | The subnet to access the storage. Only subnets in the selected VPC can be chosen. |
+| Access Control List (ACL) | A list of the IPs or CIDR blocks that allow read and write permissions. |
+| Auto Create Snapshot | Snapshots are created automatically at a specified time once per day. When the maximum number of saves is reached, the first automatically created snapshot is deleted.  |
+| Snapshot Storage  | If the sum of the snapshot capacity exceeds the set size, the first created snapshot among all snapshots is deleted. |
+| Encryption  | Select whether to enable storage encryption. This must be preceded by setting up encryption key store. |
 
-> [참고] 2022년 7월 현재 지정된 서브넷에서만 NAS 스토리지에 접근할 수 있습니다.
+> [Note] 
+> The number of subnets available for each project is limited to 3 as of Februrary 2024. To increase the limit, contact the Customer Center.
 
-> [참고] 2022년 7월 현재 프로젝트별로 사용 가능한 서브넷은 총 3개로 제한됩니다.
+#### Encryption Key Store Settings
+
+NAS encrypted storage stores symmetric keys used for encryption in a key store in the NHN Cloud Secure Key Manager service. Therefore, to create encrypted storage, you must [create a key store](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_1) in the Secure Key Manager service in advance. [Check the ID of the key store](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_2) and enter it in the encryption key store settings.
+
+When you create encrypted storage, the symmetric key is stored in the key store you set up. The symmetric key stored in the key store by the NAS service cannot be deleted while using encrypted storage. If you delete encrypted storage, the symmetric key is also deleted.
+
+When you change the key store ID, the symmetric key for encrypted storage you create in the future is stored in the changed key store. Symmetric keys stored in the existing key store are retained.
+
+> [Note]
+> You will be charged for key store usage according to the Secure Key Manager service pricing policy. For more information, see [Secure Key Manager pricing](https://www.nhncloud.com/kr/service/security/secure-key-manager#price).
+>
+> NAS encrypted storage encrypts data with the XTS-AES-256 algorithm using two different symmetric keys. Therefore, two symmetric keys are stored in the key store for each encrypted storage.
+
+### Change Storage Size
+
+NAS storage size is changed. Storage can be scaled up and down even while in use.
+
+### Change Access Control List Settings
+
+The settings for the storage’s access control list is changed.
+
+### Change Snapshot Settings
+
+The settings for Auto Create Snapshot and Snapshot Storage are changed.
+
+### Delete Storage
+
+NAS storage is deleted.
+
+> [Caution]
+> It is recommended to unmount the storage from the associated instance before deleting. Deleting the storage while it is mounted may cause problems on the user's system.
+>
+> When deleting the storage, all data including snapshots are deleted. Deleted data cannot be recovered.
+
+### Create Snapshots
+
+Snapshots of NAS storage are created immediately.
+
+### Restore Storage
+
+Storage is restored to the point in time when the snapshot is created. To restore the snapshot, contact the Customer Center.
+
+> [Caution]
+> When restoring, snapshots created after the point of restoration are automatically deleted.
+
+### Delete Snapshots
+
+A specified snapshot is deleted. Once deleted, snapshots cannot be recovered.
+
+### Monitoring
+
+Check various metrics of NAS storage with graphs. After selecting the storage to check, click the **Monitoring** tab.
+
+The default search period is the latest 1 hour, and you can search any period you want through the search period filter. Descriptions of monitoring metrics are found in the table below.
+
+| Metric | Unit | Description |
+| --- | --- | --- |
+| Storage capacity | byte | Display the total capacity of storage and the capacity in use. |
+| Storage usage | % | Display the capacity in use as a percentage of the total storage capacity. |
+| IOPS | OPS | Display storage operations per second. |
+| Latency | usec | Display storage latency time. |
+| Snapshot number | - | Display the number of snapshots in storage. |
+| Snapshot capacity | byte | Display the amount of capacity that storage is using for the snapshot. |
+| Inode | - | Display the number of storage inodes. |
+| Storage status | - | Display storage status. |
+| Number of client connections | - | Display the number of clients connected to storage. |
 
 
+### Connect Storage
 
-### 스토리지 크기 변경
-
-NAS 스토리지의 크기를 변경합니다. 스토리지 사용 중에도 확장 및 축소가 가능합니다.
-
-### 접근 제어 목록 설정 변경
-
-스토리지의 접근 제어 목록(ACL) 설정을 변경합니다.
-
-### 스냅숏 설정 변경
-
-스냅숏 자동 생성 및 스냅숏 저장 용량에 대한 설정을 변경합니다.
+Storage can be mounted on instances by using the connection information of the created storage. However, the instance on which storage is mounted must be connected to the specified subnet.
 
 
-### 스토리지 삭제
+#### Install NFS Package 
 
-NAS 스토리지를 삭제합니다.
-스토리지 삭제는 연결한 인스턴스와 마운트 해제 후 삭제하는 것을 권장합니다.
-스토리지 삭제 시 스냅숏을 포함한 모든 데이터가 삭제되며, 삭제 후 데이터를 복구할 수 없습니다. 
-
-### 스냅숏 생성
-
-NAS 스토리지의 스냅숏을 즉시 생성합니다.
-
-### 스토리지 복원
-
-스토리지를 스냅숏이 생성된 시점으로 복원합니다.
-복원 시 복원 시점 이후에 생성된 스냅숏은 자동으로 삭제됩니다.
-2022년 7월 현재 스냅숏 복원은 고객센터 문의로 진행되고 있습니다.
-
-### 스냅숏 삭제
-
-지정된 스냅숏을 삭제합니다.
-한번 삭제된 스냅숏은 다시 복구할 수 없습니다.
-
-
-### 스토리지 연결
-생성된 스토리지의 연결 정보를 이용하여 인스턴스에 마운트할 수 있습니다. 단 마운트할 인스턴스는 스토리지에 지정된 서브넷에 연결되어 있어야 합니다.
-
-
-#### nfs 패키지 설치
-
-* Debian, Ubuntu: nfs-common, rpcbind  
+* Debian, Ubuntu: nfs-common, rpcbind
   ```
   sudo apt-get install nfs-common rpcbind
   ```
-* CentOS: nfs-utils, rpcbind  
+* CentOS: nfs-utils, rpcbind
   ```
   sudo yum install nfs-utils rpcbind
   ```
 
-#### rpcbind 서비스 실행
+#### Run rpcbind Service 
 
 ```
 sudo service rpcbind start
 ```
 
-#### NAS 스토리지 마운트
+#### Mount NAS Storage
 
 ```
 sudo mount -t nfs {nas source} {mount point}
 ```
 
-* nas source: NAS 스토리지 정보
-  예) 192.168.0.241:/data
-* mount point: NAS 스토리지를 마운트할 디렉터리
-  예) /mnt
+* nas source: NAS storage information 
+Example) 192.168.0.241:/data
+* mount point: Directory on which NAS storage is mounted 
+Example) /mnt
 

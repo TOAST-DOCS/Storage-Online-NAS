@@ -1,47 +1,48 @@
-## Storage > NAS > 개요
+## Storage > NAS > Overview
 
-NAS 서비스를 사용하면 인스턴스에 공유 스토리지를 연결하여 데이터를 쉽게 공유할 수 있습니다.
-
-
-> [참고] NAS 서비스는 2022년 7월 현재 한국(판교) 리전에서만 사용할 수 있습니다.
+NAS offers easy data sharing by attaching shared storage to instances.
 
 
-## 특징
-
-### 공유
-
-NAS 스토리지를 하나 이상의 인스턴스에 마운트하여 사용할 수 있습니다.
-지원하는 프로토콜: NFS v3(Linux)
-
-### 편리성
-
-파일 수준의 스토리지를 마운트하기 때문에 별도의 파일 시스템 구성이 필요하지 않습니다.
-
-### 유연성
-
-NAS 스토리지를 사용 중에도 저장소 용량의 확장 및 축소가 가능합니다.
-
-### 보안성  
-
-프로젝트의 네트워크를 통해서 NAS 스토리지에 접근하기 때문에 다른 프로젝트의 네트워크와 격리되어 있습니다.
+> [Note] 
+> The NAS service is only available in Korea (Pangyo) and Korea (Pyeongchon) regions as of March 2023.
 
 
-## 용어
+## Features
 
-### NAS(network-attached storage)
+### Sharing
 
-컴퓨터 네트워크에 연결된 파일 수준의 저장 장치를 뜻하며 다른 클라이언트로부터의 데이터 접근을 제어할 수 있습니다.
+You can mount NAS storage on one or more instances for use.
+Supported protocols: NFS v3 (Linux)
 
-### 스토리지
+### Convenient
 
-NAS에서 데이터를 보관하는 논리적인 저장 공간을 뜻합니다.  
-인스턴스는 NAS의 스토리지를 마운트하여 데이터를 저장하거나 읽을 수 있습니다.
+Mounting of file-level storage removes the need for additional file system configuration.
+
+### Flexible
+
+Storage capacity can be scaled up and down even while using in use.
+
+### Secure  
+
+NAS storage is isolated from other projects’ networks because it is accessed through a project’s network.
+You can keep your data safe by encrypting it with the XTS-AES-256 algorithm.
+
+## Glossary
+
+### NAS (network-attached storage)
+
+A file-level storage device connected to a computer network that can control access to data from other clients.
+
+### Storage
+
+Logical storage space of NAS that keeps data.  
+Data can be stored or read by mounting NAS storage on instances.
 
 
-### 스냅숏
+### Snapshots
 
-NAS 스토리지의 읽기 전용 복사본으로, NAS 스토리지의 백업을 뜻합니다.
-스냅숏을 사용하면 특정 시점의 데이터로 복원할 수 있습니다.
-NAS 서비스는 사용자가 1일 1회씩 자동 생성 시점을 지정할 수 있습니다.
-단, 스냅숏 저장은 NAS 스토리지의 저장 공간을 소모하기 때문에 필요하지 않은 경우 사용하지 않을 수 있습니다.
+A read-only copy of NAS storage, which refers to a backup of NAS storage. 
+Snapshots allow you to restore data to a point in time. 
+In the NAS service, users can specify a point in time to create snapshots automatically once per day.
+However, storing snapshots consumes NAS storage space, so it can be disabled if not needed.
 
