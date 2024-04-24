@@ -14,10 +14,23 @@ New storage is created. The created storage can be accessed from instances by us
 | Access Control List (ACL) | A list of the IPs or CIDR blocks that allow read and write permissions. |
 | Auto Create Snapshot | Snapshots are created automatically at a specified time once per day. When the maximum number of saves is reached, the first automatically created snapshot is deleted.  |
 | Snapshot Storage  | If the sum of the snapshot capacity exceeds the set size, the first created snapshot among all snapshots is deleted. |
+| Encryption  | Select whether to enable storage encryption. This must be preceded by setting up encryption key store. |
 
 > [Note] 
 > The number of subnets available for each project is limited to 3 as of Februrary 2024. To increase the limit, contact the Customer Center.
 
+#### Encryption Key Store Settings
+
+NAS encrypted storage stores symmetric keys used for encryption in a key store in the NHN Cloud Secure Key Manager service. Therefore, to create encrypted storage, you must [create a key store](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_1) in the Secure Key Manager service in advance. [Check the ID of the key store](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_2) and enter it in the encryption key store settings.
+
+When you create encrypted storage, the symmetric key is stored in the key store you set up. The symmetric key stored in the key store by the NAS service cannot be deleted while using encrypted storage. If you delete encrypted storage, the symmetric key is also deleted.
+
+When you change the key store ID, the symmetric key for encrypted storage you create in the future is stored in the changed key store. Symmetric keys stored in the existing key store are retained.
+
+> [Note]
+> You will be charged for key store usage according to the Secure Key Manager service pricing policy. For more information, see [Secure Key Manager pricing](https://www.nhncloud.com/kr/service/security/secure-key-manager#price).
+>
+> NAS encrypted storage encrypts data with the XTS-AES-256 algorithm using two different symmetric keys. Therefore, two symmetric keys are stored in the key store for each encrypted storage.
 
 ### Change Storage Size
 
