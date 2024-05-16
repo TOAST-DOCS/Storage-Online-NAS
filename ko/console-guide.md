@@ -198,9 +198,9 @@ sudo mount -t nfs {nas source} {mount point}
 ```
 
 * nas source: NAS 스토리지 정보
-  예) 192.168.0.241:/data
+  예: 192.168.0.241:/data
 * mount point: NAS 스토리지를 마운트할 디렉터리
-  예) /mnt
+  예: /mnt
 
 #### CIFS
 
