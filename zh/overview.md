@@ -12,7 +12,7 @@ NAS offers easy data sharing by attaching shared storage to instances.
 ### Sharing
 
 You can mount NAS storage on one or more instances for use.
-Supported protocols: NFS v3 (Linux)
+Supported protocols: NFS v3 (Linux), CIFS(Windows)
 
 ### Convenient
 
