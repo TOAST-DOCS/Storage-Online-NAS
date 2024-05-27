@@ -1,5 +1,14 @@
 ## Storage > NAS > Release Notes
 
+### May 28, 2024. 
+
+#### Added Features
+* Added the CIFS protocol.
+    * You can also use NAS storage in the Windows environment.
+* Added the snapshot restore feature.
+* Added the feature to view snapshot restore history.
+* Added the feature to replicate storage between regions.
+
 ### March 26, 2024
 
 #### Added Features
