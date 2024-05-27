@@ -204,4 +204,4 @@ Example: /mnt
 
 #### CIFS
 
-In File Explorer, right-click **My PC** in the left navigation pane and **Connect Network Drive**. In the Connect Network Drive window, select the drive you want to mount and enter the folder path.  The folder path is formatted as `\{storage IP}{storage name}`, for example: \\\\192.168.0.100\\cifs
+In File Explorer, right-click **My PC** in the left navigation pane and **Connect Network Drive**. In the Connect Network Drive window, select the drive you want to mount and enter the folder path.  The folder path is formatted as `\\{storage IP}\{storage name}`, for example: \\\\192.168.0.100\\cifs
