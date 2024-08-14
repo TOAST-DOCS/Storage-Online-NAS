@@ -63,7 +63,7 @@ Retrieve a list of created snapshots.
 
 | Item | Description |
 | --- | --- |
-| Name | Displays the name of the snapshot. If created by the system, the name is determined by a specified rule. |
+| Name | The name of the snapshot. If created by the system, the name is determined by a specified rule. |
 | Storage usage when snapshots created | The NAS storage usage at the time the snapshot is created. If you restore the snapshot, it will be restored to that size. |
 | Created date | When the snapshot is created. |
 
@@ -90,9 +90,9 @@ Check the network connection information.
 
 | Item | Description |
 | --- | --- |
-| Connection information | Displays the connection path that the instance will use when mounting. |
+| Connection information | The connection path that the instance will use when mounting. |
 | Subnet | The subnet information associated with the storage. |
-| Status | Displays the subnet association status. |
+| Status | The subnet association status. |
 
 
 #### Add Subnet Association
@@ -115,15 +115,15 @@ The default search period is the latest 1 hour, and you can search any period yo
 
 | Metric | Unit | Description |
 | --- | --- | --- |
-| Storage capacity | byte | Display the total capacity of storage and the capacity in use. |
-| Storage usage | % | Display the capacity in use as a percentage of the total storage capacity. |
-| IOPS | OPS | Display storage operations per second. |
-| Latency | usec | Display storage latency time. |
-| Snapshot number | - | Display the number of snapshots in storage. |
-| Snapshot capacity | byte | Display the amount of capacity that storage is using for the snapshot. |
-| Inode | - | Display the number of storage inodes. |
-| Storage status | - | Display storage status. |
-| Number of client connections | - | Display the number of clients connected to storage. |
+| Storage capacity | byte | The total capacity of storage and the capacity in use. |
+| Storage usage | % | The capacity in use as a percentage of the total storage capacity. |
+| IOPS | OPS | Storage operations per second. |
+| Latency | usec | The storage latency time. |
+| Snapshot number | - | The number of snapshots in storage. |
+| Snapshot capacity | byte | The amount of capacity that storage is using for the snapshot. |
+| Inode | - | The number of storage inodes. |
+| Storage status | - | The storage status. |
+| Number of client connections | - | The number of clients connected to storage. |
 
 ### Replication
 
@@ -131,16 +131,16 @@ View information about replication settings.
 
 | Setting | Description |
 | --- | --- |
-| Replication Settings | Displays whether replication is enabled for the storage. |
-| Replication setup status | Displays the status of replication settings between source and target storage.<br>Active: Active status<br>Retrieve failed: Temporary failure to obtain information<br>Halt: Paused state<br>Initial replication progress additionally displays the replication progress and target storage encryption status. |
-| Results of recent replication | Displays the results of the last replication you ran. |
-| Latest replication execution time | Displays the last time you ran a replication. |
-| Last replication success time | Displays the last time replication completed. |
-| Replication direction | Displays the replication direction. |
-| Target region | Displays the replication target region. Only exposed if this is the source storage that you set up replication for. |
-| Target storage | Displays the replication target storage name. Exposed only if it is the source storage for which replication is set up.|
-| Source region | Displays the replication source region. Only exposed if replication is enabled on the target storage.|
-| Source storage | Displays the replication source storage name. Only exposed if replication is enabled on the target storage. |
+| Replication Settings | Whether replication is enabled for the storage. |
+| Replication setup status | The status of replication settings between source and target storage.<br>Active: Active status<br>Retrieve failed: Temporary failure to obtain information<br>Halt: Paused state<br>Initial replication progress additionally displays the replication progress and target storage encryption status. |
+| Results of recent replication | The results of the last replication you ran. |
+| Latest replication execution time | The last time you ran a replication. |
+| Last replication success time | The last time replication completed. |
+| Replication direction | The replication direction. |
+| Target region | The replication target region. Only exposed if this is the source storage that you set up replication for. |
+| Target storage | The replication target storage name. Exposed only if it is the source storage for which replication is set up.|
+| Source region | The replication source region. Only exposed if replication is enabled on the target storage.|
+| Source storage | The replication source storage name. Only exposed if replication is enabled on the target storage. |
 
 #### Replication Settings
 
