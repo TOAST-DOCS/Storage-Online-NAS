@@ -90,7 +90,7 @@ Check the network connection information.
 
 | Item | Description |
 | --- | --- |
-| Connection information | Displays the connection path that the instance will use when mounting. |
+| Connection information | The connection path that the instance will use when mounting. |
 | Subnet | The subnet information associated with the storage. |
 | Status | Displays the subnet association status. |
 
