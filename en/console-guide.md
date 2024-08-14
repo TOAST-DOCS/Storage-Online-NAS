@@ -144,7 +144,7 @@ View information about replication settings.
 
 #### Replication Settings
 
-Set up replication to selected regions of a project within your organization.
+Set up replication to a selected region of a project within your organization.
 When you set up replication, a target storage is created in the target location with the same size as the source storage. The target storage is created in a read-only state, and you must stop replication or turn off replication to change the state of the target storage.
 When you update or delete data in the source storage, the data in the target storage is also updated or deleted.
 
