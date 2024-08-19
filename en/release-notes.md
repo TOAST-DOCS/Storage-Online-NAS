@@ -6,7 +6,7 @@
 
 * Added the feature to change the subnet association of a created volume.
 * Improved the volume replication feature.
-    * You can replicate volumes to other projects within your organization.
+    * You can replicate a volume to another project within your organization.
     * You can replicate an encrypted volume.
 
 ### May 28, 2024. 
