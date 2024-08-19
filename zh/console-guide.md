@@ -2,11 +2,11 @@
 
 ### Create Storage
 
-New storage is created. The created storage can be accessed from instances by using the network file system (NFS) protocol.
+Create a new storage. The created storage can be accessed by instances using the network file system (NFS) and common internet file system (CIFS) protocols.
 
 | Item | Description |
 | -- | -- |
-| Name | Name of the storage to be created. The NFS access path can be created with the storage name. Storage name is limited to less than 100 alphabetic characters, numbers, and some symbols ('-', '_'). |
+| Name | Name of the storage to be created. The NFS or CIFS access path can be created with the storage name. Storage name is limited to less than 100 alphabetic characters, numbers, and some symbols ('-', '_'). |
 | Description | A description for storage |
 | Size | Size of the storage to be created. It can be entered from a minimum of 300 GB to a maximum of 10,000 GB. |
 | Protocol | Select a protocol to access the storage. CIFS and NFS are supported, but not simultaneously. |
@@ -14,7 +14,7 @@ New storage is created. The created storage can be accessed from instances by us
 | Subnet | The subnet to access the storage. Only subnets in the selected VPC can be chosen. |
 | Access Control List (ACL) | A list of the IPs or CIDR blocks that allow read and write permissions. |
 | Auto Create Snapshot | Snapshots are created automatically at a specified time once per day. When the maximum number of saves is reached, the first automatically created snapshot is deleted.  |
-| Snapshot Storage  | If the sum of the snapshot capacity exceeds the set size, the first created snapshot among all snapshots is deleted. |
+| Snapshot Reserve Capacity | Pre-allocate space for snapshots to be stored. Data can be stored in any capacity except the one you set. If you enter 0, snapshots are not created normally.|
 | Encryption  | Select whether to enable storage encryption. This must be preceded by setting up encryption key store. |
 
 > [Note] 
@@ -47,7 +47,7 @@ The settings for the storage’s access control list is changed.
 
 ### Change Snapshot Settings
 
-The settings for Auto Create Snapshot and Snapshot Storage are changed.
+The settings for Auto Create Snapshot and Snapshot Reserve Capacity are changed.
 
 ### Delete Storage
 
@@ -58,22 +58,54 @@ NAS storage is deleted.
 >
 > When deleting the storage, all data including snapshots are deleted. Deleted data cannot be recovered.
 
+### Snapshot
+Retrieve a list of created snapshots.
+
+| Item | Description |
+| --- | --- |
+| Name | The name of the snapshot. If created by the system, the name is determined by a specified rule. |
+| Storage usage when snapshots created | The NAS storage usage at the time the snapshot is created. If you restore the snapshot, it will be restored to that size. |
+| Created date | When the snapshot is created. |
+
+
 ### Create Snapshots
 
 Snapshots of NAS storage are created immediately.
 
-### Restore Snapshots
+#### Restore Snapshots
 Restores storage to the point in time when the snapshot was created.
 
 > [Caution]
 > When restoring, snapshots created after the point of restoration are automatically deleted.
 
-### View Snapshot Restore Results
+#### View Snapshot Restore Results
 View the history of restoring storage.
 
-### Delete Snapshots
+#### Delete Snapshots
 
 A specified snapshot is deleted. Once deleted, snapshots cannot be recovered.
+
+### Network
+Check the network connection information.
+
+| Item | Description |
+| --- | --- |
+| Connection information | The connection path that the instance will use when mounting. |
+| Subnet | The subnet information associated with the storage. |
+| Status | The subnet association status. |
+
+
+#### Add Subnet Association
+Add a subnet association. Adding a subnet association allows you to access NAS storage from the added subnet.
+
+> [Caution]
+> After adding a subnet association, if the subnet band does not exist in the ACL, mounting is not possible.
+
+#### Detach Subnet
+Remove the subnet associated with the storage. IP ACLs must be removed separately if needed.
+
+> [Caution]
+> It is recommended to detach the subnet after unmounting from a connected instance. Detaching while mounted can cause problems for user systems.
 
 ### Monitoring
 
@@ -83,15 +115,15 @@ The default search period is the latest 1 hour, and you can search any period yo
 
 | Metric | Unit | Description |
 | --- | --- | --- |
-| Storage capacity | byte | Display the total capacity of storage and the capacity in use. |
-| Storage usage | % | Display the capacity in use as a percentage of the total storage capacity. |
-| IOPS | OPS | Display storage operations per second. |
-| Latency | usec | Display storage latency time. |
-| Snapshot number | - | Display the number of snapshots in storage. |
-| Snapshot capacity | byte | Display the amount of capacity that storage is using for the snapshot. |
-| Inode | - | Display the number of storage inodes. |
-| Storage status | - | Display storage status. |
-| Number of client connections | - | Display the number of clients connected to storage. |
+| Storage capacity | byte | The total capacity of storage and the capacity in use. |
+| Storage usage | % | The capacity in use as a percentage of the total storage capacity. |
+| IOPS | OPS | Storage operations per second. |
+| Latency | usec | The storage latency time. |
+| Snapshot number | - | The number of snapshots in storage. |
+| Snapshot capacity | byte | The amount of capacity that storage is using for the snapshot. |
+| Inode | - | The number of storage inodes. |
+| Storage status | - | The storage status. |
+| Number of client connections | - | The number of clients connected to storage. |
 
 ### Replication
 
@@ -99,31 +131,38 @@ View information about replication settings.
 
 | Setting | Description |
 | --- | --- |
-| Replication Settings | Displays whether replication is enabled for the storage. |
-| Replication setup status | Displays the status of replication settings between source and target storage.<br>Active: Active status<br>Retrieve failed: Temporary failure to obtain information<br>Halt: Paused state |
-| Results of recent replication | Displays the results of the last replication you ran. |
-| Latest replication execution time | Displays the last time you ran a replication. |
-| Last replication success time | Displays the last time replication completed. |
-| Replication direction | Displays the replication direction. |
-| Target region | Displays the replication target region. Only exposed if this is the source storage that you set up replication for. |
-| Target storage | Displays the replication target storage name. Exposed only if it is the source storage for which replication is set up.|
-| Source region | Displays the replication source region. Only exposed if replication is enabled on the target storage.|
-| Source storage | Displays the replication source storage name. Only exposed if replication is enabled on the target storage. |
+| Replication Settings | Whether replication is enabled for the storage. |
+| Replication setup status | The status of replication settings between source and target storage.<br>Active: Active status<br>Retrieve failed: Temporary failure to obtain information<br>Halt: Paused state<br>Initial replication progress additionally displays the replication progress and target storage encryption status. |
+| Results of recent replication | The results of the last replication you ran. |
+| Latest replication execution time | The last time you ran a replication. |
+| Last replication success time | The last time replication completed. |
+| Replication direction | The replication direction. |
+| Target region | The replication target region. Only exposed if this is the source storage that you set up replication for. |
+| Target storage | The replication target storage name. Exposed only if it is the source storage for which replication is set up.|
+| Source region | The replication source region. Only exposed if replication is enabled on the target storage.|
+| Source storage | The replication source storage name. Only exposed if replication is enabled on the target storage. |
 
 #### Replication Settings
 
-Set up storage replication.
-When you set up replication, a target storage is created in the selected region that is the same size as the source storage. The target storage is created in a read-only state, and you must stop replication or turn off replication to change the state of the target storage.
+Set up replication to a selected region of a project within your organization.
+When you set up replication, a target storage is created in the target location with the same size as the source storage. The target storage is created in a read-only state, and you must stop replication or turn off replication to change the state of the target storage.
 When you update or delete data in the source storage, the data in the target storage is also updated or deleted.
+
+Check the range of regions selectable by target project.
+
+| Target project | Selectable region |
+| -- | -- |
+| Same project within an organization | Other regions |
+| Other projects in an organization | All regions |
 
 > [Caution]
 > To change the size of a replicated storage, you must change both the source storage and the target storage. If the size of the source storage and the target storage are different, replication might fail.
 
 > [Note]
 > The target storage created by the replication setup is billed for storage capacity according to the NAS service fee policy.
-> 
+>
 > You are charged for network traffic generated by replication between different regions.
-> 
+>
 > For more information on pricing, see our [NAS pricing guide](https://www.nhncloud.com/kr/service/storage/nas).
 
 #### Start Replication
@@ -133,7 +172,7 @@ Replication runs asynchronously when changes occur on the source storage. Before
 
 > [Caution]
 > Replication might fail if the target storage size is smaller than the source storage size.
-> 
+>
 > When replication runs, all existing data on the target storage is deleted and replaced with the same geometry as the source storage.
 
 #### Stop Replication
@@ -166,7 +205,6 @@ When you disable replication, the target storage retains the source storage data
 
 > [Caution]
 > When you re-establish replication, a new target storage is created. You cannot use the previously used target storage as the replication target storage again.
-
 
 ### Connect Storage
 
