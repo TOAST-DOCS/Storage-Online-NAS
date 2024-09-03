@@ -14,7 +14,7 @@ Create a new storage. The created storage can be accessed by instances using the
 | Subnet | The subnet to access the storage. Only subnets in the selected VPC can be chosen. |
 | Access Control List (ACL) | A list of the IPs or CIDR blocks that allow read and write permissions. |
 | Auto Create Snapshot | Snapshots are created automatically at a specified time once per day. When the maximum number of saves is reached, the first automatically created snapshot is deleted.  |
-| Snapshot Reserve Capacity | Pre-allocate space for snapshots to be stored. Data can be stored in any capacity except the one you set. If you enter 0, snapshots are not created normally.|
+| Snapshot Reserve Capacity | Pre-allocate space for snapshots to be stored. Data can be stored in any capacity except the one you set. If the actual size of the snapshot is larger than the snapshot reserve capacity setting, the data storage space beyond the reserve capacity is used to store the snapshot.|
 | Encryption  | Select whether to enable storage encryption. This must be preceded by setting up encryption key store. |
 
 > [Note] 
@@ -64,7 +64,7 @@ Retrieve a list of created snapshots.
 | Item | Description |
 | --- | --- |
 | Name | The name of the snapshot. If created by the system, the name is determined by a specified rule. |
-| Storage usage when snapshots created | The NAS storage usage at the time the snapshot is created. If you restore the snapshot, it will be restored to that size. |
+| Storage usage when snapshots created | The NAS storage usage at the time the snapshot is created. If the snapshot is being stored as it exceeded the snapshot reserve capacity, it appears as the data capacity excluding the excess capacity. |
 | Created date | When the snapshot is created. |
 
 
