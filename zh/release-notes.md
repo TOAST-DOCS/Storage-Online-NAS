@@ -1,5 +1,12 @@
 ## Storage > NAS > Release Notes
 
+### March 4, 2025
+
+#### Added Features
+
+* Improved the volume cloning feature.
+    * You can clone CIFS protocol volumes.
+
 ### August 27, 2024
 
 #### Added Features
@@ -8,6 +15,8 @@
 * Improved the volume replication feature.
     * You can replicate a volume to another project within your organization.
     * You can replicate an encrypted volume.
+* The usage at the time the snapshot is created appears in the snapshot list.
+
 
 ### May 28, 2024. 
 
