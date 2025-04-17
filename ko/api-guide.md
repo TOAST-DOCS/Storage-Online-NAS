@@ -27,6 +27,7 @@ NAS 스토리지 API에서 제공하는 공통 응답 정보에 대한 설명입
 </details>
 
 <br>
+
 ## NAS 스토리지
 
 ### NAS 스토리지 목록 보기
@@ -196,6 +197,7 @@ X-Auth-Token: {token-id}
 </details>
 
 <br>
+
 ### NAS 스토리지 생성하기
 
 새로운 NAS 스토리지를 생성합니다.
@@ -215,6 +217,7 @@ X-Auth-Token: {token-id}
 ```
 
 <br>
+
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -414,6 +417,7 @@ X-Auth-Token: {token-id}
 </details>
 
 <br>
+
 ### NAS 스토리지 삭제하기
 
 지정한 NAS 스토리지를 삭제합니다.
@@ -437,6 +441,7 @@ X-Auth-Token: {token-id}
 응답 본문에는 헤더 필드 외의 내용이 포함되지 않습니다.
 
 <br>
+
 ### NAS 스토리지 보기
 
 지정한 NAS 스토리지의 상세 정보를 반환합니다.
@@ -509,6 +514,7 @@ X-Auth-Token: {token-id}
 | volume.updatedAt | Body | String | NAS 스토리지 변경 시각 |
 
 <br>
+
 ### NAS 스토리지 설정 변경하기
 
 지정한 NAS 스토리지의 설정을 변경합니다.
@@ -582,10 +588,10 @@ X-Auth-Token: {token-id}
 응답 본문에는 헤더 필드 외의 내용이 포함되지 않습니다.
 
 <br>
+
 ### NAS 스토리지에 인터페이스 연결하기
 
-지정한 NAS 스토리지의 인터페이스를 설정합니다.
-
+지정한 NAS 스토리지의 인터페이스를 설정합니다.<br>
 설정된 주소 및 서브넷에서 NAS 스토리지에 접근 가능합니다.
 접근 가능한 IP 설정은 접근 제어(ACL) 설정에서 별도 설정해야 합니다.
 
@@ -651,6 +657,7 @@ X-Auth-Token: {token-id}
 </details>
 
 <br>
+
 ### NAS 스토리지의 인터페이스 삭제하기
 
 지정한 NAS 스토리지의 지정한 인터페이스를 삭제합니다.
@@ -675,6 +682,7 @@ X-Auth-Token: {token-id}
 응답 본문에는 헤더 필드 외의 내용이 포함되지 않습니다.
 
 <br>
+
 ### 스냅숏 복원 내역 보기
 
 지정한 스토리지의 스냅숏 복원 내역 목록을 반환합니다.
@@ -748,6 +756,7 @@ X-Auth-Token: {token-id}
 </details>
 
 <br>
+
 ### NAS 스토리지 사용 현황 보기
 
 지정한 NAS 스토리지의 사용 현황을 반환합니다.
@@ -795,6 +804,7 @@ X-Auth-Token: {token-id}
 </details>
 
 <br>
+
 ## Snapshots
 
 ### 스냅숏 목록 보기
@@ -831,6 +841,7 @@ X-Auth-Token: {token-id}
 | snapshots.type | Body | String | 스냅숏 타입<br>- `NORMAL` : 사용자에 의해 생성된 스냅숏<br>- `SCHEDULED` : 스냅숏 자동 생성에 의해 생성된 스냅숏<br>- `MIRROR` : 복제로 인해 생성된 스냅숏 |
 
 <details><summary>응답 예시</summary>
+
 ```json
 {
    "header":{
@@ -857,10 +868,12 @@ X-Auth-Token: {token-id}
       }
    ]
 }
-```</details>
+```
+</details>
 
 <br>
-#### 스냅숏 생성하기
+
+### 스냅숏 생성하기
 
 지정한 NAS 스토리지의 스냅숏을 생성합니다.
 
@@ -925,6 +938,7 @@ X-Auth-Token: {token-id}
 </details>
 
 <br>
+
 ### 스냅숏 삭제하기
 
 지정한 NAS 스토리지의 스냅숏을 삭제합니다.
@@ -949,6 +963,7 @@ X-Auth-Token: {token-id}
 응답 본문에는 헤더 필드 외의 내용이 포함되지 않습니다.
 
 <br>
+
 ### 스냅숏 보기
 
 지정한 스냅숏의 상세 정보를 반환합니다.
@@ -984,6 +999,7 @@ X-Auth-Token: {token-id}
 | snapshot.type | Body | String | 스냅숏 타입<br>- `NORMAL` : 사용자에 의해 생성된 스냅숏<br>- `SCHEDULED` : 스냅숏 자동 생성에 의해 생성된 스냅숏<br>- `MIRROR` : 복제로 인해 생성된 스냅숏 |
 
 <br>
+
 ### 스냅숏 복원하기
 
 지정한 스냅숏으로 NAS 스토리지를 복원합니다.
@@ -1008,6 +1024,7 @@ X-Auth-Token: {token-id}
 응답 본문에는 헤더 필드 외의 내용이 포함되지 않습니다.
 
 <br>
+
 ## NAS 스토리지 복제 설정
 
 ### 복제 설정하기
@@ -1021,6 +1038,7 @@ X-Auth-Token: {token-id}
 | 조직 내 다른 프로젝트 | 모든 리전 |
 
 <br>
+
 > [주의]
 > 복제 대상 스토리지 크기는 원본 스토리지와 동일하게 설정해야 합니다. 원본 스토리지와 대상 스토리지의 크기가 다른 경우 복제에 실패할 수 있습니다.
 
@@ -1031,6 +1049,7 @@ X-Auth-Token: {token-id}
 > 원본 스토리지가 CIFS 프로토콜를 사용하는 경우, 대상 스토리지도 CIFS 프로토콜을 사용해야 합니다. 이를 위해 원본 스토리지와는 별개의 CIFS 인증 정보를 생성하여, 요청 본문 `cifsAuthIds` 필드에 입력해주어야 합니다.
 
 <br>
+
 ```
 POST  /v1/volumes/{volume_id}/volume-mirrors
 X-Auth-Token: {token-id}
@@ -1147,6 +1166,7 @@ X-Auth-Token: {token-id}
 </details>
 
 <br>
+
 ### 복제 설정 해제하기
 
 지정한 NAS 스토리지의 복제 설정을 해제합니다.
@@ -1169,6 +1189,7 @@ X-Auth-Token: {token-id}
 응답 본문에는 헤더 필드 외의 내용이 포함되지 않습니다.
 
 <br>
+
 ### 복제 방향 변경하기
 
 원본 스토리지와 대상 스토리지의 복제 방향을 변경합니다.
@@ -1191,6 +1212,7 @@ X-Auth-Token: {token-id}
 응답 본문에는 헤더 필드 외의 내용이 포함되지 않습니다.
 
 <br>
+
 ### 복제 시작하기
 
 원본 스토리지에서 대상 스토리지로의 복제를 시작합니다.
@@ -1213,6 +1235,7 @@ X-Auth-Token: {token-id}
 응답 본문에는 헤더 필드 외의 내용이 포함되지 않습니다.
 
 <br>
+
 ### 복제 상태 확인하기
 
 가장 최근의 복제 상태를 반환합니다.
@@ -1244,6 +1267,7 @@ X-Auth-Token: {token-id}
 | volumeMirrorStat.status | Body | String | 복제 설정 상태<br>- `ACTIVE` : 복제 활성화 상태:<br>- `UPDATING` : 설정 변경 중<br>- `DELETING` : 설정 삭제 중<br>- `PENDING` : 설정 생성 중 <br>- `HALT` : 복제 중지 상태<br>- `RETRIEVE FAILED` : 일시적인 정보 획득 실패 |
 
 <br>
+
 ### 복제 중지하기
 
 원본 스토리지에서 대상 스토리지로의 복제를 중지합니다.
