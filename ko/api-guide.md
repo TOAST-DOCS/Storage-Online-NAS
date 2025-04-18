@@ -206,6 +206,8 @@ X-Auth-Token: {token-id}
 > CIFS 프로토콜을 사용하기 위해서는 CIFS 인증 정보를 생성해야 합니다. 인증 정보는 프로젝트 단위로 관리되며, CIFS 스토리지마다 접근할 CIFS 인증 정보를 등록해야 합니다.
 > CIFS 인증 정보는 콘솔의 **Storage > NAS > CIFS 인증 정보 관리** 창을 통해 생성할 수 있습니다.
 
+<!-- 개행을 위한 주석 -->
+
 > [참고] 암호화 키 저장소 설정
 > NAS 암호화 스토리지는 암호화에 사용하는 대칭 키를 NHN Cloud Secure Key Manager 서비스의 키 저장소에 저장합니다. 따라서 암호화 스토리지를 만들기 위해서는 미리 Secure Key Manager 서비스에서 [키 저장소를 생성](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_1)해야 합니다. [키 저장소의 ID를 확인](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_2)하여 암호화 키 저장소 설정에 입력합니다.
 > 생성한 키 저장소 ID는 콘솔의 **Storage > NAS > 암호화 키 저장소 설정** 창에서 입력할 수 있습니다. 암호화 스토리지를 생성하면 설정한 키 저장소에 대칭 키가 저장됩니다. NAS 서비스에 의해 키 저장소에 저장된 대칭 키는 암호화 스토리지 사용 중에는 삭제할 수 없습니다. 암호화 스토리지를 삭제하면 대칭 키도 함께 삭제됩니다.
@@ -591,9 +593,8 @@ X-Auth-Token: {token-id}
 
 ### NAS 스토리지에 인터페이스 연결하기
 
-지정한 NAS 스토리지의 인터페이스를 설정합니다.<br>
-설정된 주소 및 서브넷에서 NAS 스토리지에 접근 가능합니다.
-접근 가능한 IP 설정은 접근 제어(ACL) 설정에서 별도 설정해야 합니다.
+지정한 NAS 스토리지의 인터페이스를 설정합니다.
+설정된 주소 및 서브넷에서 NAS 스토리지에 접근 가능합니다. 접근 가능한 IP 설정은 접근 제어(ACL) 설정에서 별도 설정해야 합니다.
 
 ```
 POST  /v1/volumes/{volume_id}/interfaces
@@ -1042,13 +1043,16 @@ X-Auth-Token: {token-id}
 > [주의]
 > 복제 대상 스토리지 크기는 원본 스토리지와 동일하게 설정해야 합니다. 원본 스토리지와 대상 스토리지의 크기가 다른 경우 복제에 실패할 수 있습니다.
 
+<!-- 개행을 위한 주석 -->
+
 > [참고]
 > 복제 대상 스토리지에 암호화를 설정하려면, 원본 스토리지와는 별개의(복제 대상 스토리지가 속한 프로젝트 또는 리전) 암호화 키 저장소 설정이 필요합니다.
+
+<!-- 개행을 위한 주석 -->
 
 > [참고] 
 > 원본 스토리지가 CIFS 프로토콜를 사용하는 경우, 대상 스토리지도 CIFS 프로토콜을 사용해야 합니다. 이를 위해 원본 스토리지와는 별개의 CIFS 인증 정보를 생성하여, 요청 본문 `cifsAuthIds` 필드에 입력해주어야 합니다.
 
-<br>
 
 ```
 POST  /v1/volumes/{volume_id}/volume-mirrors
@@ -1264,7 +1268,7 @@ X-Auth-Token: {token-id}
 | volumeMirrorStat.lastTransferBytes | Body | Integer | 최근 실행한 복제에서 전송된 데이터 크기 (Byte) |
 | volumeMirrorStat.lastTransferEndTime | Body | String | 최근 실행한 복제 완료 시간 |
 | volumeMirrorStat.lastTransferStatus | Body | String | 최근 복제 실행 결과 |
-| volumeMirrorStat.status | Body | String | 복제 설정 상태<br>- `ACTIVE` : 복제 활성화 상태:<br>- `UPDATING` : 설정 변경 중<br>- `DELETING` : 설정 삭제 중<br>- `PENDING` : 설정 생성 중 <br>- `HALT` : 복제 중지 상태<br>- `RETRIEVE FAILED` : 일시적인 정보 획득 실패 |
+| volumeMirrorStat.status | Body | String | 복제 설정 상태<br>- `ACTIVE` : 복제 활성화 상태<br>- `UPDATING` : 설정 변경 중<br>- `DELETING` : 설정 삭제 중<br>- `PENDING` : 설정 생성 중 <br>- `HALT` : 복제 중지 상태<br>- `RETRIEVE FAILED` : 일시적인 정보 획득 실패 |
 
 <br>
 
