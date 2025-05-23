@@ -1,6 +1,6 @@
 ## Storage > NAS > API 가이드
 
-API를 사용하려면 API 엔드포인트와 토큰 등이 필요합니다. [API 사용 준비](https://docs.nhncloud.com/ko/Compute/Compute/ko/identity-api/) 를 참고하여 API 사용에 필요한 정보를 준비합니다.<br>
+API를 사용하려면 API 엔드포인트와 토큰 등이 필요합니다. [API 사용 준비](https://docs.nhncloud.com/ko/Compute/Compute/ko/identity-api/)를 참고하여 API 사용에 필요한 정보를 준비합니다.<br>
 NAS 스토리지 API는 `nasv1` 타입 엔드포인트를 이용합니다. 정확한 엔드포인트는 토큰 발급 응답의 `serviceCatalog`를 참조합니다.
 
 | 타입 | 리전 | 엔드포인트 | 
@@ -20,8 +20,8 @@ NAS 스토리지 API에서 제공하는 공통 응답 정보에 대한 설명입
 | 이름 | 종류 | 형식 | 설명 |
 | --- | --- | --- | --- |
 | header | Body | Object | 헤더 객체 |
-| header.isSuccessful | Body | Boolean | 요청의 성공 여부 (`true` 또는 `false`) |
-| header.resultCode | Body | Integer | HTTP 상태 코드에 해당하는 결과 코드<br>- `200` : 성공 <br>- `201` : 리소스 생성 성공<br>- `202` : 요청이 정상적으로 수신되었으나, 아직 처리되지 않은 상태<br>- `400` : 유효하지 않은 값으로 요청됨<br>- `401` : 권한, 인증 또는 토큰 관련 오류 <br>- `404` : 요청한 리소스를 찾을 수 없음<br>- `405` : 요청한 URL이 지정한 HTTP 메소드를 지원하지 않음<br>- `5XX` : 클라이언트의 요청은 유효하지만 서버가 처리에 실패함 |
+| header.isSuccessful | Body | Boolean | 요청의 성공 여부(`true` 또는 `false`) |
+| header.resultCode | Body | Integer | HTTP 상태 코드에 해당하는 결과 코드<br>- `200`: 성공 <br>- `201`: 리소스 생성 성공<br>- `202`: 요청이 정상적으로 수신되었으나, 아직 처리되지 않은 상태<br>- `400`: 유효하지 않은 값으로 요청됨<br>- `401`: 권한, 인증 또는 토큰 관련 오류 <br>- `404`: 요청한 리소스를 찾을 수 없음<br>- `405`: 요청한 URL이 지정한 HTTP 메서드를 지원하지 않음<br>- `5XX`: 클라이언트의 요청은 유효하지만 서버가 처리에 실패함 |
 | header.resultMessage | Body | String | 요청 처리 결과에 대한 메시지 |
 
 <details>
@@ -62,10 +62,10 @@ X-Auth-Token: {token-id}
 | minSizeGb | String | Query | - | NAS 스토리지 최소 크기 |
 | name | String | Query | - | NAS 스토리지 이름 |
 | nameContains | String | Query | - | NAS 스토리지 이름에 포함되는 문자열 |
-| subnetId | String | Query | - | 서브넷의 인터페이스를 가지고있는 NAS 스토리지 |
+| subnetId | String | Query | - | 서브넷의 인터페이스를 가진 NAS 스토리지 |
 | limit | String | Query | - | 한 페이지에 노출할 리소스 개수 |
 | page | String | Query | - | 조회할 페이지 |
-| sort | String | Query | - | 정렬 기준이 될 필드 이름<br>`{key}:{direction}` 형태로 기술합니다. 예) `name:asc`, `created_at:desc`<br>사용 가능한 key 값: `id`, `name`, `sizeGb`, `createdAt`, `updatedAt` |
+| sort | String | Query | - | 정렬 기준이 될 필드 이름<br>`{key}:{direction}` 형태로 기술합니다. 예: `name:asc`, `created_at:desc`<br>사용 가능한 key 값: `id`, `name`, `sizeGb`, `createdAt`, `updatedAt` |
 
 #### 응답
 
@@ -81,7 +81,7 @@ X-Auth-Token: {token-id}
 | volumes.name | Body | String | NAS 스토리지 이름 |
 | volumes.status | Body | String | NAS 스토리지 상태 |
 | volumes.description | Body | String | NAS 스토리지 설명 |
-| volumes.sizeGb | Body | Integer | NAS 스토리지 크기 (GB) |
+| volumes.sizeGb | Body | Integer | NAS 스토리지 크기(GB) |
 | volumes.projectId | Body | String | NAS 스토리지가 속한 프로젝트 ID |
 | volumes.tenantId | Body | String | NAS 스토리지가 속한 테넌트 ID |
 | volumes.acl | Body | List | NAS 스토리지 ACL 목록 |
@@ -96,9 +96,9 @@ X-Auth-Token: {token-id}
 | volumes.interfaces.tenantId | Body | String | 인터페이스의 테넌트 ID |
 | volumes.mirrors | Body | List | NAS 스토리지 복제 설정 객체 목록 |
 | volumes.mirrors.id | Body | String | 복제 설정 ID |
-| volumes.mirrors.role | Body | String | 복제 역할<br>- `SOURCE` : 원본 스토리지<br>- `DESTINATION` : 대상 스토리지 |
-| volumes.mirrors.status | Body | String | 복제 설정 상태<br>- `INITIALIZED` : 설정 완료<br>- `UPDATING` : 설정 변경 중<br>- `DELETING` : 설정 삭제 중<br>- `PENDING` : 설정 생성 중 |
-| volumes.mirrors.direction | Body | String | 복제 방향 <br>- `FORWARD` : 원본 스토리지 -> 복제 스토리지 <br>- `REVERSE` : 복제 스토리지 -> 원본 스토리지 |
+| volumes.mirrors.role | Body | String | 복제 역할<br>- `SOURCE`: 원본 스토리지<br>- `DESTINATION`: 대상 스토리지 |
+| volumes.mirrors.status | Body | String | 복제 설정 상태<br>- `INITIALIZED`: 설정 완료<br>- `UPDATING`: 설정 변경 중<br>- `DELETING`: 설정 삭제 중<br>- `PENDING`: 설정 생성 중 |
+| volumes.mirrors.direction | Body | String | 복제 방향 <br>- `FORWARD`: 원본 스토리지 -> 복제 스토리지 <br>- `REVERSE`: 복제 스토리지 -> 원본 스토리지 |
 | volumes.mirrors.directionChangedAt | Body | String | 복제 방향 변경 시각 |
 | volumes.mirrors.dstProjectId | Body | String | 복제 대상 스토리지의 프로젝트 ID |
 | volumes.mirrors.dstRegion | Body | String | 복제 대상 스토리지 리전 |
@@ -251,7 +251,7 @@ X-Auth-Token: {token-id}
 | volume.snapshotPolicy | Body | Object | - | NAS 스토리지 볼륨 스냅숏 설정 객체 |
 | volume.snapshotPolicy.maxScheduledCount | Body | Integer | - | 스냅숏 최대 저장 개수<br>30개까지 설정 가능하며, 최대 저장 개수에 도달하면 자동으로 생성된 스냅숏 중 가장 먼저 만들어진 스냅숏이 삭제됩니다. |
 | volume.snapshotPolicy.reservePercent | Body | Integer | - | 스냅숏 용량 비율 |
-| volume.snapshotPolicy.schedule | Body | Object | - | 스냅숏 자동 생성 객체<br>`null` 일 경우 스냅숏 자동 생성이 설정되지 않습니다. |
+| volume.snapshotPolicy.schedule | Body | Object | - | 스냅숏 자동 생성 객체<br>`null`일 경우 스냅숏 자동 생성이 설정되지 않습니다. |
 | volume.snapshotPolicy.schedule.time | Body | String | - | 스냅숏 자동 생성 시간 |
 | volume.snapshotPolicy.schedule.timeOffset | Body | String | - | 스냅숏 자동 생성 기준 시간대 |
 | volume.snapshotPolicy.schedule.weekdays | Body | List | - | 스냅숏 자동 생성 요일. <br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |
@@ -305,7 +305,7 @@ X-Auth-Token: {token-id}
 | volume.name | Body | String | NAS 스토리지 이름 |
 | volume.status | Body | String | NAS 스토리지 상태 |
 | volume.description | Body | String | NAS 스토리지 설명 |
-| volume.sizeGb | Body | Integer | NAS 스토리지 크기 (GB) |
+| volume.sizeGb | Body | Integer | NAS 스토리지 크기(GB) |
 | volume.projectId | Body | String | NAS 스토리지가 속한 프로젝트 ID |
 | volume.tenantId | Body | String | NAS 스토리지가 속한 테넌트 ID |
 | volume.acl | Body | List | NAS 스토리지 ACL 목록 |
@@ -320,9 +320,9 @@ X-Auth-Token: {token-id}
 | volume.interfaces.tenantId | Body | String | 인터페이스의 테넌트 ID |
 | volume.mirrors | Body | List | NAS 스토리지 복제 설정 객체 목록 |
 | volume.mirrors.id | Body | String | 복제 설정 ID |
-| volume.mirrors.role | Body | String | 복제 역할<br>- `SOURCE` : 원본 스토리지<br>- `DESTINATION` : 대상 스토리지 |
-| volume.mirrors.status | Body | String | 복제 설정 상태<br>- `INITIALIZED` : 설정 완료<br>- `UPDATING` : 설정 변경 중<br>- `DELETING` : 설정 삭제 중<br>- `PENDING` : 설정 생성 중 |
-| volume.mirrors.direction | Body | String | 복제 방향 <br>- `FORWARD` : 원본 스토리지 -> 복제 스토리지<br>- `REVERSE` : 복제 스토리지 -> 원본 스토리지 |
+| volume.mirrors.role | Body | String | 복제 역할<br>- `SOURCE`: 원본 스토리지<br>- `DESTINATION`: 대상 스토리지 |
+| volume.mirrors.status | Body | String | 복제 설정 상태<br>- `INITIALIZED`: 설정 완료<br>- `UPDATING`: 설정 변경 중<br>- `DELETING`: 설정 삭제 중<br>- `PENDING`: 설정 생성 중 |
+| volume.mirrors.direction | Body | String | 복제 방향 <br>- `FORWARD`: 원본 스토리지 -> 복제 스토리지<br>- `REVERSE`: 복제 스토리지 -> 원본 스토리지 |
 | volume.mirrors.directionChangedAt | Body | String | 복제 방향 변경 시각 |
 | volume.mirrors.dstProjectId | Body | String | 복제 대상 스토리지의 프로젝트 ID |
 | volume.mirrors.dstRegion | Body | String | 복제 대상 스토리지 리전 |
@@ -483,7 +483,7 @@ X-Auth-Token: {token-id}
 | volume.name | Body | String | NAS 스토리지 이름 |
 | volume.status | Body | String | NAS 스토리지 상태 |
 | volume.description | Body | String | NAS 스토리지 설명 |
-| volume.sizeGb | Body | Integer | NAS 스토리지 크기 (GB) |
+| volume.sizeGb | Body | Integer | NAS 스토리지 크기(GB) |
 | volume.projectId | Body | String | NAS 스토리지가 속한 프로젝트 ID |
 | volume.tenantId | Body | String | NAS 스토리지가 속한 테넌트 ID |
 | volume.acl | Body | List | NAS 스토리지 ACL 목록 |
@@ -498,9 +498,9 @@ X-Auth-Token: {token-id}
 | volume.interfaces.tenantId | Body | String | 인터페이스의 테넌트 ID |
 | volume.mirrors | Body | List | NAS 스토리지 복제 설정 객체 목록 |
 | volume.mirrors.id | Body | String | 복제 설정 ID |
-| volume.mirrors.role | Body | String | 복제 역할<br>- `SOURCE` : 원본 스토리지<br>- `DESTINATION` : 대상 스토리지 |
-| volume.mirrors.status | Body | String | 복제 설정 상태<br>- `INITIALIZED` : 설정 완료<br>- `UPDATING` : 설정 변경 중<br>- `DELETING` : 설정 삭제 중<br>- `PENDING` : 설정 생성 중 |
-| volume.mirrors.direction | Body | String | 복제 방향 <br>- `FORWARD` : 원본 스토리지 -> 복제 스토리지<br>- `REVERSE` : 복제 스토리지 -> 원본 스토리지 |
+| volume.mirrors.role | Body | String | 복제 역할<br>- `SOURCE`: 원본 스토리지<br>- `DESTINATION`: 대상 스토리지 |
+| volume.mirrors.status | Body | String | 복제 설정 상태<br>- `INITIALIZED`: 설정 완료<br>- `UPDATING`: 설정 변경 중<br>- `DELETING`: 설정 삭제 중<br>- `PENDING`: 설정 생성 중 |
+| volume.mirrors.direction | Body | String | 복제 방향 <br>- `FORWARD`: 원본 스토리지 -> 복제 스토리지<br>- `REVERSE`: 복제 스토리지 -> 원본 스토리지 |
 | volume.mirrors.directionChangedAt | Body | String | 복제 방향 변경 시각 |
 | volume.mirrors.dstProjectId | Body | String | 복제 대상 스토리지의 프로젝트 ID |
 | volume.mirrors.dstRegion | Body | String | 복제 대상 스토리지 리전 |
@@ -551,7 +551,7 @@ X-Auth-Token: {token-id}
 | volume.description | Body | String | - | NAS 스토리지 설명 |
 | volume.mountProtocol | Body | Object | - | NAS 스토리지 생성 시 프로토콜 설정 객체 |
 | volume.mountProtocol.cifsAuthIds | Body | List | - | CIFS 인증 ID 목록 |
-| volume.mountProtocol.protocol | Body | String | - | 이미 생성된 NAS 스토리지의 프로토콜은 변경할 수 없습니다.<br>`cifsAuthIds` 필드 변경 시 해당 필드에 `cifs` 를 명시해 주어야 합니다. |
+| volume.mountProtocol.protocol | Body | String | - | 이미 생성된 NAS 스토리지의 프로토콜은 변경할 수 없습니다.<br>`cifsAuthIds` 필드 변경 시 해당 필드에 `cifs`를 명시해야 합니다. |
 | volume.sizeGb | Body | Integer | O | NAS 스토리지 크기(GB)<br>NAS 스토리지는 최소 300GB에서 최대 10,000GB까지, 100GB 단위로 설정할 수 있습니다. |
 | volume.snapshotPolicy | Body | Object | - | NAS 스토리지 볼륨 스냅숏 설정 객체 |
 | volume.snapshotPolicy.maxScheduledCount | Body | Integer | - | 스냅숏 최대 저장 개수<br>30개까지 설정 가능하며, 최대 저장 개수에 도달하면 자동으로 생성된 스냅숏 중 가장 먼저 만들어진 스냅숏이 삭제됩니다. |
@@ -714,7 +714,7 @@ X-Auth-Token: {token-id}
 | volume\_id | URL | String | O | NAS 스토리지 ID |
 | limit | String | Query | X | 한 페이지에 노출할 리소스 개수 |
 | page | String | Query | X | 조회할 페이지 |
-| sort | String | Query | X | 정렬 기준이 될 필드 이름<br>`{key}:{direction}` 형태로 기술합니다. 예) `snapshotId:asc`, `requestedAt:desc`<br>사용 가능한 key 값: `snapshotId`, `snapshotName`, `requestedAt`, `restoredAt`, `requestedUser`, `requestedIp`, `result` |
+| sort | String | Query | X | 정렬 기준이 될 필드 이름<br>`{key}:{direction}` 형태로 기술합니다. 예: `snapshotId:asc`, `requestedAt:desc`<br>사용 가능한 key 값: `snapshotId`, `snapshotName`, `requestedAt`, `restoredAt`, `requestedUser`, `requestedIp`, `result` |
 
 #### 응답
 
@@ -850,7 +850,7 @@ X-Auth-Token: {token-id}
 | snapshots.preserved | Body | Boolean | 시스템에 의해 삭제 불가 설정된 스냅숏 여부 |
 | snapshots.reclaimableSpace | Body | Integer | 스냅숏 삭제 시 확보되는 용량 |
 | snapshots.size | Body | Integer | 스냅숏 크기 |
-| snapshots.type | Body | String | 스냅숏 타입<br>- `NORMAL` : 사용자에 의해 생성된 스냅숏<br>- `SCHEDULED` : 스냅숏 자동 생성에 의해 생성된 스냅숏<br>- `MIRROR` : 복제로 인해 생성된 스냅숏 |
+| snapshots.type | Body | String | 스냅숏 타입<br>- `NORMAL`: 사용자에 의해 생성된 스냅숏<br>- `SCHEDULED`: 스냅숏 자동 생성에 의해 생성된 스냅숏<br>- `MIRROR`: 복제로 인해 생성된 스냅숏 |
 
 <details><summary>응답 예시</summary>
 
@@ -926,7 +926,7 @@ X-Auth-Token: {token-id}
 | snapshot.name | Body | String | 스냅숏 이름 |
 | snapshot.preserved | Body | Boolean | 시스템에 의해 삭제 불가 설정된 스냅숏 여부 |
 | snapshot.reclaimableSpace | Body | Integer | 스냅숏 삭제 시 확보되는 용량 |
-| snapshot.type | Body | String | 스냅숏 타입<br>- `NORMAL` : 사용자에 의해 생성된 스냅숏<br>- `SCHEDULED` : 스냅숏 자동 생성에 의해 생성된 스냅숏<br>- `MIRROR` : 복제로 인해 생성된 스냅숏 |
+| snapshot.type | Body | String | 스냅숏 타입<br>- `NORMAL`: 사용자에 의해 생성된 스냅숏<br>- `SCHEDULED`: 스냅숏 자동 생성에 의해 생성된 스냅숏<br>- `MIRROR`: 복제로 인해 생성된 스냅숏 |
 
 <details>
   <summary>응답 예시</summary>
@@ -1008,7 +1008,7 @@ X-Auth-Token: {token-id}
 | snapshot.preserved | Body | Boolean | 시스템에 의해 삭제 불가 설정된 스냅숏 여부 |
 | snapshot.reclaimableSpace | Body | Integer | 스냅숏 삭제 시 확보되는 용량 |
 | snapshot.size | Body | Integer | 스냅숏 크기 |
-| snapshot.type | Body | String | 스냅숏 타입<br>- `NORMAL` : 사용자에 의해 생성된 스냅숏<br>- `SCHEDULED` : 스냅숏 자동 생성에 의해 생성된 스냅숏<br>- `MIRROR` : 복제로 인해 생성된 스냅숏 |
+| snapshot.type | Body | String | 스냅숏 타입<br>- `NORMAL`: 사용자에 의해 생성된 스냅숏<br>- `SCHEDULED` : 스냅숏 자동 생성에 의해 생성된 스냅숏<br>- `MIRROR`: 복제로 인해 생성된 스냅숏 |
 
 <br>
 
@@ -1062,7 +1062,7 @@ X-Auth-Token: {token-id}
 <!-- 개행을 위한 주석 -->
 
 > [참고] 
-> 원본 스토리지가 CIFS 프로토콜를 사용하는 경우, 대상 스토리지도 CIFS 프로토콜을 사용해야 합니다. 이를 위해 원본 스토리지와는 별개의 CIFS 인증 정보를 생성하여, 요청 본문 `cifsAuthIds` 필드에 입력해주어야 합니다.
+> 원본 스토리지가 CIFS 프로토콜를 사용하는 경우 대상 스토리지도 CIFS 프로토콜을 사용해야 합니다. 이를 위해 원본 스토리지와는 별개의 CIFS 인증 정보를 생성하여 요청 본문 `cifsAuthIds` 필드에 입력해야 합니다.
 
 
 ```
@@ -1094,7 +1094,7 @@ X-Auth-Token: {token-id}
 | volumeMirror.dstVolume.snapshotPolicy | Body | Object | - | NAS 스토리지 볼륨 스냅숏 설정 객체 |
 | volumeMirror.dstVolume.snapshotPolicy.maxScheduledCount | Body | Integer | - | 스냅숏 최대 저장 개수<br>30개까지 설정 가능하며, 최대 저장 개수에 도달하면 자동으로 생성된 스냅숏 중 가장 먼저 만들어진 스냅숏이 삭제됩니다. |
 | volumeMirror.dstVolume.snapshotPolicy.reservePercent | Body | Integer | - | 스냅숏 용량 비율 |
-| volumeMirror.dstVolume.snapshotPolicy.schedule | Body | Object | - | 스냅숏 자동 생성 객체<br>`null` 일 경우 스냅숏 자동 생성이 설정되지 않습니다. |
+| volumeMirror.dstVolume.snapshotPolicy.schedule | Body | Object | - | 스냅숏 자동 생성 객체<br>`null`일 경우 스냅숏 자동 생성이 설정되지 않습니다. |
 | volumeMirror.dstVolume.snapshotPolicy.schedule.time | Body | String | - | 스냅숏 자동 생성 시간 |
 | volumeMirror.dstVolume.snapshotPolicy.schedule.timeOffset | Body | String | - | 스냅숏 자동 생성 기준 시간대 |
 | volumeMirror.dstVolume.snapshotPolicy.schedule.weekdays | Body | List | - | 스냅숏 자동 생성 요일.<br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |
@@ -1131,9 +1131,9 @@ X-Auth-Token: {token-id}
 | header | Body | Object | 헤더 객체 |
 | volumeMirror | Body | Object | 복제 설정 생성 객체 |
 | volumeMirror.id | Body | String | 복제 설정 ID |
-| volumeMirror.role | Body | String | 복제 역할<br>- `SOURCE` : 원본 스토리지<br>- `DESTINATION` : 대상 스토리지 |
-| volumeMirror.status | Body | String | 복제 설정 상태<br>- `INITIALIZED` : 설정 완료<br>- `UPDATING` : 설정 변경 중<br>- `DELETING` : 설정 삭제 중<br>- `PENDING` : 설정 생성 중 |
-| volumeMirror.direction | Body | String | 복제 방향 <br>- `FORWARD` : 원본 스토리지 -> 복제 스토리지<br>- `REVERSE` : 복제 스토리지 -> 원본 스토리지 |
+| volumeMirror.role | Body | String | 복제 역할<br>- `SOURCE`: 원본 스토리지<br>- `DESTINATION`: 대상 스토리지 |
+| volumeMirror.status | Body | String | 복제 설정 상태<br>- `INITIALIZED`: 설정 완료<br>- `UPDATING`: 설정 변경 중<br>- `DELETING`: 설정 삭제 중<br>- `PENDING`: 설정 생성 중 |
+| volumeMirror.direction | Body | String | 복제 방향 <br>- `FORWARD`: 원본 스토리지 -> 복제 스토리지<br>- `REVERSE`: 복제 스토리지 -> 원본 스토리지 |
 | volumeMirror.directionChangedAt | Body | String | 복제 방향 변경 시각 |
 | volumeMirror.dstProjectId | Body | String | 복제 대상 스토리지의 프로젝트 ID |
 | volumeMirror.dstRegion | Body | String | 복제 대상 스토리지 리전 |
@@ -1274,12 +1274,12 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- |
 | header | Body | Object | 헤더 객체 |
 | volumeMirrorStat | Body | Object | 복제 상태 객체 |
-| volumeMirrorStat.lastSuccessTransferBytes | Body | Integer | 최근 성공한 복제에서 전송된 데이터 크기 (Byte) |
+| volumeMirrorStat.lastSuccessTransferBytes | Body | Integer | 최근 성공한 복제에서 전송된 데이터 크기(Byte) |
 | volumeMirrorStat.lastSuccessTransferEndTime | Body | String | 최근 성공한 복제 완료 시간 |
-| volumeMirrorStat.lastTransferBytes | Body | Integer | 최근 실행한 복제에서 전송된 데이터 크기 (Byte) |
+| volumeMirrorStat.lastTransferBytes | Body | Integer | 최근 실행한 복제에서 전송된 데이터 크기(Byte) |
 | volumeMirrorStat.lastTransferEndTime | Body | String | 최근 실행한 복제 완료 시간 |
 | volumeMirrorStat.lastTransferStatus | Body | String | 최근 복제 실행 결과 |
-| volumeMirrorStat.status | Body | String | 복제 설정 상태<br>- `ACTIVE` : 복제 활성화 상태<br>- `UPDATING` : 설정 변경 중<br>- `DELETING` : 설정 삭제 중<br>- `PENDING` : 설정 생성 중 <br>- `HALT` : 복제 중지 상태<br>- `RETRIEVE FAILED` : 일시적인 정보 획득 실패 |
+| volumeMirrorStat.status | Body | String | 복제 설정 상태<br>- `ACTIVE`: 복제 활성화 상태<br>- `UPDATING`: 설정 변경 중<br>- `DELETING`: 설정 삭제 중<br>- `PENDING`: 설정 생성 중 <br>- `HALT`: 복제 중지 상태<br>- `RETRIEVE FAILED`: 일시적인 정보 획득 실패 |
 
 <br>
 
