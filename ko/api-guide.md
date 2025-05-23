@@ -275,7 +275,6 @@ X-Auth-Token: {token-id}
       }
     ],
     "mountProtocol": {
-      "cifsAuthIds": [],
       "protocol": "nfs"
     },
     "name": "TEST-NAS-2",
@@ -836,7 +835,6 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- | --- |
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | volume\_id | URL | String | O | NAS 스토리지 ID |
-| showReclaimableSpace | Query | Boolean | - | 스냅숏 삭제 시 확보되는 용량을 나타내는 `reclaimableSpace` 항목 노출 여부 |
 
 #### 응답
 
@@ -848,7 +846,6 @@ X-Auth-Token: {token-id}
 | snapshots.id | Body | String | 스냅숏 ID |
 | snapshots.name | Body | String | 스냅숏 이름 |
 | snapshots.preserved | Body | Boolean | 시스템에 의해 삭제 불가 설정된 스냅숏 여부 |
-| snapshots.reclaimableSpace | Body | Integer | 스냅숏 삭제 시 확보되는 용량 |
 | snapshots.size | Body | Integer | 스냅숏 크기 |
 | snapshots.type | Body | String | 스냅숏 타입<br>- `NORMAL`: 사용자에 의해 생성된 스냅숏<br>- `SCHEDULED`: 스냅숏 자동 생성에 의해 생성된 스냅숏<br>- `MIRROR`: 복제로 인해 생성된 스냅숏 |
 
@@ -1110,9 +1107,6 @@ X-Auth-Token: {token-id}
       "dstVolume":{
          "description":"Volume Mirror Test",
          "mountProtocol":{
-            "cifsAuthIds":[
-  
-            ],
             "protocol":"nfs"
          },
          "name":"TEST-NAS-MIRROR",
