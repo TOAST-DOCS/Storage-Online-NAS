@@ -1,5 +1,20 @@
 ## Storage > NAS > Release Notes
 
+### May 27, 2025
+
+#### Added Features
+* Added Public APIs.
+* Added the feature to search the storage name.
+
+#### Improved
+* Changed the constraint on ID in Manage CIFS Credentials.
+
+#### Changed
+* Chaneged the feature to replicate storage.
+    * Replication is activated immediately upon changing the replication direction.
+    * When stopping replication or changing its direction, the operation proceeds after replicating data up to the time the request is made.
+    
+
 ### March 4, 2025
 
 #### Added Features
