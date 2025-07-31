@@ -1,11 +1,11 @@
 ## Storage > NAS > API 가이드
 
-API를 사용하려면 API 엔드포인트와 토큰 등이 필요합니다. [API 사용 준비](https://docs.nhncloud.com/ko/Compute/Compute/ko/identity-api/)를 참고하여 API 사용에 필요한 정보를 준비합니다.<br>
+API를 사용하려면 API 엔드포인트와 토큰 등이 필요합니다. [API 사용 준비](https://docs.gov-nhncloud.com/ko/Compute/Compute/ko/identity-api-gov/)를 참고하여 API 사용에 필요한 정보를 준비합니다.<br>
 NAS 스토리지 API는 `nasv1` 타입 엔드포인트를 이용합니다. 정확한 엔드포인트는 토큰 발급 응답의 `serviceCatalog`를 참조합니다.
 
 | 타입 | 리전 | 엔드포인트 | 
 | --- | --- | --- |
-| nasv1 | 한국(판교) 리전 <br> 한국(평촌) 리전 | https://kr1-api-nas-infrastructure.nhncloudservice.com  <br> https://kr2-api-nas-infrastructure.nhncloudservice.com |
+| nasv1 | 한국(판교) 리전 | https://kr1-api-nas-infrastructure.gncloud.go.kr |
 
 API 응답에 가이드에 명시되지 않은 필드가 나타날 수 있습니다. 이런 필드는 NHN Cloud 내부 용도로 사용되며 사전 공지 없이 변경될 수 있으므로 사용하지 않습니다.
 
@@ -217,12 +217,6 @@ X-Auth-Token: {token-id}
 > CIFS 프로토콜을 사용하기 위해서는 CIFS 인증 정보를 생성해야 합니다. 인증 정보는 프로젝트 단위로 관리되며, CIFS 스토리지마다 접근할 CIFS 인증 정보를 등록해야 합니다.
 > CIFS 인증 정보는 콘솔의 **Storage > NAS > CIFS 인증 정보 관리** 창을 통해 생성할 수 있습니다.
 
-<!-- 개행을 위한 주석 -->
-
-> [참고] 암호화 키 저장소 설정
-> NAS 암호화 스토리지는 암호화에 사용하는 대칭 키를 NHN Cloud Secure Key Manager 서비스의 키 저장소에 저장합니다. 따라서 암호화 스토리지를 만들기 위해서는 미리 Secure Key Manager 서비스에서 [키 저장소를 생성](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_1)해야 합니다. [키 저장소의 ID를 확인](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_2)하여 암호화 키 저장소 설정에 입력합니다.
-> 생성한 키 저장소 ID는 콘솔의 **Storage > NAS > 암호화 키 저장소 설정** 창에서 입력할 수 있습니다. 암호화 스토리지를 생성하면 설정한 키 저장소에 대칭 키가 저장됩니다. NAS 서비스에 의해 키 저장소에 저장된 대칭 키는 암호화 스토리지 사용 중에는 삭제할 수 없습니다. 암호화 스토리지를 삭제하면 대칭 키도 함께 삭제됩니다.
-> 키 저장소 ID를 변경하면 이후 생성하는 암호화 스토리지의 대칭 키가 변경된 키 저장소에 저장됩니다. 기존 키 저장소에 저장된 대칭 키는 유지됩니다.
 
 ```
 POST  /v1/volumes
@@ -239,8 +233,6 @@ X-Auth-Token: {token-id}
 | volume | Body | Object | O | NAS 스토리지 생성 요청 객체 |
 | volume.acl | Body | List | - | NAS 스토리지 생성 시 설정할 ACL ID 목록<br>IP 또는 CIDR 형식으로 입력할 수 있습니다. |
 | volume.description | Body | String | - | NAS 스토리지 설명 |
-| volume.encryption | Body | Object | - | NAS 스토리지 생성 시 암호화 설정 객체 |
-| volume.encryption.enabled | Body | Boolean | - | 암호화 설정 활성화 여부<br>암호화 키 저장소가 설정된 후 해당 필드를 `true`로 설정하면 암호화가 활성화됩니다. |
 | volume.interfaces | Body | List | - | NAS 스토리지에 접근할 인터페이스 목록 |
 | volume.interfaces.subnetId | Body | String | - | NAS 스토리지 인터페이스의 서브넷 ID |
 | volume.mountProtocol | Body | Object | - | NAS 스토리지 생성 시 프로토콜 설정 객체 |
@@ -1051,10 +1043,6 @@ X-Auth-Token: {token-id}
 > [주의]
 > 복제 대상 스토리지 크기는 원본 스토리지와 동일하게 설정해야 합니다. 원본 스토리지와 대상 스토리지의 크기가 다른 경우 복제에 실패할 수 있습니다.
 
-<!-- 개행을 위한 주석 -->
-
-> [참고]
-> 복제 대상 스토리지에 암호화를 설정하려면, 원본 스토리지와는 별개의(복제 대상 스토리지가 속한 프로젝트 또는 리전) 암호화 키 저장소 설정이 필요합니다.
 
 <!-- 개행을 위한 주석 -->
 
@@ -1079,8 +1067,6 @@ X-Auth-Token: {token-id}
 | volumeMirror.dstVolume | Body | Object | O | 복제 대상 스토리지 생성 요청 객체 |
 | volumeMirror.dstVolume.acl | Body | List | - | NAS 스토리지 생성 시 설정할 ACL ID 목록<br>IP 또는 CIDR 형식으로 입력할 수 있습니다. |
 | volumeMirror.dstVolume.description | Body | String | - | NAS 스토리지 설명 |
-| volumeMirror.dstVolume.encryption | Body | Object | - | NAS 스토리지 생성 시 암호화 설정 객체 |
-| volumeMirror.dstVolume.encryption.enabled | Body | Boolean | - | 암호화 설정 활성화 여부<br>암호화 키 저장소가 설정된 후 해당 필드를 `true`로 설정하면 암호화가 활성화됩니다. |
 | volumeMirror.dstVolume.interfaces | Body | List | - | NAS 스토리지에 접근할 인터페이스 목록 |
 | volumeMirror.dstVolume.interfaces.subnetId | Body | String | - | NAS 스토리지 인터페이스의 서브넷 ID |
 | volumeMirror.dstVolume.mountProtocol | Body | Object | - | NAS 스토리지 생성 시 프로토콜 설정 객체 |
