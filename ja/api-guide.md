@@ -585,7 +585,7 @@ X-Auth-Token: {token-id}
             "timeOffset":"+09:00",
             "weekdays":[
                2,
-4
+               4
             ]
          }
       }
