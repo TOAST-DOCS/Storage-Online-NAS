@@ -23,6 +23,18 @@ Create a new storage. The created storage can be accessed by instances using the
 #### Manage CIFS Credentials
 To use the CIFS protocol, you must create CIFS credentials. Credentials are managed on a per-project basis, and you must register a CIFS credential to access each CIFS storage.
 
+##### CIFS Credential Rules
+
+* ID Rules
+    * It must start with a lowercase letter or number and cannot end with a period (.).
+    * Only lowercase letters (a–z), numbers (0–9), hyphens (-), periods (.), and underscores (_) are allowed. All other characters are not permitted.
+    * You can enter a maximum of 20 characters.
+    * You can't use IDs that consist only of numbers, match reserved words (e.g., administrator, default, guest, krbtgt), or duplicate existing IDs.
+
+* Password Rules
+    * It must be at least 6 characters long and contain at least three of the following character types: uppercase letters, lowercase letters, numbers, and special characters.
+    * The special characters that can be used are `~!@#^*_-+=\\|()[]:;"'<>,.?/`, and spaces are not allowed.
+    * Passwords that include the ID cannot be used.
 
 #### Encryption Key Store Settings
 
@@ -66,6 +78,12 @@ Retrieve a list of created snapshots.
 | Name | The name of the snapshot. If created by the system, the name is determined by a specified rule. |
 | Storage usage when snapshots created | The NAS storage usage at the time the snapshot is created. If the snapshot is being stored as it exceeded the snapshot reserve capacity, it appears as the data capacity excluding the excess capacity. |
 | Created date | When the snapshot is created. |
+
+> [Note]]
+> Snapshots prioritize the storage space on the NAS by using the reserved capacity for snapshots. If the total snapshot size exceeds the reserved capacity, the excess is stored in the data storage space.
+
+> [Note]
+> Some snapshots are created by the system and cannot be deleted.
 
 
 ### Create Snapshots
@@ -157,6 +175,9 @@ Check the range of regions selectable by target project.
 
 > [Caution]
 > To change the size of a replicated storage, you must change both the source storage and the target storage. If the size of the source storage and the target storage are different, replication might fail.
+
+> [Note]
+> Storage replication is performed using snapshots. When configuring replication, snapshots in the format `{storage name}.mirror.%` are automatically created and cannot be deleted.
 
 > [Note]
 > The target storage created by the replication setup is billed for storage capacity according to the NAS service fee policy.
