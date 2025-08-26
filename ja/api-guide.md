@@ -1,31 +1,31 @@
-## Storage > NAS > API 가이드
+## Storage > NAS > APIガイド
 
-API를 사용하려면 API 엔드포인트와 토큰 등이 필요합니다. [API 사용 준비](https://docs.nhncloud.com/ko/Compute/Compute/ko/identity-api/)를 참고하여 API 사용에 필요한 정보를 준비합니다.<br>
-NAS 스토리지 API는 `nasv1` 타입 엔드포인트를 이용합니다. 정확한 엔드포인트는 토큰 발급 응답의 `serviceCatalog`를 참조합니다.
+APIを使用するにはAPIエンドポイントとトークンなどが必要です。 [API使用準備](https://docs.nhncloud.com/ko/Compute/Compute/ko/identity-api/)を参考にしてAPI使用に必要な情報を準備します。<br>
+NASストレージAPIは`nasv1`タイプエンドポイントを利用します。正確なエンドポイントはトークン発行レスポンスの`serviceCatalog`を参照します。
 
-| 타입 | 리전 | 엔드포인트 | 
+| タイプ | リージョン | エンドポイント | 
 | --- | --- | --- |
-| nasv1 | 한국(판교) 리전 <br> 한국(평촌) 리전 | https://kr1-api-nas-infrastructure.nhncloudservice.com  <br> https://kr2-api-nas-infrastructure.nhncloudservice.com |
+| nasv1 | 韓国(パンギョ)リージョン <br> 韓国(ピョンチョン)リージョン | https://kr1-api-nas-infrastructure.nhncloudservice.com  <br> https://kr2-api-nas-infrastructure.nhncloudservice.com |
 
-API 응답에 가이드에 명시되지 않은 필드가 나타날 수 있습니다. 이런 필드는 NHN Cloud 내부 용도로 사용되며 사전 공지 없이 변경될 수 있으므로 사용하지 않습니다.
+APIレスポンスにガイドに記載されていないフィールドが表示される場合があります。このようなフィールドは、NHN Cloudの内部用途に使用され、事前告知なしに変更される可能性があるため、使用しないでください。
 
 <br>
 
-## 응답 공통 정보
+## レスポンス共通情報
 
-NAS 스토리지 API에서 제공하는 공통 응답 정보에 대한 설명입니다. 모든 API 응답은 `header` 객체를 통해 요청 결과를 전달합니다.
+NASストレージAPIが提供する共通レスポンス情報の説明です。全てのAPIレスポンスは`header`オブジェクトを通じてリクエスト結果を伝達します。
 
-### 응답 헤더
+### レスポンスヘッダ
 
-| 이름 | 종류 | 형식 | 설명 |
+| 名前 | 種類 | 形式 | 説明 |
 | --- | --- | --- | --- |
-| header | Body | Object | 헤더 객체 |
-| header.isSuccessful | Body | Boolean | 요청의 성공 여부(`true` 또는 `false`) |
-| header.resultCode | Body | Integer | HTTP 상태 코드에 해당하는 결과 코드<br>- `200`: 성공 <br>- `201`: 리소스 생성 성공<br>- `202`: 요청이 정상적으로 수신되었으나, 아직 처리되지 않은 상태<br>- `400`: 유효하지 않은 값으로 요청됨<br>- `401`: 권한, 인증 또는 토큰 관련 오류 <br>- `404`: 요청한 리소스를 찾을 수 없음<br>- `405`: 요청한 URL이 지정한 HTTP 메서드를 지원하지 않음<br>- `5XX`: 클라이언트의 요청은 유효하지만 서버가 처리에 실패함 |
-| header.resultMessage | Body | String | 요청 처리 결과에 대한 메시지 |
+| header | Body | Object | ヘッダオブジェクト |
+| header.isSuccessful | Body | Boolean | リクエストの成否(`true`または`false`) |
+| header.resultCode | Body | Integer | HTTPステータスコードに該当する結果コード<br>- `200`:成功 <br>- `201`:リソース作成成功<br>- `202`:リクエストが正常に受信されたが、まだ処理されていない状態<br>- `400`:有効ではない値でリクエストされた<br>- `401`:権限、認証またはトークン関連エラー <br>- `404`:リクエストしたリソースが見つからない<br>- `405`:リクエストしたURLが指定したHTTPメソッドをサポートしていない<br>- `5XX`:クライアントのリクエストは有効ですがサーバーが処理に失敗する |
+| header.resultMessage | Body | String | リクエスト処理結果に関するメッセージ |
 
 <details>
-  <summary>응답 예시</summary>
+  <summary>レスポンス例</summary>
 
 ```json
 "header": {
@@ -39,93 +39,93 @@ NAS 스토리지 API에서 제공하는 공통 응답 정보에 대한 설명입
 
 <br>
 
-## NAS 스토리지
+## NASストレージ
 
-### NAS 스토리지 목록 보기
+### NASストレージ一覧表示
 
-NAS 스토리지 목록을 조회합니다.
+NASストレージ一覧を照会します。
 
 ```
 GET  /v1/volumes
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
+#### リクエスト
 
-요청 본문은 필요하지 않습니다.
+リクエスト本文は必要ありません。
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| sizeGb | String | Query | - | NAS 스토리지 크기 |
-| maxSizeGb | String | Query | - | NAS 스토리지 최대 크기 |
-| minSizeGb | String | Query | - | NAS 스토리지 최소 크기 |
-| name | String | Query | - | NAS 스토리지 이름 |
-| nameContains | String | Query | - | NAS 스토리지 이름에 포함되는 문자열 |
-| subnetId | String | Query | - | 서브넷의 인터페이스를 가진 NAS 스토리지 |
-| limit | String | Query | - | 한 페이지에 노출할 리소스 개수 |
-| page | String | Query | - | 조회할 페이지 |
-| sort | String | Query | - | 정렬 기준이 될 필드 이름<br>`{key}:{direction}` 형태로 기술합니다. 예: `name:asc`, `created_at:desc`<br>사용 가능한 key 값: `id`, `name`, `sizeGb`, `createdAt`, `updatedAt` |
+| X-Auth-Token | Header | String | O | トークンID |
+| sizeGb | String | Query | - | NASストレージサイズ |
+| maxSizeGb | String | Query | - | NASストレージ最大サイズ |
+| minSizeGb | String | Query | - | NASストレージ最小サイズ |
+| name | String | Query | - | NASストレージ名 |
+| nameContains | String | Query | - | NASストレージ名に含まれる文字列 |
+| subnetId | String | Query | - | サブネットのインターフェースを持つNASストレージ |
+| limit | String | Query | - | 1ページに表示するリソース数 |
+| page | String | Query | - | 照会するページ |
+| sort | String | Query | - | ソート基準となるフィールド名<br>`{key}:{direction}`の形で記述します。例：`name:asc`, `created_at:desc`<br>使用可能なkey値: `id`, `name`, `sizeGb`, `createdAt`, `updatedAt` |
 
-#### 응답
+#### レスポンス
 
-| 이름 | 종류 | 형식 | 설명 |
+| 名前 | 種類 | 形式 | 説明 |
 | --- | --- | --- | --- |
-| header | Body | Object | 헤더 객체 |
-| paging | Body | Object | 페이지 정보 |
-| paging.limit | Body | Integer | 한 페이지에 노출되는 리소스 개수 |
-| paging.page | Body | Integer | 현재 페이지 번호 |
-| paging.totalCount | Body | Integer | 전체 수 |
-| volumes | Body | List | NAS 스토리지 객체 목록 |
-| volumes.id | Body | String | NAS 스토리지 ID |
-| volumes.name | Body | String | NAS 스토리지 이름 |
-| volumes.status | Body | String | NAS 스토리지 상태 |
-| volumes.description | Body | String | NAS 스토리지 설명 |
-| volumes.sizeGb | Body | Integer | NAS 스토리지 크기(GB) |
-| volumes.projectId | Body | String | NAS 스토리지가 속한 프로젝트 ID |
-| volumes.tenantId | Body | String | NAS 스토리지가 속한 테넌트 ID |
-| volumes.acl | Body | List | NAS 스토리지 ACL 목록 |
-| volumes.encryption | Body | Object | NAS 스토리지 암호화 정보 |
-| volumes.encryption.enabled | Body | Boolean | NAS 스토리지 암호화 활성 여부 |
-| volumes.encryption.keys | Body | List | NAS 스토리지 암호화 키 정보 |
-| volumes.interfaces | Body | List | NAS 스토리지 인터페이스 객체 목록 |
-| volumes.interfaces.id | Body | String | 인터페이스 ID |
-| volumes.interfaces.path | Body | String | 인터페이스 경로 |
-| volumes.interfaces.status | Body | String | 인터페이스 상태 |
-| volumes.interfaces.subnetId | Body | String | 인터페이스의 서브넷 ID |
-| volumes.interfaces.tenantId | Body | String | 인터페이스의 테넌트 ID |
-| volumes.mirrors | Body | List | NAS 스토리지 복제 설정 객체 목록 |
-| volumes.mirrors.id | Body | String | 복제 설정 ID |
-| volumes.mirrors.role | Body | String | 복제 역할<br>- `SOURCE`: 원본 스토리지<br>- `DESTINATION`: 대상 스토리지 |
-| volumes.mirrors.status | Body | String | 복제 설정 상태<br>- `INITIALIZED`: 설정 완료<br>- `UPDATING`: 설정 변경 중<br>- `DELETING`: 설정 삭제 중<br>- `PENDING`: 설정 생성 중 |
-| volumes.mirrors.direction | Body | String | 복제 방향 <br>- `FORWARD`: 원본 스토리지 -> 복제 스토리지 <br>- `REVERSE`: 복제 스토리지 -> 원본 스토리지 |
-| volumes.mirrors.directionChangedAt | Body | String | 복제 방향 변경 시각 |
-| volumes.mirrors.dstProjectId | Body | String | 복제 대상 스토리지의 프로젝트 ID |
-| volumes.mirrors.dstRegion | Body | String | 복제 대상 스토리지 리전 |
-| volumes.mirrors.dstTenantId | Body | String | 복제 대상 스토리지 테넌트 ID |
-| volumes.mirrors.dstVolumeId | Body | String | 복제 대상 스토리지의 NAS 스토리지 ID |
-| volumes.mirrors.dstVolumeName | Body | String | 복제 대상 스토리지의 NAS 스토리지 이름 |
-| volumes.mirrors.srcProjectId | Body | String | 원본 스토리지의 프로젝트 ID |
-| volumes.mirrors.srcRegion | Body | String | 원본 스토리지 리전 |
-| volumes.mirrors.srcTenantId | Body | String | 원본 스토리지 테넌트 ID |
-| volumes.mirrors.srcVolumeId | Body | String | 원본 스토리지의 NAS 스토리지 ID |
-| volumes.mirrors.srcVolumeName | Body | String | 원본 스토리지 NAS 스토리지 이름 |
-| volumes.mirrors.createdAt | Body | String | 복제 생성 시각 |
-| volumes.mountProtocol | Body | Object | NAS 스토리지 마운트 프로토콜 |
-| volumes.mountProtocol.cifsAuthIds | Body | List | NAS 스토리지 CIFS 인증 ID 목록 |
-| volumes.mountProtocol.protocol | Body | String | NAS 스토리지 마운트 프로토콜 |
-| volumes.snapshotPolicy | Body | Object | NAS 스토리지 볼륨 스냅숏 설정 객체 |
-| volumes.snapshotPolicy.maxScheduledCount | Body | Integer | 스냅숏 최대 저장 개수 |
-| volumes.snapshotPolicy.reservePercent | Body | Integer | 스냅숏 용량 비율 |
-| volumes.snapshotPolicy.schedule | Body | Object | 스냅숏 자동 생성 객체 |
-| volumes.snapshotPolicy.schedule.time | Body | String | 스냅숏 자동 생성 시간 |
-| volumes.snapshotPolicy.schedule.timeOffset | Body | String | 스냅숏 자동 생성 기준 시간대 |
-| volumes.snapshotPolicy.schedule.weekdays | Body | List | 스냅숏 자동 생성 요일<br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |
-| volumes.createdAt | Body | String | NAS 스토리지 생성 시각 |
-| volumes.updatedAt | Body | String | NAS 스토리지 변경 시각 |
+| header | Body | Object | ヘッダオブジェクト |
+| paging | Body | Object | ページ情報 |
+| paging.limit | Body | Integer | 1ページに表示されるリソース数 |
+| paging.page | Body | Integer | 現在ページ番号 |
+| paging.totalCount | Body | Integer | 全体数 |
+| volumes | Body | List | NASストレージオブジェクトリスト |
+| volumes.id | Body | String | NASストレージID |
+| volumes.name | Body | String | NASストレージ名 |
+| volumes.status | Body | String | NASストレージの状態 |
+| volumes.description | Body | String | NASストレージの説明 |
+| volumes.sizeGb | Body | Integer | NASストレージサイズ(GB) |
+| volumes.projectId | Body | String | NASストレージが属するプロジェクトID |
+| volumes.tenantId | Body | String | NASストレージが属するテナントID |
+| volumes.acl | Body | List | NASストレージACLリスト |
+| volumes.encryption | Body | Object | NASストレージ暗号化情報 |
+| volumes.encryption.enabled | Body | Boolean | NASストレージの暗号化が有効かどうか |
+| volumes.encryption.keys | Body | List | NASストレージ暗号化キー情報 |
+| volumes.interfaces | Body | List | NASストレージインターフェースオブジェクトリスト |
+| volumes.interfaces.id | Body | String | インターフェースID |
+| volumes.interfaces.path | Body | String | インターフェースパス |
+| volumes.interfaces.status | Body | String | インターフェース状態 |
+| volumes.interfaces.subnetId | Body | String | インターフェースのサブネットID |
+| volumes.interfaces.tenantId | Body | String | インターフェースのテナントID |
+| volumes.mirrors | Body | List | NASストレージ複製設定オブジェクトリスト |
+| volumes.mirrors.id | Body | String | 複製設定ID |
+| volumes.mirrors.role | Body | String | 複製ロール<br>- `SOURCE`:ソースストレージ<br>- `DESTINATION`:対象ストレージ |
+| volumes.mirrors.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
+| volumes.mirrors.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースストレージ→複製ストレージ <br>- `REVERSE`:複製ストレージ→ソースストレージ |
+| volumes.mirrors.directionChangedAt | Body | String | 複製方向変更時刻 |
+| volumes.mirrors.dstProjectId | Body | String | 複製対象ストレージのプロジェクトID |
+| volumes.mirrors.dstRegion | Body | String | 複製対象ストレージリージョン |
+| volumes.mirrors.dstTenantId | Body | String | 複製対象ストレージテナントID |
+| volumes.mirrors.dstVolumeId | Body | String | 複製対象ストレージのNASストレージID |
+| volumes.mirrors.dstVolumeName | Body | String | 複製対象ストレージのNASストレージ名 |
+| volumes.mirrors.srcProjectId | Body | String | ソースストレージのプロジェクトID |
+| volumes.mirrors.srcRegion | Body | String | ソースストレージリージョン |
+| volumes.mirrors.srcTenantId | Body | String | ソースストレージテナントID |
+| volumes.mirrors.srcVolumeId | Body | String | ソースストレージのNASストレージID |
+| volumes.mirrors.srcVolumeName | Body | String | ソースストレージNASストレージ名 |
+| volumes.mirrors.createdAt | Body | String | 複製作成時刻 |
+| volumes.mountProtocol | Body | Object | NASストレージマウントプロトコル |
+| volumes.mountProtocol.cifsAuthIds | Body | List | NASストレージCIFS認証IDリスト |
+| volumes.mountProtocol.protocol | Body | String | NASストレージマウントプロトコル |
+| volumes.snapshotPolicy | Body | Object | NASストレージボリュームスナップショット設定オブジェクト |
+| volumes.snapshotPolicy.maxScheduledCount | Body | Integer | スナップショット最大保存数 |
+| volumes.snapshotPolicy.reservePercent | Body | Integer | スナップショット容量比率 |
+| volumes.snapshotPolicy.schedule | Body | Object | スナップショット自動作成オブジェクト |
+| volumes.snapshotPolicy.schedule.time | Body | String | スナップショット自動作成時間 |
+| volumes.snapshotPolicy.schedule.timeOffset | Body | String | スナップショット自動作成基準タイムゾーン |
+| volumes.snapshotPolicy.schedule.weekdays | Body | List | スナップショット自動作成曜日<br>空白のリストは毎日を意味し、曜日を0(日曜日)から6(土曜日)までの数字のリストで指定します。 |
+| volumes.createdAt | Body | String | NASストレージ作成時刻 |
+| volumes.updatedAt | Body | String | NASストレージ変更時刻 |
 
 <details>
-  <summary>응답 예시</summary>
+  <summary>レスポンス例</summary>
 
 ```json
 {
@@ -209,20 +209,20 @@ X-Auth-Token: {token-id}
 
 <br>
 
-### NAS 스토리지 생성하기
+### NASストレージ作成
 
-새로운 NAS 스토리지를 생성합니다.
+新しいNASストレージを作成します。
 
-> [참고] CIFS 프로토콜 사용
-> CIFS 프로토콜을 사용하기 위해서는 CIFS 인증 정보를 생성해야 합니다. 인증 정보는 프로젝트 단위로 관리되며, CIFS 스토리지마다 접근할 CIFS 인증 정보를 등록해야 합니다.
-> CIFS 인증 정보는 콘솔의 **Storage > NAS > CIFS 인증 정보 관리** 창을 통해 생성할 수 있습니다.
+> [参考] CIFSプロトコル使用
+> CIFSプロトコルを使用するためには、CIFS認証情報を生成する必要があります。認証情報はプロジェクト単位で管理され、CIFSストレージごとにアクセスするCIFS認証情報を登録する必要があります。
+> CIFS認証情報はコンソールの **Storage > NAS > CIFS認証情報管理**ウィンドウから作成できます。
 
-<!-- 개행을 위한 주석 -->
+<!-- 改行のためのコメント -->
 
-> [참고] 암호화 키 저장소 설정
-> NAS 암호화 스토리지는 암호화에 사용하는 대칭 키를 NHN Cloud Secure Key Manager 서비스의 키 저장소에 저장합니다. 따라서 암호화 스토리지를 만들기 위해서는 미리 Secure Key Manager 서비스에서 [키 저장소를 생성](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_1)해야 합니다. [키 저장소의 ID를 확인](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_2)하여 암호화 키 저장소 설정에 입력합니다.
-> 생성한 키 저장소 ID는 콘솔의 **Storage > NAS > 암호화 키 저장소 설정** 창에서 입력할 수 있습니다. 암호화 스토리지를 생성하면 설정한 키 저장소에 대칭 키가 저장됩니다. NAS 서비스에 의해 키 저장소에 저장된 대칭 키는 암호화 스토리지 사용 중에는 삭제할 수 없습니다. 암호화 스토리지를 삭제하면 대칭 키도 함께 삭제됩니다.
-> 키 저장소 ID를 변경하면 이후 생성하는 암호화 스토리지의 대칭 키가 변경된 키 저장소에 저장됩니다. 기존 키 저장소에 저장된 대칭 키는 유지됩니다.
+> [参考]暗号化キーストア設定
+> NAS暗号化ストレージは暗号化に使用する対称鍵をNHN Cloud Secure Key Managerサービスのキーストアに保存します。したがって、暗号化ストレージを作成するためには、事前にSecure Key Managerサービスで[キーストアを作成](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_1)する必要があります。 [キーストアのIDを確認](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_2)し、暗号化キーストア設定に入力します。
+> 作成したキーストアIDはコンソールの **Storage > NAS > 暗号化キーストア設定** ウィンドウで入力できます。暗号化ストレージを作成すると、設定したキーストアに対称鍵が保存されます。 NASサービスによってキーストアに保存された対称鍵は暗号化ストレージ使用中には削除できません。暗号化ストレージを削除すると、対称鍵も一緒に削除されます。
+> キーストアIDを変更すると、その後に作成する暗号化ストレージの対称鍵が変更されたキーストアに保存されます。既存キーストアに保存された対称鍵は維持されます。
 
 ```
 POST  /v1/volumes
@@ -231,33 +231,33 @@ X-Auth-Token: {token-id}
 
 <br>
 
-#### 요청
+#### リクエスト
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| volume | Body | Object | O | NAS 스토리지 생성 요청 객체 |
-| volume.acl | Body | List | - | NAS 스토리지 생성 시 설정할 ACL ID 목록<br>IP 또는 CIDR 형식으로 입력할 수 있습니다. |
-| volume.description | Body | String | - | NAS 스토리지 설명 |
-| volume.encryption | Body | Object | - | NAS 스토리지 생성 시 암호화 설정 객체 |
-| volume.encryption.enabled | Body | Boolean | - | 암호화 설정 활성화 여부<br>암호화 키 저장소가 설정된 후 해당 필드를 `true`로 설정하면 암호화가 활성화됩니다. |
-| volume.interfaces | Body | List | - | NAS 스토리지에 접근할 인터페이스 목록 |
-| volume.interfaces.subnetId | Body | String | - | NAS 스토리지 인터페이스의 서브넷 ID |
-| volume.mountProtocol | Body | Object | - | NAS 스토리지 생성 시 프로토콜 설정 객체 |
-| volume.mountProtocol.cifsAuthIds | Body | List | - | CIFS 인증 ID 목록<br>NFS 프로토콜 선택 시 입력 불필요 |
-| volume.mountProtocol.protocol | Body | String | O | NAS 스토리지 마운트 시 프로토콜 지정<br>`nfs`, `cifs` 중 하나를 선택할 수 있습니다. |
-| volume.name | Body | String | O | NAS 스토리지 이름 |
-| volume.sizeGb | Body | Integer | O | NAS 스토리지 크기(GB)<br>NAS 스토리지는 최소 300GB에서 최대 10,000GB까지, 100GB 단위로 설정할 수 있습니다. |
-| volume.snapshotPolicy | Body | Object | - | NAS 스토리지 볼륨 스냅숏 설정 객체 |
-| volume.snapshotPolicy.maxScheduledCount | Body | Integer | - | 스냅숏 최대 저장 개수<br>30개까지 설정 가능하며, 최대 저장 개수에 도달하면 자동으로 생성된 스냅숏 중 가장 먼저 만들어진 스냅숏이 삭제됩니다. |
-| volume.snapshotPolicy.reservePercent | Body | Integer | - | 스냅숏 용량 비율 |
-| volume.snapshotPolicy.schedule | Body | Object | - | 스냅숏 자동 생성 객체<br>`null`일 경우 스냅숏 자동 생성이 설정되지 않습니다. |
-| volume.snapshotPolicy.schedule.time | Body | String | - | 스냅숏 자동 생성 시간 |
-| volume.snapshotPolicy.schedule.timeOffset | Body | String | - | 스냅숏 자동 생성 기준 시간대 |
-| volume.snapshotPolicy.schedule.weekdays | Body | List | - | 스냅숏 자동 생성 요일. <br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |
+| X-Auth-Token | Header | String | O | トークンID |
+| volume | Body | Object | O | NASストレージ作成リクエストオブジェクト |
+| volume.acl | Body | List | - | NASストレージ作成時設定するACL IDリスト<br>IPまたはCIDR形式で入力できます。 |
+| volume.description | Body | String | - | NASストレージの説明 |
+| volume.encryption | Body | Object | - | NASストレージ作成時暗号化設定オブジェクト |
+| volume.encryption.enabled | Body | Boolean | - | 暗号化設定有効かどうか<br>暗号化キーストアが設定された後、該当フィールドを`true`に設定すると、暗号化が有効になります。 |
+| volume.interfaces | Body | List | - | NASストレージにアクセスするインターフェースリスト |
+| volume.interfaces.subnetId | Body | String | - | NASストレージインターフェースのサブネットID |
+| volume.mountProtocol | Body | Object | - | NASストレージを作成する際のプロトコル設定オブジェクト |
+| volume.mountProtocol.cifsAuthIds | Body | List | - | CIFS認証IDリスト<br>NFSプロトコル選択時入力不要 |
+| volume.mountProtocol.protocol | Body | String | O | NASストレージをマウントする際のプロトコル指定<br>`nfs`, `cifs`のいずれかを選択できます。 |
+| volume.name | Body | String | O | NASストレージ名 |
+| volume.sizeGb | Body | Integer | O | NASストレージサイズ(GB)<br>NASストレージは、最小300GBから最大10,000GBまで、100GB単位で設定できます。 |
+| volume.snapshotPolicy | Body | Object | - | NASストレージボリュームスナップショット設定オブジェクト |
+| volume.snapshotPolicy.maxScheduledCount | Body | Integer | - | スナップショット最大保存数<br>30個まで設定可能で、最大保存数に達する作成されたスナップショット中のうち、先に作成されたスナップショットがと自動的に削除されます。 |
+| volume.snapshotPolicy.reservePercent | Body | Integer | - | スナップショット容量比率 |
+| volume.snapshotPolicy.schedule | Body | Object | - | スナップショット自動作成オブジェクト<br>`null`の場合、スナップショット自動作成が設定されません。 |
+| volume.snapshotPolicy.schedule.time | Body | String | - | スナップショット自動作成時間 |
+| volume.snapshotPolicy.schedule.timeOffset | Body | String | - | スナップショット自動作成基準タイムゾーン |
+| volume.snapshotPolicy.schedule.weekdays | Body | List | - | スナップショット自動作成曜日。 <br>空白のリストは毎日を意味し、曜日を0(日曜日)から6(土曜日)までの数字のリストで指定します。 |
 
 <details>
-  <summary>요청 예시</summary>
+  <summary>リクエスト例</summary>
 
 ```json
 {
@@ -294,61 +294,61 @@ X-Auth-Token: {token-id}
 
 </details>
 
-#### 응답
+#### レスポンス
 
-| 이름 | 종류 | 형식 | 설명 |
+| 名前 | 種類 | 形式 | 説明 |
 | --- | --- | --- | --- |
-| header | Body | Object | 헤더 객체 |
-| volume | Body | Object | NAS 스토리지 객체 |
-| volume.id | Body | String | NAS 스토리지 ID |
-| volume.name | Body | String | NAS 스토리지 이름 |
-| volume.status | Body | String | NAS 스토리지 상태 |
-| volume.description | Body | String | NAS 스토리지 설명 |
-| volume.sizeGb | Body | Integer | NAS 스토리지 크기(GB) |
-| volume.projectId | Body | String | NAS 스토리지가 속한 프로젝트 ID |
-| volume.tenantId | Body | String | NAS 스토리지가 속한 테넌트 ID |
-| volume.acl | Body | List | NAS 스토리지 ACL 목록 |
-| volume.encryption | Body | Object | NAS 스토리지 암호화 정보 |
-| volume.encryption.enabled | Body | Boolean | NAS 스토리지 암호화 활성 여부 |
-| volume.encryption.keys | Body | List | NAS 스토리지 암호화 키 정보 |
-| volume.interfaces | Body | List | NAS 스토리지 인터페이스 객체 목록 |
-| volume.interfaces.id | Body | String | 인터페이스 ID |
-| volume.interfaces.path | Body | String | 인터페이스 경로 |
-| volume.interfaces.status | Body | String | 인터페이스 상태 |
-| volume.interfaces.subnetId | Body | String | 인터페이스의 서브넷 ID |
-| volume.interfaces.tenantId | Body | String | 인터페이스의 테넌트 ID |
-| volume.mirrors | Body | List | NAS 스토리지 복제 설정 객체 목록 |
-| volume.mirrors.id | Body | String | 복제 설정 ID |
-| volume.mirrors.role | Body | String | 복제 역할<br>- `SOURCE`: 원본 스토리지<br>- `DESTINATION`: 대상 스토리지 |
-| volume.mirrors.status | Body | String | 복제 설정 상태<br>- `INITIALIZED`: 설정 완료<br>- `UPDATING`: 설정 변경 중<br>- `DELETING`: 설정 삭제 중<br>- `PENDING`: 설정 생성 중 |
-| volume.mirrors.direction | Body | String | 복제 방향 <br>- `FORWARD`: 원본 스토리지 -> 복제 스토리지<br>- `REVERSE`: 복제 스토리지 -> 원본 스토리지 |
-| volume.mirrors.directionChangedAt | Body | String | 복제 방향 변경 시각 |
-| volume.mirrors.dstProjectId | Body | String | 복제 대상 스토리지의 프로젝트 ID |
-| volume.mirrors.dstRegion | Body | String | 복제 대상 스토리지 리전 |
-| volume.mirrors.dstTenantId | Body | String | 복제 대상 스토리지 테넌트 ID |
-| volume.mirrors.dstVolumeId | Body | String | 복제 대상 스토리지의 NAS 스토리지 ID |
-| volume.mirrors.dstVolumeName | Body | String | 복제 대상 스토리지의 NAS 스토리지 이름 |
-| volume.mirrors.srcProjectId | Body | String | 원본 스토리지의 프로젝트 ID |
-| volume.mirrors.srcRegion | Body | String | 원본 스토리지 리전 |
-| volume.mirrors.srcTenantId | Body | String | 원본 스토리지 테넌트 ID |
-| volume.mirrors.srcVolumeId | Body | String | 원본 스토리지의 NAS 스토리지 ID |
-| volume.mirrors.srcVolumeName | Body | String | 원본 스토리지 NAS 스토리지 이름 |
-| volume.mirrors.createdAt | Body | String | 복제 생성 시각 |
-| volume.mountProtocol | Body | Object | NAS 스토리지 마운트 프로토콜 |
-| volume.mountProtocol.cifsAuthIds | Body | List | NAS 스토리지 CIFS 인증 ID 목록 |
-| volume.mountProtocol.protocol | Body | String | NAS 스토리지 마운트 프로토콜 |
-| volume.snapshotPolicy | Body | Object | NAS 스토리지 볼륨 스냅숏 설정 객체 |
-| volume.snapshotPolicy.maxScheduledCount | Body | Integer | 스냅숏 최대 저장 개수 |
-| volume.snapshotPolicy.reservePercent | Body | Integer | 스냅숏 용량 비율 |
-| volume.snapshotPolicy.schedule | Body | Object | 스냅숏 자동 생성 객체 |
-| volume.snapshotPolicy.schedule.time | Body | String | 스냅숏 자동 생성 시간 |
-| volume.snapshotPolicy.schedule.timeOffset | Body | String | 스냅숏 자동 생성 기준 시간대 |
-| volume.snapshotPolicy.schedule.weekdays | Body | List | 스냅숏 자동 생성 요일<br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |
-| volume.createdAt | Body | String | NAS 스토리지 생성 시각 |
-| volume.updatedAt | Body | String | NAS 스토리지 변경 시각 |
+| header | Body | Object | ヘッダオブジェクト |
+| volume | Body | Object | NASストレージオブジェクト |
+| volume.id | Body | String | NASストレージID |
+| volume.name | Body | String | NASストレージ名 |
+| volume.status | Body | String | NASストレージの状態 |
+| volume.description | Body | String | NASストレージの説明 |
+| volume.sizeGb | Body | Integer | NASストレージサイズ(GB) |
+| volume.projectId | Body | String | NASストレージが属するプロジェクトID |
+| volume.tenantId | Body | String | NASストレージが属するテナントID |
+| volume.acl | Body | List | NASストレージACLリスト |
+| volume.encryption | Body | Object | NASストレージ暗号化情報 |
+| volume.encryption.enabled | Body | Boolean | NASストレージの暗号化が有効かどうか |
+| volume.encryption.keys | Body | List | NASストレージ暗号化キー情報 |
+| volume.interfaces | Body | List | NASストレージインターフェースオブジェクトリスト |
+| volume.interfaces.id | Body | String | インターフェースID |
+| volume.interfaces.path | Body | String | インターフェースパス |
+| volume.interfaces.status | Body | String | インターフェースの状態 |
+| volume.interfaces.subnetId | Body | String | インターフェースのサブネットID |
+| volume.interfaces.tenantId | Body | String | インターフェースのテナントID |
+| volume.mirrors | Body | List | NASストレージ複製設定オブジェクトリスト |
+| volume.mirrors.id | Body | String | 複製設定ID |
+| volume.mirrors.role | Body | String | 複製役割<br>- `SOURCE`:ソースストレージ<br>- `DESTINATION`:対象ストレージ |
+| volume.mirrors.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
+| volume.mirrors.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースストレージ -> 複製ストレージ<br>- `REVERSE`:複製ストレージ -> ソースストレージ |
+| volume.mirrors.directionChangedAt | Body | String | 複製方向変更時刻 |
+| volume.mirrors.dstProjectId | Body | String | 複製対象ストレージのプロジェクトID |
+| volume.mirrors.dstRegion | Body | String | 複製対象ストレージリージョン |
+| volume.mirrors.dstTenantId | Body | String | 複製対象ストレージテナントID |
+| volume.mirrors.dstVolumeId | Body | String | 複製対象ストレージのNASストレージID |
+| volume.mirrors.dstVolumeName | Body | String | 複製対象ストレージのNASストレージ名 |
+| volume.mirrors.srcProjectId | Body | String | ソースストレージのプロジェクトID |
+| volume.mirrors.srcRegion | Body | String | ソースストレージリージョン |
+| volume.mirrors.srcTenantId | Body | String | ソースストレージテナントID |
+| volume.mirrors.srcVolumeId | Body | String | ソースストレージのNASストレージID |
+| volume.mirrors.srcVolumeName | Body | String | ソースストレージNASストレージ名 |
+| volume.mirrors.createdAt | Body | String | 複製作成時刻 |
+| volume.mountProtocol | Body | Object | NASストレージマウントプロトコル |
+| volume.mountProtocol.cifsAuthIds | Body | List | NASストレージCIFS認証IDリスト |
+| volume.mountProtocol.protocol | Body | String | NASストレージマウントプロトコル |
+| volume.snapshotPolicy | Body | Object | NASストレージボリュームスナップショット設定オブジェクト |
+| volume.snapshotPolicy.maxScheduledCount | Body | Integer | スナップショット最大保存数 |
+| volume.snapshotPolicy.reservePercent | Body | Integer | スナップショット容量比率 |
+| volume.snapshotPolicy.schedule | Body | Object | スナップショット自動作成オブジェクト |
+| volume.snapshotPolicy.schedule.time | Body | String | スナップショット自動作成時間 |
+| volume.snapshotPolicy.schedule.timeOffset | Body | String | スナップショット自動作成基準タイムゾーン |
+| volume.snapshotPolicy.schedule.weekdays | Body | List | スナップショット自動作成曜日<br>空白のリストは毎日を意味し、曜日を0(日曜日)から6(土曜日)までの数字のリストで指定します。 |
+| volume.createdAt | Body | String | NASストレージ作成時刻 |
+| volume.updatedAt | Body | String | NASストレージ変更時刻 |
 
 <details>
-  <summary>응답 예시</summary>
+  <summary>レスポンス例</summary>
 
 ```json
 {
@@ -430,138 +430,138 @@ X-Auth-Token: {token-id}
 
 <br>
 
-### NAS 스토리지 삭제하기
+### NASストレージ削除
 
-지정한 NAS 스토리지를 삭제합니다.
+指定したNASストレージを削除します。
 
 ```
 DELETE  /v1/volumes/{volume_id}
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
+#### リクエスト
 
-요청 본문은 필요하지 않습니다.
+リクエスト本文は必要ありません。
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| volume\_id | URL | String | O | 삭제할 NAS 스토리지 ID |
+| X-Auth-Token | Header | String | O | トークンID |
+| volume\_id | URL | String | O | 削除するNASストレージID |
 
-#### 응답
+#### レスポンス
 
-응답 본문에는 헤더 필드 외의 내용이 포함되지 않습니다.
+レスポンス本文にはヘッダフィールド以外の内容は含まれません。
 
 <br>
 
-### NAS 스토리지 보기
+### NASストレージ表示
 
-지정한 NAS 스토리지의 상세 정보를 반환합니다.
+指定したNASストレージの詳細情報を返します。
 
 ```
 GET   /v1/volumes/{volume_id}
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
+#### リクエスト
 
-요청 본문은 필요하지 않습니다.
+リクエスト本文は必要ありません。
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| volume\_id | URL | String | O | 조회할 NAS 스토리지 ID |
+| X-Auth-Token | Header | String | O | トークンID |
+| volume\_id | URL | String | O | 照会するNASストレージID |
 
-#### 응답
+#### レスポンス
 
-| 이름 | 종류 | 형식 | 설명 |
+| 名前 | 種類 | 形式 | 説明 |
 | --- | --- | --- | --- |
-| header | Body | Object | 헤더 객체 |
-| volume | Body | Object | NAS 스토리지 객체 |
-| volume.id | Body | String | NAS 스토리지 ID |
-| volume.name | Body | String | NAS 스토리지 이름 |
-| volume.status | Body | String | NAS 스토리지 상태 |
-| volume.description | Body | String | NAS 스토리지 설명 |
-| volume.sizeGb | Body | Integer | NAS 스토리지 크기(GB) |
-| volume.projectId | Body | String | NAS 스토리지가 속한 프로젝트 ID |
-| volume.tenantId | Body | String | NAS 스토리지가 속한 테넌트 ID |
-| volume.acl | Body | List | NAS 스토리지 ACL 목록 |
-| volume.encryption | Body | Object | NAS 스토리지 암호화 정보 |
-| volume.encryption.enabled | Body | Boolean | NAS 스토리지 암호화 활성 여부 |
-| volume.encryption.keys | Body | List | NAS 스토리지 암호화 키 정보 |
-| volume.interfaces | Body | List | NAS 스토리지 인터페이스 객체 목록 |
-| volume.interfaces.id | Body | String | 인터페이스 ID |
-| volume.interfaces.path | Body | String | 인터페이스 경로 |
-| volume.interfaces.status | Body | String | 인터페이스 상태 |
-| volume.interfaces.subnetId | Body | String | 인터페이스의 서브넷 ID |
-| volume.interfaces.tenantId | Body | String | 인터페이스의 테넌트 ID |
-| volume.mirrors | Body | List | NAS 스토리지 복제 설정 객체 목록 |
-| volume.mirrors.id | Body | String | 복제 설정 ID |
-| volume.mirrors.role | Body | String | 복제 역할<br>- `SOURCE`: 원본 스토리지<br>- `DESTINATION`: 대상 스토리지 |
-| volume.mirrors.status | Body | String | 복제 설정 상태<br>- `INITIALIZED`: 설정 완료<br>- `UPDATING`: 설정 변경 중<br>- `DELETING`: 설정 삭제 중<br>- `PENDING`: 설정 생성 중 |
-| volume.mirrors.direction | Body | String | 복제 방향 <br>- `FORWARD`: 원본 스토리지 -> 복제 스토리지<br>- `REVERSE`: 복제 스토리지 -> 원본 스토리지 |
-| volume.mirrors.directionChangedAt | Body | String | 복제 방향 변경 시각 |
-| volume.mirrors.dstProjectId | Body | String | 복제 대상 스토리지의 프로젝트 ID |
-| volume.mirrors.dstRegion | Body | String | 복제 대상 스토리지 리전 |
-| volume.mirrors.dstTenantId | Body | String | 복제 대상 스토리지 테넌트 ID |
-| volume.mirrors.dstVolumeId | Body | String | 복제 대상 스토리지의 NAS 스토리지 ID |
-| volume.mirrors.dstVolumeName | Body | String | 복제 대상 스토리지의 NAS 스토리지 이름 |
-| volume.mirrors.srcProjectId | Body | String | 원본 스토리지의 프로젝트 ID |
-| volume.mirrors.srcRegion | Body | String | 원본 스토리지 리전 |
-| volume.mirrors.srcTenantId | Body | String | 원본 스토리지 테넌트 ID |
-| volume.mirrors.srcVolumeId | Body | String | 원본 스토리지의 NAS 스토리지 ID |
-| volume.mirrors.srcVolumeName | Body | String | 원본 스토리지 NAS 스토리지 이름 |
-| volume.mirrors.createdAt | Body | String | 복제 생성 시각 |
-| volume.mountProtocol | Body | Object | NAS 스토리지 마운트 프로토콜 |
-| volume.mountProtocol.cifsAuthIds | Body | List | NAS 스토리지 CIFS 인증 ID 목록 |
-| volume.mountProtocol.protocol | Body | String | NAS 스토리지 마운트 프로토콜 |
-| volume.snapshotPolicy | Body | Object | NAS 스토리지 볼륨 스냅숏 설정 객체 |
-| volume.snapshotPolicy.maxScheduledCount | Body | Integer | 스냅숏 최대 저장 개수 |
-| volume.snapshotPolicy.reservePercent | Body | Integer | 스냅숏 용량 비율 |
-| volume.snapshotPolicy.schedule | Body | Object | 스냅숏 자동 생성 객체 |
-| volume.snapshotPolicy.schedule.time | Body | String | 스냅숏 자동 생성 시간 |
-| volume.snapshotPolicy.schedule.timeOffset | Body | String | 스냅숏 자동 생성 기준 시간대 |
-| volume.snapshotPolicy.schedule.weekdays | Body | List | 스냅숏 자동 생성 요일<br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |
-| volume.createdAt | Body | String | NAS 스토리지 생성 시각 |
-| volume.updatedAt | Body | String | NAS 스토리지 변경 시각 |
+| header | Body | Object | ヘッダオブジェクト |
+| volume | Body | Object | NASストレージオブジェクト |
+| volume.id | Body | String | NASストレージID |
+| volume.name | Body | String | NASストレージ名 |
+| volume.status | Body | String | NASストレージの状態 |
+| volume.description | Body | String | NASストレージの説明 |
+| volume.sizeGb | Body | Integer | NASストレージサイズ(GB) |
+| volume.projectId | Body | String | NASストレージが属するプロジェクトID |
+| volume.tenantId | Body | String | NASストレージが属するテナントID |
+| volume.acl | Body | List | NASストレージACLリスト |
+| volume.encryption | Body | Object | NASストレージ暗号化情報 |
+| volume.encryption.enabled | Body | Boolean | NASストレージの暗号化が有効かどうか |
+| volume.encryption.keys | Body | List | NASストレージ暗号化キー情報 |
+| volume.interfaces | Body | List | NASストレージインターフェースオブジェクトリスト |
+| volume.interfaces.id | Body | String | インターフェースID |
+| volume.interfaces.path | Body | String | インターフェースパス |
+| volume.interfaces.status | Body | String | インターフェースの状態 |
+| volume.interfaces.subnetId | Body | String | インターフェースのサブネットID |
+| volume.interfaces.tenantId | Body | String | インターフェースのテナントID |
+| volume.mirrors | Body | List | NASストレージ複製設定オブジェクトリスト |
+| volume.mirrors.id | Body | String | 複製設定ID |
+| volume.mirrors.role | Body | String | 複製役割<br>- `SOURCE`:ソースストレージ<br>- `DESTINATION`:対象ストレージ |
+| volume.mirrors.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
+| volume.mirrors.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースストレージ -> 複製ストレージ<br>- `REVERSE`:複製ストレージ -> ソースストレージ |
+| volume.mirrors.directionChangedAt | Body | String | 複製方向変更時刻 |
+| volume.mirrors.dstProjectId | Body | String | 複製対象ストレージのプロジェクトID |
+| volume.mirrors.dstRegion | Body | String | 複製対象ストレージリージョン |
+| volume.mirrors.dstTenantId | Body | String | 複製対象ストレージテナントID |
+| volume.mirrors.dstVolumeId | Body | String | 複製対象ストレージのNASストレージID |
+| volume.mirrors.dstVolumeName | Body | String | 複製対象ストレージのNASストレージ名 |
+| volume.mirrors.srcProjectId | Body | String | ソースストレージのプロジェクトID |
+| volume.mirrors.srcRegion | Body | String | ソースストレージリージョン |
+| volume.mirrors.srcTenantId | Body | String | ソースストレージテナントID |
+| volume.mirrors.srcVolumeId | Body | String | ソースストレージのNASストレージID |
+| volume.mirrors.srcVolumeName | Body | String | ソースストレージNASストレージ名 |
+| volume.mirrors.createdAt | Body | String | 複製作成時刻 |
+| volume.mountProtocol | Body | Object | NASストレージマウントプロトコル |
+| volume.mountProtocol.cifsAuthIds | Body | List | NASストレージCIFS認証IDリスト |
+| volume.mountProtocol.protocol | Body | String | NASストレージマウントプロトコル |
+| volume.snapshotPolicy | Body | Object | NASストレージボリュームスナップショット設定オブジェクト |
+| volume.snapshotPolicy.maxScheduledCount | Body | Integer | スナップショット最大保存数 |
+| volume.snapshotPolicy.reservePercent | Body | Integer | スナップショット容量比率 |
+| volume.snapshotPolicy.schedule | Body | Object | スナップショット自動作成オブジェクト |
+| volume.snapshotPolicy.schedule.time | Body | String | スナップショット自動作成時間 |
+| volume.snapshotPolicy.schedule.timeOffset | Body | String | スナップショット自動作成基準タイムゾーン |
+| volume.snapshotPolicy.schedule.weekdays | Body | List | スナップショット自動作成曜日<br>空白のリストは毎日を意味し、曜日を0(日曜日)から6(土曜日)までの数字のリストで指定します。 |
+| volume.createdAt | Body | String | NASストレージ作成時刻 |
+| volume.updatedAt | Body | String | NASストレージ変更時刻 |
 
 <br>
 
-### NAS 스토리지 설정 변경하기
+### NASストレージの設定変更
 
-지정한 NAS 스토리지의 설정을 변경합니다.
+指定したNASストレージの設定を変更します。
 
-> [주의]
-> 복제 설정된 스토리지의 크기를 변경하려면 원본 스토리지와 대상 스토리지 모두 변경해야 합니다. 원본 스토리지와 대상 스토리지의 크기가 다른 경우 복제에 실패할 수 있습니다.
+> [注意]
+> 複製設定されたストレージのサイズを変更するにはソースストレージと対象ストレージの両方を変更する必要があります。ソースストレージと対象ストレージのサイズが異なる場合、複製に失敗する可能性があります。
 
 ```
 PATCH  /v1/volumes/{volume_id}
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
+#### リクエスト
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| volume\_id | URL | String | O | NAS 스토리지 ID |
-| volume | Body | Object | O | NAS 스토리지 생성 요청 객체 |
-| volume.acl | Body | List | - | NAS 스토리지 생성 시 설정할 ACL ID들의 목록<br>IP 또는 CIDR 형식으로 입력할 수 있습니다. |
-| volume.description | Body | String | - | NAS 스토리지 설명 |
-| volume.mountProtocol | Body | Object | - | NAS 스토리지 생성 시 프로토콜 설정 객체 |
-| volume.mountProtocol.cifsAuthIds | Body | List | - | CIFS 인증 ID 목록 |
-| volume.mountProtocol.protocol | Body | String | - | 이미 생성된 NAS 스토리지의 프로토콜은 변경할 수 없습니다.<br>`cifsAuthIds` 필드 변경 시 해당 필드에 `cifs`를 명시해야 합니다. |
-| volume.sizeGb | Body | Integer | O | NAS 스토리지 크기(GB)<br>NAS 스토리지는 최소 300GB에서 최대 10,000GB까지, 100GB 단위로 설정할 수 있습니다. |
-| volume.snapshotPolicy | Body | Object | - | NAS 스토리지 볼륨 스냅숏 설정 객체 |
-| volume.snapshotPolicy.maxScheduledCount | Body | Integer | - | 스냅숏 최대 저장 개수<br>30개까지 설정 가능하며, 최대 저장 개수에 도달하면 자동으로 생성된 스냅숏 중 가장 먼저 만들어진 스냅숏이 삭제됩니다. |
-| volume.snapshotPolicy.reservePercent | Body | Integer | - | 스냅숏 용량 비율 |
-| volume.snapshotPolicy.schedule | Body | Object | - | 스냅숏 자동 생성 객체<br>`null` 일 경우 스냅숏 자동 생성이 설정되지 않습니다. |
-| volume.snapshotPolicy.schedule.time | Body | String | - | 스냅숏 자동 생성 시간 |
-| volume.snapshotPolicy.schedule.timeOffset | Body | String | - | 스냅숏 자동 생성 기준 시간대 |
-| volume.snapshotPolicy.schedule.weekdays | Body | List | - | 스냅숏 자동 생성 요일.<br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |
+| X-Auth-Token | Header | String | O | トークンID |
+| volume\_id | URL | String | O | NASストレージID |
+| volume | Body | Object | O | NASストレージ作成リクエストオブジェクト |
+| volume.acl | Body | List | - | NASストレージ作成時に設定するACL IDのリスト<br>IPまたはCIDR形式で入力できます。 |
+| volume.description | Body | String | - | NASストレージの説明 |
+| volume.mountProtocol | Body | Object | - | NASストレージを作成する際のプロトコル設定オブジェクト |
+| volume.mountProtocol.cifsAuthIds | Body | List | - | CIFS認証IDリスト |
+| volume.mountProtocol.protocol | Body | String | - | すでに作成されたNASストレージのプロトコルは変更できません。<br>`cifsAuthIds`フィールドを変更する場合は該当フィールドに`cifs`を明示する必要があります。 |
+| volume.sizeGb | Body | Integer | O | NASストレージサイズ(GB)<br>NASストレージは、最小300GBから最大10,000GBまで、100GB単位で設定できます。 |
+| volume.snapshotPolicy | Body | Object | - | NASストレージボリュームスナップショット設定オブジェクト |
+| volume.snapshotPolicy.maxScheduledCount | Body | Integer | - | スナップショット最大保存数<br>30個まで設定可能で、最大保存数に達する作成されたスナップショット中のうち、先に作成されたスナップショットがと自動的に削除されます。 |
+| volume.snapshotPolicy.reservePercent | Body | Integer | - | スナップショット容量比率 |
+| volume.snapshotPolicy.schedule | Body | Object | - | スナップショット自動作成オブジェクト<br>`null`の場合、スナップショット自動作成が設定されません。 |
+| volume.snapshotPolicy.schedule.time | Body | String | - | スナップショット自動作成時間 |
+| volume.snapshotPolicy.schedule.timeOffset | Body | String | - | スナップショット自動作成基準タイムゾーン |
+| volume.snapshotPolicy.schedule.weekdays | Body | List | - | スナップショット自動作成曜日。<br>空白のリストは毎日を意味し、曜日を0(日曜日)から6(土曜日)までの数字のリストで指定します。 |
 
 <details>
-  <summary>요청 예시</summary>
+  <summary>リクエスト例</summary>
 
 ```json
 {
@@ -595,33 +595,33 @@ X-Auth-Token: {token-id}
 
 </details>
 
-#### 응답
+#### レスポンス
 
-응답 본문에는 헤더 필드 외의 내용이 포함되지 않습니다.
+レスポンス本文にはヘッダフィールド以外の内容は含まれません。
 
 <br>
 
-### NAS 스토리지에 인터페이스 연결하기
+### NASストレージにインターフェース接続
 
-지정한 NAS 스토리지의 인터페이스를 설정합니다.
-설정된 주소 및 서브넷에서 NAS 스토리지에 접근 가능합니다. 접근 가능한 IP 설정은 접근 제어(ACL) 설정에서 별도 설정해야 합니다.
+指定したNASストレージのインターフェースを設定します。
+設定されたアドレス及びサブネットからNASストレージにアクセス可能です。アクセス可能なIP設定はアクセス制御(ACL)設定で別途設定する必要があります。
 
 ```
 POST  /v1/volumes/{volume_id}/interfaces
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
+#### リクエスト
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| volume\_id | URL | String | O | NAS 스토리지 ID |
-| interface | Body | Object | O | 인터페이스 설정 객체 |
-| interface.subnetId | Body | String | O | 인터페이스 서브넷 지정 |
+| X-Auth-Token | Header | String | O | トークンID |
+| volume\_id | URL | String | O | NASストレージID |
+| interface | Body | Object | O | インターフェース設定オブジェクト |
+| interface.subnetId | Body | String | O | インターフェースサブネット指定 |
 
 <details>
-  <summary>요청 예시</summary>
+  <summary>リクエスト例</summary>
 
 ```json
 {
@@ -633,20 +633,20 @@ X-Auth-Token: {token-id}
 
 </details>
 
-#### 응답
+#### レスポンス
 
-| 이름 | 종류 | 형식 | 설명 |
+| 名前 | 種類 | 形式 | 説明 |
 | --- | --- | --- | --- |
-| header | Body | Object | 헤더 객체 |
-| interface | Body | Object | 생성된 인터페이스 정보 객체 |
-| interface.id | Body | String | 생성된 인터페이스 ID |
-| interface.path | Body | String | 생성된 인터페이스 경로 |
-| interface.status | Body | String | 생성된 인터페이스 상태 |
-| interface.subnetId | Body | String | 생성된 인터페이스의 서브넷 ID |
-| interface.tenentId | Body | String | 생성된 인터페이스의 테넌트 ID |
+| header | Body | Object | ヘッダオブジェクト |
+| interface | Body | Object | 作成されたインターフェース情報オブジェクト |
+| interface.id | Body | String | 作成されたインターフェースID |
+| interface.path | Body | String | 作成されたインターフェースパス |
+| interface.status | Body | String | 作成されたインターフェースの状態 |
+| interface.subnetId | Body | String | 作成されたインターフェースのサブネットID |
+| interface.tenentId | Body | String | 作成されたインターフェースのテナントID |
 
 <details>
-  <summary>응답 예시</summary>
+  <summary>レスポンス例</summary>
 
 ```json
 {
@@ -669,73 +669,73 @@ X-Auth-Token: {token-id}
 
 <br>
 
-### NAS 스토리지의 인터페이스 삭제하기
+### NASストレージのインターフェース削除
 
-지정한 NAS 스토리지의 지정한 인터페이스를 삭제합니다.
+指定したNASストレージの指定したインターフェースを削除します。
 
 ```
 DELETE  /v1/volumes/{volume_id}/interfaces/{interface_id}
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
+#### リクエスト
 
-요청 본문은 필요하지 않습니다.
+リクエスト本文は必要ありません。
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| volume\_id | URL | String | O | NAS 스토리지 ID |
-| interface\_id | URL | String | O | 삭제할 인터페이스 ID |
+| X-Auth-Token | Header | String | O | トークンID |
+| volume\_id | URL | String | O | NASストレージID |
+| interface\_id | URL | String | O | 削除するインターフェースID |
 
-#### 응답
+#### レスポンス
 
-응답 본문에는 헤더 필드 외의 내용이 포함되지 않습니다.
+レスポンス本文にはヘッダフィールド以外の内容は含まれません。
 
 <br>
 
-### 스냅숏 복원 내역 보기
+### スナップショット復元履歴を表示
 
-지정한 스토리지의 스냅숏 복원 내역 목록을 반환합니다.
+指定したストレージのスナップショット復元履歴リストを返します。
 
 ```
 GET  /v1/volumes/{volume_id}/restore-histories
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
+#### リクエスト
 
-요청 본문은 필요하지 않습니다.
+リクエスト本文は必要ありません。
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| volume\_id | URL | String | O | NAS 스토리지 ID |
-| limit | String | Query | X | 한 페이지에 노출할 리소스 개수 |
-| page | String | Query | X | 조회할 페이지 |
-| sort | String | Query | X | 정렬 기준이 될 필드 이름<br>`{key}:{direction}` 형태로 기술합니다. 예: `snapshotId:asc`, `requestedAt:desc`<br>사용 가능한 key 값: `snapshotId`, `snapshotName`, `requestedAt`, `restoredAt`, `requestedUser`, `requestedIp`, `result` |
+| X-Auth-Token | Header | String | O | トークンID |
+| volume\_id | URL | String | O | NASストレージID |
+| limit | String | Query | X | 1ページに表示するリソース数 |
+| page | String | Query | X | 照会するページ |
+| sort | String | Query | X | ソート基準となるフィールド名<br>`{key}:{direction}`の形で記述します。例：`snapshotId:asc`, `requestedAt:desc`<br>使用可能なkey値: `snapshotId`, `snapshotName`, `requestedAt`, `restoredAt`, `requestedUser`, `requestedIp`, `result` |
 
-#### 응답
+#### レスポンス
 
-| 이름 | 종류 | 형식 | 설명 |
+| 名前 | 種類 | 形式 | 説明 |
 | --- | --- | --- | --- |
-| header | Body | Object | 헤더 객체 |
-| paging | Body | Object | 페이지 정보 |
-| paging.limit | Body | Integer | 한 페이지에 노출되는 리소스 개수 |
-| paging.page | Body | Integer | 현재 페이지 번호 |
-| paging.totalCount | Body | Integer | 전체 수 |
-| restoreHistories | Body | List | 스냅숏 복원 내역 객체 목록 |
-| restoreHistories.requestedAt | Body | String | 스냅숏 복원을 요청한 시각 |
-| restoreHistories.requestedIp | Body | String | 스냅숏 복원을 요청한 주소 |
-| restoreHistories.requestedUser | Body | String | 스냅숏 복원을 요청한 사용자 ID |
-| restoreHistories.restoredAt | Body | String | 스냅숏 복원을 완료한 시각 |
-| restoreHistories.result | Body | String | 스냅숏 복원 결과 |
-| restoreHistories.snapshotId | Body | String | 복원 대상 스냅숏 ID |
-| restoreHistories.snapshotName | Body | String | 복원 대상 스냅숏 이름 |
-| restoreHistories.volumeId | Body | String | 복원한 NAS 스토리지의 ID |
+| header | Body | Object | ヘッダオブジェクト |
+| paging | Body | Object | ページ情報 |
+| paging.limit | Body | Integer | 1ページに表示されるリソース数 |
+| paging.page | Body | Integer | 現在ページ番号 |
+| paging.totalCount | Body | Integer | 全体数 |
+| restoreHistories | Body | List | スナップショット復元履歴オブジェクトリスト |
+| restoreHistories.requestedAt | Body | String | スナップショット復元をリクエストした時刻 |
+| restoreHistories.requestedIp | Body | String | スナップショット復元をリクエストしたアドレス |
+| restoreHistories.requestedUser | Body | String | スナップショット復元をリクエストしたユーザーID |
+| restoreHistories.restoredAt | Body | String | スナップショット復元を完了した時刻 |
+| restoreHistories.result | Body | String | スナップショット復元結果 |
+| restoreHistories.snapshotId | Body | String | 復元対象スナップショットID |
+| restoreHistories.snapshotName | Body | String | 復元対象スナップショット名 |
+| restoreHistories.volumeId | Body | String | 復元したNASストレージのID |
 
 <details>
-  <summary>응답 예시</summary>
+  <summary>レスポンス例</summary>
 
 ```json
 {
@@ -768,35 +768,35 @@ X-Auth-Token: {token-id}
 
 <br>
 
-### NAS 스토리지 사용 현황 보기
+### NASストレージ使用状況表示
 
-지정한 NAS 스토리지의 사용 현황을 반환합니다.
+指定したNASストレージの使用状況を返します。
 
 ```
 GET  /v1/volumes/{volume_id}/usage
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
+#### リクエスト
 
-요청 본문은 필요하지 않습니다.
+リクエスト本文は必要ありません。
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| volume\_id | URL | String | O | NAS 스토리지 ID |
+| X-Auth-Token | Header | String | O | トークンID |
+| volume\_id | URL | String | O | NASストレージID |
 
-#### 응답
+#### レスポンス
 
-| 이름 | 종류 | 형식 | 설명 |
+| 名前 | 種類 | 形式 | 説明 |
 | --- | --- | --- | --- |
-| header | Body | Object | 헤더 객체 |
-| usage | Body | Object | NAS 스토리지 사용 현황 객체 |
-| usage.snapshotReserveGb | Body | Integer | NAS 스토리지에서 스냅숏을 위해 예약한 공간 크기 |
-| usage.usedGb | Body | Integer | NAS 스토리지 사용량 |
+| header | Body | Object | ヘッダオブジェクト |
+| usage | Body | Object | NASストレージ使用状況オブジェクト |
+| usage.snapshotReserveGb | Body | Integer | NASストレージでスナップショットのために予約したスペースサイズ |
+| usage.usedGb | Body | Integer | NASストレージ使用量 |
 
 <details>
-  <summary>응답 예시</summary>
+  <summary>レスポンス例</summary>
 
 ```json
 {
@@ -818,38 +818,38 @@ X-Auth-Token: {token-id}
 
 ## Snapshots
 
-### 스냅숏 목록 보기
+### スナップショットリスト表示
 
-스냅숏 목록을 조회합니다.
+スナップショットリストを照会します。
 
 ```
 GET  /v1/volumes/{volume_id}/snapshots
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
+#### リクエスト
 
-요청 본문은 필요하지 않습니다.
+リクエスト本文は必要ありません。
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| volume\_id | URL | String | O | NAS 스토리지 ID |
+| X-Auth-Token | Header | String | O | トークンID |
+| volume\_id | URL | String | O | NASストレージID |
 
-#### 응답
+#### レスポンス
 
-| 이름 | 종류 | 형식 | 설명 |
+| 名前 | 種類 | 形式 | 説明 |
 | --- | --- | --- | --- |
-| header | Body | Object | 헤더 객체 |
-| snapshots | Body | List | 스냅숏 정보 객체 목록 |
-| snapshots.createdAt | Body | String | 스냅숏 생성 시각 |
-| snapshots.id | Body | String | 스냅숏 ID |
-| snapshots.name | Body | String | 스냅숏 이름 |
-| snapshots.preserved | Body | Boolean | 시스템에 의해 삭제 불가 설정된 스냅숏 여부 |
-| snapshots.size | Body | Integer | 스냅숏 크기 |
-| snapshots.type | Body | String | 스냅숏 타입<br>- `NORMAL`: 사용자에 의해 생성된 스냅숏<br>- `SCHEDULED`: 스냅숏 자동 생성에 의해 생성된 스냅숏<br>- `MIRROR`: 복제로 인해 생성된 스냅숏 |
+| header | Body | Object | ヘッダオブジェクト |
+| snapshots | Body | List | スナップショット情報オブジェクトリスト |
+| snapshots.createdAt | Body | String | スナップショット作成時刻 |
+| snapshots.id | Body | String | スナップショットID |
+| snapshots.name | Body | String | スナップショット名 |
+| snapshots.preserved | Body | Boolean | システムによって削除不可に設定されたスナップショットかどうか |
+| snapshots.size | Body | Integer | スナップショットサイズ |
+| snapshots.type | Body | String | スナップショットタイプ<br>- `NORMAL`:ユーザーによって作成されたスナップショット<br>- `SCHEDULED`:スナップショット自動作成によって作成されたスナップショット<br>- `MIRROR`:複製により作成されたスナップショット |
 
-<details><summary>응답 예시</summary>
+<details><summary>レスポンス例</summary>
 
 ```json
 {
@@ -882,26 +882,26 @@ X-Auth-Token: {token-id}
 
 <br>
 
-### 스냅숏 생성하기
+### スナップショット作成
 
-지정한 NAS 스토리지의 스냅숏을 생성합니다.
+指定したNASストレージのスナップショットを作成します。
 
 ```
 POST  /v1/volumes/{volume_id}/snapshots
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
+#### リクエスト
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| volume\_id | URL | String | O | NAS 스토리지 ID |
-| snapshot | Body | Object | O | 스냅숏 생성 객체 |
-| snapshot.name | Body | String | O | 스냅숏 이름 |
+| X-Auth-Token | Header | String | O | トークンID |
+| volume\_id | URL | String | O | NASストレージID |
+| snapshot | Body | Object | O | スナップショット作成オブジェクト |
+| snapshot.name | Body | String | O | スナップショット名 |
 
 <details>
-  <summary>요청 예시</summary>
+  <summary>リクエスト例</summary>
 
 ```json
 {
@@ -913,20 +913,20 @@ X-Auth-Token: {token-id}
 
 </details>
 
-#### 응답
+#### レスポンス
 
-| 이름 | 종류 | 형식 | 설명 |
+| 名前 | 種類 | 形式 | 説明 |
 | --- | --- | --- | --- |
-| header | Body | Object | 헤더 객체 |
-| snapshot | Body | List | 스냅숏 정보 객체 |
-| snapshot.id | Body | String | 스냅숏 ID |
-| snapshot.name | Body | String | 스냅숏 이름 |
-| snapshot.preserved | Body | Boolean | 시스템에 의해 삭제 불가 설정된 스냅숏 여부 |
-| snapshot.reclaimableSpace | Body | Integer | 스냅숏 삭제 시 확보되는 용량 |
-| snapshot.type | Body | String | 스냅숏 타입<br>- `NORMAL`: 사용자에 의해 생성된 스냅숏<br>- `SCHEDULED`: 스냅숏 자동 생성에 의해 생성된 스냅숏<br>- `MIRROR`: 복제로 인해 생성된 스냅숏 |
+| header | Body | Object | ヘッダオブジェクト |
+| snapshot | Body | List | スナップショット情報オブジェクト |
+| snapshot.id | Body | String | スナップショットID |
+| snapshot.name | Body | String | スナップショット名 |
+| snapshot.preserved | Body | Boolean | システムによって削除不可に設定されたスナップショットかどうか |
+| snapshot.reclaimableSpace | Body | Integer | スナップショット削除時に確保される容量 |
+| snapshot.type | Body | String | スナップショットタイプ<br>- `NORMAL`:ユーザーによって成されたスナップショット<br>- `SCHEDULED`:スナップショット自動作成によって作成されたスナップショット<br>- `MIRROR`:複製によって作成されたスナップショット |
 
 <details>
-  <summary>응답 예시</summary>
+  <summary>レスポンス例</summary>
 
 ```json
 {
@@ -948,118 +948,118 @@ X-Auth-Token: {token-id}
 
 <br>
 
-### 스냅숏 삭제하기
+### スナップショット削除
 
-지정한 NAS 스토리지의 스냅숏을 삭제합니다.
+指定したNASストレージのスナップショットを削除します。
 
 ```
 DELETE  /v1/volumes/{volume_id}/snapshots/{snapshot_id}
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
+#### リクエスト
 
-요청 본문은 필요하지 않습니다.
+リクエスト本文は必要ありません。
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| volume\_id | URL | String | O | NAS 스토리지 ID |
-| snapshot\_id | URL | String | O | 스냅숏 ID |
+| X-Auth-Token | Header | String | O | トークンID |
+| volume\_id | URL | String | O | NASストレージID |
+| snapshot\_id | URL | String | O | スナップショットID |
 
-#### 응답
+#### レスポンス
 
-응답 본문에는 헤더 필드 외의 내용이 포함되지 않습니다.
+レスポンス本文にはヘッダフィールド以外の内容は含まれません。
 
 <br>
 
-### 스냅숏 보기
+### スナップショット表示
 
-지정한 스냅숏의 상세 정보를 반환합니다.
+指定したスナップショットの詳細情報を返します。
 
 ```
 GET  /v1/volumes/{volume_id}/snapshots/{snapshot_id}
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
+#### リクエスト
 
-요청 본문은 필요하지 않습니다.
+リクエスト本文は必要ありません。
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| volume\_id | URL | String | O | NAS 스토리지 ID |
-| snapshot\_id | URL | String | O | 스냅숏 ID |
-| showReclaimableSpace | Query | Boolean | - | 스냅숏 삭제 시 확보되는 용량을 나타내는 `reclaimableSpace` 항목 노출 여부 |
+| X-Auth-Token | Header | String | O | トークンID |
+| volume\_id | URL | String | O | NASストレージID |
+| snapshot\_id | URL | String | O | スナップショットID |
+| showReclaimableSpace | Query | Boolean | - | スナップショット削除時に確保される容量を示す`reclaimableSpace`項目を表示するかどうか |
 
-#### 응답
+#### レスポンス
 
-| 이름 | 종류 | 형식 | 설명 |
+| 名前 | 種類 | 形式 | 説明 |
 | --- | --- | --- | --- |
-| header | Body | Object | 헤더 객체 |
-| snapshot | Body | List | 스냅숏 정보 객체 |
-| snapshot.createdAt | Body | String | 스냅숏 생성 시각 |
-| snapshot.id | Body | String | 스냅숏 ID |
-| snapshot.name | Body | String | 스냅숏 이름 |
-| snapshot.preserved | Body | Boolean | 시스템에 의해 삭제 불가 설정된 스냅숏 여부 |
-| snapshot.reclaimableSpace | Body | Integer | 스냅숏 삭제 시 확보되는 용량 |
-| snapshot.size | Body | Integer | 스냅숏 크기 |
-| snapshot.type | Body | String | 스냅숏 타입<br>- `NORMAL`: 사용자에 의해 생성된 스냅숏<br>- `SCHEDULED` : 스냅숏 자동 생성에 의해 생성된 스냅숏<br>- `MIRROR`: 복제로 인해 생성된 스냅숏 |
+| header | Body | Object | ヘッダオブジェクト |
+| snapshot | Body | List | スナップショット情報オブジェクト |
+| snapshot.createdAt | Body | String | スナップショット作成時刻 |
+| snapshot.id | Body | String | スナップショットID |
+| snapshot.name | Body | String | スナップショット名 |
+| snapshot.preserved | Body | Boolean | システムによって削除不可に設定されたスナップショットかどうか |
+| snapshot.reclaimableSpace | Body | Integer | スナップショット削除時に確保される容量 |
+| snapshot.size | Body | Integer | スナップショットサイズ |
+| snapshot.type | Body | String | スナップショットタイプ<br>- `NORMAL`:ユーザーによって作成されたスナップショット<br>- `SCHEDULED` :スナップショット自動作成によって作成されたスナップショット<br>- `MIRROR`:複製によって作成されたスナップショット |
 
 <br>
 
-### 스냅숏 복원하기
+### スナップショット復元
 
-지정한 스냅숏으로 NAS 스토리지를 복원합니다.
+指定したスナップショットでNASストレージを復元します。
 
 ```
 POST  /v1/volumes/{volume_id}/snapshots/{snapshot_id}/restore
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
+#### リクエスト
 
-요청 본문은 필요하지 않습니다.
+リクエスト本文は必要ありません。
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| volume\_id | URL | String | O | NAS 스토리지 ID |
-| snapshot\_id | URL | String | O | 스냅숏 ID |
+| X-Auth-Token | Header | String | O | トークンID |
+| volume\_id | URL | String | O | NASストレージID |
+| snapshot\_id | URL | String | O | スナップショットID |
 
-#### 응답
+#### レスポンス
 
-응답 본문에는 헤더 필드 외의 내용이 포함되지 않습니다.
+レスポンス本文にはヘッダフィールド以外の内容は含まれません。
 
 <br>
 
-## NAS 스토리지 복제 설정
+## NASストレージ複製設定
 
-### 복제 설정하기
+### 複製設定
 
-지정한 NAS 스토리지의 복제를 설정합니다.
-복제 대상 프로젝트별 선택 가능한 리전 범위는 아래 표를 통해 확인할 수 있습니다.
+指定したNASストレージの複製を設定します。
+複製対象プロジェクトごとに選択可能なリージョン範囲は、以下の表で確認できます。
 
-| 대상 프로젝트 | 선택 가능한 리전 |
+| 対象プロジェクト | 選択可能なリージョン |
 | ------- | --------- |
-| 조직 내 동일 프로젝트 | 다른 리전 |
-| 조직 내 다른 프로젝트 | 모든 리전 |
+| 組織内の同一プロジェクト | 他のリージョン |
+| 組織内他のプロジェクト | 全てのリージョン |
 
 <br>
 
-> [주의]
-> 복제 대상 스토리지 크기는 원본 스토리지와 동일하게 설정해야 합니다. 원본 스토리지와 대상 스토리지의 크기가 다른 경우 복제에 실패할 수 있습니다.
+> [注意]
+> 複製対象ストレージサイズはソースストレージと同じサイズに設定する必要があります。ソースストレージと対象ストレージのサイズが異なる場合、複製に失敗する可能性があります。
 
-<!-- 개행을 위한 주석 -->
+<!-- 改行のためのコメント -->
 
-> [참고]
-> 복제 대상 스토리지에 암호화를 설정하려면, 원본 스토리지와는 별개의(복제 대상 스토리지가 속한 프로젝트 또는 리전) 암호화 키 저장소 설정이 필요합니다.
+> [参考]
+> 複製対象ストレージに暗号化を設定するには、ソースストレージとは別の(複製対象ストレージが属するプロジェクトまたはリージョン)暗号化キーストア設定が必要です。
 
-<!-- 개행을 위한 주석 -->
+<!-- 改行のためのコメント -->
 
-> [참고] 
-> 원본 스토리지가 CIFS 프로토콜를 사용하는 경우 대상 스토리지도 CIFS 프로토콜을 사용해야 합니다. 이를 위해 원본 스토리지와는 별개의 CIFS 인증 정보를 생성하여 요청 본문 `cifsAuthIds` 필드에 입력해야 합니다.
+> [参考] 
+> ソースストレージがCIFSプロトコルを使用している場合、対象ストレージもCIFSプロトコルを使用する必要があります。このため、ソースストレージとは別のCIFS認証情報を作成してリクエスト本文`cifsAuthIds`フィールドに入力する必要があります。
 
 
 ```
@@ -1067,37 +1067,37 @@ POST  /v1/volumes/{volume_id}/volume-mirrors
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
+#### リクエスト
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| volume\_id | URL | String | O | 원본 NAS 스토리지 ID |
-| volumeMirror | Body | Object | O | NAS 스토리지 복제 설정 요청 객체 |
-| volumeMirror.dstRegion | Body | String | O | 복제 대상 스토리지의 리전 |
-| volumeMirror.dstTenantId | Body | String | O | 복제 대상 스토리지의 테넌트 ID |
-| volumeMirror.dstVolume | Body | Object | O | 복제 대상 스토리지 생성 요청 객체 |
-| volumeMirror.dstVolume.acl | Body | List | - | NAS 스토리지 생성 시 설정할 ACL ID 목록<br>IP 또는 CIDR 형식으로 입력할 수 있습니다. |
-| volumeMirror.dstVolume.description | Body | String | - | NAS 스토리지 설명 |
-| volumeMirror.dstVolume.encryption | Body | Object | - | NAS 스토리지 생성 시 암호화 설정 객체 |
-| volumeMirror.dstVolume.encryption.enabled | Body | Boolean | - | 암호화 설정 활성화 여부<br>암호화 키 저장소가 설정된 후 해당 필드를 `true`로 설정하면 암호화가 활성화됩니다. |
-| volumeMirror.dstVolume.interfaces | Body | List | - | NAS 스토리지에 접근할 인터페이스 목록 |
-| volumeMirror.dstVolume.interfaces.subnetId | Body | String | - | NAS 스토리지 인터페이스의 서브넷 ID |
-| volumeMirror.dstVolume.mountProtocol | Body | Object | - | NAS 스토리지 생성 시 프로토콜 설정 객체 |
-| volumeMirror.dstVolume.mountProtocol.cifsAuthIds | Body | List | - | CIFS 인증 ID 목록<br>NFS 프로토콜 선택 시 입력 불필요 |
-| volumeMirror.dstVolume.mountProtocol.protocol | Body | String | O | NAS 스토리지 마운트 시 프로토콜 지정<br>`nfs`, `cifs` 중 하나를 선택할 수 있습니다. |
-| volumeMirror.dstVolume.name | Body | String | O | NAS 스토리지 이름 |
-| volumeMirror.dstVolume.sizeGb | Body | Integer | O | NAS 스토리지 크기(GB)<br>NAS 스토리지는 최소 300GB에서 최대 10,000GB까지, 100GB 단위로 설정할 수 있습니다. |
-| volumeMirror.dstVolume.snapshotPolicy | Body | Object | - | NAS 스토리지 볼륨 스냅숏 설정 객체 |
-| volumeMirror.dstVolume.snapshotPolicy.maxScheduledCount | Body | Integer | - | 스냅숏 최대 저장 개수<br>30개까지 설정 가능하며, 최대 저장 개수에 도달하면 자동으로 생성된 스냅숏 중 가장 먼저 만들어진 스냅숏이 삭제됩니다. |
-| volumeMirror.dstVolume.snapshotPolicy.reservePercent | Body | Integer | - | 스냅숏 용량 비율 |
-| volumeMirror.dstVolume.snapshotPolicy.schedule | Body | Object | - | 스냅숏 자동 생성 객체<br>`null`일 경우 스냅숏 자동 생성이 설정되지 않습니다. |
-| volumeMirror.dstVolume.snapshotPolicy.schedule.time | Body | String | - | 스냅숏 자동 생성 시간 |
-| volumeMirror.dstVolume.snapshotPolicy.schedule.timeOffset | Body | String | - | 스냅숏 자동 생성 기준 시간대 |
-| volumeMirror.dstVolume.snapshotPolicy.schedule.weekdays | Body | List | - | 스냅숏 자동 생성 요일.<br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |
+| X-Auth-Token | Header | String | O | トークンID |
+| volume\_id | URL | String | O | 原本NASストレージID |
+| volumeMirror | Body | Object | O | NASストレージ複製設定リクエストオブジェクト |
+| volumeMirror.dstRegion | Body | String | O | 複製対象ストレージのリージョン |
+| volumeMirror.dstTenantId | Body | String | O | 複製対象ストレージのテナントID |
+| volumeMirror.dstVolume | Body | Object | O | 複製対象ストレージ作成リクエストオブジェクト |
+| volumeMirror.dstVolume.acl | Body | List | - | NASストレージ作成時に設定するACL IDリスト<br>IPまたはCIDR形式で入力できます。 |
+| volumeMirror.dstVolume.description | Body | String | - | NASストレージの説明 |
+| volumeMirror.dstVolume.encryption | Body | Object | - | NASストレージ作成時の暗号化設定オブジェクト |
+| volumeMirror.dstVolume.encryption.enabled | Body | Boolean | - | 暗号化設定が有効かどうか<br>暗号化キーストアが設定された後、該当フィールドを`true`に設定すると暗号化が有効になります。 |
+| volumeMirror.dstVolume.interfaces | Body | List | - | NASストレージにアクセスするインターフェースリスト |
+| volumeMirror.dstVolume.interfaces.subnetId | Body | String | - | NASストレージインターフェースのサブネットID |
+| volumeMirror.dstVolume.mountProtocol | Body | Object | - | NASストレージ作成時のプロトコル設定オブジェクト |
+| volumeMirror.dstVolume.mountProtocol.cifsAuthIds | Body | List | - | CIFS認証IDリスト<br>NFSプロトコル選択時入力不要 |
+| volumeMirror.dstVolume.mountProtocol.protocol | Body | String | O | NASストレージをマウントする際のプロトコル指定<br>`nfs`, `cifs`のいずれかを選択できます。 |
+| volumeMirror.dstVolume.name | Body | String | O | NASストレージ名 |
+| volumeMirror.dstVolume.sizeGb | Body | Integer | O | NASストレージサイズ(GB)<br>NASストレージは、最小300GBから最大10,000GBまで、100GB単位で設定できます。 |
+| volumeMirror.dstVolume.snapshotPolicy | Body | Object | - | NASストレージボリュームスナップショット設定オブジェクト |
+| volumeMirror.dstVolume.snapshotPolicy.maxScheduledCount | Body | Integer | - | スナップショット最大保存数<br>30個まで設定可能で、最大保存数に達すると、自動的に作成されたスナップショットのうち、最初に作成されたスナップショットが削除されます。 |
+| volumeMirror.dstVolume.snapshotPolicy.reservePercent | Body | Integer | - | スナップショット容量比率 |
+| volumeMirror.dstVolume.snapshotPolicy.schedule | Body | Object | - | スナップショット自動作成オブジェクト<br>`null`の場合、スナップショット自動作成が設定されません。 |
+| volumeMirror.dstVolume.snapshotPolicy.schedule.time | Body | String | - | スナップショット自動作成時間 |
+| volumeMirror.dstVolume.snapshotPolicy.schedule.timeOffset | Body | String | - | スナップショット自動作成基準タイムゾーン |
+| volumeMirror.dstVolume.snapshotPolicy.schedule.weekdays | Body | List | - | スナップショット自動作成曜日。<br>空白のリストは毎日を意味し、曜日を0(日曜日)から6(土曜日)までの数字のリストで指定します。 |
 
 <details>
-  <summary>요청 예시</summary>
+  <summary>リクエスト例</summary>
 
 ```json
 {
@@ -1118,31 +1118,31 @@ X-Auth-Token: {token-id}
 
 </details>
 
-#### 응답
+#### レスポンス
 
-| 이름 | 종류 | 형식 | 설명 |
+| 名前 | 種類 | 形式 | 説明 |
 | --- | --- | --- | --- |
-| header | Body | Object | 헤더 객체 |
-| volumeMirror | Body | Object | 복제 설정 생성 객체 |
-| volumeMirror.id | Body | String | 복제 설정 ID |
-| volumeMirror.role | Body | String | 복제 역할<br>- `SOURCE`: 원본 스토리지<br>- `DESTINATION`: 대상 스토리지 |
-| volumeMirror.status | Body | String | 복제 설정 상태<br>- `INITIALIZED`: 설정 완료<br>- `UPDATING`: 설정 변경 중<br>- `DELETING`: 설정 삭제 중<br>- `PENDING`: 설정 생성 중 |
-| volumeMirror.direction | Body | String | 복제 방향 <br>- `FORWARD`: 원본 스토리지 -> 복제 스토리지<br>- `REVERSE`: 복제 스토리지 -> 원본 스토리지 |
-| volumeMirror.directionChangedAt | Body | String | 복제 방향 변경 시각 |
-| volumeMirror.dstProjectId | Body | String | 복제 대상 스토리지의 프로젝트 ID |
-| volumeMirror.dstRegion | Body | String | 복제 대상 스토리지 리전 |
-| volumeMirror.dstTenantId | Body | String | 복제 대상 스토리지 테넌트 ID |
-| volumeMirror.dstVolumeId | Body | String | 복제 대상 스토리지의 NAS 스토리지 ID |
-| volumeMirror.dstVolumeName | Body | String | 복제 대상 스토리지의 NAS 스토리지 이름 |
-| volumeMirror.srcProjectId | Body | String | 원본 스토리지의 프로젝트 ID |
-| volumeMirror.srcRegion | Body | String | 원본 스토리지 리전 |
-| volumeMirror.srcTenantId | Body | String | 원본 스토리지 테넌트 ID |
-| volumeMirror.srcVolumeId | Body | String | 원본 스토리지의 NAS 스토리지 ID |
-| volumeMirror.srcVolumeName | Body | String | 원본 스토리지 NAS 스토리지 이름 |
-| volumeMirror.createdAt | Body | String | 복제 생성 시각 |
+| header | Body | Object | ヘッダオブジェクト |
+| volumeMirror | Body | Object | 複製設定作成オブジェクト |
+| volumeMirror.id | Body | String | 複製設定ID |
+| volumeMirror.role | Body | String | 複製役割<br>- `SOURCE`:ソースストレージ<br>- `DESTINATION`:対象ストレージ |
+| volumeMirror.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
+| volumeMirror.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースストレージ -> 複製ストレージ<br>- `REVERSE`:複製ストレージ -> ソースストレージ |
+| volumeMirror.directionChangedAt | Body | String | 複製方向変更時刻 |
+| volumeMirror.dstProjectId | Body | String | 複製対象ストレージのプロジェクトID |
+| volumeMirror.dstRegion | Body | String | 複製対象ストレージリージョン |
+| volumeMirror.dstTenantId | Body | String | 複製対象ストレージテナントID |
+| volumeMirror.dstVolumeId | Body | String | 複製対象ストレージのNASストレージID |
+| volumeMirror.dstVolumeName | Body | String | 複製対象ストレージのNASストレージ名 |
+| volumeMirror.srcProjectId | Body | String | ソースストレージのプロジェクトID |
+| volumeMirror.srcRegion | Body | String | ソースストレージリージョン |
+| volumeMirror.srcTenantId | Body | String | ソースストレージテナントID |
+| volumeMirror.srcVolumeId | Body | String | ソースストレージのNASストレージID |
+| volumeMirror.srcVolumeName | Body | String | ソースストレージNASストレージ名 |
+| volumeMirror.createdAt | Body | String | 複製作成時刻 |
 
 <details>
-  <summary>응답 예시</summary>
+  <summary>レスポンス例</summary>
 
 ```json
 {
@@ -1176,126 +1176,126 @@ X-Auth-Token: {token-id}
 
 <br>
 
-### 복제 설정 해제하기
+### 複製設定の解除
 
-지정한 NAS 스토리지의 복제 설정을 해제합니다.
+指定したNASストレージの複製設定を解除します。
 
 ```
 DELETE  /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
+#### リクエスト
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| volume\_id | URL | String | O | NAS 스토리지 ID |
-| volume\_mirror\_id | URL | String | O | 복제 설정 ID |
+| X-Auth-Token | Header | String | O | トークンID |
+| volume\_id | URL | String | O | NASストレージID |
+| volume\_mirror\_id | URL | String | O | 複製設定ID |
 
-#### 응답
+#### レスポンス
 
-응답 본문에는 헤더 필드 외의 내용이 포함되지 않습니다.
+レスポンス本文にはヘッダフィールド以外の内容は含まれません。
 
 <br>
 
-### 복제 방향 변경하기
+### 複製方向の変更
 
-원본 스토리지와 대상 스토리지의 복제 방향을 변경합니다.
+ソースストレージと対象ストレージの複製方向を変更します。
 
 ```
 POST  /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}/invert-direction
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
+#### リクエスト
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| volume\_id | URL | String | O | NAS 스토리지 ID |
-| volume\_mirror\_id | URL | String | O | 복제 설정 ID |
+| X-Auth-Token | Header | String | O | トークンID |
+| volume\_id | URL | String | O | NASストレージID |
+| volume\_mirror\_id | URL | String | O | 複製設定ID |
 
-#### 응답
+#### レスポンス
 
-응답 본문에는 헤더 필드 외의 내용이 포함되지 않습니다.
+レスポンス本文にはヘッダフィールド以外の内容は含まれません。
 
 <br>
 
-### 복제 시작하기
+### 複製開始
 
-원본 스토리지에서 대상 스토리지로의 복제를 시작합니다.
+ソースストレージから対象ストレージへの複製を開始します。
 
 ```
 POST  /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}/start
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
+#### リクエスト
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| volume\_id | URL | String | O | NAS 스토리지 ID |
-| volume\_mirror\_id | URL | String | O | 복제 설정 ID |
+| X-Auth-Token | Header | String | O | トークンID |
+| volume\_id | URL | String | O | NASストレージID |
+| volume\_mirror\_id | URL | String | O | 複製設定ID |
 
-#### 응답
+#### レスポンス
 
-응답 본문에는 헤더 필드 외의 내용이 포함되지 않습니다.
+レスポンス本文にはヘッダフィールド以外の内容は含まれません。
 
 <br>
 
-### 복제 상태 확인하기
+### 複製状態の確認
 
-가장 최근의 복제 상태를 반환합니다.
+最近の複製状態を返します。
 
 ```
 GET  /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}/stat
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
+#### リクエスト
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| volume\_id | URL | String | O | NAS 스토리지 ID |
-| volume\_mirror\_id | URL | String | O | 복제 설정 ID |
+| X-Auth-Token | Header | String | O | トークンID |
+| volume\_id | URL | String | O | NASストレージID |
+| volume\_mirror\_id | URL | String | O | 複製設定ID |
 
-#### 응답
+#### レスポンス
 
-| 이름 | 종류 | 형식 | 설명 |
+| 名前 | 種類 | 形式 | 説明 |
 | --- | --- | --- | --- |
-| header | Body | Object | 헤더 객체 |
-| volumeMirrorStat | Body | Object | 복제 상태 객체 |
-| volumeMirrorStat.lastSuccessTransferBytes | Body | Integer | 최근 성공한 복제에서 전송된 데이터 크기(Byte) |
-| volumeMirrorStat.lastSuccessTransferEndTime | Body | String | 최근 성공한 복제 완료 시간 |
-| volumeMirrorStat.lastTransferBytes | Body | Integer | 최근 실행한 복제에서 전송된 데이터 크기(Byte) |
-| volumeMirrorStat.lastTransferEndTime | Body | String | 최근 실행한 복제 완료 시간 |
-| volumeMirrorStat.lastTransferStatus | Body | String | 최근 복제 실행 결과 |
-| volumeMirrorStat.status | Body | String | 복제 설정 상태<br>- `ACTIVE`: 복제 활성화 상태<br>- `UPDATING`: 설정 변경 중<br>- `DELETING`: 설정 삭제 중<br>- `PENDING`: 설정 생성 중 <br>- `HALT`: 복제 중지 상태<br>- `RETRIEVE FAILED`: 일시적인 정보 획득 실패 |
+| header | Body | Object | ヘッダオブジェクト |
+| volumeMirrorStat | Body | Object | 複製状態オブジェクト |
+| volumeMirrorStat.lastSuccessTransferBytes | Body | Integer | 最近成功した複製で転送されたデータサイズ(Byte) |
+| volumeMirrorStat.lastSuccessTransferEndTime | Body | String | 最近成功した複製完了時間 |
+| volumeMirrorStat.lastTransferBytes | Body | Integer | 最近実行した複製で転送されたデータサイズ(Byte) |
+| volumeMirrorStat.lastTransferEndTime | Body | String | 最近実行した複製完了時間 |
+| volumeMirrorStat.lastTransferStatus | Body | String | 最近の複製実行結果 |
+| volumeMirrorStat.status | Body | String | 複製設定状態<br>- `ACTIVE`:複製有効化状態<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 <br>- `HALT`:複製停止状態<br>- `RETRIEVE FAILED`:一時的な情報取得失敗 |
 
 <br>
 
-### 복제 중지하기
+### 複製停止
 
-원본 스토리지에서 대상 스토리지로의 복제를 중지합니다.
+ソースストレージから対象ストレージへの複製を停止します。
 
 ```
 POST  /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}/stop
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
+#### リクエスト
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| volume\_id | URL | String | O | NAS 스토리지 ID |
-| volume\_mirror\_id | URL | String | O | 복제 설정 ID |
+| X-Auth-Token | Header | String | O | トークンID |
+| volume\_id | URL | String | O | NASストレージID |
+| volume\_mirror\_id | URL | String | O | 複製設定ID |
 
-#### 응답
+#### レスポンス
 
-응답 본문에는 헤더 필드 외의 내용이 포함되지 않습니다.
+レスポンス本文にはヘッダフィールド以外の内容は含まれません。
 
 <br>
