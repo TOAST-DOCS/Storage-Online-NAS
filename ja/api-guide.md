@@ -21,7 +21,7 @@ NASストレージAPIが提供する共通レスポンス情報の説明です�
 | --- | --- | --- | --- |
 | header | Body | Object | ヘッダオブジェクト |
 | header.isSuccessful | Body | Boolean | リクエストの成否(`true`または`false`) |
-| header.resultCode | Body | Integer | HTTPステータスコードに該当する結果コード<br>- `200`:成功 <br>- `201`:リソース作成成功<br>- `202`:リクエストが正常に受信されたが、まだ処理されていない状態<br>- `400`:有効ではない値でリクエストされた<br>- `401`:権限、認証またはトークン関連エラー <br>- `404`:リクエストしたリソースが見つからない<br>- `405`:リクエストしたURLが指定したHTTPメソッドをサポートしていない<br>- `5XX`:クライアントのリクエストは有効ですがサーバーが処理に失敗する |
+| header.resultCode | Body | Integer | HTTPステータスコードに該当する結果コード<br>- `200`:成功 <br>- `201`:リソース作成成功<br>- `202`:リクエストが正常に受信されたが、まだ処理されていない状態<br>- `400`:有効ではない値でリクエストされた<br>- `401`:権限、認証またはトークン関連エラー <br>- `404`:リクエストしたリソースが見つからない<br>- `405`:リクエストしたURLが指定したHTTPメソッドをサポートしていない<br>- `5XX`:クライアントのリクエストは有効ですがサーバーが処理に失敗する |
 | header.resultMessage | Body | String | リクエスト処理結果に関するメッセージ |
 
 <details>
@@ -46,7 +46,7 @@ NASストレージAPIが提供する共通レスポンス情報の説明です�
 NASストレージ一覧を照会します。
 
 ```
-GET  /v1/volumes
+GET  /v1/volumes
 X-Auth-Token: {token-id}
 ```
 
@@ -96,9 +96,9 @@ X-Auth-Token: {token-id}
 | volumes.interfaces.tenantId | Body | String | インターフェースのテナントID |
 | volumes.mirrors | Body | List | NASストレージ複製設定オブジェクトリスト |
 | volumes.mirrors.id | Body | String | 複製設定ID |
-| volumes.mirrors.role | Body | String | 複製ロール<br>- `SOURCE`:ソースストレージ<br>- `DESTINATION`:対象ストレージ |
-| volumes.mirrors.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
-| volumes.mirrors.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースストレージ→複製ストレージ <br>- `REVERSE`:複製ストレージ→ソースストレージ |
+| volumes.mirrors.role | Body | String | 複製ロール<br>- `SOURCE`:ソースストレージ<br>- `DESTINATION`:対象ストレージ |
+| volumes.mirrors.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
+| volumes.mirrors.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースストレージ→複製ストレージ <br>- `REVERSE`:複製ストレージ→ソースストレージ |
 | volumes.mirrors.directionChangedAt | Body | String | 複製方向変更時刻 |
 | volumes.mirrors.dstProjectId | Body | String | 複製対象ストレージのプロジェクトID |
 | volumes.mirrors.dstRegion | Body | String | 複製対象ストレージリージョン |
@@ -213,15 +213,15 @@ X-Auth-Token: {token-id}
 
 新しいNASストレージを作成します。
 
-> [参考] CIFSプロトコル使用
+> [参考] CIFSプロトコル使用
 > CIFSプロトコルを使用するためには、CIFS認証情報を生成する必要があります。認証情報はプロジェクト単位で管理され、CIFSストレージごとにアクセスするCIFS認証情報を登録する必要があります。
-> CIFS認証情報はコンソールの **Storage > NAS > CIFS認証情報管理**ウィンドウから作成できます。
+> CIFS認証情報はコンソールの **Storage > NAS > CIFS認証情報管理**ウィンドウから作成できます。
 
 <!-- 改行のためのコメント -->
 
 > [参考]暗号化キーストア設定
 > NAS暗号化ストレージは暗号化に使用する対称鍵をNHN Cloud Secure Key Managerサービスのキーストアに保存します。したがって、暗号化ストレージを作成するためには、事前にSecure Key Managerサービスで[キーストアを作成](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_1)する必要があります。 [キーストアのIDを確認](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_2)し、暗号化キーストア設定に入力します。
-> 作成したキーストアIDはコンソールの **Storage > NAS > 暗号化キーストア設定** ウィンドウで入力できます。暗号化ストレージを作成すると、設定したキーストアに対称鍵が保存されます。 NASサービスによってキーストアに保存された対称鍵は暗号化ストレージ使用中には削除できません。暗号化ストレージを削除すると、対称鍵も一緒に削除されます。
+> 作成したキーストアIDはコンソールの **Storage > NAS > 暗号化キーストア設定** ウィンドウで入力できます。暗号化ストレージを作成すると、設定したキーストアに対称鍵が保存されます。 NASサービスによってキーストアに保存された対称鍵は暗号化ストレージ使用中には削除できません。暗号化ストレージを削除すると、対称鍵も一緒に削除されます。
 > キーストアIDを変更すると、その後に作成する暗号化ストレージの対称鍵が変更されたキーストアに保存されます。既存キーストアに保存された対称鍵は維持されます。
 
 ```
@@ -237,7 +237,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- | --- |
 | X-Auth-Token | Header | String | O | トークンID |
 | volume | Body | Object | O | NASストレージ作成リクエストオブジェクト |
-| volume.acl | Body | List | - | NASストレージ作成時設定するACL IDリスト<br>IPまたはCIDR形式で入力できます。 |
+| volume.acl | Body | List | - | NASストレージ作成時設定するACL IDリスト<br>IPまたはCIDR形式で入力できます。 |
 | volume.description | Body | String | - | NASストレージの説明 |
 | volume.encryption | Body | Object | - | NASストレージ作成時暗号化設定オブジェクト |
 | volume.encryption.enabled | Body | Boolean | - | 暗号化設定有効かどうか<br>暗号化キーストアが設定された後、該当フィールドを`true`に設定すると、暗号化が有効になります。 |
@@ -245,7 +245,7 @@ X-Auth-Token: {token-id}
 | volume.interfaces.subnetId | Body | String | - | NASストレージインターフェースのサブネットID |
 | volume.mountProtocol | Body | Object | - | NASストレージを作成する際のプロトコル設定オブジェクト |
 | volume.mountProtocol.cifsAuthIds | Body | List | - | CIFS認証IDリスト<br>NFSプロトコル選択時入力不要 |
-| volume.mountProtocol.protocol | Body | String | O | NASストレージをマウントする際のプロトコル指定<br>`nfs`, `cifs`のいずれかを選択できます。 |
+| volume.mountProtocol.protocol | Body | String | O | NASストレージをマウントする際のプロトコル指定<br>`nfs`, `cifs`のいずれかを選択できます。 |
 | volume.name | Body | String | O | NASストレージ名 |
 | volume.sizeGb | Body | Integer | O | NASストレージサイズ(GB)<br>NASストレージは、最小300GBから最大10,000GBまで、100GB単位で設定できます。 |
 | volume.snapshotPolicy | Body | Object | - | NASストレージボリュームスナップショット設定オブジェクト |
@@ -319,9 +319,9 @@ X-Auth-Token: {token-id}
 | volume.interfaces.tenantId | Body | String | インターフェースのテナントID |
 | volume.mirrors | Body | List | NASストレージ複製設定オブジェクトリスト |
 | volume.mirrors.id | Body | String | 複製設定ID |
-| volume.mirrors.role | Body | String | 複製役割<br>- `SOURCE`:ソースストレージ<br>- `DESTINATION`:対象ストレージ |
-| volume.mirrors.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
-| volume.mirrors.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースストレージ -> 複製ストレージ<br>- `REVERSE`:複製ストレージ -> ソースストレージ |
+| volume.mirrors.role | Body | String | 複製役割<br>- `SOURCE`:ソースストレージ<br>- `DESTINATION`:対象ストレージ |
+| volume.mirrors.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
+| volume.mirrors.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースストレージ -> 複製ストレージ<br>- `REVERSE`:複製ストレージ -> ソースストレージ |
 | volume.mirrors.directionChangedAt | Body | String | 複製方向変更時刻 |
 | volume.mirrors.dstProjectId | Body | String | 複製対象ストレージのプロジェクトID |
 | volume.mirrors.dstRegion | Body | String | 複製対象ストレージリージョン |
@@ -497,9 +497,9 @@ X-Auth-Token: {token-id}
 | volume.interfaces.tenantId | Body | String | インターフェースのテナントID |
 | volume.mirrors | Body | List | NASストレージ複製設定オブジェクトリスト |
 | volume.mirrors.id | Body | String | 複製設定ID |
-| volume.mirrors.role | Body | String | 複製役割<br>- `SOURCE`:ソースストレージ<br>- `DESTINATION`:対象ストレージ |
-| volume.mirrors.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
-| volume.mirrors.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースストレージ -> 複製ストレージ<br>- `REVERSE`:複製ストレージ -> ソースストレージ |
+| volume.mirrors.role | Body | String | 複製役割<br>- `SOURCE`:ソースストレージ<br>- `DESTINATION`:対象ストレージ |
+| volume.mirrors.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
+| volume.mirrors.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースストレージ -> 複製ストレージ<br>- `REVERSE`:複製ストレージ -> ソースストレージ |
 | volume.mirrors.directionChangedAt | Body | String | 複製方向変更時刻 |
 | volume.mirrors.dstProjectId | Body | String | 複製対象ストレージのプロジェクトID |
 | volume.mirrors.dstRegion | Body | String | 複製対象ストレージリージョン |
@@ -546,7 +546,7 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | O | トークンID |
 | volume\_id | URL | String | O | NASストレージID |
 | volume | Body | Object | O | NASストレージ作成リクエストオブジェクト |
-| volume.acl | Body | List | - | NASストレージ作成時に設定するACL IDのリスト<br>IPまたはCIDR形式で入力できます。 |
+| volume.acl | Body | List | - | NASストレージ作成時に設定するACL IDのリスト<br>IPまたはCIDR形式で入力できます。 |
 | volume.description | Body | String | - | NASストレージの説明 |
 | volume.mountProtocol | Body | Object | - | NASストレージを作成する際のプロトコル設定オブジェクト |
 | volume.mountProtocol.cifsAuthIds | Body | List | - | CIFS認証IDリスト |
@@ -847,7 +847,7 @@ X-Auth-Token: {token-id}
 | snapshots.name | Body | String | スナップショット名 |
 | snapshots.preserved | Body | Boolean | システムによって削除不可に設定されたスナップショットかどうか |
 | snapshots.size | Body | Integer | スナップショットサイズ |
-| snapshots.type | Body | String | スナップショットタイプ<br>- `NORMAL`:ユーザーによって作成されたスナップショット<br>- `SCHEDULED`:スナップショット自動作成によって作成されたスナップショット<br>- `MIRROR`:複製により作成されたスナップショット |
+| snapshots.type | Body | String | スナップショットタイプ<br>- `NORMAL`:ユーザーによって作成されたスナップショット<br>- `SCHEDULED`:スナップショット自動作成によって作成されたスナップショット<br>- `MIRROR`:複製により作成されたスナップショット |
 
 <details><summary>レスポンス例</summary>
 
@@ -923,7 +923,7 @@ X-Auth-Token: {token-id}
 | snapshot.name | Body | String | スナップショット名 |
 | snapshot.preserved | Body | Boolean | システムによって削除不可に設定されたスナップショットかどうか |
 | snapshot.reclaimableSpace | Body | Integer | スナップショット削除時に確保される容量 |
-| snapshot.type | Body | String | スナップショットタイプ<br>- `NORMAL`:ユーザーによって成されたスナップショット<br>- `SCHEDULED`:スナップショット自動作成によって作成されたスナップショット<br>- `MIRROR`:複製によって作成されたスナップショット |
+| snapshot.type | Body | String | スナップショットタイプ<br>- `NORMAL`:ユーザーによって成されたスナップショット<br>- `SCHEDULED`:スナップショット自動作成によって作成されたスナップショット<br>- `MIRROR`:複製によって作成されたスナップショット |
 
 <details>
   <summary>レスポンス例</summary>
@@ -1005,7 +1005,7 @@ X-Auth-Token: {token-id}
 | snapshot.preserved | Body | Boolean | システムによって削除不可に設定されたスナップショットかどうか |
 | snapshot.reclaimableSpace | Body | Integer | スナップショット削除時に確保される容量 |
 | snapshot.size | Body | Integer | スナップショットサイズ |
-| snapshot.type | Body | String | スナップショットタイプ<br>- `NORMAL`:ユーザーによって作成されたスナップショット<br>- `SCHEDULED` :スナップショット自動作成によって作成されたスナップショット<br>- `MIRROR`:複製によって作成されたスナップショット |
+| snapshot.type | Body | String | スナップショットタイプ<br>- `NORMAL`:ユーザーによって作成されたスナップショット<br>- `SCHEDULED` :スナップショット自動作成によって作成されたスナップショット<br>- `MIRROR`:複製によって作成されたスナップショット |
 
 <br>
 
@@ -1058,7 +1058,7 @@ X-Auth-Token: {token-id}
 
 <!-- 改行のためのコメント -->
 
-> [参考] 
+> [参考] 
 > ソースストレージがCIFSプロトコルを使用している場合、対象ストレージもCIFSプロトコルを使用する必要があります。このため、ソースストレージとは別のCIFS認証情報を作成してリクエスト本文`cifsAuthIds`フィールドに入力する必要があります。
 
 
@@ -1077,7 +1077,7 @@ X-Auth-Token: {token-id}
 | volumeMirror.dstRegion | Body | String | O | 複製対象ストレージのリージョン |
 | volumeMirror.dstTenantId | Body | String | O | 複製対象ストレージのテナントID |
 | volumeMirror.dstVolume | Body | Object | O | 複製対象ストレージ作成リクエストオブジェクト |
-| volumeMirror.dstVolume.acl | Body | List | - | NASストレージ作成時に設定するACL IDリスト<br>IPまたはCIDR形式で入力できます。 |
+| volumeMirror.dstVolume.acl | Body | List | - | NASストレージ作成時に設定するACL IDリスト<br>IPまたはCIDR形式で入力できます。 |
 | volumeMirror.dstVolume.description | Body | String | - | NASストレージの説明 |
 | volumeMirror.dstVolume.encryption | Body | Object | - | NASストレージ作成時の暗号化設定オブジェクト |
 | volumeMirror.dstVolume.encryption.enabled | Body | Boolean | - | 暗号化設定が有効かどうか<br>暗号化キーストアが設定された後、該当フィールドを`true`に設定すると暗号化が有効になります。 |
@@ -1085,7 +1085,7 @@ X-Auth-Token: {token-id}
 | volumeMirror.dstVolume.interfaces.subnetId | Body | String | - | NASストレージインターフェースのサブネットID |
 | volumeMirror.dstVolume.mountProtocol | Body | Object | - | NASストレージ作成時のプロトコル設定オブジェクト |
 | volumeMirror.dstVolume.mountProtocol.cifsAuthIds | Body | List | - | CIFS認証IDリスト<br>NFSプロトコル選択時入力不要 |
-| volumeMirror.dstVolume.mountProtocol.protocol | Body | String | O | NASストレージをマウントする際のプロトコル指定<br>`nfs`, `cifs`のいずれかを選択できます。 |
+| volumeMirror.dstVolume.mountProtocol.protocol | Body | String | O | NASストレージをマウントする際のプロトコル指定<br>`nfs`, `cifs`のいずれかを選択できます。 |
 | volumeMirror.dstVolume.name | Body | String | O | NASストレージ名 |
 | volumeMirror.dstVolume.sizeGb | Body | Integer | O | NASストレージサイズ(GB)<br>NASストレージは、最小300GBから最大10,000GBまで、100GB単位で設定できます。 |
 | volumeMirror.dstVolume.snapshotPolicy | Body | Object | - | NASストレージボリュームスナップショット設定オブジェクト |
@@ -1125,9 +1125,9 @@ X-Auth-Token: {token-id}
 | header | Body | Object | ヘッダオブジェクト |
 | volumeMirror | Body | Object | 複製設定作成オブジェクト |
 | volumeMirror.id | Body | String | 複製設定ID |
-| volumeMirror.role | Body | String | 複製役割<br>- `SOURCE`:ソースストレージ<br>- `DESTINATION`:対象ストレージ |
-| volumeMirror.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
-| volumeMirror.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースストレージ -> 複製ストレージ<br>- `REVERSE`:複製ストレージ -> ソースストレージ |
+| volumeMirror.role | Body | String | 複製役割<br>- `SOURCE`:ソースストレージ<br>- `DESTINATION`:対象ストレージ |
+| volumeMirror.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
+| volumeMirror.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースストレージ -> 複製ストレージ<br>- `REVERSE`:複製ストレージ -> ソースストレージ |
 | volumeMirror.directionChangedAt | Body | String | 複製方向変更時刻 |
 | volumeMirror.dstProjectId | Body | String | 複製対象ストレージのプロジェクトID |
 | volumeMirror.dstRegion | Body | String | 複製対象ストレージリージョン |
@@ -1273,7 +1273,7 @@ X-Auth-Token: {token-id}
 | volumeMirrorStat.lastTransferBytes | Body | Integer | 最近実行した複製で転送されたデータサイズ(Byte) |
 | volumeMirrorStat.lastTransferEndTime | Body | String | 最近実行した複製完了時間 |
 | volumeMirrorStat.lastTransferStatus | Body | String | 最近の複製実行結果 |
-| volumeMirrorStat.status | Body | String | 複製設定状態<br>- `ACTIVE`:複製有効化状態<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 <br>- `HALT`:複製停止状態<br>- `RETRIEVE FAILED`:一時的な情報取得失敗 |
+| volumeMirrorStat.status | Body | String | 複製設定状態<br>- `ACTIVE`:複製有効化状態<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 <br>- `HALT`:複製停止状態<br>- `RETRIEVE FAILED`:一時的な情報取得失敗 |
 
 <br>
 

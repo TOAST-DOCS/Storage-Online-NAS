@@ -21,7 +21,7 @@ This section describes the common response information provided by the NAS API. 
 | --- | --- | --- | --- |
 | header | Body | Object | Header Objects |
 | header.isSuccessful | Body | Boolean | Whether the request was successful (`true` or `false`) |
-| header.resultCode | Body | Integer | Result codes corresponding to HTTP status codes<br>- `200`: Success <br>- `201`: Resource creation successful<br>- `202`: Request received successfully, but not yet processed<br>- `400`: Requested with an invalid value<br>- `401`: Permission, authentication, or token-related error <br>- `404`: Requested resource not found<br>- `405`: The requested URL does not support the specified HTTP method<br>- `5XX`: The client's request is valid but the server failed to process it |
+| header.resultCode | Body | Integer | Result codes corresponding to HTTP status codes<br>- `200`: Success <br>- `201`: Resource creation successful<br>- `202`: Request received successfully, but not yet processed<br>- `400`: Requested with an invalid value<br>- `401`: Permission, authentication, or token-related error <br>- `404`: Requested resource not found<br>- `405`: The requested URL does not support the specified HTTP method<br>- `5XX`: The client's request is valid but the server failed to process it |
 | header.resultMessage | Body | String | Messages about the results of request processing |
 
 <details>
@@ -48,7 +48,7 @@ This section describes the common response information provided by the NAS API. 
 Return the list of NAS storage.
 
 ```
-GET  /v1/volumes
+GET  /v1/volumes
 X-Auth-Token: {token-id}
 ```
 
@@ -100,7 +100,7 @@ This API does not require a request body.
 | volumes.mirrors.id | Body | String | Replication setting ID |
 | volumes.mirrors.role | Body | String | Replication roles<br>- `SOURCE`: Source storage<br>- `DESTINATION`: Target storage |
 | volumes.mirrors.status | Body | String | Replication setting status<br>- `INITIALIZED`: Setup complete<br>- `UPDATING`: Updating settings<br>- `DELETING`: Deleting settings<br>- `PENDING`: Creating settings |
-| volumes.mirrors.direction | Body | String | Replication direction <br>- `FORWARD`: Source storage -> Replica storage <br>- `REVERSE`: Replica storage -> Source storage |
+| volumes.mirrors.direction | Body | String | Replication direction <br>- `FORWARD`: Source storage -> Replica storage <br>- `REVERSE`: Replica storage -> Source storage |
 | volumes.mirrors.directionChangedAt | Body | String | When to change replication direction |
 | volumes.mirrors.dstProjectId | Body | String | The project ID of the replication target storage |
 | volumes.mirrors.dstRegion | Body | String | The region of the replication target storage |
@@ -323,7 +323,7 @@ X-Auth-Token: {token-id}
 | volume.mirrors.id | Body | String | Replication setting ID |
 | volume.mirrors.role | Body | String | Replication roles<br>- `SOURCE`: Source storage<br>- `DESTINATION`: Target storage |
 | volume.mirrors.status | Body | String | Replication setting status<br>- `INITIALIZED`: Setup complete<br>- `UPDATING`: Updating settings<br>- `DELETING`: Deleting settings<br>- `PENDING`: Creating settings |
-| volume.mirrors.direction | Body | String | Replication direction <br>- `FORWARD`: Original storage -> Replica storage<br>- `REVERSE`: Replica storage -> Original storage |
+| volume.mirrors.direction | Body | String | Replication direction <br>- `FORWARD`: Original storage -> Replica storage<br>- `REVERSE`: Replica storage -> Original storage |
 | volume.mirrors.directionChangedAt | Body | String | When to change replication direction |
 | volume.mirrors.dstProjectId | Body | String | The project ID of the replication target storage |
 | volume.mirrors.dstRegion | Body | String | The region of the replication target storage |
@@ -501,7 +501,7 @@ This API does not require a request body.
 | volume.mirrors.id | Body | String | Replication setting ID |
 | volume.mirrors.role | Body | String | Replication roles<br>- `SOURCE`: Source storage<br>- `DESTINATION`: Target storage |
 | volume.mirrors.status | Body | String | Replication setting status<br>- `INITIALIZED`: Setup complete<br>- `UPDATING`: Updating settings<br>- `DELETING`: Deleting settings<br>- `PENDING`: Creating settings |
-| volume.mirrors.direction | Body | String | Replication direction <br>- `FORWARD`: Original storage -> Replica storage<br>- `REVERSE`: Replica storage -> Original storage |
+| volume.mirrors.direction | Body | String | Replication direction <br>- `FORWARD`: Original storage -> Replica storage<br>- `REVERSE`: Replica storage -> Original storage |
 | volume.mirrors.directionChangedAt | Body | String | When to change replication direction |
 | volume.mirrors.dstProjectId | Body | String | The project ID of the replication target storage |
 | volume.mirrors.dstRegion | Body | String | The region of the replication target storage |
@@ -1130,7 +1130,7 @@ X-Auth-Token: {token-id}
 | volumeMirror.id | Body | String | Replication setting ID |
 | volumeMirror.role | Body | String | Replication roles<br>- `SOURCE`: Source storage<br>- `DESTINATION`: Target storage |
 | volumeMirror.status | Body | String | Replication setting status<br>- `INITIALIZED`: Setup complete<br>- `UPDATING`: Updating settings<br>- `DELETING`: Deleting settings<br>- `PENDING`: Creating settings |
-| volumeMirror.direction | Body | String | Replication direction <br>- `FORWARD`: Source storage -> Replica storage<br>- `REVERSE`: Replica storage -> Source storage |
+| volumeMirror.direction | Body | String | Replication direction <br>- `FORWARD`: Source storage -> Replica storage<br>- `REVERSE`: Replica storage -> Source storage |
 | volumeMirror.directionChangedAt | Body | String | When to change replication direction |
 | volumeMirror.dstProjectId | Body | String | The project ID of the replication target storage |
 | volumeMirror.dstRegion | Body | String | The region of the replication target storage |
@@ -1276,7 +1276,7 @@ X-Auth-Token: {token-id}
 | volumeMirrorStat.lastTransferBytes | Body | Integer | Size of data transferred in the last replication run (bytes) |
 | volumeMirrorStat.lastTransferEndTime | Body | String | Last completed replication time |
 | volumeMirrorStat.lastTransferStatus | Body | String | Recent replication run results |
-| volumeMirrorStat.status | Body | String | Replication setting status<br>- `ACTIVE`: Replication active status<br>- `UPDATING`: Updating settings<br>- `DELETING`: Deleting settings<br>- `PENDING`: Creating settings <br>- `HALT`: Halted replication status<br>- `RETRIEVE FAILED`: Temporary failure to obtain information |
+| volumeMirrorStat.status | Body | String | Replication setting status<br>- `ACTIVE`: Replication active status<br>- `UPDATING`: Updating settings<br>- `DELETING`: Deleting settings<br>- `PENDING`: Creating settings <br>- `HALT`: Halted replication status<br>- `RETRIEVE FAILED`: Temporary failure to obtain information |
 
 <br>
 
