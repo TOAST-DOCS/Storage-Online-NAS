@@ -31,8 +31,8 @@ This section describes the common response information provided by the NAS API. 
 {
   "header": {
     "isSuccessful": true,
-    "resultCode": 0,
-    "resultMessage": "SUCCESS"
+    "resultCode": 200,
+    "resultMessage": "Success"
   }
 }
 ```
@@ -131,79 +131,84 @@ This API does not require a request body.
 
 ```json
 {
-   "header":{
-      "isSuccessful":true,
-      "resultCode":200,
-      "resultMessage":"Success"
-   },
-   "paging":{
-      "limit":50,
-      "page":1,
-      "totalCount":1
-   },
-   "volumes":[
-      {
-         "acl":[
-            "10.0.1.0/24"
-         ],
-         "createdAt":"2025-04-01T06:44:25+00:00",
-         "description":"NAS for Testing",
-         "encryption":{
-            "enabled":false
-         },
-         "id":"fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
-         "interfaces":[
-            {
-               "id":"9a8ec90f-cc27-4649-9bda-a1f0b193a402",
-               "path":"10.0.1.7:/TEST-NAS-1",
-               "status":"ACTIVE",
-               "subnetId":"cb779d62-72ef-43b6-b368-3fe28dcd812b",
-               "tenantId":"3b6179e5fa6b499386b827357c4cb8c4"
-            }
-         ],
-         "mirrors":[
-            {
-               "createdAt":"2025-04-01T06:45:45+00:00",
-               "direction":"FORWARD",
-               "directionChangedAt":null,
-               "dstProjectId":"K3y0CgOy",
-               "dstRegion":"KR2",
-               "dstTenantId":"3b6179e5fa6b499386b827357c4cb8c4",
-               "dstVolumeId":"e09281d2-0b1c-48a9-8a01-0098aa59f624",
-               "dstVolumeName":"TEST-NAS-MIRROR-1",
-               "id":"8116892c-7306-48be-9e3d-143311b2254c",
-               "role":"SOURCE",
-               "srcProjectId":"K3y0CgOy",
-               "srcRegion":"KR1",
-               "srcTenantId":"3b6179e5fa6b499386b827357c4cb8c4",
-               "srcVolumeId":"fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
-               "srcVolumeName":"TEST-NAS-1",
-               "status":"INITIALIZED"
-            }
-         ],
-         "mountProtocol":{
-            "protocol":"nfs"
-         },
-         "name":"TEST-NAS-1",
-         "projectId":"K3y0CgOy",
-         "sizeGb":300,
-         "snapshotPolicy":{
-            "maxScheduledCount":1,
-            "reservePercent":5,
-            "schedule":{
-               "time":"00:00",
-               "timeOffset":"+09:00",
-               "weekdays":[
-                  
-               ]
-            }
-         },
-         "stationId":null,
-         "status":"ACTIVE",
-         "tenantId":"3b6179e5fa6b499386b827357c4cb8c4",
-         "updatedAt":"2025-04-01T06:47:13+00:00"
-      }
-   ]
+  "header": {
+    "isSuccessful": true,
+    "resultCode": 200,
+    "resultMessage": "Success"
+  },
+  "paging": {
+    "limit": 50,
+    "page": 1,
+    "totalCount": 1
+  },
+  "volumes": [
+    {
+      "acl": [
+        "10.0.1.0/24"
+      ],
+      "createdAt": "2025-04-01T06:44:25+00:00",
+      "description": "NAS for Testing",
+      "encryption": {
+        "enabled": false
+      },
+      "id": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
+      "interfaces": [
+        {
+          "id": "9a8ec90f-cc27-4649-9bda-a1f0b193a402",
+          "path": "10.0.1.7:/TEST-NAS-1",
+          "status": "ACTIVE",
+          "subnetId": "cb779d62-72ef-43b6-b368-3fe28dcd812b",
+          "tenantId": "3b6179e5fa6b499386b827357c4cb8c4"
+        }
+      ],
+      "mirrors": [
+        {
+          "createdAt":"2025-04-01T06:45:45+00:00",
+          "direction": "FORWARD",
+          "directionChangedAt": null,
+          "dstProjectId": "K3y0CgOy",
+          "dstRegion": "KR2",
+          "dstTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
+          "dstVolumeId": "e09281d2-0b1c-48a9-8a01-0098aa59f624",
+          "dstVolumeName": "TEST-NAS-MIRROR-1",
+          "id": "8116892c-7306-48be-9e3d-143311b2254c",
+          "role": "SOURCE",
+          "srcProjectId": "K3y0CgOy",
+          "srcRegion": "KR1",
+          "srcTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
+          "srcVolumeId": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
+          "srcVolumeName": "TEST-NAS-1",
+          "status": "PENDING"
+        }
+      ],
+      "mountProtocol": {
+        "protocol": "cifs",
+        "cifsAuthIds": [
+          "cifs-test-id"
+        ]
+      },
+      "name": "TEST-NAS-1",
+      "projectId": "K3y0CgOy",
+      "sizeGb": 300,
+      "snapshotPolicy": {
+        "maxScheduledCount": 1,
+        "reservePercent": 5,
+        "schedule": {
+          "time": "00:00",
+          "timeOffset": "+09:00",
+          "weekdays": [
+            1,
+            3,
+            5
+          ]
+        }
+      },
+      "stationId": null,
+      "status": "ACTIVE",
+      "tenantId": "3b6179e5fa6b499386b827357c4cb8c4",
+      "updatedAt": "2025-04-01T06:47:13+00:00"
+    }
+  ]
 }
 ```
 
@@ -219,7 +224,7 @@ Create a new NAS storage.
 To use the CIFS protocol, you must create CIFS credentials. Credentials are managed on a per-project basis, and you must register CIFS credentials to access each CIFS storage.
 You can create CIFS credentials through the **Storage > NAS > Manage CIFS Credentials** of the console.
 
-<!-- 개행을 위한 주석 -->
+<!-- -->
 
 > [Note] Setting up encryption key storage
 NAS encrypted storage stores symmetric keys used for encryption in a keystore managed by the NHN Cloud Secure Key Manager service. To create encrypted storage,[you must first create a keystore](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_1)in the Secure Key Manager service. After creating the keystore, [check its ID](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_2) and enter it in the encryption keystore settings.
@@ -279,7 +284,7 @@ X-Auth-Token: {token-id}
     "mountProtocol": {
       "protocol": "nfs"
     },
-    "name": "TEST-NAS-2",
+    "name": "TEST-NAS-1",
     "sizeGb": 300,
     "snapshotPolicy": {
       "maxScheduledCount": 20,
@@ -287,7 +292,11 @@ X-Auth-Token: {token-id}
       "schedule": {
         "time": "03:00",
         "timeOffset": "+09:00",
-        "weekdays": [1, 3, 5]
+        "weekdays": [
+          1,
+          3,
+          5
+        ]
       }
     }
   }
@@ -354,77 +363,77 @@ X-Auth-Token: {token-id}
 
 ```json
 {
-   "header":{
-      "isSuccessful":true,
-      "resultCode":200,
-      "resultMessage":"Success"
-   },
-   "paging":{
-      "limit":50,
-      "page":1,
-      "totalCount":1
-   },
-   "volumes":[
+  "header": {
+    "isSuccessful": true,
+    "resultCode": 201,
+    "resultMessage": "Created"
+  },
+  "volume": {
+    "acl": [
+      "10.0.1.0/24"
+    ],
+    "createdAt": "2025-04-01T06:44:25+00:00",
+    "description": "NAS for Testing",
+    "encryption": {
+      "enabled": false
+    },
+    "id": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
+    "interfaces": [
       {
-         "acl":[
-            "10.0.1.0/24"
-         ],
-         "createdAt":"2025-04-01T06:44:25+00:00",
-         "description":"NAS for Testing",
-         "encryption":{
-            "enabled":false
-         },
-         "id":"fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
-         "interfaces":[
-            {
-               "id":"9a8ec90f-cc27-4649-9bda-a1f0b193a402",
-               "path":"10.0.1.7:/TEST-NAS-1",
-               "status":"ACTIVE",
-               "subnetId":"cb779d62-72ef-43b6-b368-3fe28dcd812b",
-               "tenantId":"3b6179e5fa6b499386b827357c4cb8c4"
-            }
-         ],
-         "mirrors":[
-            {
-               "createdAt":"2025-04-01T06:45:45+00:00",
-               "direction":"FORWARD",
-               "directionChangedAt":null,
-               "dstProjectId":"K3y0CgOy",
-               "dstRegion":"KR2",
-               "dstTenantId":"3b6179e5fa6b499386b827357c4cb8c4",
-               "dstVolumeId":"e09281d2-0b1c-48a9-8a01-0098aa59f624",
-               "dstVolumeName":"TEST-NAS-MIRROR-1",
-               "id":"8116892c-7306-48be-9e3d-143311b2254c",
-               "role":"SOURCE",
-               "srcProjectId":"K3y0CgOy",
-               "srcRegion":"KR1",
-               "srcTenantId":"3b6179e5fa6b499386b827357c4cb8c4",
-               "srcVolumeId":"fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
-               "srcVolumeName":"TEST-NAS-1",
-               "status":"INITIALIZED"
-            }
-         ],
-         "mountProtocol":{
-            "protocol":"nfs"
-         },
-         "name":"TEST-NAS-1",
-         "projectId":"K3y0CgOy",
-         "sizeGb":300,
-         "snapshotPolicy":{
-            "maxScheduledCount":1,
-            "reservePercent":5,
-            "schedule":{
-               "time":"00:00",
-               "timeOffset":"+09:00",
-               "weekdays":[]
-            }
-         },
-         "stationId":null,
-         "status":"ACTIVE",
-         "tenantId":"3b6179e5fa6b499386b827357c4cb8c4",
-         "updatedAt":"2025-04-01T06:47:13+00:00"
+        "id": "9a8ec90f-cc27-4649-9bda-a1f0b193a402",
+        "path": "10.0.1.7:/TEST-NAS-1",
+        "status": "ACTIVE",
+        "subnetId": "cb779d62-72ef-43b6-b368-3fe28dcd812b",
+        "tenantId": "3b6179e5fa6b499386b827357c4cb8c4"
       }
-   ]
+    ],
+    "mirrors": [
+      {
+        "createdAt":"2025-04-01T06:45:45+00:00",
+        "direction": "FORWARD",
+        "directionChangedAt": null,
+        "dstProjectId": "K3y0CgOy",
+        "dstRegion": "KR2",
+        "dstTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
+        "dstVolumeId": "e09281d2-0b1c-48a9-8a01-0098aa59f624",
+        "dstVolumeName": "TEST-NAS-MIRROR-1",
+        "id": "8116892c-7306-48be-9e3d-143311b2254c",
+        "role": "SOURCE",
+        "srcProjectId": "K3y0CgOy",
+        "srcRegion": "KR1",
+        "srcTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
+        "srcVolumeId": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
+        "srcVolumeName": "TEST-NAS-1",
+        "status": "PENDING"
+      }
+    ],
+    "mountProtocol": {
+      "protocol": "cifs",
+      "cifsAuthIds": [
+        "cifs-test-id"
+      ]
+    },
+    "name": "TEST-NAS-1",
+    "projectId": "K3y0CgOy",
+    "sizeGb": 300,
+    "snapshotPolicy": {
+      "maxScheduledCount": 1,
+      "reservePercent": 5,
+      "schedule": {
+        "time": "00:00",
+        "timeOffset": "+09:00",
+        "weekdays": [
+          1,
+          3,
+          5
+        ]
+      }
+    },
+    "stationId": null,
+    "status": "ACTIVE",
+    "tenantId": "3b6179e5fa6b499386b827357c4cb8c4",
+    "updatedAt": "2025-04-01T06:47:13+00:00"
+  }
 }
 ```
 
@@ -567,31 +576,32 @@ X-Auth-Token: {token-id}
 
 ```json
 {
-   "volume":{
-      "acl":[
-         "10.0.1.0/24"
+  "volume": {
+    "acl": [
+      "10.0.1.0/24"
+    ],
+    "description": "Modified description",
+    "mountProtocol": {
+      "cifsAuthIds": [
+        "cifs-test-id"
       ],
-      "description":"Modified description",
-      "mountProtocol":{
-         "cifsAuthIds":[
-            "cifs-test-id"
-         ],
-         "protocol":"cifs"
-      },
-      "sizeGb":300,
-      "snapshotPolicy":{
-         "maxScheduledCount":10,
-         "reservePercent":20,
-         "schedule":{
-            "time":"05:00",
-            "timeOffset":"+09:00",
-            "weekdays":[
-               2,
-               4
-            ]
-         }
+      "protocol": "cifs"
+    },
+    "sizeGb": 300,
+    "snapshotPolicy": {
+      "maxScheduledCount": 10,
+      "reservePercent": 20,
+      "schedule": {
+        "time": "05:00",
+        "timeOffset": "+09:00",
+        "weekdays": [
+          1,
+          3,
+          5
+        ]
       }
-   }
+    }
+  }
 }
 ```
 
@@ -627,9 +637,9 @@ X-Auth-Token: {token-id}
 
 ```json
 {
-   "interface":{
-      "subnetId":"3e5b4d63-d143-420a-9263-208a447a2a3f"
-   }
+  "interface":{
+    "subnetId":"3e5b4d63-d143-420a-9263-208a447a2a3f"
+  }
 }
 ```
 
@@ -645,25 +655,25 @@ X-Auth-Token: {token-id}
 | interface.path | Body | String | Created interface path |
 | interface.status | Body | String | Created interface status |
 | interface.subnetId | Body | String | The subnet ID of the created interface |
-| interface.tenentId | Body | String | The tenant ID of the created interface |
+| interface.tenantId | Body | String | The tenant ID of the created interface |
 
 <details>
   <summary>Example response</summary>
 
 ```json
 {
-   "header":{
-      "isSuccessful":true,
-      "resultCode":201,
-      "resultMessage":"Created"
-   },
-   "interface":{
-      "id":"e7c6a340-6889-445b-ae2f-4e237b9afc9e",
-      "path":null,
-      "status":"BUILDING",
-      "subnetId":"3e5b4d63-d143-420a-9263-208a447a2a3f",
-      "tenantId":"3b6179e5fa6b499386b827357c4cb8c4"
-   }
+  "header": {
+    "isSuccessful": true,
+    "resultCode": 201,
+    "resultMessage": "Created"
+  },
+  "interface": {
+    "id": "e7c6a340-6889-445b-ae2f-4e237b9afc9e",
+    "path": null,
+    "status": "BUILDING",
+    "subnetId": "3e5b4d63-d143-420a-9263-208a447a2a3f",
+    "tenantId": "3b6179e5fa6b499386b827357c4cb8c4"
+  }
 }
 ```
 
@@ -741,28 +751,28 @@ This API does not require a request body.
 
 ```json
 {
-   "header":{
-      "isSuccessful":true,
-      "resultCode":200,
-      "resultMessage":"Success"
-   },
-   "paging":{
-      "limit":50,
-      "page":1,
-      "totalCount":1
-   },
-   "restoreHistories":[
-      {
-         "requestedAt":"2025-04-01T08:29:28+00:00",
-         "requestedIp":"10.163.23.45",
-         "requestedUser":"14025c4b-cc93-4f97-9416-a8001cc771c1",
-         "restoredAt":"2025-04-01T08:29:34+00:00",
-         "result":"SUCCESS",
-         "snapshotId":"5e9745a5-0ed3-11f0-b0e3-d039eaa3e920",
-         "snapshotName":"TEST-SNAPSHOT-IMM-1",
-         "volumeId":"70787a7e-605b-4447-b950-46aa3297e0ed"
-      }
-   ]
+  "header": {
+    "isSuccessful": true,
+    "resultCode": 200,
+    "resultMessage": "Success"
+  },
+  "paging": {
+    "limit": 50,
+    "page": 1,
+    "totalCount": 1
+  },
+  "restoreHistories": [
+    {
+      "requestedAt": "2025-04-01T08:29:28+00:00",
+      "requestedIp": "10.163.23.45",
+      "requestedUser": "14025c4b-cc93-4f97-9416-a8001cc771c1",
+      "restoredAt": "2025-04-01T08:29:34+00:00",
+      "result": "SUCCESS",
+      "snapshotId": "5e9745a5-0ed3-11f0-b0e3-d039eaa3e920",
+      "snapshotName": "TEST-SNAPSHOT-IMM-1",
+      "volumeId": "70787a7e-605b-4447-b950-46aa3297e0ed"
+    }
+  ]
 }
 ```
 
@@ -802,15 +812,15 @@ This API does not require a request body.
 
 ```json
 {
-   "header":{
-      "isSuccessful":true,
-      "resultCode":200,
-      "resultMessage":"Success"
-   },
-   "usage":{
-      "snapshotReserveGb":30,
-      "usedGb":2
-   }
+  "header": {
+    "isSuccessful": true,
+    "resultCode": 200,
+    "resultMessage": "Success"
+  },
+  "usage": {
+    "snapshotReserveGb": 30,
+    "usedGb": 2
+  }
 }
 ```
 
@@ -844,40 +854,32 @@ This API does not require a request body.
 | --- | --- | --- | --- |
 | header | Body | Object | Header Objects |
 | snapshots | Body | List | Snapshot info object list |
-| snapshots.createdAt | Body | String | Snapshot creation time |
 | snapshots.id | Body | String | Snapshot ID |
 | snapshots.name | Body | String | Snapshot name |
-| snapshots.preserved | Body | Boolean | Whether snapshots are made undeletable by the system |
 | snapshots.size | Body | Integer | Snapshot size |
 | snapshots.type | Body | String | Snapshot types<br>- `NORMAL`: Snapshots created by the user<br>- `SCHEDULED`: Snapshots created by Auto Create Snapshot<br>- `MIRROR`: Snapshots created by replication |
+| snapshots.preserved | Body | Boolean | Whether snapshots are made undeletable by the system |
+| snapshots.createdAt | Body | String | Snapshot creation time |
 
 <details><summary>Example response</summary>
 
 ```json
 {
-   "header":{
-      "isSuccessful":true,
-      "resultCode":200,
-      "resultMessage":"Success"
-   },
-   "snapshots":[
-      {
-         "createdAt":"2025-04-01T09:34:27+00:00",
-         "id":"8151fe33-0edc-11f0-b0e3-d039eaa3e920",
-         "name":"TEST-SNAPSHOT-1",
-         "preserved":false,
-         "size":3112960,
-         "type":"NORMAL"
-      },
-      {
-         "createdAt":"2025-04-01T09:35:00+00:00",
-         "id":"00904f26-9cff-4131-a4d7-96f6a89e4ae7",
-         "name":"TEST-NAS-1.mirror.2025-04-01_183500",
-         "preserved":true,
-         "size":3133440,
-         "type":"MIRROR"
-      }
-   ]
+  "header": {
+    "isSuccessful": true,
+    "resultCode": 201,
+    "resultMessage": "Created"
+  },
+  "snapshots": [
+    {
+      "createdAt": "2025-04-01T09:34:27+00:00",
+      "id": "8151fe33-0edc-11f0-b0e3-d039eaa3e920",
+      "name": "TEST-SNAPSHOT-1",
+      "preserved": false,
+      "size": 3112960,
+      "type": "NORMAL"
+    }
+  ]
 }
 ```
 </details>
@@ -907,9 +909,9 @@ X-Auth-Token: {token-id}
 
 ```json
 {
-   "snapshot":{
-      "name":"TEST-SNAPSHOT-2"
-   }
+  "snapshot": {
+    "name": "TEST-SNAPSHOT-1"
+  }
 }
 ```
 
@@ -920,29 +922,32 @@ X-Auth-Token: {token-id}
 | Name | Type | Format | Description |
 | --- | --- | --- | --- |
 | header | Body | Object | Header Objects |
-| snapshot | Body | List | Snapshot information objects |
+| snapshot | Body | Object | Snapshot information objects |
 | snapshot.id | Body | String | Snapshot ID |
 | snapshot.name | Body | String | Snapshot name |
-| snapshot.preserved | Body | Boolean | Whether snapshots are made undeletable by the system |
-| snapshot.reclaimableSpace | Body | Integer | Space freed up when deleting snapshots |
+| snapshot.size | Body | Integer | Snapshot size |
 | snapshot.type | Body | String | Snapshot types<br>- `NORMAL`: Snapshots created by the user<br>- `SCHEDULED`: Snapshots created by Auto Create Snapshot<br>- `MIRROR`: Snapshots created by replication |
+| snapshot.preserved | Body | Boolean | Whether snapshots are made undeletable by the system |
+| snapshot.createdAt | Body | String | Snapshot creation time |
 
 <details>
   <summary>Example response</summary>
 
 ```json
 {
-   "header":{
-      "isSuccessful":true,
-      "resultCode":201,
-      "resultMessage":"Created"
-   },
-   "snapshot":{
-      "id":"0dc959d5-0edd-11f0-b0e3-d039eaa3e920",
-      "name":"TEST-SNAPSHOT-2",
-      "preserved":false,
-      "type":"NORMAL"
-   }
+  "header": {
+    "isSuccessful": true,
+    "resultCode": 201,
+    "resultMessage": "Created"
+  },
+  "snapshot": {
+    "createdAt": "2025-04-01T09:34:27+00:00",
+    "id": "8151fe33-0edc-11f0-b0e3-d039eaa3e920",
+    "name": "TEST-SNAPSHOT-1",
+    "preserved": false,
+    "size": 3112960,
+    "type": "NORMAL"
+  }
 }
 ```
 
@@ -1000,14 +1005,13 @@ This API does not require a request body.
 | Name | Type | Format | Description |
 | --- | --- | --- | --- |
 | header | Body | Object | Header Objects |
-| snapshot | Body | List | Snapshot information objects |
-| snapshot.createdAt | Body | String | Snapshot creation time |
+| snapshot | Body | Object | Snapshot information objects |
 | snapshot.id | Body | String | Snapshot ID |
 | snapshot.name | Body | String | Snapshot name |
-| snapshot.preserved | Body | Boolean | Whether snapshots are made undeletable by the system |
-| snapshot.reclaimableSpace | Body | Integer | Space freed up when deleting snapshots |
 | snapshot.size | Body | Integer | Snapshot size |
-| snapshot.type | Body | String | Snapshot types<br>- `NORMAL`: Snapshots created by the user<br>- `SCHEDULED`: Snapshots created by Snapshot auto-create.<br>- `MIRROR`: Snapshots created by replication |
+| snapshot.type | Body | String | Snapshot types<br>- `NORMAL`: Snapshots created by the user<br>- `SCHEDULED`: Snapshots created by Auto Create Snapshot<br>- `MIRROR`: Snapshots created by replication |
+| snapshot.preserved | Body | Boolean | Whether snapshots are made undeletable by the system |
+| snapshot.createdAt | Body | String | Snapshot creation time |
 
 <br>
 
@@ -1054,12 +1058,12 @@ The selectable region ranges for each replication target project can be found in
 The size of the target storage for replication must be the same as the source storage.
 If the sizes of the source and target storages differ, the replication may fail.
 
-<!-- 개행을 위한 주석 -->
+<!-- -->
 
 > [Note]
 To set up encryption on the target storage, you must configure a separate encryption keystore specific to the project or region the target storage belongs to.
 
-<!-- 개행을 위한 주석 -->
+<!-- -->
 
 > [Note] If the source storage uses the CIFS protocol, the target storage must also use CIFS.
 To do this, you must create separate CIFS credentials (different from the source) and specify it in the`cifsAuthIds` field of the request body.
@@ -1104,18 +1108,18 @@ X-Auth-Token: {token-id}
 
 ```json
 {
-   "volumeMirror":{
-      "dstRegion":"KR1",
-      "dstTenantId":"7debf04e6a7248c98777229bcb004b69",
-      "dstVolume":{
-         "description":"Volume Mirror Test",
-         "mountProtocol":{
-            "protocol":"nfs"
-         },
-         "name":"TEST-NAS-MIRROR",
-         "sizeGb":300
-      }
-   }
+  "volumeMirror": {
+    "dstRegion": "KR1",
+    "dstTenantId": "7debf04e6a7248c98777229bcb004b69",
+    "dstVolume": {
+      "description": "Volume Mirror Test",
+      "mountProtocol": {
+        "protocol": "nfs"
+      },
+      "name": "TEST-NAS-MIRROR",
+      "sizeGb": 300
+    }
+  }
 }
 ```
 
@@ -1149,29 +1153,29 @@ X-Auth-Token: {token-id}
 
 ```json
 {
-   "header":{
-      "isSuccessful":true,
-      "resultCode":201,
-      "resultMessage":"Created"
-   },
-   "volumeMirror":{
-      "createdAt":"2025-04-02T00:21:37+00:00",
-      "direction":"FORWARD",
-      "directionChangedAt":null,
-      "dstProjectId":"7c5dVmxI",
-      "dstRegion":"KR1",
-      "dstTenantId":"7debf04e6a7248c98777229bcb004b69",
-      "dstVolumeId":null,
-      "dstVolumeName":null,
-      "id":"f581af37-4b43-4c93-9478-0dbcad382641",
-      "role":"SOURCE",
-      "srcProjectId":"K3y0CgOy",
-      "srcRegion":"KR1",
-      "srcTenantId":"3b6179e5fa6b499386b827357c4cb8c4",
-      "srcVolumeId":"70787a7e-605b-4447-b950-46aa3297e0ed",
-      "srcVolumeName":"TEST-NAS-2",
-      "status":"PENDING"
-   }
+  "header": {
+    "isSuccessful": true,
+    "resultCode": 201,
+    "resultMessage": "Created"
+  },
+  "volumeMirror": {
+    "createdAt":"2025-04-01T06:45:45+00:00",
+    "direction": "FORWARD",
+    "directionChangedAt": null,
+    "dstProjectId": "K3y0CgOy",
+    "dstRegion": "KR2",
+    "dstTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
+    "dstVolumeId": "e09281d2-0b1c-48a9-8a01-0098aa59f624",
+    "dstVolumeName": "TEST-NAS-MIRROR-1",
+    "id": "8116892c-7306-48be-9e3d-143311b2254c",
+    "role": "SOURCE",
+    "srcProjectId": "K3y0CgOy",
+    "srcRegion": "KR1",
+    "srcTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
+    "srcVolumeId": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
+    "srcVolumeName": "TEST-NAS-1",
+    "status": "PENDING"
+  }
 }
 ```
 
