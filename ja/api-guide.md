@@ -21,17 +21,19 @@ NASストレージAPIが提供する共通レスポンス情報の説明です�
 | --- | --- | --- | --- |
 | header | Body | Object | ヘッダオブジェクト |
 | header.isSuccessful | Body | Boolean | リクエストの成否(`true`または`false`) |
-| header.resultCode | Body | Integer | HTTPステータスコードに該当する結果コード<br>- `200`:成功 <br>- `201`:リソース作成成功<br>- `202`:リクエストが正常に受信されたが、まだ処理されていない状態<br>- `400`:有効ではない値でリクエストされた<br>- `401`:権限、認証またはトークン関連エラー <br>- `404`:リクエストしたリソースが見つからない<br>- `405`:リクエストしたURLが指定したHTTPメソッドをサポートしていない<br>- `5XX`:クライアントのリクエストは有効ですがサーバーが処理に失敗する |
+| header.resultCode | Body | Integer | HTTPステータスコードに該当する結果コード<br>- `200`:成功 <br>- `201`:リソース作成成功<br>- `202`:リクエストが正常に受信されたが、まだ処理されていない状態<br>- `400`:有効ではない値でリクエストされた<br>- `401`:権限、認証またはトークン関連エラー <br>- `404`:リクエストしたリソースが見つからない<br>- `405`:リクエストしたURLが指定したHTTPメソッドをサポートしていない<br>- `5XX`:クライアントのリクエストは有効ですがサーバーが処理に失敗する |
 | header.resultMessage | Body | String | リクエスト処理結果に関するメッセージ |
 
 <details>
   <summary>レスポンス例</summary>
 
 ```json
-"header": {
-  "isSuccessful": true,
-  "resultCode": 200,
-  "resultMessage": "Success"
+{
+  "header": {
+    "isSuccessful": true,
+    "resultCode": 200,
+    "resultMessage": "Success"
+  }
 }
 ```
 
@@ -46,7 +48,7 @@ NASストレージAPIが提供する共通レスポンス情報の説明です�
 NASストレージ一覧を照会します。
 
 ```
-GET  /v1/volumes
+GET  /v1/volumes
 X-Auth-Token: {token-id}
 ```
 
@@ -96,9 +98,9 @@ X-Auth-Token: {token-id}
 | volumes.interfaces.tenantId | Body | String | インターフェースのテナントID |
 | volumes.mirrors | Body | List | NASストレージ複製設定オブジェクトリスト |
 | volumes.mirrors.id | Body | String | 複製設定ID |
-| volumes.mirrors.role | Body | String | 複製ロール<br>- `SOURCE`:ソースストレージ<br>- `DESTINATION`:対象ストレージ |
-| volumes.mirrors.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
-| volumes.mirrors.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースストレージ→複製ストレージ <br>- `REVERSE`:複製ストレージ→ソースストレージ |
+| volumes.mirrors.role | Body | String | 複製ロール<br>- `SOURCE`:ソースストレージ<br>- `DESTINATION`:対象ストレージ |
+| volumes.mirrors.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
+| volumes.mirrors.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースストレージ→複製ストレージ <br>- `REVERSE`:複製ストレージ→ソースストレージ |
 | volumes.mirrors.directionChangedAt | Body | String | 複製方向変更時刻 |
 | volumes.mirrors.dstProjectId | Body | String | 複製対象ストレージのプロジェクトID |
 | volumes.mirrors.dstRegion | Body | String | 複製対象ストレージリージョン |
@@ -129,79 +131,84 @@ X-Auth-Token: {token-id}
 
 ```json
 {
-   "header":{
-      "isSuccessful":true,
-      "resultCode":200,
-      "resultMessage":"Success"
-   },
-   "paging":{
-      "limit":50,
-      "page":1,
-      "totalCount":1
-   },
-   "volumes":[
-      {
-         "acl":[
-            "10.0.1.0/24"
-         ],
-         "createdAt":"2025-04-01T06:44:25+00:00",
-         "description":"NAS for Testing",
-         "encryption":{
-            "enabled":false
-         },
-         "id":"fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
-         "interfaces":[
-            {
-               "id":"9a8ec90f-cc27-4649-9bda-a1f0b193a402",
-               "path":"10.0.1.7:/TEST-NAS-1",
-               "status":"ACTIVE",
-               "subnetId":"cb779d62-72ef-43b6-b368-3fe28dcd812b",
-               "tenantId":"3b6179e5fa6b499386b827357c4cb8c4"
-            }
-         ],
-         "mirrors":[
-            {
-               "createdAt":"2025-04-01T06:45:45+00:00",
-               "direction":"FORWARD",
-               "directionChangedAt":null,
-               "dstProjectId":"K3y0CgOy",
-               "dstRegion":"KR2",
-               "dstTenantId":"3b6179e5fa6b499386b827357c4cb8c4",
-               "dstVolumeId":"e09281d2-0b1c-48a9-8a01-0098aa59f624",
-               "dstVolumeName":"TEST-NAS-MIRROR-1",
-               "id":"8116892c-7306-48be-9e3d-143311b2254c",
-               "role":"SOURCE",
-               "srcProjectId":"K3y0CgOy",
-               "srcRegion":"KR1",
-               "srcTenantId":"3b6179e5fa6b499386b827357c4cb8c4",
-               "srcVolumeId":"fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
-               "srcVolumeName":"TEST-NAS-1",
-               "status":"INITIALIZED"
-            }
-         ],
-         "mountProtocol":{
-            "protocol":"nfs"
-         },
-         "name":"TEST-NAS-1",
-         "projectId":"K3y0CgOy",
-         "sizeGb":300,
-         "snapshotPolicy":{
-            "maxScheduledCount":1,
-            "reservePercent":5,
-            "schedule":{
-               "time":"00:00",
-               "timeOffset":"+09:00",
-               "weekdays":[
-                  
-               ]
-            }
-         },
-         "stationId":null,
-         "status":"ACTIVE",
-         "tenantId":"3b6179e5fa6b499386b827357c4cb8c4",
-         "updatedAt":"2025-04-01T06:47:13+00:00"
-      }
-   ]
+  "header": {
+    "isSuccessful": true,
+    "resultCode": 200,
+    "resultMessage": "Success"
+  },
+  "paging": {
+    "limit": 50,
+    "page": 1,
+    "totalCount": 1
+  },
+  "volumes": [
+    {
+      "acl": [
+        "10.0.1.0/24"
+      ],
+      "createdAt": "2025-04-01T06:44:25+00:00",
+      "description": "NAS for Testing",
+      "encryption": {
+        "enabled": false
+      },
+      "id": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
+      "interfaces": [
+        {
+          "id": "9a8ec90f-cc27-4649-9bda-a1f0b193a402",
+          "path": "10.0.1.7:/TEST-NAS-1",
+          "status": "ACTIVE",
+          "subnetId": "cb779d62-72ef-43b6-b368-3fe28dcd812b",
+          "tenantId": "3b6179e5fa6b499386b827357c4cb8c4"
+        }
+      ],
+      "mirrors": [
+        {
+          "createdAt":"2025-04-01T06:45:45+00:00",
+          "direction": "FORWARD",
+          "directionChangedAt": null,
+          "dstProjectId": "K3y0CgOy",
+          "dstRegion": "KR2",
+          "dstTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
+          "dstVolumeId": "e09281d2-0b1c-48a9-8a01-0098aa59f624",
+          "dstVolumeName": "TEST-NAS-MIRROR-1",
+          "id": "8116892c-7306-48be-9e3d-143311b2254c",
+          "role": "SOURCE",
+          "srcProjectId": "K3y0CgOy",
+          "srcRegion": "KR1",
+          "srcTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
+          "srcVolumeId": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
+          "srcVolumeName": "TEST-NAS-1",
+          "status": "PENDING"
+        }
+      ],
+      "mountProtocol": {
+        "protocol": "cifs",
+        "cifsAuthIds": [
+          "cifs-test-id"
+        ]
+      },
+      "name": "TEST-NAS-1",
+      "projectId": "K3y0CgOy",
+      "sizeGb": 300,
+      "snapshotPolicy": {
+        "maxScheduledCount": 1,
+        "reservePercent": 5,
+        "schedule": {
+          "time": "00:00",
+          "timeOffset": "+09:00",
+          "weekdays": [
+            1,
+            3,
+            5
+          ]
+        }
+      },
+      "stationId": null,
+      "status": "ACTIVE",
+      "tenantId": "3b6179e5fa6b499386b827357c4cb8c4",
+      "updatedAt": "2025-04-01T06:47:13+00:00"
+    }
+  ]
 }
 ```
 
@@ -213,15 +220,15 @@ X-Auth-Token: {token-id}
 
 新しいNASストレージを作成します。
 
-> [参考] CIFSプロトコル使用
+> [参考] CIFSプロトコル使用
 > CIFSプロトコルを使用するためには、CIFS認証情報を生成する必要があります。認証情報はプロジェクト単位で管理され、CIFSストレージごとにアクセスするCIFS認証情報を登録する必要があります。
-> CIFS認証情報はコンソールの **Storage > NAS > CIFS認証情報管理**ウィンドウから作成できます。
+> CIFS認証情報はコンソールの **Storage > NAS > CIFS認証情報管理**ウィンドウから作成できます。
 
-<!-- 改行のためのコメント -->
+<!-- -->
 
 > [参考]暗号化キーストア設定
 > NAS暗号化ストレージは暗号化に使用する対称鍵をNHN Cloud Secure Key Managerサービスのキーストアに保存します。したがって、暗号化ストレージを作成するためには、事前にSecure Key Managerサービスで[キーストアを作成](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_1)する必要があります。 [キーストアのIDを確認](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_2)し、暗号化キーストア設定に入力します。
-> 作成したキーストアIDはコンソールの **Storage > NAS > 暗号化キーストア設定** ウィンドウで入力できます。暗号化ストレージを作成すると、設定したキーストアに対称鍵が保存されます。 NASサービスによってキーストアに保存された対称鍵は暗号化ストレージ使用中には削除できません。暗号化ストレージを削除すると、対称鍵も一緒に削除されます。
+> 作成したキーストアIDはコンソールの **Storage > NAS > 暗号化キーストア設定** ウィンドウで入力できます。暗号化ストレージを作成すると、設定したキーストアに対称鍵が保存されます。 NASサービスによってキーストアに保存された対称鍵は暗号化ストレージ使用中には削除できません。暗号化ストレージを削除すると、対称鍵も一緒に削除されます。
 > キーストアIDを変更すると、その後に作成する暗号化ストレージの対称鍵が変更されたキーストアに保存されます。既存キーストアに保存された対称鍵は維持されます。
 
 ```
@@ -237,7 +244,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- | --- |
 | X-Auth-Token | Header | String | O | トークンID |
 | volume | Body | Object | O | NASストレージ作成リクエストオブジェクト |
-| volume.acl | Body | List | - | NASストレージ作成時設定するACL IDリスト<br>IPまたはCIDR形式で入力できます。 |
+| volume.acl | Body | List | - | NASストレージ作成時設定するACL IDリスト<br>IPまたはCIDR形式で入力できます。 |
 | volume.description | Body | String | - | NASストレージの説明 |
 | volume.encryption | Body | Object | - | NASストレージ作成時暗号化設定オブジェクト |
 | volume.encryption.enabled | Body | Boolean | - | 暗号化設定有効かどうか<br>暗号化キーストアが設定された後、該当フィールドを`true`に設定すると、暗号化が有効になります。 |
@@ -245,7 +252,7 @@ X-Auth-Token: {token-id}
 | volume.interfaces.subnetId | Body | String | - | NASストレージインターフェースのサブネットID |
 | volume.mountProtocol | Body | Object | - | NASストレージを作成する際のプロトコル設定オブジェクト |
 | volume.mountProtocol.cifsAuthIds | Body | List | - | CIFS認証IDリスト<br>NFSプロトコル選択時入力不要 |
-| volume.mountProtocol.protocol | Body | String | O | NASストレージをマウントする際のプロトコル指定<br>`nfs`, `cifs`のいずれかを選択できます。 |
+| volume.mountProtocol.protocol | Body | String | O | NASストレージをマウントする際のプロトコル指定<br>`nfs`, `cifs`のいずれかを選択できます。 |
 | volume.name | Body | String | O | NASストレージ名 |
 | volume.sizeGb | Body | Integer | O | NASストレージサイズ(GB)<br>NASストレージは、最小300GBから最大10,000GBまで、100GB単位で設定できます。 |
 | volume.snapshotPolicy | Body | Object | - | NASストレージボリュームスナップショット設定オブジェクト |
@@ -277,7 +284,7 @@ X-Auth-Token: {token-id}
     "mountProtocol": {
       "protocol": "nfs"
     },
-    "name": "TEST-NAS-2",
+    "name": "TEST-NAS-1",
     "sizeGb": 300,
     "snapshotPolicy": {
       "maxScheduledCount": 20,
@@ -285,7 +292,11 @@ X-Auth-Token: {token-id}
       "schedule": {
         "time": "03:00",
         "timeOffset": "+09:00",
-        "weekdays": [1, 3, 5]
+        "weekdays": [
+          1,
+          3,
+          5
+        ]
       }
     }
   }
@@ -319,9 +330,9 @@ X-Auth-Token: {token-id}
 | volume.interfaces.tenantId | Body | String | インターフェースのテナントID |
 | volume.mirrors | Body | List | NASストレージ複製設定オブジェクトリスト |
 | volume.mirrors.id | Body | String | 複製設定ID |
-| volume.mirrors.role | Body | String | 複製役割<br>- `SOURCE`:ソースストレージ<br>- `DESTINATION`:対象ストレージ |
-| volume.mirrors.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
-| volume.mirrors.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースストレージ -> 複製ストレージ<br>- `REVERSE`:複製ストレージ -> ソースストレージ |
+| volume.mirrors.role | Body | String | 複製役割<br>- `SOURCE`:ソースストレージ<br>- `DESTINATION`:対象ストレージ |
+| volume.mirrors.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
+| volume.mirrors.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースストレージ -> 複製ストレージ<br>- `REVERSE`:複製ストレージ -> ソースストレージ |
 | volume.mirrors.directionChangedAt | Body | String | 複製方向変更時刻 |
 | volume.mirrors.dstProjectId | Body | String | 複製対象ストレージのプロジェクトID |
 | volume.mirrors.dstRegion | Body | String | 複製対象ストレージリージョン |
@@ -352,77 +363,77 @@ X-Auth-Token: {token-id}
 
 ```json
 {
-   "header":{
-      "isSuccessful":true,
-      "resultCode":200,
-      "resultMessage":"Success"
-   },
-   "paging":{
-      "limit":50,
-      "page":1,
-      "totalCount":1
-   },
-   "volumes":[
+  "header": {
+    "isSuccessful": true,
+    "resultCode": 201,
+    "resultMessage": "Created"
+  },
+  "volume": {
+    "acl": [
+      "10.0.1.0/24"
+    ],
+    "createdAt": "2025-04-01T06:44:25+00:00",
+    "description": "NAS for Testing",
+    "encryption": {
+      "enabled": false
+    },
+    "id": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
+    "interfaces": [
       {
-         "acl":[
-            "10.0.1.0/24"
-         ],
-         "createdAt":"2025-04-01T06:44:25+00:00",
-         "description":"NAS for Testing",
-         "encryption":{
-            "enabled":false
-         },
-         "id":"fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
-         "interfaces":[
-            {
-               "id":"9a8ec90f-cc27-4649-9bda-a1f0b193a402",
-               "path":"10.0.1.7:/TEST-NAS-1",
-               "status":"ACTIVE",
-               "subnetId":"cb779d62-72ef-43b6-b368-3fe28dcd812b",
-               "tenantId":"3b6179e5fa6b499386b827357c4cb8c4"
-            }
-         ],
-         "mirrors":[
-            {
-               "createdAt":"2025-04-01T06:45:45+00:00",
-               "direction":"FORWARD",
-               "directionChangedAt":null,
-               "dstProjectId":"K3y0CgOy",
-               "dstRegion":"KR2",
-               "dstTenantId":"3b6179e5fa6b499386b827357c4cb8c4",
-               "dstVolumeId":"e09281d2-0b1c-48a9-8a01-0098aa59f624",
-               "dstVolumeName":"TEST-NAS-MIRROR-1",
-               "id":"8116892c-7306-48be-9e3d-143311b2254c",
-               "role":"SOURCE",
-               "srcProjectId":"K3y0CgOy",
-               "srcRegion":"KR1",
-               "srcTenantId":"3b6179e5fa6b499386b827357c4cb8c4",
-               "srcVolumeId":"fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
-               "srcVolumeName":"TEST-NAS-1",
-               "status":"INITIALIZED"
-            }
-         ],
-         "mountProtocol":{
-            "protocol":"nfs"
-         },
-         "name":"TEST-NAS-1",
-         "projectId":"K3y0CgOy",
-         "sizeGb":300,
-         "snapshotPolicy":{
-            "maxScheduledCount":1,
-            "reservePercent":5,
-            "schedule":{
-               "time":"00:00",
-               "timeOffset":"+09:00",
-               "weekdays":[]
-            }
-         },
-         "stationId":null,
-         "status":"ACTIVE",
-         "tenantId":"3b6179e5fa6b499386b827357c4cb8c4",
-         "updatedAt":"2025-04-01T06:47:13+00:00"
+        "id": "9a8ec90f-cc27-4649-9bda-a1f0b193a402",
+        "path": "10.0.1.7:/TEST-NAS-1",
+        "status": "ACTIVE",
+        "subnetId": "cb779d62-72ef-43b6-b368-3fe28dcd812b",
+        "tenantId": "3b6179e5fa6b499386b827357c4cb8c4"
       }
-   ]
+    ],
+    "mirrors": [
+      {
+        "createdAt":"2025-04-01T06:45:45+00:00",
+        "direction": "FORWARD",
+        "directionChangedAt": null,
+        "dstProjectId": "K3y0CgOy",
+        "dstRegion": "KR2",
+        "dstTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
+        "dstVolumeId": "e09281d2-0b1c-48a9-8a01-0098aa59f624",
+        "dstVolumeName": "TEST-NAS-MIRROR-1",
+        "id": "8116892c-7306-48be-9e3d-143311b2254c",
+        "role": "SOURCE",
+        "srcProjectId": "K3y0CgOy",
+        "srcRegion": "KR1",
+        "srcTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
+        "srcVolumeId": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
+        "srcVolumeName": "TEST-NAS-1",
+        "status": "PENDING"
+      }
+    ],
+    "mountProtocol": {
+      "protocol": "cifs",
+      "cifsAuthIds": [
+        "cifs-test-id"
+      ]
+    },
+    "name": "TEST-NAS-1",
+    "projectId": "K3y0CgOy",
+    "sizeGb": 300,
+    "snapshotPolicy": {
+      "maxScheduledCount": 1,
+      "reservePercent": 5,
+      "schedule": {
+        "time": "00:00",
+        "timeOffset": "+09:00",
+        "weekdays": [
+          1,
+          3,
+          5
+        ]
+      }
+    },
+    "stationId": null,
+    "status": "ACTIVE",
+    "tenantId": "3b6179e5fa6b499386b827357c4cb8c4",
+    "updatedAt": "2025-04-01T06:47:13+00:00"
+  }
 }
 ```
 
@@ -497,9 +508,9 @@ X-Auth-Token: {token-id}
 | volume.interfaces.tenantId | Body | String | インターフェースのテナントID |
 | volume.mirrors | Body | List | NASストレージ複製設定オブジェクトリスト |
 | volume.mirrors.id | Body | String | 複製設定ID |
-| volume.mirrors.role | Body | String | 複製役割<br>- `SOURCE`:ソースストレージ<br>- `DESTINATION`:対象ストレージ |
-| volume.mirrors.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
-| volume.mirrors.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースストレージ -> 複製ストレージ<br>- `REVERSE`:複製ストレージ -> ソースストレージ |
+| volume.mirrors.role | Body | String | 複製役割<br>- `SOURCE`:ソースストレージ<br>- `DESTINATION`:対象ストレージ |
+| volume.mirrors.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
+| volume.mirrors.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースストレージ -> 複製ストレージ<br>- `REVERSE`:複製ストレージ -> ソースストレージ |
 | volume.mirrors.directionChangedAt | Body | String | 複製方向変更時刻 |
 | volume.mirrors.dstProjectId | Body | String | 複製対象ストレージのプロジェクトID |
 | volume.mirrors.dstRegion | Body | String | 複製対象ストレージリージョン |
@@ -546,7 +557,7 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | O | トークンID |
 | volume\_id | URL | String | O | NASストレージID |
 | volume | Body | Object | O | NASストレージ作成リクエストオブジェクト |
-| volume.acl | Body | List | - | NASストレージ作成時に設定するACL IDのリスト<br>IPまたはCIDR形式で入力できます。 |
+| volume.acl | Body | List | - | NASストレージ作成時に設定するACL IDのリスト<br>IPまたはCIDR形式で入力できます。 |
 | volume.description | Body | String | - | NASストレージの説明 |
 | volume.mountProtocol | Body | Object | - | NASストレージを作成する際のプロトコル設定オブジェクト |
 | volume.mountProtocol.cifsAuthIds | Body | List | - | CIFS認証IDリスト |
@@ -565,31 +576,32 @@ X-Auth-Token: {token-id}
 
 ```json
 {
-   "volume":{
-      "acl":[
-         "10.0.1.0/24"
+  "volume": {
+    "acl": [
+      "10.0.1.0/24"
+    ],
+    "description": "Modified description",
+    "mountProtocol": {
+      "cifsAuthIds": [
+        "cifs-test-id"
       ],
-      "description":"Modified description",
-      "mountProtocol":{
-         "cifsAuthIds":[
-            "cifs-test-id"
-         ],
-         "protocol":"cifs"
-      },
-      "sizeGb":300,
-      "snapshotPolicy":{
-         "maxScheduledCount":10,
-         "reservePercent":20,
-         "schedule":{
-            "time":"05:00",
-            "timeOffset":"+09:00",
-            "weekdays":[
-               2,
-               4
-            ]
-         }
+      "protocol": "cifs"
+    },
+    "sizeGb": 300,
+    "snapshotPolicy": {
+      "maxScheduledCount": 10,
+      "reservePercent": 20,
+      "schedule": {
+        "time": "05:00",
+        "timeOffset": "+09:00",
+        "weekdays": [
+          1,
+          3,
+          5
+        ]
       }
-   }
+    }
+  }
 }
 ```
 
@@ -625,9 +637,9 @@ X-Auth-Token: {token-id}
 
 ```json
 {
-   "interface":{
-      "subnetId":"3e5b4d63-d143-420a-9263-208a447a2a3f"
-   }
+  "interface":{
+    "subnetId":"3e5b4d63-d143-420a-9263-208a447a2a3f"
+  }
 }
 ```
 
@@ -643,25 +655,25 @@ X-Auth-Token: {token-id}
 | interface.path | Body | String | 作成されたインターフェースパス |
 | interface.status | Body | String | 作成されたインターフェースの状態 |
 | interface.subnetId | Body | String | 作成されたインターフェースのサブネットID |
-| interface.tenentId | Body | String | 作成されたインターフェースのテナントID |
+| interface.tenantId | Body | String | 作成されたインターフェースのテナントID |
 
 <details>
   <summary>レスポンス例</summary>
 
 ```json
 {
-   "header":{
-      "isSuccessful":true,
-      "resultCode":201,
-      "resultMessage":"Created"
-   },
-   "interface":{
-      "id":"e7c6a340-6889-445b-ae2f-4e237b9afc9e",
-      "path":null,
-      "status":"BUILDING",
-      "subnetId":"3e5b4d63-d143-420a-9263-208a447a2a3f",
-      "tenantId":"3b6179e5fa6b499386b827357c4cb8c4"
-   }
+  "header": {
+    "isSuccessful": true,
+    "resultCode": 201,
+    "resultMessage": "Created"
+  },
+  "interface": {
+    "id": "e7c6a340-6889-445b-ae2f-4e237b9afc9e",
+    "path": null,
+    "status": "BUILDING",
+    "subnetId": "3e5b4d63-d143-420a-9263-208a447a2a3f",
+    "tenantId": "3b6179e5fa6b499386b827357c4cb8c4"
+  }
 }
 ```
 
@@ -739,28 +751,28 @@ X-Auth-Token: {token-id}
 
 ```json
 {
-   "header":{
-      "isSuccessful":true,
-      "resultCode":200,
-      "resultMessage":"Success"
-   },
-   "paging":{
-      "limit":50,
-      "page":1,
-      "totalCount":1
-   },
-   "restoreHistories":[
-      {
-         "requestedAt":"2025-04-01T08:29:28+00:00",
-         "requestedIp":"10.163.23.45",
-         "requestedUser":"14025c4b-cc93-4f97-9416-a8001cc771c1",
-         "restoredAt":"2025-04-01T08:29:34+00:00",
-         "result":"SUCCESS",
-         "snapshotId":"5e9745a5-0ed3-11f0-b0e3-d039eaa3e920",
-         "snapshotName":"TEST-SNAPSHOT-IMM-1",
-         "volumeId":"70787a7e-605b-4447-b950-46aa3297e0ed"
-      }
-   ]
+  "header": {
+    "isSuccessful": true,
+    "resultCode": 200,
+    "resultMessage": "Success"
+  },
+  "paging": {
+    "limit": 50,
+    "page": 1,
+    "totalCount": 1
+  },
+  "restoreHistories": [
+    {
+      "requestedAt": "2025-04-01T08:29:28+00:00",
+      "requestedIp": "10.163.23.45",
+      "requestedUser": "14025c4b-cc93-4f97-9416-a8001cc771c1",
+      "restoredAt": "2025-04-01T08:29:34+00:00",
+      "result": "SUCCESS",
+      "snapshotId": "5e9745a5-0ed3-11f0-b0e3-d039eaa3e920",
+      "snapshotName": "TEST-SNAPSHOT-IMM-1",
+      "volumeId": "70787a7e-605b-4447-b950-46aa3297e0ed"
+    }
+  ]
 }
 ```
 
@@ -800,15 +812,15 @@ X-Auth-Token: {token-id}
 
 ```json
 {
-   "header":{
-      "isSuccessful":true,
-      "resultCode":200,
-      "resultMessage":"Success"
-   },
-   "usage":{
-      "snapshotReserveGb":30,
-      "usedGb":2
-   }
+  "header": {
+    "isSuccessful": true,
+    "resultCode": 200,
+    "resultMessage": "Success"
+  },
+  "usage": {
+    "snapshotReserveGb": 30,
+    "usedGb": 2
+  }
 }
 ```
 
@@ -842,40 +854,32 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- |
 | header | Body | Object | ヘッダオブジェクト |
 | snapshots | Body | List | スナップショット情報オブジェクトリスト |
-| snapshots.createdAt | Body | String | スナップショット作成時刻 |
 | snapshots.id | Body | String | スナップショットID |
 | snapshots.name | Body | String | スナップショット名 |
-| snapshots.preserved | Body | Boolean | システムによって削除不可に設定されたスナップショットかどうか |
 | snapshots.size | Body | Integer | スナップショットサイズ |
-| snapshots.type | Body | String | スナップショットタイプ<br>- `NORMAL`:ユーザーによって作成されたスナップショット<br>- `SCHEDULED`:スナップショット自動作成によって作成されたスナップショット<br>- `MIRROR`:複製により作成されたスナップショット |
+| snapshots.type | Body | String | スナップショットタイプ<br>- `NORMAL`:ユーザーによって作成されたスナップショット<br>- `SCHEDULED`:スナップショット自動作成によって作成されたスナップショット<br>- `MIRROR`:複製により作成されたスナップショット |
+| snapshots.preserved | Body | Boolean | システムによって削除不可に設定されたスナップショットかどうか |
+| snapshots.createdAt | Body | String | スナップショット作成時刻 |
 
 <details><summary>レスポンス例</summary>
 
 ```json
 {
-   "header":{
-      "isSuccessful":true,
-      "resultCode":200,
-      "resultMessage":"Success"
-   },
-   "snapshots":[
-      {
-         "createdAt":"2025-04-01T09:34:27+00:00",
-         "id":"8151fe33-0edc-11f0-b0e3-d039eaa3e920",
-         "name":"TEST-SNAPSHOT-1",
-         "preserved":false,
-         "size":3112960,
-         "type":"NORMAL"
-      },
-      {
-         "createdAt":"2025-04-01T09:35:00+00:00",
-         "id":"00904f26-9cff-4131-a4d7-96f6a89e4ae7",
-         "name":"TEST-NAS-1.mirror.2025-04-01_183500",
-         "preserved":true,
-         "size":3133440,
-         "type":"MIRROR"
-      }
-   ]
+  "header": {
+    "isSuccessful": true,
+    "resultCode": 201,
+    "resultMessage": "Created"
+  },
+  "snapshots": [
+    {
+      "createdAt": "2025-04-01T09:34:27+00:00",
+      "id": "8151fe33-0edc-11f0-b0e3-d039eaa3e920",
+      "name": "TEST-SNAPSHOT-1",
+      "preserved": false,
+      "size": 3112960,
+      "type": "NORMAL"
+    }
+  ]
 }
 ```
 </details>
@@ -905,9 +909,9 @@ X-Auth-Token: {token-id}
 
 ```json
 {
-   "snapshot":{
-      "name":"TEST-SNAPSHOT-2"
-   }
+  "snapshot": {
+    "name": "TEST-SNAPSHOT-1"
+  }
 }
 ```
 
@@ -918,29 +922,32 @@ X-Auth-Token: {token-id}
 | 名前 | 種類 | 形式 | 説明 |
 | --- | --- | --- | --- |
 | header | Body | Object | ヘッダオブジェクト |
-| snapshot | Body | List | スナップショット情報オブジェクト |
+| snapshot | Body | Object | スナップショット情報オブジェクト |
 | snapshot.id | Body | String | スナップショットID |
 | snapshot.name | Body | String | スナップショット名 |
+| snapshot.size | Body | Integer | スナップショットサイズ |
+| snapshot.type | Body | String | スナップショットタイプ<br>- `NORMAL`:ユーザーによって作成されたスナップショット<br>- `SCHEDULED`:スナップショット自動作成によって作成されたスナップショット<br>- `MIRROR`:複製により作成されたスナップショット |
 | snapshot.preserved | Body | Boolean | システムによって削除不可に設定されたスナップショットかどうか |
-| snapshot.reclaimableSpace | Body | Integer | スナップショット削除時に確保される容量 |
-| snapshot.type | Body | String | スナップショットタイプ<br>- `NORMAL`:ユーザーによって成されたスナップショット<br>- `SCHEDULED`:スナップショット自動作成によって作成されたスナップショット<br>- `MIRROR`:複製によって作成されたスナップショット |
+| snapshot.createdAt | Body | String | スナップショット作成時刻 |
 
 <details>
   <summary>レスポンス例</summary>
 
 ```json
 {
-   "header":{
-      "isSuccessful":true,
-      "resultCode":201,
-      "resultMessage":"Created"
-   },
-   "snapshot":{
-      "id":"0dc959d5-0edd-11f0-b0e3-d039eaa3e920",
-      "name":"TEST-SNAPSHOT-2",
-      "preserved":false,
-      "type":"NORMAL"
-   }
+  "header": {
+    "isSuccessful": true,
+    "resultCode": 201,
+    "resultMessage": "Created"
+  },
+  "snapshot": {
+    "createdAt": "2025-04-01T09:34:27+00:00",
+    "id": "8151fe33-0edc-11f0-b0e3-d039eaa3e920",
+    "name": "TEST-SNAPSHOT-1",
+    "preserved": false,
+    "size": 3112960,
+    "type": "NORMAL"
+  }
 }
 ```
 
@@ -999,13 +1006,12 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- |
 | header | Body | Object | ヘッダオブジェクト |
 | snapshot | Body | List | スナップショット情報オブジェクト |
-| snapshot.createdAt | Body | String | スナップショット作成時刻 |
 | snapshot.id | Body | String | スナップショットID |
 | snapshot.name | Body | String | スナップショット名 |
-| snapshot.preserved | Body | Boolean | システムによって削除不可に設定されたスナップショットかどうか |
-| snapshot.reclaimableSpace | Body | Integer | スナップショット削除時に確保される容量 |
 | snapshot.size | Body | Integer | スナップショットサイズ |
-| snapshot.type | Body | String | スナップショットタイプ<br>- `NORMAL`:ユーザーによって作成されたスナップショット<br>- `SCHEDULED` :スナップショット自動作成によって作成されたスナップショット<br>- `MIRROR`:複製によって作成されたスナップショット |
+| snapshot.type | Body | String | スナップショットタイプ<br>- `NORMAL`:ユーザーによって作成されたスナップショット<br>- `SCHEDULED`:スナップショット自動作成によって作成されたスナップショット<br>- `MIRROR`:複製により作成されたスナップショット |
+| snapshot.preserved | Body | Boolean | システムによって削除不可に設定されたスナップショットかどうか |
+| snapshot.createdAt | Body | String | スナップショット作成時刻 |
 
 <br>
 
@@ -1051,14 +1057,14 @@ X-Auth-Token: {token-id}
 > [注意]
 > 複製対象ストレージサイズはソースストレージと同じサイズに設定する必要があります。ソースストレージと対象ストレージのサイズが異なる場合、複製に失敗する可能性があります。
 
-<!-- 改行のためのコメント -->
+<!-- -->
 
 > [参考]
 > 複製対象ストレージに暗号化を設定するには、ソースストレージとは別の(複製対象ストレージが属するプロジェクトまたはリージョン)暗号化キーストア設定が必要です。
 
-<!-- 改行のためのコメント -->
+<!-- -->
 
-> [参考] 
+> [参考] 
 > ソースストレージがCIFSプロトコルを使用している場合、対象ストレージもCIFSプロトコルを使用する必要があります。このため、ソースストレージとは別のCIFS認証情報を作成してリクエスト本文`cifsAuthIds`フィールドに入力する必要があります。
 
 
@@ -1077,7 +1083,7 @@ X-Auth-Token: {token-id}
 | volumeMirror.dstRegion | Body | String | O | 複製対象ストレージのリージョン |
 | volumeMirror.dstTenantId | Body | String | O | 複製対象ストレージのテナントID |
 | volumeMirror.dstVolume | Body | Object | O | 複製対象ストレージ作成リクエストオブジェクト |
-| volumeMirror.dstVolume.acl | Body | List | - | NASストレージ作成時に設定するACL IDリスト<br>IPまたはCIDR形式で入力できます。 |
+| volumeMirror.dstVolume.acl | Body | List | - | NASストレージ作成時に設定するACL IDリスト<br>IPまたはCIDR形式で入力できます。 |
 | volumeMirror.dstVolume.description | Body | String | - | NASストレージの説明 |
 | volumeMirror.dstVolume.encryption | Body | Object | - | NASストレージ作成時の暗号化設定オブジェクト |
 | volumeMirror.dstVolume.encryption.enabled | Body | Boolean | - | 暗号化設定が有効かどうか<br>暗号化キーストアが設定された後、該当フィールドを`true`に設定すると暗号化が有効になります。 |
@@ -1085,7 +1091,7 @@ X-Auth-Token: {token-id}
 | volumeMirror.dstVolume.interfaces.subnetId | Body | String | - | NASストレージインターフェースのサブネットID |
 | volumeMirror.dstVolume.mountProtocol | Body | Object | - | NASストレージ作成時のプロトコル設定オブジェクト |
 | volumeMirror.dstVolume.mountProtocol.cifsAuthIds | Body | List | - | CIFS認証IDリスト<br>NFSプロトコル選択時入力不要 |
-| volumeMirror.dstVolume.mountProtocol.protocol | Body | String | O | NASストレージをマウントする際のプロトコル指定<br>`nfs`, `cifs`のいずれかを選択できます。 |
+| volumeMirror.dstVolume.mountProtocol.protocol | Body | String | O | NASストレージをマウントする際のプロトコル指定<br>`nfs`, `cifs`のいずれかを選択できます。 |
 | volumeMirror.dstVolume.name | Body | String | O | NASストレージ名 |
 | volumeMirror.dstVolume.sizeGb | Body | Integer | O | NASストレージサイズ(GB)<br>NASストレージは、最小300GBから最大10,000GBまで、100GB単位で設定できます。 |
 | volumeMirror.dstVolume.snapshotPolicy | Body | Object | - | NASストレージボリュームスナップショット設定オブジェクト |
@@ -1101,18 +1107,18 @@ X-Auth-Token: {token-id}
 
 ```json
 {
-   "volumeMirror":{
-      "dstRegion":"KR1",
-      "dstTenantId":"7debf04e6a7248c98777229bcb004b69",
-      "dstVolume":{
-         "description":"Volume Mirror Test",
-         "mountProtocol":{
-            "protocol":"nfs"
-         },
-         "name":"TEST-NAS-MIRROR",
-         "sizeGb":300
-      }
-   }
+  "volumeMirror": {
+    "dstRegion": "KR1",
+    "dstTenantId": "7debf04e6a7248c98777229bcb004b69",
+    "dstVolume": {
+      "description": "Volume Mirror Test",
+      "mountProtocol": {
+        "protocol": "nfs"
+      },
+      "name": "TEST-NAS-MIRROR",
+      "sizeGb": 300
+    }
+  }
 }
 ```
 
@@ -1125,9 +1131,9 @@ X-Auth-Token: {token-id}
 | header | Body | Object | ヘッダオブジェクト |
 | volumeMirror | Body | Object | 複製設定作成オブジェクト |
 | volumeMirror.id | Body | String | 複製設定ID |
-| volumeMirror.role | Body | String | 複製役割<br>- `SOURCE`:ソースストレージ<br>- `DESTINATION`:対象ストレージ |
-| volumeMirror.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
-| volumeMirror.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースストレージ -> 複製ストレージ<br>- `REVERSE`:複製ストレージ -> ソースストレージ |
+| volumeMirror.role | Body | String | 複製役割<br>- `SOURCE`:ソースストレージ<br>- `DESTINATION`:対象ストレージ |
+| volumeMirror.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
+| volumeMirror.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースストレージ -> 複製ストレージ<br>- `REVERSE`:複製ストレージ -> ソースストレージ |
 | volumeMirror.directionChangedAt | Body | String | 複製方向変更時刻 |
 | volumeMirror.dstProjectId | Body | String | 複製対象ストレージのプロジェクトID |
 | volumeMirror.dstRegion | Body | String | 複製対象ストレージリージョン |
@@ -1146,29 +1152,29 @@ X-Auth-Token: {token-id}
 
 ```json
 {
-   "header":{
-      "isSuccessful":true,
-      "resultCode":201,
-      "resultMessage":"Created"
-   },
-   "volumeMirror":{
-      "createdAt":"2025-04-02T00:21:37+00:00",
-      "direction":"FORWARD",
-      "directionChangedAt":null,
-      "dstProjectId":"7c5dVmxI",
-      "dstRegion":"KR1",
-      "dstTenantId":"7debf04e6a7248c98777229bcb004b69",
-      "dstVolumeId":null,
-      "dstVolumeName":null,
-      "id":"f581af37-4b43-4c93-9478-0dbcad382641",
-      "role":"SOURCE",
-      "srcProjectId":"K3y0CgOy",
-      "srcRegion":"KR1",
-      "srcTenantId":"3b6179e5fa6b499386b827357c4cb8c4",
-      "srcVolumeId":"70787a7e-605b-4447-b950-46aa3297e0ed",
-      "srcVolumeName":"TEST-NAS-2",
-      "status":"PENDING"
-   }
+  "header": {
+    "isSuccessful": true,
+    "resultCode": 201,
+    "resultMessage": "Created"
+  },
+  "volumeMirror": {
+    "createdAt":"2025-04-01T06:45:45+00:00",
+    "direction": "FORWARD",
+    "directionChangedAt": null,
+    "dstProjectId": "K3y0CgOy",
+    "dstRegion": "KR2",
+    "dstTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
+    "dstVolumeId": "e09281d2-0b1c-48a9-8a01-0098aa59f624",
+    "dstVolumeName": "TEST-NAS-MIRROR-1",
+    "id": "8116892c-7306-48be-9e3d-143311b2254c",
+    "role": "SOURCE",
+    "srcProjectId": "K3y0CgOy",
+    "srcRegion": "KR1",
+    "srcTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
+    "srcVolumeId": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
+    "srcVolumeName": "TEST-NAS-1",
+    "status": "PENDING"
+  }
 }
 ```
 
@@ -1273,7 +1279,7 @@ X-Auth-Token: {token-id}
 | volumeMirrorStat.lastTransferBytes | Body | Integer | 最近実行した複製で転送されたデータサイズ(Byte) |
 | volumeMirrorStat.lastTransferEndTime | Body | String | 最近実行した複製完了時間 |
 | volumeMirrorStat.lastTransferStatus | Body | String | 最近の複製実行結果 |
-| volumeMirrorStat.status | Body | String | 複製設定状態<br>- `ACTIVE`:複製有効化状態<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 <br>- `HALT`:複製停止状態<br>- `RETRIEVE FAILED`:一時的な情報取得失敗 |
+| volumeMirrorStat.status | Body | String | 複製設定状態<br>- `ACTIVE`:複製有効化状態<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 <br>- `HALT`:複製停止状態<br>- `RETRIEVE FAILED`:一時的な情報取得失敗 |
 
 <br>
 
