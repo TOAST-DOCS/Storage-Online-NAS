@@ -1,5 +1,12 @@
 ## Storage > NAS > Release Notes
 
+### November 25, 2025
+
+#### Feature Updates
+* Changed the monitoring feature.
+    * Added the monitoring feature for CIFS protocol volume.
+    * Removed the monitoring for the number of client connections.
+
 ### May 27, 2025
 
 #### Added Features
