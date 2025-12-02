@@ -141,7 +141,6 @@ The default search period is the latest 1 hour, and you can search any period yo
 | Snapshot capacity | byte | The amount of capacity that storage is using for the snapshot. |
 | Inode | - | The number of storage inodes. |
 | Storage status | - | The storage status. |
-| Number of client connections | - | The number of clients connected to storage. |
 
 ### Replication
 
