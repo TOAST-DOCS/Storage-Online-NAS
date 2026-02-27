@@ -251,15 +251,16 @@ This API does not require a request body.
 Create a new volume.
 
 > [Note] Using the CIFS protocol
-To use the CIFS protocol, you must create CIFS credentials. Credentials are managed on a per-project basis, and you must register CIFS credentials to access each CIFS volume.
-You can create CIFS credentials through the **Storage > NAS > Manage CIFS Credentials** of the console.
+> To use the CIFS protocol, you must create CIFS credentials. Credentials are managed on a per-project basis, and you must register CIFS credentials to allow to access each CIFS volume.
+> You can create CIFS credentials through the **Storage > NAS > Manage CIFS Credentials** of the console.
 
 <!-- -->
 
 > [Note] Setting up encryption key storage
-Encrypted volume stores symmetric keys used for encryption in a keystore managed by the NHN Cloud Secure Key Manager service. To create encrypted volume,[you must first create a keystore](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_1)in the Secure Key Manager service. After creating the keystore, [check its ID](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_2) and enter it in the encryption keystore settings.
-You can enter the keystore ID from the **Storage > NAS > Encryption keystore settings** in the console. When you create encrypted volume, the symmetric key is stored in the specified keystore. The symmetric key stored by the NAS service in the keystore cannot be deleted while the encrypted volume is in use. When the encrypted volume is deleted, the corresponding symmetric key is also deleted.
-If you change the keystore ID, symmetric keys for newly created encrypted volume will be stored in the new keystore. Symmetric keys already stored in the previous keystore are retained.
+> When an encrypted volume is created, the symmetric key used for encryption is stored in the NHN Cloud Secure Key Manager store. To create encrypted volume,[you must first create a keystore](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_1) in the Secure Key Manager service. After creating the keystore, [check its ID](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_2) and enter it in the encryption keystore settings.
+> You can enter the keystore ID from the **Storage > NAS > Encryption keystore settings** in the console. When you create encrypted volume, the symmetric key is stored in the specified keystore. The symmetric key stored in the keystore cannot be deleted while the encrypted volume is in use. When the encrypted volume is deleted, the corresponding symmetric key is also deleted.
+> If you change the keystore ID, symmetric keys for newly created encrypted volume will be stored in the new keystore. Symmetric keys already stored in the previous keystore are retained.
+
 
 ```
 POST  /v1/volumes
@@ -274,7 +275,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- | --- |
 | X-Auth-Token | Header | String | O | Token ID |
 | volume | Body | Object | O | Volume creation request object |
-| volume.acl | Body | List | - | List of ACL IDs to set when creating volume<br>You can enter it in IP or CIDR format. |
+| volume.acl | Body | List | - | List of ACLs to set when creating volume<br>You can enter it in IP or CIDR format. |
 | volume.description | Body | String | - | Volume description |
 | volume.encryption | Body | Object | - | Encryption settings object when creating volume |
 | volume.encryption.enabled | Body | Boolean | - | Whether to enable encryption settings<br>After the encryption keystore is set up, setting its field to `true`enables encryption. |
@@ -590,12 +591,12 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | O | Token ID |
 | volume_id | URL | String | O | Volume ID |
 | volume | Body | Object | O | Volume creation request object |
-| volume.acl | Body | List | - | List of ACL IDs to set when creating volume<br>You can enter it in IP or CIDR format. |
+| volume.acl | Body | List | - | List of ACLs to set when creating volume<br>You can enter it in IP or CIDR format. |
 | volume.description | Body | String | - | Volume description |
 | volume.mountProtocol | Body | Object | - | Protocol settings object when creating volume |
 | volume.mountProtocol.cifsAuthIds | Body | List | - | List of CIFS Authentication IDs |
 | volume.mountProtocol.protocol | Body | String | - | You cannot change the protocol of volume that has already been created.<br>When changing the `cifsAuthIds` field, you must specify the `cifs` in that field. |
-| volume.sizeGb | Body | Integer | O | Volume size (GB)<br>Volume can be set from a minimum of 300GB to a maximum of 10,000GB, in 100GB increments. |
+| volume.sizeGb | Body | Integer | - | Volume size (GB)<br>Volume can be set from a minimum of 300 GB to a maximum of 10,000GB, in 100GB increments. |
 | volume.snapshotPolicy | Body | Object | - | Volume snapshot settings object |
 | volume.snapshotPolicy.maxScheduledCount | Body | Integer | - | The maximum number of snapshots that can be saved<br>You can set a maximum of 30, and the first automatically created snapshot will be deleted when the maximum number of saves is reached. |
 | volume.snapshotPolicy.reservePercent | Body | Integer | - | Snapshot capacity ratio |
@@ -1129,7 +1130,7 @@ X-Auth-Token: {token-id}
 | volumeMirror.dstRegion | Body | String | O | The region of replication target volume |
 | volumeMirror.dstTenantId | Body | String | O | The tenant ID of the replication target volume |
 | volumeMirror.dstVolume | Body | Object | O | Replication target volume request object |
-| volumeMirror.dstVolume.acl | Body | List | - | List of ACL IDs to set when creating volume<br>You can enter it in IP or CIDR format. |
+| volumeMirror.dstVolume.acl | Body | List | - | List of ACLs to set when creating volume<br>You can enter it in IP or CIDR format. |
 | volumeMirror.dstVolume.description | Body | String | - | Volume description |
 | volumeMirror.dstVolume.encryption | Body | Object | - | Encryption settings object when creating volume |
 | volumeMirror.dstVolume.encryption.enabled | Body | Boolean | - | Whether to enable encryption settings<br>After the encryption keystore is set up, setting its field to `true`enables encryption. |
