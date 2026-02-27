@@ -41,16 +41,16 @@ CIFSプロトコルを使用するためには、CIFS認証情報を作成する
 <a id="create_volume.encryption"></a>
 #### 暗号化キーストア設定
 
-NAS暗号化ボリュームは、暗号化に使用する対称鍵をNHN Cloud Secure Key Managerサービスのキーストアに保存します。したがって、暗号化ボリュームを作成するためには、事前にSecure Key Managerサービスで[キーストアを作成](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_1)する必要があります。 [キーストアのIDを確認](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_2)して暗号化キーストア設定に入力します。
+NAS暗号化ボリュームは、暗号化に使用する共通鍵をNHN Cloud Secure Key Managerサービスのキーストアに保存します。したがって、暗号化ボリュームを作成するためには、事前にSecure Key Managerサービスで[キーストアを作成](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_1)する必要があります。 [キーストアのIDを確認](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_2)して暗号化キーストア設定に入力します。
 
-暗号化ボリュームを作成すると、設定したキーストアに対称鍵が保存されます。NASサービスによってキーストアに保存された対称鍵は暗号化ボリュームの使用中は削除できません。暗号化ボリュームを削除すると、対称鍵も一緒に削除されます。
+暗号化ボリュームを作成すると、設定したキーストアに共通鍵が保存されます。NASサービスによってキーストアに保存された共通鍵は暗号化ボリュームの使用中は削除できません。暗号化ボリュームを削除すると、共通鍵も一緒に削除されます。
 
-キーストアIDを変更すると、その後作成する暗号化ボリュームの対称鍵が変更されたキーストアに保存されます。既存キーストアに保存された対称鍵は維持されます。
+キーストアIDを変更すると、その後作成する暗号化ボリュームの共通鍵が変更されたキーストアに保存されます。既存キーストアに保存された共通鍵は維持されます。
 
 > [参考]
 > Secure Key Managerサービス料金ポリシーに基づいてキーストア使用料金が請求されます。利用料金の詳細については、 [Secure Key Manager料金案内](https://www.nhncloud.com/kr/service/security/secure-key-manager#price)を参照してください。
 >
-> NAS暗号化ボリュームは、XTS-AES-256アルゴリズムで異なる2つの対称鍵を使用してデータを暗号化します。 したがって、暗号化ボリュームごとに2つの対称鍵をキーストアに保存します。
+> NAS暗号化ボリュームは、XTS-AES-256アルゴリズムで異なる2つの共通鍵を使用してデータを暗号化します。 したがって、暗号化ボリュームごとに2つの共通鍵をキーストアに保存します。
 
 <a id="change_volume_size"></a>
 ### ボリュームサイズ変更

@@ -249,15 +249,17 @@ X-Auth-Token: {token-id}
 新しいボリュームを作成します。
 
 > [参考] CIFSプロトコル使用
-> CIFSプロトコルを使用するためには、CIFS認証情報を生成する必要があります。認証情報はプロジェクト単位で管理され、CIFSボリュームごとにアクセスするCIFS認証情報を登録する必要があります。
+> CIFSプロトコルを使用するためには、CIFS認証情報を作成する必要があります。認証情報はプロジェクト単位で管理され、CIFSボリュームごとにアクセスを許可するCIFS認証情報を登録する必要があります。
 > CIFS認証情報はコンソールの **Storage > NAS > CIFS認証情報管理**ウィンドウから作成できます。
+
 
 <!-- -->
 
 > [参考]暗号化キーストア設定
-> NAS暗号化ボリュームは暗号化に使用する対称鍵をNHN Cloud Secure Key Managerサービスのキーストアに保存します。したがって、暗号化ボリュームを作成するためには、事前にSecure Key Managerサービスで[キーストアを作成](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_1)する必要があります。 [キーストアのIDを確認](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_2)し、暗号化キーストア設定に入力します。
-> 作成したキーストアIDはコンソールの **Storage > NAS > 暗号化キーストア設定** ウィンドウで入力できます。暗号化ボリュームを作成すると、設定したキーストアに対称鍵が保存されます。 NASサービスによってキーストアに保存された対称鍵は暗号化ボリューム使用中には削除できません。暗号化ボリュームを削除すると、対称鍵も一緒に削除されます。
-> キーストアIDを変更すると、その後に作成する暗号化ボリュームの対称鍵が変更されたキーストアに保存されます。既存キーストアに保存された対称鍵は維持されます。
+> 暗号化ボリュームを作成すると、暗号化に使用する共通鍵がNHN Cloud Secure Key Managerサービスのキーストアに保存されます。したがって、暗号化ボリュームを作成するためには、事前にSecure Key Managerサービスで[キーストアを作成](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_1)する必要があります。[キーストアのIDを確認](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_2)し、暗号化キーストア設定に入力します。
+> 作成したキーストアIDはコンソールの **Storage > NAS > 暗号化キーストア設定** ウィンドウで入力できます。暗号化ボリュームを作成すると、設定したキーストアに共通鍵が保存されます。 NASサービスによってキーストアに保存された共通鍵は暗号化ボリューム使用中には削除できません。暗号化ボリュームを削除すると、共通鍵も一緒に削除されます。
+> キーストアIDを変更すると、その後に作成する暗号化ボリュームの共通鍵が変更されたキーストアに保存されます。既存キーストアに保存された共通鍵は維持されます。
+
 
 ```
 POST  /v1/volumes
@@ -272,7 +274,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- | --- |
 | X-Auth-Token | Header | String | O | トークンID |
 | volume | Body | Object | O | ボリューム作成リクエストオブジェクト |
-| volume.acl | Body | List | - | ボリューム作成時設定するACL IDリスト<br>IPまたはCIDR形式で入力できます。 |
+| volume.acl | Body | List | - | ボリューム作成時設定するACLリスト<br>IPまたはCIDR形式で入力できます。 |
 | volume.description | Body | String | - | ボリュームの説明 |
 | volume.encryption | Body | Object | - | ボリューム作成時暗号化設定オブジェクト |
 | volume.encryption.enabled | Body | Boolean | - | 暗号化設定有効かどうか<br>暗号化キーストアが設定された後、該当フィールドを`true`に設定すると、暗号化が有効になります。 |
@@ -588,12 +590,12 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | O | トークンID |
 | volume\_id | URL | String | O | ボリュームID |
 | volume | Body | Object | O | ボリューム作成リクエストオブジェクト |
-| volume.acl | Body | List | - | ボリューム作成時に設定するACL IDのリスト<br>IPまたはCIDR形式で入力できます。 |
+| volume.acl | Body | List | - | ボリューム作成時に設定するACLのリスト<br>IPまたはCIDR形式で入力できます。 |
 | volume.description | Body | String | - | ボリュームの説明 |
 | volume.mountProtocol | Body | Object | - | ボリュームを作成する際のプロトコル設定オブジェクト |
 | volume.mountProtocol.cifsAuthIds | Body | List | - | CIFS認証IDリスト |
 | volume.mountProtocol.protocol | Body | String | - | すでに作成されたボリュームのプロトコルは変更できません。<br>`cifsAuthIds`フィールドを変更する場合は該当フィールドに`cifs`を明示する必要があります。 |
-| volume.sizeGb | Body | Integer | O | ボリュームサイズ(GB)<br>ボリュームは、最小300GBから最大10,000GBまで、100GB単位で設定できます。 |
+| volume.sizeGb | Body | Integer | - | ボリュームサイズ(GB)<br>ボリュームは、最小300GBから最大10,000GBまで、100GB単位で設定できます。 |
 | volume.snapshotPolicy | Body | Object | - | ボリュームスナップショット設定オブジェクト |
 | volume.snapshotPolicy.maxScheduledCount | Body | Integer | - | スナップショット最大保存数<br>30個まで設定可能で、最大保存数に達する作成されたスナップショット中のうち、先に作成されたスナップショットがと自動的に削除されます。 |
 | volume.snapshotPolicy.reservePercent | Body | Integer | - | スナップショット容量比率 |
@@ -1126,7 +1128,7 @@ X-Auth-Token: {token-id}
 | volumeMirror.dstRegion | Body | String | O | 複製対象ボリュームのリージョン |
 | volumeMirror.dstTenantId | Body | String | O | 複製対象ボリュームのテナントID |
 | volumeMirror.dstVolume | Body | Object | O | 複製対象ボリューム作成リクエストオブジェクト |
-| volumeMirror.dstVolume.acl | Body | List | - | ボリューム作成時に設定するACL IDリスト<br>IPまたはCIDR形式で入力できます。 |
+| volumeMirror.dstVolume.acl | Body | List | - | ボリューム作成時に設定するACLリスト<br>IPまたはCIDR形式で入力できます。 |
 | volumeMirror.dstVolume.description | Body | String | - | ボリュームの説明 |
 | volumeMirror.dstVolume.encryption | Body | Object | - | ボリューム作成時の暗号化設定オブジェクト |
 | volumeMirror.dstVolume.encryption.enabled | Body | Boolean | - | 暗号化設定が有効かどうか<br>暗号化キーストアが設定された後、該当フィールドを`true`に設定すると暗号化が有効になります。 |
