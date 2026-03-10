@@ -4,7 +4,7 @@
 <a id="terraform"></a>
 ## Terraform
 
-Terraformは、インフラを簡単に構築し、安全に変更し、効率的に構成を管理できるオープンソースツールです。基本的な使用法は、[ユーザーガイド > Compute > Instance > Terraform使用ガイド](https://docs.nhncloud.com/ko/Compute/Instance/ko/terraform-guide/)を参照してください。
+Terraformは、インフラを簡単に構築し、安全に変更し、効率的に構成を管理できるオープンソースツールです。基本的な使用法は、[ユーザーガイド > Compute > Instance > Terraform使用ガイド](https://docs.nhncloud.com/ja/Compute/Instance/ja/terraform-guide/)を参照してください。
 
 <a id="terraform-resource-dependency"></a>
 ### リソースの依存関係
