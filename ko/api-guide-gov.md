@@ -1,33 +1,39 @@
-<a id="prepare"></a>
 ## Storage > NAS > API 가이드
 
-API를 사용하려면 API 엔드포인트와 토큰 등이 필요합니다. [API 사용 준비](https://docs.gov-nhncloud.com/ko/Compute/Compute/ko/identity-api-gov/)를 참고하여 API 사용에 필요한 정보를 준비합니다.<br>
+<a id="nas_api_common"></a>
+## NAS API 공통 정보
+
+<a id="nas_api_common.endpoint"></a>
+### API 엔드포인트
+
 NAS API는 `nasv1` 타입 엔드포인트를 이용합니다. 정확한 엔드포인트는 토큰 발급 응답의 `serviceCatalog`를 참조합니다.
 
-| 타입 | 리전 | 엔드포인트 | 
-| --- | --- | --- |
-| nasv1 | 한국(판교) 리전 <br> 한국(평촌) 리전 | https://kr1-api-nas-infrastructure.gov-nhncloudservice.com  <br> https://kr2-api-nas-infrastructure.gov-nhncloudservice.com |
+| 리전 | 엔드포인트 | 
+| --- | --- |
+| 한국(판교) 리전 | https://kr1-api-nas-infrastructure.gov-nhncloudservice.com |
+| 한국(평촌) 리전 | https://kr2-api-nas-infrastructure.gov-nhncloudservice.com |
 
-API 응답에 가이드에 명시되지 않은 필드가 나타날 수 있습니다. 이런 필드는 NHN Cloud 내부 용도로 사용되며 사전 공지 없이 변경될 수 있으므로 사용하지 않습니다.
 
-<br>
+<a id="nas_api_common.authentication"></a>
+### 인증 및 권한
 
-<a id="response_common_information"></a>
-## 응답 공통 정보
+NAS는 API 호출 시 인증/인가를 위해 IaaS 토큰을 사용합니다. IaaS 토큰은 NHN Cloud의 OpenStack 기반 인프라 서비스(IaaS)에서 사용하는 인증 토큰입니다. 
+IaaS 토큰 발급 및 사용에 대한 자세한 내용은 [IaaS 토큰](/nhncloud/ko/public-api/iaas-token-gov/)을 참고하세요.
+
+<a id="nas_api_common.response"></a>
+### 응답 공통 정보
 
 NAS API에서 제공하는 공통 응답 정보에 대한 설명입니다. 모든 API 응답은 `header` 객체를 통해 요청 결과를 전달합니다.
 
-### 응답 헤더
-
-| 이름 | 종류 | 형식 | 설명 |
-| --- | --- | --- | --- |
-| header | Body | Object | 헤더 객체 |
-| header.isSuccessful | Body | Boolean | 요청의 성공 여부(`true` 또는 `false`) |
-| header.resultCode | Body | Integer | HTTP 상태 코드에 해당하는 결과 코드<br>- `200`: 성공 <br>- `201`: 리소스 생성 성공<br>- `202`: 요청이 정상적으로 수신되었으나, 아직 처리되지 않은 상태<br>- `400`: 유효하지 않은 값으로 요청됨<br>- `401`: 권한, 인증 또는 토큰 관련 오류 <br>- `404`: 요청한 리소스를 찾을 수 없음<br>- `405`: 요청한 URL이 지정한 HTTP 메서드를 지원하지 않음<br>- `5XX`: 클라이언트의 요청은 유효하지만 서버가 처리에 실패함 |
-| header.resultMessage | Body | String | 요청 처리 결과에 대한 메시지 |
+| 이름 | 타입 | 설명 |
+| --- | --- | --- |
+| header | Object | 헤더 객체 |
+| header.isSuccessful | Boolean | 요청의 성공 여부(`true` 또는 `false`) |
+| header.resultCode | Integer | HTTP 상태 코드에 해당하는 결과 코드<br>- `200`: 성공 <br>- `201`: 리소스 생성 성공<br>- `202`: 요청이 정상적으로 수신되었으나, 아직 처리되지 않은 상태<br>- `400`: 유효하지 않은 값으로 요청됨<br>- `401`: 권한, 인증 또는 토큰 관련 오류 <br>- `404`: 요청한 리소스를 찾을 수 없음<br>- `405`: 요청한 URL이 지정한 HTTP 메서드를 지원하지 않음<br>- `5XX`: 클라이언트의 요청은 유효하지만 서버가 처리에 실패함 |
+| header.resultMessage | String | 요청 처리 결과에 대한 메시지 |
 
 <details>
-  <summary>응답 예시</summary>
+  <summary><strong>성공 응답</strong></summary>
 
 ```json
 {
@@ -41,7 +47,25 @@ NAS API에서 제공하는 공통 응답 정보에 대한 설명입니다. 모�
 
 </details>
 
+<details>
+  <summary><strong>실패 응답</strong></summary>
+
+```json
+{
+  "header": {
+    "isSuccessful": false,
+    "resultCode": 401,
+    "resultMessage": "Authorization failed"
+  }
+}
+```
+
+</details>
+
 <br>
+
+> [참고]
+> API 응답에 가이드에 명시되지 않은 필드가 나타날 수 있습니다. 이런 필드는 NHN Cloud 내부 용도로 사용되며 사전 공지 없이 변경될 수 있으므로 사용하지 않습니다.
 
 <a id="volume"></a>
 ## 볼륨
