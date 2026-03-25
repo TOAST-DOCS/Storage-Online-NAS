@@ -12,6 +12,7 @@ NASAPIは`nasv1`タイプエンドポイントを利用します。正確なエ�
 | --- | --- |
 | 韓国(パンギョ)リージョン | https://kr1-api-nas-infrastructure.nhncloudservice.com |
 | 韓国(ピョンチョン)リージョン | https://kr2-api-nas-infrastructure.nhncloudservice.com |
+| 韓国(光州)リージョン | https://kr3-api-nas-infrastructure.nhncloudservice.com |
 
 
 <a id="nas_api_common.authentication"></a>
