@@ -12,6 +12,7 @@ NAS API uses the `nasv1` type endpoint. Refer to the `serviceCatalog` in the tok
 | --- | --- |
 | Korea (Pangyo) Region | https://kr1-api-nas-infrastructure.nhncloudservice.com |
 | Korea (Pyeongchon) Region | https://kr2-api-nas-infrastructure.nhncloudservice.com |
+| Korea (Gwangju) Region | https://kr3-api-nas-infrastructure.nhncloudservice.com |
 
 
 <a id="nas_api_common.authentication"></a>

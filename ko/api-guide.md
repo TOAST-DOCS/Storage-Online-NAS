@@ -12,6 +12,7 @@ NAS API는 `nasv1` 타입 엔드포인트를 이용합니다. 정확한 엔드�
 | --- | --- |
 | 한국(판교) 리전 | https://kr1-api-nas-infrastructure.nhncloudservice.com |
 | 한국(평촌) 리전 | https://kr2-api-nas-infrastructure.nhncloudservice.com |
+| 한국(광주) 리전 | https://kr3-api-nas-infrastructure.nhncloudservice.com |
 
 
 <a id="nas_api_common.authentication"></a>
