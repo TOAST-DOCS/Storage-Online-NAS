@@ -4,7 +4,7 @@
 <a id="terraform"></a>
 ## Terraform
 
-Terraform은 인프라를 손쉽게 구축하고 안전하게 변경하며, 효율적으로 형상을 관리할 수 있는 오픈 소스 도구입니다. 기본적인 사용법은 [사용자 가이드 > Compute > Instance > Terraform 사용 가이드](https://docs.nhncloud.com/ko/Compute/Instance/ko/terraform-guide/)를 참고하세요.
+Terraform은 인프라를 손쉽게 구축하고 안전하게 변경하며, 효율적으로 형상을 관리할 수 있는 오픈 소스 도구입니다. 기본적인 사용법은 [사용자 가이드 > Compute > Instance > Terraform 사용 가이드](/Compute/Instance/ko/terraform-guide/)를 참고하세요.
 
 <a id="terraform-resource-dependency"></a>
 ### 리소스 의존성
@@ -53,7 +53,7 @@ resource "nhncloud_nas_storage_volume_interface_v1" "interface1" {
 
 
 ```hcl
-# NFS 프로토콜의 빈 NAS 스토리지 생성
+# NFS 프로토콜의 빈 NAS 볼륨 생성
 resource "nhncloud_nas_storage_volume_v1" "volume_01" {
   name = "nas_volume_01"
   size_gb = 300
@@ -62,7 +62,7 @@ resource "nhncloud_nas_storage_volume_v1" "volume_01" {
   }
 }
 
-# CIFS 프로토콜의 빈 NAS 스토리지 생성
+# CIFS 프로토콜의 빈 NAS 볼륨 생성
 resource "nhncloud_nas_storage_volume_v1" "volume_02" {
   name = "nas_volume_02"
   size_gb = 300

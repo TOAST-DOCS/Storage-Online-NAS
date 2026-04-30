@@ -844,7 +844,11 @@ X-Auth-Token: {token-id}
 | header | Body | Object | 헤더 객체 |
 | usage | Body | Object | 볼륨 사용 현황 객체 |
 | usage.snapshotReserveGb | Body | Integer | 볼륨에서 스냅숏을 위해 예약한 공간 크기 |
+| usage.snapshotUsedGb | Body | Integer | 스냅숏 사용량 |
+| usage.snapshotUsedGbInReservedSpace | Body | Integer | 스냅숏 예약 용량 내 사용량 |
+| usage.snapshotUsedGbInUserSpace | Body | Integer | 예약 용량 초과 스냅숏 사용량 |
 | usage.usedGb | Body | Integer | 볼륨 사용량 |
+| usage.userDataGb | Body | Integer | 사용자가 실제로 기록한 데이터 크기 |
 
 <details>
   <summary>응답 예시</summary>
@@ -857,8 +861,12 @@ X-Auth-Token: {token-id}
     "resultMessage": "Success"
   },
   "usage": {
-    "snapshotReserveGb": 30,
-    "usedGb": 2
+    "snapshotReserveGb": 20,
+    "snapshotUsedGb": 11,
+    "snapshotUsedGbInReservedSpace": 11,
+    "snapshotUsedGbInUserSpace": 0,
+    "usedGb": 152,
+    "userDataGb": 152
   }
 }
 ```
