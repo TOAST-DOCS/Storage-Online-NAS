@@ -6,9 +6,9 @@
 <a id="nas_api_common.endpoint"></a>
 ### API 엔드포인트
 
-NAS API는 `nasv1` 타입 엔드포인트를 이용합니다. 정확한 엔드포인트는 토큰 발급 응답의 `serviceCatalog`를 참조합니다.
+NAS API는 `nasv1` 타입 엔드포인트를 사용합니다. 정확한 엔드포인트는 토큰 발급 응답의 `serviceCatalog`를 참조합니다.
 
-| 리전 | 엔드포인트 | 
+| 리전 | 엔드포인트 |
 | --- | --- |
 | 한국(판교) 리전 | https://kr1-api-nas-infrastructure.nhncloudservice.com |
 | 한국(평촌) 리전 | https://kr2-api-nas-infrastructure.nhncloudservice.com |
@@ -18,20 +18,20 @@ NAS API는 `nasv1` 타입 엔드포인트를 이용합니다. 정확한 엔드�
 <a id="nas_api_common.authentication"></a>
 ### 인증 및 권한
 
-NAS는 API 호출 시 인증/인가를 위해 IaaS 토큰을 사용합니다. IaaS 토큰은 NHN Cloud의 OpenStack 기반 인프라 서비스(IaaS)에서 사용하는 인증 토큰입니다. 
+NAS는 API 호출 시 인증/인가를 위해 IaaS 토큰을 사용합니다. IaaS 토큰은 NHN Cloud의 OpenStack 기반 인프라 서비스(IaaS)에서 사용하는 인증 토큰입니다.
 IaaS 토큰 발급 및 사용에 대한 자세한 내용은 [IaaS 토큰](/nhncloud/ko/public-api/iaas-token/)을 참고하세요.
 
 <a id="nas_api_common.response"></a>
 ### 응답 공통 정보
 
-NAS API에서 제공하는 공통 응답 정보에 대한 설명입니다. 모든 API 응답은 `header` 객체를 통해 요청 결과를 전달합니다.
+NAS API에서 제공하는 공통 응답 정보의 설명입니다. 모든 API 응답은 `header` 객체로 요청 결과를 전달합니다.
 
 | 이름 | 타입 | 설명 |
 | --- | --- | --- |
 | header | Object | 헤더 객체 |
 | header.isSuccessful | Boolean | 요청의 성공 여부(`true` 또는 `false`) |
 | header.resultCode | Integer | HTTP 상태 코드에 해당하는 결과 코드<br>- `200`: 성공 <br>- `201`: 리소스 생성 성공<br>- `202`: 요청이 정상적으로 수신되었으나, 아직 처리되지 않은 상태<br>- `400`: 유효하지 않은 값으로 요청됨<br>- `401`: 권한, 인증 또는 토큰 관련 오류 <br>- `404`: 요청한 리소스를 찾을 수 없음<br>- `405`: 요청한 URL이 지정한 HTTP 메서드를 지원하지 않음<br>- `5XX`: 클라이언트의 요청은 유효하지만 서버가 처리에 실패함 |
-| header.resultMessage | String | 요청 처리 결과에 대한 메시지 |
+| header.resultMessage | String | 요청 처리 결과 메시지 |
 
 <details>
   <summary><strong>성공 응답</strong></summary>
@@ -66,7 +66,7 @@ NAS API에서 제공하는 공통 응답 정보에 대한 설명입니다. 모�
 <br>
 
 > [참고]
-> API 응답에 가이드에 명시되지 않은 필드가 나타날 수 있습니다. 이런 필드는 NHN Cloud 내부 용도로 사용되며 사전 공지 없이 변경될 수 있으므로 사용하지 않습니다.
+> API 응답에 가이드에 명시되지 않은 필드가 나타날 수 있습니다. 이러한 필드는 NHN Cloud 내부 용도로 사용되며 사전 공지 없이 변경될 수 있으므로 사용하지 않습니다.
 
 <a id="volume"></a>
 ## 볼륨
@@ -88,15 +88,15 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 | --- | --- | --- | --- | --- |
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| sizeGb | String | Query | - | 볼륨 크기 |
-| maxSizeGb | String | Query | - | 볼륨 최대 크기 |
-| minSizeGb | String | Query | - | 볼륨 최소 크기 |
-| name | String | Query | - | 볼륨 이름 |
-| nameContains | String | Query | - | 볼륨 이름에 포함되는 문자열 |
-| subnetId | String | Query | - | 서브넷의 인터페이스를 가진 볼륨 |
-| limit | String | Query | - | 한 페이지에 노출할 리소스 개수 |
-| page | String | Query | - | 조회할 페이지 |
-| sort | String | Query | - | 정렬 기준이 될 필드 이름<br>`{key}:{direction}` 형태로 기술합니다. 예: `name:asc`, `created_at:desc`<br>사용 가능한 key 값: `id`, `name`, `sizeGb`, `createdAt`, `updatedAt` |
+| sizeGb | Query | String | - | 볼륨 크기 |
+| maxSizeGb | Query | String | - | 볼륨 최대 크기 |
+| minSizeGb | Query | String | - | 볼륨 최소 크기 |
+| name | Query | String | - | 볼륨 이름 |
+| nameContains | Query | String | - | 볼륨 이름에 포함되는 문자열 |
+| subnetId | Query | String | - | 서브넷의 인터페이스를 가진 볼륨 |
+| limit | Query | String | - | 한 페이지에 노출할 리소스 개수 |
+| page | Query | String | - | 조회할 페이지 |
+| sort | Query | String | - | 정렬 기준이 될 필드 이름<br>`{key}:{direction}` 형태로 기술합니다. 예: `name:asc`, `created_at:desc`<br>사용 가능한 key 값: `id`, `name`, `sizeGb`, `createdAt`, `updatedAt` |
 
 #### 응답
 
@@ -129,7 +129,7 @@ X-Auth-Token: {token-id}
 | volumes.mirrors.id | Body | String | 복제 설정 ID |
 | volumes.mirrors.role | Body | String | 복제 역할<br>- `SOURCE`: 원본 볼륨<br>- `DESTINATION`: 대상 볼륨 |
 | volumes.mirrors.status | Body | String | 복제 설정 상태<br>- `INITIALIZED`: 설정 완료<br>- `UPDATING`: 설정 변경 중<br>- `DELETING`: 설정 삭제 중<br>- `PENDING`: 설정 생성 중 |
-| volumes.mirrors.direction | Body | String | 복제 방향 <br>- `FORWARD`: 원본 볼륨 -> 복제 볼륨 <br>- `REVERSE`: 복제 볼륨 -> 원본 볼륨 |
+| volumes.mirrors.direction | Body | String | 복제 방향<br>- `FORWARD`: 원본 볼륨 → 복제 볼륨 <br>- `REVERSE`: 복제 볼륨 → 원본 볼륨 |
 | volumes.mirrors.directionChangedAt | Body | String | 복제 방향 변경 시각 |
 | volumes.mirrors.dstProjectId | Body | String | 복제 대상 볼륨의 프로젝트 ID |
 | volumes.mirrors.dstRegion | Body | String | 복제 대상 볼륨 리전 |
@@ -251,14 +251,14 @@ X-Auth-Token: {token-id}
 새로운 볼륨을 생성합니다.
 
 > [참고] CIFS 프로토콜 사용
-> CIFS 프로토콜을 사용하기 위해서는 CIFS 인증 정보를 생성해야 합니다. 인증 정보는 프로젝트 단위로 관리되며, CIFS 볼륨마다 접근을 허용할 CIFS 인증 정보를 등록해야 합니다.
+> CIFS 프로토콜을 사용하려면 CIFS 인증 정보를 생성해야 합니다. 인증 정보는 프로젝트 단위로 관리되며, CIFS 볼륨마다 접근을 허용할 CIFS 인증 정보를 등록해야 합니다.
 > CIFS 인증 정보는 콘솔의 **Storage > NAS > CIFS 인증 정보 관리** 창에서 생성할 수 있습니다.
 
 
 <!-- -->
 
 > [참고] 암호화 키 저장소 설정
-> 암호화 볼륨을 생성하면 암호화에 사용하는 대칭 키가 NHN Cloud Secure Key Manager 서비스의 키 저장소에 저장됩니다. 따라서 암호화 볼륨을 만들기 위해서는 미리 Secure Key Manager 서비스에서 [키 저장소를 생성](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_1)해야 합니다. [키 저장소의 ID를 확인](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_2)하여 암호화 키 저장소 설정에 입력합니다.
+> 암호화 볼륨을 생성하면 암호화에 사용하는 대칭 키가 NHN Cloud Secure Key Manager 서비스의 키 저장소에 저장됩니다. 따라서 암호화 볼륨을 만들려면 미리 Secure Key Manager 서비스에서 [키 저장소를 생성](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_1)해야 합니다. [키 저장소의 ID를 확인](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_2)하여 암호화 키 저장소 설정에 입력합니다.
 > 생성한 키 저장소 ID는 콘솔의 **Storage > NAS > 암호화 키 저장소 설정** 창에서 입력할 수 있습니다. 암호화 볼륨을 생성하면 설정한 키 저장소에 대칭 키가 저장됩니다. 키 저장소에 저장된 대칭 키는 암호화 볼륨 사용 중에는 삭제할 수 없습니다. 암호화 볼륨을 삭제하면 대칭 키도 함께 삭제됩니다.
 > 키 저장소 ID를 변경하면 이후 생성하는 암호화 볼륨의 대칭 키가 변경된 키 저장소에 저장됩니다. 기존 키 저장소에 저장된 대칭 키는 유지됩니다.
 
@@ -293,7 +293,7 @@ X-Auth-Token: {token-id}
 | volume.snapshotPolicy.schedule | Body | Object | - | 스냅숏 자동 생성 객체<br>`null`일 경우 스냅숏 자동 생성이 설정되지 않습니다. |
 | volume.snapshotPolicy.schedule.time | Body | String | - | 스냅숏 자동 생성 시간 |
 | volume.snapshotPolicy.schedule.timeOffset | Body | String | - | 스냅숏 자동 생성 기준 시간대 |
-| volume.snapshotPolicy.schedule.weekdays | Body | List | - | 스냅숏 자동 생성 요일.<br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |
+| volume.snapshotPolicy.schedule.weekdays | Body | List | - | 스냅숏 자동 생성 요일<br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |
 
 <details>
   <summary>요청 예시</summary>
@@ -364,7 +364,7 @@ X-Auth-Token: {token-id}
 | volume.mirrors.id | Body | String | 복제 설정 ID |
 | volume.mirrors.role | Body | String | 복제 역할<br>- `SOURCE`: 원본 볼륨<br>- `DESTINATION`: 대상 볼륨 |
 | volume.mirrors.status | Body | String | 복제 설정 상태<br>- `INITIALIZED`: 설정 완료<br>- `UPDATING`: 설정 변경 중<br>- `DELETING`: 설정 삭제 중<br>- `PENDING`: 설정 생성 중 |
-| volume.mirrors.direction | Body | String | 복제 방향 <br>- `FORWARD`: 원본 볼륨 -> 복제 볼륨 <br>- `REVERSE`: 복제 볼륨 -> 원본 볼륨 |
+| volume.mirrors.direction | Body | String | 복제 방향<br>- `FORWARD`: 원본 볼륨 → 복제 볼륨 <br>- `REVERSE`: 복제 볼륨 → 원본 볼륨 |
 | volume.mirrors.directionChangedAt | Body | String | 복제 방향 변경 시각 |
 | volume.mirrors.dstProjectId | Body | String | 복제 대상 볼륨의 프로젝트 ID |
 | volume.mirrors.dstRegion | Body | String | 복제 대상 볼륨 리전 |
@@ -544,7 +544,7 @@ X-Auth-Token: {token-id}
 | volume.mirrors.id | Body | String | 복제 설정 ID |
 | volume.mirrors.role | Body | String | 복제 역할<br>- `SOURCE`: 원본 볼륨<br>- `DESTINATION`: 대상 볼륨 |
 | volume.mirrors.status | Body | String | 복제 설정 상태<br>- `INITIALIZED`: 설정 완료<br>- `UPDATING`: 설정 변경 중<br>- `DELETING`: 설정 삭제 중<br>- `PENDING`: 설정 생성 중 |
-| volume.mirrors.direction | Body | String | 복제 방향 <br>- `FORWARD`: 원본 볼륨 -> 복제 볼륨 <br>- `REVERSE`: 복제 볼륨 -> 원본 볼륨 |
+| volume.mirrors.direction | Body | String | 복제 방향<br>- `FORWARD`: 원본 볼륨 → 복제 볼륨 <br>- `REVERSE`: 복제 볼륨 → 원본 볼륨 |
 | volume.mirrors.directionChangedAt | Body | String | 복제 방향 변경 시각 |
 | volume.mirrors.dstProjectId | Body | String | 복제 대상 볼륨의 프로젝트 ID |
 | volume.mirrors.dstRegion | Body | String | 복제 대상 볼륨 리전 |
@@ -591,7 +591,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- | --- |
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | volume\_id | URL | String | O | 볼륨 ID |
-| volume | Body | Object | O | 볼륨 생성 요청 객체 |
+| volume | Body | Object | O | 볼륨 설정 변경 요청 객체 |
 | volume.acl | Body | List | - | 볼륨 생성 시 설정할 ACL 목록<br>IP 또는 CIDR 형식으로 입력할 수 있습니다. |
 | volume.description | Body | String | - | 볼륨 설명 |
 | volume.mountProtocol | Body | Object | - | 볼륨 생성 시 프로토콜 설정 객체 |
@@ -604,7 +604,7 @@ X-Auth-Token: {token-id}
 | volume.snapshotPolicy.schedule | Body | Object | - | 스냅숏 자동 생성 객체<br>`null`일 경우 스냅숏 자동 생성이 설정되지 않습니다. |
 | volume.snapshotPolicy.schedule.time | Body | String | - | 스냅숏 자동 생성 시간 |
 | volume.snapshotPolicy.schedule.timeOffset | Body | String | - | 스냅숏 자동 생성 기준 시간대 |
-| volume.snapshotPolicy.schedule.weekdays | Body | List | - | 스냅숏 자동 생성 요일.<br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |
+| volume.snapshotPolicy.schedule.weekdays | Body | List | - | 스냅숏 자동 생성 요일<br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |
 
 <details>
   <summary>요청 예시</summary>
@@ -758,12 +758,12 @@ X-Auth-Token: {token-id}
 요청 본문은 필요하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
-| --- | --- | --- | --- | --- |
+| --- | --- | --- |---| --- |
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | volume\_id | URL | String | O | 볼륨 ID |
-| limit | String | Query | X | 한 페이지에 노출할 리소스 개수 |
-| page | String | Query | X | 조회할 페이지 |
-| sort | String | Query | X | 정렬 기준이 될 필드 이름<br>`{key}:{direction}` 형태로 기술합니다. 예: `snapshotId:asc`, `requestedAt:desc`<br>사용 가능한 key 값: `snapshotId`, `snapshotName`, `requestedAt`, `restoredAt`, `requestedUser`, `requestedIp`, `result` |
+| limit | Query | String | - | 한 페이지에 노출할 리소스 개수 |
+| page | Query | String | - | 조회할 페이지 |
+| sort | Query | String | - | 정렬 기준이 될 필드 이름<br>`{key}:{direction}` 형태로 기술합니다. 예: `snapshotId:asc`, `requestedAt:desc`<br>사용 가능한 key 값: `snapshotId`, `snapshotName`, `requestedAt`, `restoredAt`, `requestedUser`, `requestedIp`, `result` |
 
 #### 응답
 
@@ -876,7 +876,7 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="snapshots"></a>
-## Snapshots
+## 스냅숏
 
 <a id="snapshots.list"></a>
 ### 스냅숏 목록 보기
@@ -906,8 +906,8 @@ X-Auth-Token: {token-id}
 | snapshots.id | Body | String | 스냅숏 ID |
 | snapshots.name | Body | String | 스냅숏 이름 |
 | snapshots.size | Body | Integer | 스냅숏 크기 |
-| snapshots.type | Body | String | 스냅숏 타입<br>- `NORMAL`: 사용자에 의해 생성된 스냅숏<br>- `SCHEDULED`: 스냅숏 자동 생성에 의해 생성된 스냅숏<br>- `MIRROR`: 복제로 인해 생성된 스냅숏 |
-| snapshots.preserved | Body | Boolean | 시스템에 의해 삭제 불가 설정된 스냅숏 여부 |
+| snapshots.type | Body | String | 스냅숏 타입<br>- `NORMAL`: 사용자가 생성한 스냅숏<br>- `SCHEDULED`: 스냅숏 자동 생성으로 만들어진 스냅숏<br>- `MIRROR`: 복제로 만들어진 스냅숏 |
+| snapshots.preserved | Body | Boolean | 시스템이 삭제 불가로 설정한 스냅숏 여부 |
 | snapshots.createdAt | Body | String | 스냅숏 생성 시각 |
 
 <details><summary>응답 예시</summary>
@@ -916,8 +916,8 @@ X-Auth-Token: {token-id}
 {
   "header": {
     "isSuccessful": true,
-    "resultCode": 201,
-    "resultMessage": "Created"
+    "resultCode": 200,
+    "resultMessage": "Success"
   },
   "snapshots": [
     {
@@ -976,8 +976,8 @@ X-Auth-Token: {token-id}
 | snapshot.id | Body | String | 스냅숏 ID |
 | snapshot.name | Body | String | 스냅숏 이름 |
 | snapshot.size | Body | Integer | 스냅숏 크기 |
-| snapshot.type | Body | String | 스냅숏 타입<br>- `NORMAL`: 사용자에 의해 생성된 스냅숏<br>- `SCHEDULED`: 스냅숏 자동 생성에 의해 생성된 스냅숏<br>- `MIRROR`: 복제로 인해 생성된 스냅숏 |
-| snapshot.preserved | Body | Boolean | 시스템에 의해 삭제 불가 설정된 스냅숏 여부 |
+| snapshot.type | Body | String | 스냅숏 타입<br>- `NORMAL`: 사용자가 생성한 스냅숏<br>- `SCHEDULED`: 스냅숏 자동 생성으로 만들어진 스냅숏<br>- `MIRROR`: 복제로 만들어진 스냅숏 |
+| snapshot.preserved | Body | Boolean | 시스템이 삭제 불가로 설정한 스냅숏 여부 |
 | snapshot.createdAt | Body | String | 스냅숏 생성 시각 |
 
 <details>
@@ -1061,8 +1061,8 @@ X-Auth-Token: {token-id}
 | snapshot.id | Body | String | 스냅숏 ID |
 | snapshot.name | Body | String | 스냅숏 이름 |
 | snapshot.size | Body | Integer | 스냅숏 크기 |
-| snapshot.type | Body | String | 스냅숏 타입<br>- `NORMAL`: 사용자에 의해 생성된 스냅숏<br>- `SCHEDULED`: 스냅숏 자동 생성에 의해 생성된 스냅숏<br>- `MIRROR`: 복제로 인해 생성된 스냅숏 |
-| snapshot.preserved | Body | Boolean | 시스템에 의해 삭제 불가 설정된 스냅숏 여부 |
+| snapshot.type | Body | String | 스냅숏 타입<br>- `NORMAL`: 사용자가 생성한 스냅숏<br>- `SCHEDULED`: 스냅숏 자동 생성으로 만들어진 스냅숏<br>- `MIRROR`: 복제로 만들어진 스냅숏 |
+| snapshot.preserved | Body | Boolean | 시스템이 삭제 불가로 설정한 스냅숏 여부 |
 | snapshot.createdAt | Body | String | 스냅숏 생성 시각 |
 
 <br>
@@ -1101,7 +1101,7 @@ X-Auth-Token: {token-id}
 ### 복제 설정하기
 
 지정한 볼륨의 복제를 설정합니다.
-복제 대상 프로젝트별 선택 가능한 리전 범위는 아래 표를 통해 확인할 수 있습니다.
+복제 대상 프로젝트별 선택 가능한 리전 범위는 아래 표에서 확인할 수 있습니다.
 
 | 대상 프로젝트 | 선택 가능한 리전 |
 | ------- | --------- |
@@ -1120,7 +1120,7 @@ X-Auth-Token: {token-id}
 
 <!-- -->
 
-> [참고] 
+> [참고]
 > 원본 볼륨이 CIFS 프로토콜을 사용하는 경우 대상 볼륨도 CIFS 프로토콜을 사용해야 합니다. 이를 위해 원본 볼륨과는 별개의 CIFS 인증 정보를 생성하여 요청 본문 `cifsAuthIds` 필드에 입력해야 합니다.
 
 
@@ -1156,7 +1156,7 @@ X-Auth-Token: {token-id}
 | volumeMirror.dstVolume.snapshotPolicy.schedule | Body | Object | - | 스냅숏 자동 생성 객체<br>`null`일 경우 스냅숏 자동 생성이 설정되지 않습니다. |
 | volumeMirror.dstVolume.snapshotPolicy.schedule.time | Body | String | - | 스냅숏 자동 생성 시간 |
 | volumeMirror.dstVolume.snapshotPolicy.schedule.timeOffset | Body | String | - | 스냅숏 자동 생성 기준 시간대 |
-| volumeMirror.dstVolume.snapshotPolicy.schedule.weekdays | Body | List | - | 스냅숏 자동 생성 요일.<br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |
+| volumeMirror.dstVolume.snapshotPolicy.schedule.weekdays | Body | List | - | 스냅숏 자동 생성 요일<br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |
 
 <details>
   <summary>요청 예시</summary>
@@ -1189,7 +1189,7 @@ X-Auth-Token: {token-id}
 | volumeMirror.id | Body | String | 복제 설정 ID |
 | volumeMirror.role | Body | String | 복제 역할<br>- `SOURCE`: 원본 볼륨<br>- `DESTINATION`: 대상 볼륨 |
 | volumeMirror.status | Body | String | 복제 설정 상태<br>- `INITIALIZED`: 설정 완료<br>- `UPDATING`: 설정 변경 중<br>- `DELETING`: 설정 삭제 중<br>- `PENDING`: 설정 생성 중 |
-| volumeMirror.direction | Body | String | 복제 방향 <br>- `FORWARD`: 원본 볼륨 -> 복제 볼륨 <br>- `REVERSE`: 복제 볼륨 -> 원본 볼륨 |
+| volumeMirror.direction | Body | String | 복제 방향<br>- `FORWARD`: 원본 볼륨 → 복제 볼륨 <br>- `REVERSE`: 복제 볼륨 → 원본 볼륨 |
 | volumeMirror.directionChangedAt | Body | String | 복제 방향 변경 시각 |
 | volumeMirror.dstProjectId | Body | String | 복제 대상 볼륨의 프로젝트 ID |
 | volumeMirror.dstRegion | Body | String | 복제 대상 볼륨 리전 |
