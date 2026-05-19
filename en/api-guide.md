@@ -8,7 +8,7 @@
 
 NAS API uses the `nasv1` type endpoint. Refer to the `serviceCatalog` in the token issuance response for the valid endpoint.
 
-| Region | Endpoint | 
+| Region | Endpoint |
 | --- | --- |
 | Korea (Pangyo) Region | https://kr1-api-nas-infrastructure.nhncloudservice.com |
 | Korea (Pyeongchon) Region | https://kr2-api-nas-infrastructure.nhncloudservice.com |
@@ -24,15 +24,14 @@ NAS uses IaaS tokens for authentication and authorization when making API calls.
 <a id="nas_api_common.response"></a>
 ### Response Common Information
 
-This section describes the common response information provided by the NAS API. All API responses convey the result of a request via a `header` object.
-
+This section describes the common response information provided by the NAS API. All API responses convey the result of a request with a `header` object.
 
 | Name | Type | Description |
 | --- | --- | --- |
 | header | Object | Header Objects |
 | header.isSuccessful | Boolean | Whether the request was successful (`true` or `false`) |
 | header.resultCode | Integer | Result codes corresponding to HTTP status codes<br>- `200`: Success <br>- `201`: Resource creation successful<br>- `202`: Request received successfully, but not yet processed<br>- `400`: Requested with an invalid value<br>- `401`: Permission, authentication, or token-related error <br>- `404`: Requested resource not found<br>- `405`: The requested URL does not support the specified HTTP method<br>- `5XX`: The client's request is valid but the server failed to process it |
-| header.resultMessage | String | Messages about the results of request processing |
+| header.resultMessage | String | Messages about the request processing results |
 
 <details>
   <summary><strong>Success response</strong></summary>
@@ -89,15 +88,15 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
 | X-Auth-Token | Header | String | O | Token ID |
-| sizeGb | String | Query | - | Volume size |
-| maxSizeGb | String | Query | - | Volume maximum size |
-| minSizeGb | String | Query | - | Volume minimum size |
-| name | String | Query | - | Volume name |
-| nameContains | String | Query | - | Strings included in the volume name |
-| subnetId | String | Query | - | Volume with interfaces on a subnet |
-| limit | String | Query | - | Number of resources to expose on a page |
-| page | String | Query | - | Page to search |
-| sort | String | Query | - | Name of the field to sort by<br>Describe it in the form `{key}:{direction}`. Example: `name:asc`, `created_at:desc`<br>Possible key values: `id`, `name`, `sizeGb`, `createdAt`, `updatedAt` |
+| sizeGb | Query | String | - | Volume size |
+| maxSizeGb | Query | String | - | Volume maximum size |
+| minSizeGb | Query | String | - | Volume minimum size |
+| name | Query | String | - | Volume name |
+| nameContains | Query | String | - | Strings included in the volume name |
+| subnetId | Query | String | - | Volume with interfaces on a subnet |
+| limit | Query | String | - | Number of resources to expose on a page |
+| page | Query | String | - | Page to search |
+| sort | Query | String | - | Name of the field to sort by<br>Describe it in the form `{key}:{direction}`. Example: `name:asc`, `created_at:desc`<br>Possible key values: `id`, `name`, `sizeGb`, `createdAt`, `updatedAt` |
 
 #### Response
 
@@ -130,7 +129,7 @@ This API does not require a request body.
 | volumes.mirrors.id | Body | String | Replication setting ID |
 | volumes.mirrors.role | Body | String | Replication roles<br>- `SOURCE`: Source volume<br>- `DESTINATION`: Target volume |
 | volumes.mirrors.status | Body | String | Replication setting status<br>- `INITIALIZED`: Setup complete<br>- `UPDATING`: Updating settings<br>- `DELETING`: Deleting settings<br>- `PENDING`: Creating settings |
-| volumes.mirrors.direction | Body | String | Replication direction <br>- `FORWARD`: Source volume -> Replica volume <br>- `REVERSE`: Replica volume -> Source volume |
+| volumes.mirrors.direction | Body | String | Replication direction<br>- `FORWARD`: Source volume → Replica volume <br>- `REVERSE`: Replica volume → Source volume |
 | volumes.mirrors.directionChangedAt | Body | String | When to change replication direction |
 | volumes.mirrors.dstProjectId | Body | String | The project ID of the replication target volume |
 | volumes.mirrors.dstRegion | Body | String | The region of the replication target volume |
@@ -293,7 +292,7 @@ X-Auth-Token: {token-id}
 | volume.snapshotPolicy.schedule | Body | Object | - | Snapshot auto-create objects<br>If `null`, snapshot auto-creation will not be configured. |
 | volume.snapshotPolicy.schedule.time | Body | String | - | Snapshot auto-create time |
 | volume.snapshotPolicy.schedule.timeOffset | Body | String | - | Time zone for snapshot auto-create |
-| volume.snapshotPolicy.schedule.weekdays | Body | List | - | Days of the week that snapshots are automatically created. <br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |
+| volume.snapshotPolicy.schedule.weekdays | Body | List | - | Days of the week that snapshots are automatically created<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |
 
 <details>
   <summary>Request Example</summary>
@@ -364,7 +363,7 @@ X-Auth-Token: {token-id}
 | volume.mirrors.id | Body | String | Replication setting ID |
 | volume.mirrors.role | Body | String | Replication roles<br>- `SOURCE`: Source volume<br>- `DESTINATION`: Target volume |
 | volume.mirrors.status | Body | String | Replication setting status<br>- `INITIALIZED`: Setup complete<br>- `UPDATING`: Updating settings<br>- `DELETING`: Deleting settings<br>- `PENDING`: Creating settings |
-| volume.mirrors.direction | Body | String | Replication direction <br>- `FORWARD`: Original volume -> Replica volume<br>- `REVERSE`: Replica volume -> Original volume |
+| volume.mirrors.direction | Body | String | Replication direction<br>- `FORWARD`: Original volume → Replica volume<br>- `REVERSE`: Replica volume → Original volume |
 | volume.mirrors.directionChangedAt | Body | String | When to change replication direction |
 | volume.mirrors.dstProjectId | Body | String | The project ID of the replication target volume |
 | volume.mirrors.dstRegion | Body | String | The region of the replication target volume |
@@ -544,7 +543,7 @@ This API does not require a request body.
 | volume.mirrors.id | Body | String | Replication setting ID |
 | volume.mirrors.role | Body | String | Replication roles<br>- `SOURCE`: Source volume<br>- `DESTINATION`: Target volume |
 | volume.mirrors.status | Body | String | Replication setting status<br>- `INITIALIZED`: Setup complete<br>- `UPDATING`: Updating settings<br>- `DELETING`: Deleting settings<br>- `PENDING`: Creating settings |
-| volume.mirrors.direction | Body | String | Replication direction <br>- `FORWARD`: Original volume -> Replica volume<br>- `REVERSE`: Replica volume -> Original volume |
+| volume.mirrors.direction | Body | String | Replication direction<br>- `FORWARD`: Original volume → Replica volume<br>- `REVERSE`: Replica volume → Original volume |
 | volume.mirrors.directionChangedAt | Body | String | When to change replication direction |
 | volume.mirrors.dstProjectId | Body | String | The project ID of the replication target volume |
 | volume.mirrors.dstRegion | Body | String | The region of the replication target volume |
@@ -591,7 +590,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- | --- |
 | X-Auth-Token | Header | String | O | Token ID |
 | volume_id | URL | String | O | Volume ID |
-| volume | Body | Object | O | Volume creation request object |
+| volume | Body | Object | O | Request object for changing volume settings |
 | volume.acl | Body | List | - | List of ACLs to set when creating volume<br>You can enter it in IP or CIDR format. |
 | volume.description | Body | String | - | Volume description |
 | volume.mountProtocol | Body | Object | - | Protocol settings object when creating volume |
@@ -604,7 +603,7 @@ X-Auth-Token: {token-id}
 | volume.snapshotPolicy.schedule | Body | Object | - | Snapshot auto-create objects<br>If `null`, snapshot auto-creation will not be configured. |
 | volume.snapshotPolicy.schedule.time | Body | String | - | Snapshot auto-create time |
 | volume.snapshotPolicy.schedule.timeOffset | Body | String | - | Time zone for snapshot auto-create |
-| volume.snapshotPolicy.schedule.weekdays | Body | List | - | Days of the week that snapshots are automatically created.<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |
+| volume.snapshotPolicy.schedule.weekdays | Body | List | - | Days of the week that snapshots are automatically created<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |
 
 <details>
   <summary>Request Example</summary>
@@ -758,12 +757,12 @@ X-Auth-Token: {token-id}
 This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
-| --- | --- | --- | --- | --- |
+| --- | --- | --- |---| --- |
 | X-Auth-Token | Header | String | O | Token ID |
 | volume_id | URL | String | O | Volume ID |
-| limit | String | Query | X | Number of resources to expose on a page |
-| page | String | Query | X | Page to search |
-| sort | String | Query | X | Name of the field to sort by<br>Describe it in the form `{key}:{direction}`. Example: `snapshotId:asc`, `requestedAt:desc`<br>Possible key values: `snapshotId`, `snapshotName`, `requestedAt`, `restoredAt`, `requestedUser`, `requestedIp`, `result` |
+| limit | Query | String | - | Number of resources to expose on a page |
+| page | Query | String | - | Page to search |
+| sort | Query | String | - | Name of the field to sort by<br>Describe it in the form `{key}:{direction}`. Example: `snapshotId:asc`, `requestedAt:desc`<br>Possible key values: `snapshotId`, `snapshotName`, `requestedAt`, `restoredAt`, `requestedUser`, `requestedIp`, `result` |
 
 #### Response
 
@@ -841,10 +840,14 @@ This API does not require a request body.
 
 | Name | Type | Format | Description |
 | --- | --- | --- | --- |
-| header | Body | Object | Header Objects |
+| header | Body | Object | Header objects |
 | usage | Body | Object | Volume usage object |
-| usage.snapshotReserveGb | Body | Integer | The amount of space reserved for snapshots on volume |
+| usage.snapshotReserveGb | Body | Integer | The amount of space reserved for snapshots on the volume |
+| usage.snapshotUsedGb | Body | Integer | Snapshot usage |
+| usage.snapshotUsedGbInReservedSpace | Body | Integer | Snapshot usage within the reserved capacity |
+| usage.snapshotUsedGbInUserSpace | Body | Integer | Snapshot usage exceeding the reserved capacity |
 | usage.usedGb | Body | Integer | Volume usage |
+| usage.userDataGb | Body | Integer | The size of data actually written by the user |
 
 <details>
   <summary>Example response</summary>
@@ -857,8 +860,12 @@ This API does not require a request body.
     "resultMessage": "Success"
   },
   "usage": {
-    "snapshotReserveGb": 30,
-    "usedGb": 2
+    "snapshotReserveGb": 20,
+    "snapshotUsedGb": 11,
+    "snapshotUsedGbInReservedSpace": 11,
+    "snapshotUsedGbInUserSpace": 0,
+    "usedGb": 152,
+    "userDataGb": 152
   }
 }
 ```
@@ -908,8 +915,8 @@ This API does not require a request body.
 {
   "header": {
     "isSuccessful": true,
-    "resultCode": 201,
-    "resultMessage": "Created"
+    "resultCode": 200,
+    "resultMessage": "Success"
   },
   "snapshots": [
     {
@@ -1148,7 +1155,7 @@ X-Auth-Token: {token-id}
 | volumeMirror.dstVolume.snapshotPolicy.schedule | Body | Object | - | Snapshot auto-create objects<br>If `null`, snapshot auto-creation will not be configured. |
 | volumeMirror.dstVolume.snapshotPolicy.schedule.time | Body | String | - | Snapshot auto-create time |
 | volumeMirror.dstVolume.snapshotPolicy.schedule.timeOffset | Body | String | - | Time zone for snapshot auto-create |
-| volumeMirror.dstVolume.snapshotPolicy.schedule.weekdays | Body | List | - | Days of the week that snapshots are automatically created.<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |
+| volumeMirror.dstVolume.snapshotPolicy.schedule.weekdays | Body | List | - | Days of the week that snapshots are automatically created<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |
 
 <details>
   <summary>Request Example</summary>
@@ -1181,7 +1188,7 @@ X-Auth-Token: {token-id}
 | volumeMirror.id | Body | String | Replication setting ID |
 | volumeMirror.role | Body | String | Replication roles<br>- `SOURCE`: Source volume<br>- `DESTINATION`: Target volume |
 | volumeMirror.status | Body | String | Replication setting status<br>- `INITIALIZED`: Setup complete<br>- `UPDATING`: Updating settings<br>- `DELETING`: Deleting settings<br>- `PENDING`: Creating settings |
-| volumeMirror.direction | Body | String | Replication direction <br>- `FORWARD`: Source volume -> Replica volume<br>- `REVERSE`: Replica volume -> Source volume |
+| volumeMirror.direction | Body | String | Replication direction<br>- `FORWARD`: Source volume → Replica volume<br>- `REVERSE`: Replica volume → Source volume |
 | volumeMirror.directionChangedAt | Body | String | When to change replication direction |
 | volumeMirror.dstProjectId | Body | String | The project ID of the replication target volume |
 | volumeMirror.dstRegion | Body | String | The region of the replication target volume |
