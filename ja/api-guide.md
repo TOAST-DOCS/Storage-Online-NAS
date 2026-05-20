@@ -6,7 +6,7 @@
 <a id="nas_api_common.endpoint"></a>
 ### API エンドポイント
 
-NASAPIは`nasv1`タイプエンドポイントを利用します。正確なエンドポイントはトークン発行レスポンスの`serviceCatalog`を参照します。
+NASAPIは`nasv1`タイプのエンドポイントを使用します。正確なエンドポイントはトークン発行レスポンスの`serviceCatalog`を参照します。
 
 | リージョン | エンドポイント | 
 | --- | --- |
@@ -23,14 +23,14 @@ NASは、API呼び出し時の認証/認可のためにIaaSトークンを使用
 <a id="nas_api_common.response"></a>
 ### レスポンス共通情報
 
-NASAPIが提供する共通レスポンス情報の説明です。全てのAPIレスポンスは`header`オブジェクトを通じてリクエスト結果を伝達します。
+NASAPIが提供する共通レスポンス情報の説明です。全てのAPIレスポンスは`header`オブジェクトでリクエスト結果を伝達します。
 
 | 名前 | 形式 | 説明 |
 | --- | --- | --- |
 | header | Object | ヘッダオブジェクト |
 | header.isSuccessful | Boolean | リクエストの成否(`true`または`false`) |
 | header.resultCode | Integer | HTTPステータスコードに該当する結果コード<br>- `200`:成功 <br>- `201`:リソース作成成功<br>- `202`:リクエストが正常に受信されたが、まだ処理されていない状態<br>- `400`:有効ではない値でリクエストされた<br>- `401`:権限、認証またはトークン関連エラー <br>- `404`:リクエストしたリソースが見つからない<br>- `405`:リクエストしたURLが指定したHTTPメソッドをサポートしていない<br>- `5XX`:クライアントのリクエストは有効ですがサーバーが処理に失敗する |
-| header.resultMessage | String | リクエスト処理結果に関するメッセージ |
+| header.resultMessage | String | リクエスト処理結果メッセージ |
 
 <details>
   <summary><strong>成功レスポンス</strong></summary>
@@ -65,7 +65,7 @@ NASAPIが提供する共通レスポンス情報の説明です。全てのAPI�
 <br>
 
 > [参考]
-> APIレスポンスにガイドに記載されていないフィールドが表示される場合があります。このようなフィールドは、NHN Cloudの内部用途に使用され、事前告知なしに変更される可能性があるため、使用しないでください。
+> APIレスポンスにガイドに記載されていないフィールドが表示される場合があります。これらのフィールドはNHN Cloudの内部用途で使用され、事前の通知なしに変更される可能性があるため、使用しないでください。
 
 <a id="volume"></a>
 ## ボリューム
@@ -87,15 +87,15 @@ X-Auth-Token: {token-id}
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 | --- | --- | --- | --- | --- |
 | X-Auth-Token | Header | String | O | トークンID |
-| sizeGb | String | Query | - | ボリュームサイズ |
-| maxSizeGb | String | Query | - | ボリューム最大サイズ |
-| minSizeGb | String | Query | - | ボリューム最小サイズ |
-| name | String | Query | - | ボリューム名 |
-| nameContains | String | Query | - | ボリューム名に含まれる文字列 |
-| subnetId | String | Query | - | サブネットのインターフェースを持つボリューム |
-| limit | String | Query | - | 1ページに表示するリソース数 |
-| page | String | Query | - | 照会するページ |
-| sort | String | Query | - | ソート基準となるフィールド名<br>`{key}:{direction}`の形で記述します。例：`name:asc`, `created_at:desc`<br>使用可能なkey値: `id`, `name`, `sizeGb`, `createdAt`, `updatedAt` |
+| sizeGb | Query | String | - | ボリュームサイズ |
+| maxSizeGb | Query | String | - | ボリューム最大サイズ |
+| minSizeGb | Query | String | - | ボリューム最小サイズ |
+| name | Query | String | - | ボリューム名 |
+| nameContains | Query | String | - | ボリューム名に含まれる文字列 |
+| subnetId | Query | String | - | サブネットのインターフェースを持つボリューム |
+| limit | Query | String | - | 1ページに表示するリソース数 |
+| page | Query | String | - | 照会するページ |
+| sort | Query | String | - | ソート基準となるフィールド名<br>`{key}:{direction}`の形で記述します。例：`name:asc`, `created_at:desc`<br>使用可能なkey値: `id`, `name`, `sizeGb`, `createdAt`, `updatedAt` |
 
 #### レスポンス
 
@@ -250,14 +250,14 @@ X-Auth-Token: {token-id}
 新しいボリュームを作成します。
 
 > [参考] CIFSプロトコル使用
-> CIFSプロトコルを使用するためには、CIFS認証情報を作成する必要があります。認証情報はプロジェクト単位で管理され、CIFSボリュームごとにアクセスを許可するCIFS認証情報を登録する必要があります。
+> CIFSプロトコルを使用するには、CIFS認証情報を作成する必要があります。認証情報はプロジェクト単位で管理され、CIFSボリュームごとにアクセスを許可するCIFS認証情報を登録する必要があります。
 > CIFS認証情報はコンソールの **Storage > NAS > CIFS認証情報管理**ウィンドウから作成できます。
 
 
 <!-- -->
 
 > [参考]暗号化キーストア設定
-> 暗号化ボリュームを作成すると、暗号化に使用する共通鍵がNHN Cloud Secure Key Managerサービスのキーストアに保存されます。したがって、暗号化ボリュームを作成するためには、事前にSecure Key Managerサービスで[キーストアを作成](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_1)する必要があります。[キーストアのIDを確認](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_2)し、暗号化キーストア設定に入力します。
+> 暗号化ボリュームを作成すると、暗号化に使用する共通鍵がNHN Cloud Secure Key Managerサービスのキーストアに保存されます。したがって、暗号化ボリュームを作成するには、事前にSecure Key Managerサービスで[キーストアを作成](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_1)する必要があります。[キーストアのIDを確認](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_2)し、暗号化キーストア設定に入力します。
 > 作成したキーストアIDはコンソールの **Storage > NAS > 暗号化キーストア設定** ウィンドウで入力できます。暗号化ボリュームを作成すると、設定したキーストアに共通鍵が保存されます。 NASサービスによってキーストアに保存された共通鍵は暗号化ボリューム使用中には削除できません。暗号化ボリュームを削除すると、共通鍵も一緒に削除されます。
 > キーストアIDを変更すると、その後に作成する暗号化ボリュームの共通鍵が変更されたキーストアに保存されます。既存キーストアに保存された共通鍵は維持されます。
 
@@ -292,7 +292,7 @@ X-Auth-Token: {token-id}
 | volume.snapshotPolicy.schedule | Body | Object | - | スナップショット自動作成オブジェクト<br>`null`の場合、スナップショット自動作成が設定されません。 |
 | volume.snapshotPolicy.schedule.time | Body | String | - | スナップショット自動作成時間 |
 | volume.snapshotPolicy.schedule.timeOffset | Body | String | - | スナップショット自動作成基準タイムゾーン |
-| volume.snapshotPolicy.schedule.weekdays | Body | List | - | スナップショット自動作成曜日。 <br>空白のリストは毎日を意味し、曜日を0(日曜日)から6(土曜日)までの数字のリストで指定します。 |
+| volume.snapshotPolicy.schedule.weekdays | Body | List | - | スナップショット自動作成曜日 <br>空白のリストは毎日を意味し、曜日を0(日曜日)から6(土曜日)までの数字のリストで指定します。 |
 
 <details>
   <summary>リクエスト例</summary>
@@ -363,7 +363,7 @@ X-Auth-Token: {token-id}
 | volume.mirrors.id | Body | String | 複製設定ID |
 | volume.mirrors.role | Body | String | 複製役割<br>- `SOURCE`:ソースボリューム<br>- `DESTINATION`:対象ボリューム |
 | volume.mirrors.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
-| volume.mirrors.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースボリューム -> 複製ボリューム<br>- `REVERSE`:複製ボリューム -> ソースボリューム |
+| volume.mirrors.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースボリューム → 複製ボリューム<br>- `REVERSE`:複製ボリューム → ソースボリューム |
 | volume.mirrors.directionChangedAt | Body | String | 複製方向変更時刻 |
 | volume.mirrors.dstProjectId | Body | String | 複製対象ボリュームのプロジェクトID |
 | volume.mirrors.dstRegion | Body | String | 複製対象ボリュームリージョン |
@@ -543,7 +543,7 @@ X-Auth-Token: {token-id}
 | volume.mirrors.id | Body | String | 複製設定ID |
 | volume.mirrors.role | Body | String | 複製役割<br>- `SOURCE`:ソースボリューム<br>- `DESTINATION`:対象ボリューム |
 | volume.mirrors.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
-| volume.mirrors.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースボリューム -> 複製ボリューム<br>- `REVERSE`:複製ボリューム -> ソースボリューム |
+| volume.mirrors.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースボリューム → 複製ボリューム<br>- `REVERSE`:複製ボリューム → ソースボリューム |
 | volume.mirrors.directionChangedAt | Body | String | 複製方向変更時刻 |
 | volume.mirrors.dstProjectId | Body | String | 複製対象ボリュームのプロジェクトID |
 | volume.mirrors.dstRegion | Body | String | 複製対象ボリュームリージョン |
@@ -590,7 +590,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- | --- |
 | X-Auth-Token | Header | String | O | トークンID |
 | volume\_id | URL | String | O | ボリュームID |
-| volume | Body | Object | O | ボリューム作成リクエストオブジェクト |
+| volume | Body | Object | O | ボリューム設定変更リクエストオブジェクト |
 | volume.acl | Body | List | - | ボリューム作成時に設定するACLのリスト<br>IPまたはCIDR形式で入力できます。 |
 | volume.description | Body | String | - | ボリュームの説明 |
 | volume.mountProtocol | Body | Object | - | ボリュームを作成する際のプロトコル設定オブジェクト |
@@ -603,7 +603,7 @@ X-Auth-Token: {token-id}
 | volume.snapshotPolicy.schedule | Body | Object | - | スナップショット自動作成オブジェクト<br>`null`の場合、スナップショット自動作成が設定されません。 |
 | volume.snapshotPolicy.schedule.time | Body | String | - | スナップショット自動作成時間 |
 | volume.snapshotPolicy.schedule.timeOffset | Body | String | - | スナップショット自動作成基準タイムゾーン |
-| volume.snapshotPolicy.schedule.weekdays | Body | List | - | スナップショット自動作成曜日。<br>空白のリストは毎日を意味し、曜日を0(日曜日)から6(土曜日)までの数字のリストで指定します。 |
+| volume.snapshotPolicy.schedule.weekdays | Body | List | - | スナップショット自動作成曜日<br>空白のリストは毎日を意味し、曜日を0(日曜日)から6(土曜日)までの数字のリストで指定します。 |
 
 <details>
   <summary>リクエスト例</summary>
@@ -760,9 +760,9 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- | --- |
 | X-Auth-Token | Header | String | O | トークンID |
 | volume\_id | URL | String | O | ボリュームID |
-| limit | String | Query | X | 1ページに表示するリソース数 |
-| page | String | Query | X | 照会するページ |
-| sort | String | Query | X | ソート基準となるフィールド名<br>`{key}:{direction}`の形で記述します。例：`snapshotId:asc`, `requestedAt:desc`<br>使用可能なkey値: `snapshotId`, `snapshotName`, `requestedAt`, `restoredAt`, `requestedUser`, `requestedIp`, `result` |
+| limit | Query | String | - | 1ページに表示するリソース数 |
+| page | Query | String | - | 照会するページ |
+| sort | Query | String | - | ソート基準となるフィールド名<br>`{key}:{direction}`の形で記述します。例：`snapshotId:asc`, `requestedAt:desc`<br>使用可能なkey値: `snapshotId`, `snapshotName`, `requestedAt`, `restoredAt`, `requestedUser`, `requestedIp`, `result` |
 
 #### レスポンス
 
@@ -843,8 +843,11 @@ X-Auth-Token: {token-id}
 | header | Body | Object | ヘッダオブジェクト |
 | usage | Body | Object | ボリューム使用状況オブジェクト |
 | usage.snapshotReserveGb | Body | Integer | ボリュームでスナップショットのために予約したスペースサイズ |
+| usage.snapshotUsedGb | Body | Integer | スナップショット使用量 |
+| usage.snapshotUsedGbInReservedSpace | Body | Integer | スナップショット予約容量内の使用量 |
+| usage.snapshotUsedGbInUserSpace | Body | Integer | 予約容量を超過したスナップショット使用量 |
 | usage.usedGb | Body | Integer | ボリューム使用量 |
-
+| usage.userDataGb | Body | Integer | ユーザーが実際に記録したデータサイズ |
 <details>
   <summary>レスポンス例</summary>
 
@@ -856,8 +859,12 @@ X-Auth-Token: {token-id}
     "resultMessage": "Success"
   },
   "usage": {
-    "snapshotReserveGb": 30,
-    "usedGb": 2
+    "snapshotReserveGb": 20,
+    "snapshotUsedGb": 11,
+    "snapshotUsedGbInReservedSpace": 11,
+    "snapshotUsedGbInUserSpace": 0,
+    "usedGb": 152,
+    "userDataGb": 152
   }
 }
 ```
@@ -867,7 +874,7 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="snapshots"></a>
-## Snapshots
+## スナップショット
 
 <a id="snapshots.list"></a>
 ### スナップショットリスト表示
@@ -897,8 +904,8 @@ X-Auth-Token: {token-id}
 | snapshots.id | Body | String | スナップショットID |
 | snapshots.name | Body | String | スナップショット名 |
 | snapshots.size | Body | Integer | スナップショットサイズ |
-| snapshots.type | Body | String | スナップショットタイプ<br>- `NORMAL`:ユーザーによって作成されたスナップショット<br>- `SCHEDULED`:スナップショット自動作成によって作成されたスナップショット<br>- `MIRROR`:複製により作成されたスナップショット |
-| snapshots.preserved | Body | Boolean | システムによって削除不可に設定されたスナップショットかどうか |
+| snapshots.type | Body | String | スナップショットタイプ<br>- `NORMAL`: ユーザーが作成したスナップショット<br>- `SCHEDULED`: スナップショット自動作成で作成されたスナップショット<br>- `MIRROR`: 複製で作成されたスナップショット |
+| snapshots.preserved | Body | Boolean | システムが削除不可に設定したスナップショットかどうか |
 | snapshots.createdAt | Body | String | スナップショット作成時刻 |
 
 <details><summary>レスポンス例</summary>
@@ -907,8 +914,8 @@ X-Auth-Token: {token-id}
 {
   "header": {
     "isSuccessful": true,
-    "resultCode": 201,
-    "resultMessage": "Created"
+    "resultCode": 200,
+    "resultMessage": "Success"
   },
   "snapshots": [
     {
@@ -967,8 +974,8 @@ X-Auth-Token: {token-id}
 | snapshot.id | Body | String | スナップショットID |
 | snapshot.name | Body | String | スナップショット名 |
 | snapshot.size | Body | Integer | スナップショットサイズ |
-| snapshot.type | Body | String | スナップショットタイプ<br>- `NORMAL`:ユーザーによって作成されたスナップショット<br>- `SCHEDULED`:スナップショット自動作成によって作成されたスナップショット<br>- `MIRROR`:複製により作成されたスナップショット |
-| snapshot.preserved | Body | Boolean | システムによって削除不可に設定されたスナップショットかどうか |
+| snapshot.type | Body | String | スナップショットタイプ<br>- `NORMAL`: ユーザーが作成したスナップショット<br>- `SCHEDULED`: スナップショット自動作成で作成されたスナップショット<br>- `MIRROR`: 複製で作成されたスナップショット |
+| snapshot.preserved | Body | Boolean | システムが削除不可に設定したスナップショットかどうか |
 | snapshot.createdAt | Body | String | スナップショット作成時刻 |
 
 <details>
@@ -1052,8 +1059,8 @@ X-Auth-Token: {token-id}
 | snapshot.id | Body | String | スナップショットID |
 | snapshot.name | Body | String | スナップショット名 |
 | snapshot.size | Body | Integer | スナップショットサイズ |
-| snapshot.type | Body | String | スナップショットタイプ<br>- `NORMAL`:ユーザーによって作成されたスナップショット<br>- `SCHEDULED`:スナップショット自動作成によって作成されたスナップショット<br>- `MIRROR`:複製により作成されたスナップショット |
-| snapshot.preserved | Body | Boolean | システムによって削除不可に設定されたスナップショットかどうか |
+| snapshot.type | Body | String | スナップショットタイプ<br>- `NORMAL`: ユーザーが作成したスナップショット<br>- `SCHEDULED`: スナップショット自動作成で作成されたスナップショット<br>- `MIRROR`: 複製で作成されたスナップショット |
+| snapshot.preserved | Body | Boolean | システムが削除不可に設定したスナップショットかどうか |
 | snapshot.createdAt | Body | String | スナップショット作成時刻 |
 
 <br>
@@ -1146,7 +1153,7 @@ X-Auth-Token: {token-id}
 | volumeMirror.dstVolume.snapshotPolicy.schedule | Body | Object | - | スナップショット自動作成オブジェクト<br>`null`の場合、スナップショット自動作成が設定されません。 |
 | volumeMirror.dstVolume.snapshotPolicy.schedule.time | Body | String | - | スナップショット自動作成時間 |
 | volumeMirror.dstVolume.snapshotPolicy.schedule.timeOffset | Body | String | - | スナップショット自動作成基準タイムゾーン |
-| volumeMirror.dstVolume.snapshotPolicy.schedule.weekdays | Body | List | - | スナップショット自動作成曜日。<br>空白のリストは毎日を意味し、曜日を0(日曜日)から6(土曜日)までの数字のリストで指定します。 |
+| volumeMirror.dstVolume.snapshotPolicy.schedule.weekdays | Body | List | - | スナップショット自動作成曜日<br>空白のリストは毎日を意味し、曜日を0(日曜日)から6(土曜日)までの数字のリストで指定します。 |
 
 <details>
   <summary>リクエスト例</summary>
@@ -1179,7 +1186,7 @@ X-Auth-Token: {token-id}
 | volumeMirror.id | Body | String | 複製設定ID |
 | volumeMirror.role | Body | String | 複製役割<br>- `SOURCE`:ソースボリューム<br>- `DESTINATION`:対象ボリューム |
 | volumeMirror.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
-| volumeMirror.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースボリューム -> 複製ボリューム<br>- `REVERSE`:複製ボリューム -> ソースボリューム |
+| volumeMirror.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースボリューム → 複製ボリューム<br>- `REVERSE`:複製ボリューム → ソースボリューム |
 | volumeMirror.directionChangedAt | Body | String | 複製方向変更時刻 |
 | volumeMirror.dstProjectId | Body | String | 複製対象ボリュームのプロジェクトID |
 | volumeMirror.dstRegion | Body | String | 複製対象ボリュームリージョン |
