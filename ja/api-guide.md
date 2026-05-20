@@ -227,7 +227,7 @@ X-Auth-Token: {token-id}
           "weekdays": [
             1,
             3,
-5
+            5
           ]
         }
       },
@@ -326,7 +326,7 @@ X-Auth-Token: {token-id}
         "weekdays": [
           1,
           3,
-5
+          5
         ]
       }
     }
@@ -456,7 +456,7 @@ X-Auth-Token: {token-id}
         "weekdays": [
           1,
           3,
-5
+          5
         ]
       }
     },
@@ -631,7 +631,7 @@ X-Auth-Token: {token-id}
         "weekdays": [
           1,
           3,
-5
+          5
         ]
       }
     }
