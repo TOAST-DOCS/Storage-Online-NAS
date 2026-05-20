@@ -48,7 +48,7 @@ resource "nhncloud_nas_storage_volume_interface_v1" "interface1" {
 <!-- -->
 
 > [参考] 暗号化キーストア設定
-> 暗号化ボリュームを作成すると、暗号化に使用する共通鍵がNHN Cloud Secure Key Managerサービスのキーストアに保存されます。したがって、暗号化ボリュームを作成するには、事前にSecure Key Managerサービスで[キーストアを作成](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_1)する必要があります。[キーストアのIDを確認](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_2)し、暗号化キーストア設定に入力します。
+> 暗号化ボリュームを作成すると、暗号化に使用する共通鍵がNHN Cloud Secure Key Managerサービスのキーストアに保存されます。したがって、暗号化ボリュームを作成するには、事前にSecure Key Managerサービスで[キーストアを作成](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_1)する必要があります。[キーストアのIDを確認](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_2)し、暗号化キーストア設定に入力します。
 > 作成したキーストアIDは、コンソールの**Storage > NAS > 暗号化キーストア設定**画面で入力できます。暗号化ボリュームを作成すると、設定したキーストアに共通鍵が保存されます。キーストアに保存された共通鍵は、暗号化ボリュームの使用中は削除できません。暗号化ボリュームを削除すると、共通鍵も一緒に削除されます。
 > キーストアIDを変更すると、それ以降に作成する暗号化ボリュームの共通鍵は変更されたキーストアに保存されます。既存のキーストアに保存された共通鍵は維持されます。
 
@@ -102,6 +102,7 @@ resource "nhncloud_nas_storage_volume_v1" "volume_03" {
   }
 }
 ```
+
 | 名前 | タイプ | 必須 | 変更可能 | 説明 |
 | --- | --- | --- | --- | --- |
 | region | String | - | - | 作成するボリュームのリージョン<br>デフォルト値はプロバイダー設定ファイルに設定されたリージョン |
@@ -135,6 +136,7 @@ resource "nhncloud_nas_storage_volume_interface_v1" "nas_interface_01" {
   subnet_id = data.nhncloud_networking_vpcsubnet_v2.default_subnet.id
 }
 ```
+
 | 名前 | タイプ | 必須 | 変更可能 | 説明 |
 | --- | --- | --- | --- | --- |
 | region | String | - | - | 接続するボリュームのリージョン<br>デフォルト値はプロバイダー設定ファイルに設定されたリージョン |
@@ -173,6 +175,7 @@ resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
   }
 }
 ```
+
 | 名前 | タイプ | 必須 | 変更可能 | 説明 |
 | --- | --- | --- | --- | --- |
 | src_region | String | - | - | ソースボリュームのリージョン<br>デフォルト値はプロバイダー設定ファイルに設定されたリージョン |

@@ -137,7 +137,7 @@ resource "nhncloud_nas_storage_volume_interface_v1" "nas_interface_01" {
 
 | Name | Type | Required | Modifiable | Description |
 | --- | --- | --- | --- | --- |
-| region | String | - | - | Region of the volume to attach<br>기본값은 공급자 설정 파일에 설정된 리전 |
+| region | String | - | - | Region of the volume to attach<br>Default is the region set in the provider configuration file |
 | volume_id | String | O | - | ID of the volume to attach |
 | subnet_id | String | O | - | ID of the subnet to attach |
 

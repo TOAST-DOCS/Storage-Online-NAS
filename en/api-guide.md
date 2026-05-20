@@ -1115,12 +1115,11 @@ If the sizes of the source and target volumes differ, the replication may fail.
 <!-- -->
 
 > [Note]
-To set up encryption on the target volume, you must configure a separate encryption keystore specific to the project or region the target volume belongs to.
+> To set up encryption on the target volume, you must configure a separate encryption keystore specific to the project or region the target volume belongs to.
 
 <!-- -->
 
-> [Note] If the source volume uses the CIFS protocol, the target volume must also use CIFS.
-To do this, you must create separate CIFS credentials (different from the source) and specify it in the`cifsAuthIds` field of the request body.
+> [Note] If the source volume uses the CIFS protocol, the target volume must also use CIFS. To do this, you must create separate CIFS credentials (different from the source) and specify it in the`cifsAuthIds` field of the request body.
 
 
 ```

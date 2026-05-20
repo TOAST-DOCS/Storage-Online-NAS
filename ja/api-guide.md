@@ -848,6 +848,7 @@ X-Auth-Token: {token-id}
 | usage.snapshotUsedGbInUserSpace | Body | Integer | 予約容量を超過したスナップショット使用量 |
 | usage.usedGb | Body | Integer | ボリューム使用量 |
 | usage.userDataGb | Body | Integer | ユーザーが実際に記録したデータサイズ |
+
 <details>
   <summary>レスポンス例</summary>
 
@@ -1055,7 +1056,7 @@ X-Auth-Token: {token-id}
 | 名前 | 種類 | 形式 | 説明 |
 | --- | --- | --- | --- |
 | header | Body | Object | ヘッダオブジェクト |
-| snapshot | Body | List | スナップショット情報オブジェクト |
+| snapshot | Body | Object | スナップショット情報オブジェクト |
 | snapshot.id | Body | String | スナップショットID |
 | snapshot.name | Body | String | スナップショット名 |
 | snapshot.size | Body | Integer | スナップショットサイズ |
