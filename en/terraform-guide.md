@@ -4,7 +4,7 @@ This document details how to use NHN Cloud NAS services with Terraform.
 <a id="terraform"></a>
 ## Terraform
 
-Terraform is an open-source tool designed for seamless infrastructure provisioning, secure updates, and efficient configuration management. For basics, refer to [User Guide > Compute > Instance > Terraform User Guide](https://docs.nhncloud.com/en/Compute/Instance/en/terraform-guide/).
+Terraform is an open-source tool designed for seamless infrastructure provisioning, secure updates, and efficient configuration management. For basics, refer to [User Guide > Compute > Instance > Terraform User Guide](/Compute/Instance/en/terraform-guide/).
 
 <a id="terraform-resource-dependency"></a>
 ### Resource dependency
@@ -52,7 +52,7 @@ resource "nhncloud_nas_storage_volume_interface_v1" "interface1" {
 
 
 ```hcl
-# Create an Empty NAS Storage with NFS Protocol
+# Create an Empty NAS Volume with NFS Protocol
 resource "nhncloud_nas_storage_volume_v1" "volume_01" {
   name = "nas_volume_01"
   size_gb = 300
@@ -61,7 +61,7 @@ resource "nhncloud_nas_storage_volume_v1" "volume_01" {
   }
 }
 
-# Create an Empty NAS Storage with CIFS Protocol
+# Create an Empty NAS Volume with CIFS Protocol
 resource "nhncloud_nas_storage_volume_v1" "volume_02" {
   name = "nas_volume_02"
   size_gb = 300
@@ -100,6 +100,7 @@ resource "nhncloud_nas_storage_volume_v1" "volume_03" {
   }
 }
 ```
+
 | Name | Type | Required | Modifiable | Description |
 | --- | --- | --- | --- | --- |
 | region | String | - | - | Region of the volume to be created<br>Default is the region set in the provider configuration file |
@@ -118,10 +119,11 @@ resource "nhncloud_nas_storage_volume_v1" "volume_03" {
 | snapshot_policy.schedule | Object | - | - | Snapshot auto-generation object<br>If `null`, automatic snapshot generation is not set. |
 | snapshot_policy.schedule.time | String | - | O | Automatic snapshot generation time |
 | snapshot_policy.schedule.time_offset | String | - | O | Automatic snapshot generation time zone |
-| snapshot_policy.schedule.weekdays | List | - | O | Automatic snapshot generation days.<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday).
+| snapshot_policy.schedule.weekdays | List | - | O | Automatic snapshot generation days<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday).
 
 <a id="terraform-resources-connect-interface"></a>
 ### Attach an Interface to a Volume
+
 ```hcl
 data "nhncloud_networking_vpcsubnet_v2" "default_subnet" {
   ...
@@ -132,6 +134,7 @@ resource "nhncloud_nas_storage_volume_interface_v1" "nas_interface_01" {
   subnet_id = data.nhncloud_networking_vpcsubnet_v2.default_subnet.id
 }
 ```
+
 | Name | Type | Required | Modifiable | Description |
 | --- | --- | --- | --- | --- |
 | region | String | - | - | Region of the volume to attach<br>기본값은 공급자 설정 파일에 설정된 리전 |
@@ -140,6 +143,7 @@ resource "nhncloud_nas_storage_volume_interface_v1" "nas_interface_01" {
 
 <a id="terraform-resources-set-replication"></a>
 ### Set up Replication
+
 Creating a replication configuration resource automatically generates a destination volume.
 While you can update the destination volume by modifying the `dst_volume` parameters within the replication resource, the destination volume is not automatically deleted even if the replication configuration resource is removed.
 
@@ -152,7 +156,7 @@ While you can update the destination volume by modifying the `dst_volume` parame
 > [Note]
 > Destination volumes that remain after a resource deletion or update must be managed manually via the console.
 
-```
+```hcl
 resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
   src_volume_id = nhncloud_nas_storage_volume_v1.volume_01.id
   dst_region    = "KR2"
@@ -169,6 +173,7 @@ resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
   }
 }
 ```
+
 | Name | Type | Required | Modifiable | Description |
 | --- | --- | --- | --- | --- |
 | src_region | String | - | - | Region of the source volume<br>Default is the region set in the provider configuration file |
@@ -191,9 +196,10 @@ resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
 | dst_volume.snapshot_policy.schedule | Object | - | O | Automatic Snapshot Creation Object<br>If `null`, automatic snapshot creation is not set. |
 | dst_volume.snapshot_policy.schedule.time | String | - | O | Automatic snapshot creation time |
 | dst_volume.snapshot_policy.schedule.time_offset | String | - | O | Automatic snapshot creation time zone |
-| dst_volume.snapshot_policy.schedule.weekdays | List | - | O | Automatic snapshot creation days.<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday).
+| dst_volume.snapshot_policy.schedule.weekdays | List | - | O | Automatic snapshot creation days<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday).
 
 <a id="reference"></a>
 ## References
+
 Terraform - [https://www.terraform.io/](https://www.terraform.io/)
 Terraform Registry - [https://registry.terraform.io/](https://registry.terraform.io/)
