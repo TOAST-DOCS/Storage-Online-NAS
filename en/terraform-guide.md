@@ -1,10 +1,11 @@
 ## Storage > NAS > Terraform User Guide
+
 This document details how to use NHN Cloud NAS services with Terraform.
 
 <a id="terraform"></a>
 ## Terraform
 
-Terraform is an open-source tool designed for seamless infrastructure provisioning, secure updates, and efficient configuration management. For basics, refer to [User Guide > Compute > Instance > Terraform User Guide](https://docs.nhncloud.com/en/Compute/Instance/en/terraform-guide/).
+Terraform is an open-source tool designed for seamless infrastructure provisioning, secure updates, and efficient configuration management. For basics, refer to [User Guide > Compute > Instance > Terraform User Guide](/Compute/Instance/en/terraform-guide/).
 
 <a id="terraform-resource-dependency"></a>
 ### Resource dependency
@@ -40,13 +41,13 @@ resource "nhncloud_nas_storage_volume_interface_v1" "interface1" {
 ### Create a Volume
 
 > [Note] Using the CIFS protocol
-> To use the CIFS protocol, you must create CIFS credentials. Credentials are managed on a per-project basis, and you must register CIFS credentials to allow to access each CIFS volume.
+> To use the CIFS protocol, you must create CIFS credentials. Credentials are managed on a per-project basis, and you must register CIFS credentials to allow access to each CIFS volume.
 > You can create CIFS credentials through the **Storage > NAS > Manage CIFS Credentials** of the console.
 
 <!-- -->
 
 > [Note] Setting up encryption key storage
-> When an encrypted volume is created, the symmetric key used for encryption is stored in the NHN Cloud Secure Key Manager store. To create encrypted volume,[you must first create a keystore](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_1) in the Secure Key Manager service. After creating the keystore, [check its ID](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_2) and enter it in the encryption keystore settings.
+> When an encrypted volume is created, the symmetric key used for encryption is stored in the NHN Cloud Secure Key Manager store. To create encrypted volume, [you must first create a keystore](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/ko/getting-started/#_1) in the Secure Key Manager service. After creating the keystore, [check its ID](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/ko/getting-started/#_2) and enter it in the encryption keystore settings.
 > You can enter the keystore ID from the **Storage > NAS > Encryption keystore settings** in the console. When you create encrypted volume, the symmetric key is stored in the specified keystore. The symmetric key stored in the keystore cannot be deleted while the encrypted volume is in use. When the encrypted volume is deleted, the corresponding symmetric key is also deleted.
 > If you change the keystore ID, symmetric keys for newly created encrypted volume will be stored in the new keystore. Symmetric keys already stored in the previous keystore are retained.
 
@@ -100,6 +101,7 @@ resource "nhncloud_nas_storage_volume_v1" "volume_03" {
   }
 }
 ```
+
 | Name | Type | Required | Modifiable | Description |
 | --- | --- | --- | --- | --- |
 | region | String | - | - | Region of the volume to be created<br>Default is the region set in the provider configuration file |
@@ -118,10 +120,11 @@ resource "nhncloud_nas_storage_volume_v1" "volume_03" {
 | snapshot_policy.schedule | Object | - | - | Snapshot auto-generation object<br>If `null`, automatic snapshot generation is not set. |
 | snapshot_policy.schedule.time | String | - | O | Automatic snapshot generation time |
 | snapshot_policy.schedule.time_offset | String | - | O | Automatic snapshot generation time zone |
-| snapshot_policy.schedule.weekdays | List | - | O | Automatic snapshot generation days.<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday).
+| snapshot_policy.schedule.weekdays | List | - | O | Automatic snapshot generation days<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday).
 
 <a id="terraform-resources-connect-interface"></a>
 ### Attach an Interface to a Volume
+
 ```hcl
 data "nhncloud_networking_vpcsubnet_v2" "default_subnet" {
   ...
@@ -132,14 +135,16 @@ resource "nhncloud_nas_storage_volume_interface_v1" "nas_interface_01" {
   subnet_id = data.nhncloud_networking_vpcsubnet_v2.default_subnet.id
 }
 ```
+
 | Name | Type | Required | Modifiable | Description |
 | --- | --- | --- | --- | --- |
-| region | String | - | - | Region of the volume to attach<br>기본값은 공급자 설정 파일에 설정된 리전 |
+| region | String | - | - | Region of the volume to attach<br>Default is the region set in the provider configuration file |
 | volume_id | String | O | - | ID of the volume to attach |
 | subnet_id | String | O | - | ID of the subnet to attach |
 
 <a id="terraform-resources-set-replication"></a>
 ### Set up Replication
+
 Creating a replication configuration resource automatically generates a destination volume.
 While you can update the destination volume by modifying the `dst_volume` parameters within the replication resource, the destination volume is not automatically deleted even if the replication configuration resource is removed.
 
@@ -152,7 +157,7 @@ While you can update the destination volume by modifying the `dst_volume` parame
 > [Note]
 > Destination volumes that remain after a resource deletion or update must be managed manually via the console.
 
-```
+```hcl
 resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
   src_volume_id = nhncloud_nas_storage_volume_v1.volume_01.id
   dst_region    = "KR2"
@@ -169,6 +174,7 @@ resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
   }
 }
 ```
+
 | Name | Type | Required | Modifiable | Description |
 | --- | --- | --- | --- | --- |
 | src_region | String | - | - | Region of the source volume<br>Default is the region set in the provider configuration file |
@@ -191,9 +197,10 @@ resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
 | dst_volume.snapshot_policy.schedule | Object | - | O | Automatic Snapshot Creation Object<br>If `null`, automatic snapshot creation is not set. |
 | dst_volume.snapshot_policy.schedule.time | String | - | O | Automatic snapshot creation time |
 | dst_volume.snapshot_policy.schedule.time_offset | String | - | O | Automatic snapshot creation time zone |
-| dst_volume.snapshot_policy.schedule.weekdays | List | - | O | Automatic snapshot creation days.<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday).
+| dst_volume.snapshot_policy.schedule.weekdays | List | - | O | Automatic snapshot creation days<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday).
 
 <a id="reference"></a>
 ## References
+
 Terraform - [https://www.terraform.io/](https://www.terraform.io/)
 Terraform Registry - [https://registry.terraform.io/](https://registry.terraform.io/)
