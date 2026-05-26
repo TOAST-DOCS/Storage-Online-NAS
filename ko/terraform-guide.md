@@ -1,16 +1,17 @@
 ## Storage > NAS > Terraform 사용 가이드
+
 이 문서는 Terraform으로 NHN Cloud NAS 서비스를 사용하는 방법을 설명합니다.
 
 <a id="terraform"></a>
 ## Terraform
 
-Terraform은 인프라를 손쉽게 구축하고 안전하게 변경하며, 효율적으로 형상을 관리할 수 있는 오픈 소스 도구입니다. 기본적인 사용법은 [사용자 가이드 > Compute > Instance > Terraform 사용 가이드](https://docs.nhncloud.com/ko/Compute/Instance/ko/terraform-guide/)를 참고하세요.
+Terraform은 인프라를 손쉽게 구축하고 안전하게 변경하며, 효율적으로 형상을 관리할 수 있는 오픈 소스 도구입니다. 기본적인 사용법은 [사용자 가이드 > Compute > Instance > Terraform 사용 가이드](/Compute/Instance/ko/terraform-guide/)를 참고하세요.
 
 <a id="terraform-resource-dependency"></a>
 ### 리소스 의존성
 
-일반적으로 각 리소스는 독립적이지만 다른 특정 리소스에 의존성을 가질 수도 있습니다. 리소스의 레이블을 통해 다른 리소스의 정보를 참조하면 Terraform은 자동으로 의존성을 설정합니다.
-예를 들어, `volume1` 볼륨에 연결되는 `interface1` 인터페이스는 다음과 같이 표현될 수 있습니다.
+일반적으로 각 리소스는 독립적이지만 다른 특정 리소스에 의존성을 가질 수도 있습니다. 리소스 레이블로 다른 리소스의 정보를 참조하면 Terraform은 자동으로 의존성을 설정합니다.
+예를 들어, `volume1` 볼륨에 연결되는 `interface1` 인터페이스는 다음과 같이 표현할 수 있습니다.
 
 ```hcl
 # 볼륨 리소스
@@ -40,20 +41,20 @@ resource "nhncloud_nas_storage_volume_interface_v1" "interface1" {
 ### 볼륨 생성하기
 
 > [참고] CIFS 프로토콜 사용
-> CIFS 프로토콜을 사용하기 위해서는 CIFS 인증 정보를 생성해야 합니다. 인증 정보는 프로젝트 단위로 관리되며, CIFS 볼륨마다 접근을 허용할 CIFS 인증 정보를 등록해야 합니다.
+> CIFS 프로토콜을 사용하려면 CIFS 인증 정보를 생성해야 합니다. 인증 정보는 프로젝트 단위로 관리되며, CIFS 볼륨마다 접근을 허용할 CIFS 인증 정보를 등록해야 합니다.
 > CIFS 인증 정보는 콘솔의 **Storage > NAS > CIFS 인증 정보 관리** 창에서 생성할 수 있습니다.
 
 
 <!-- -->
 
 > [참고] 암호화 키 저장소 설정
-> 암호화 볼륨을 생성하면 암호화에 사용하는 대칭 키가 NHN Cloud Secure Key Manager 서비스의 키 저장소에 저장됩니다. 따라서 암호화 볼륨을 만들기 위해서는 미리 Secure Key Manager 서비스에서 [키 저장소를 생성](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_1)해야 합니다. [키 저장소의 ID를 확인](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_2)하여 암호화 키 저장소 설정에 입력합니다.
+> 암호화 볼륨을 생성하면 암호화에 사용하는 대칭 키가 NHN Cloud Secure Key Manager 서비스의 키 저장소에 저장됩니다. 따라서 암호화 볼륨을 만들려면 미리 Secure Key Manager 서비스에서 [키 저장소를 생성](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_1)해야 합니다. [키 저장소의 ID를 확인](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_2)하여 암호화 키 저장소 설정에 입력합니다.
 > 생성한 키 저장소 ID는 콘솔의 **Storage > NAS > 암호화 키 저장소 설정** 창에서 입력할 수 있습니다. 암호화 볼륨을 생성하면 설정한 키 저장소에 대칭 키가 저장됩니다. 키 저장소에 저장된 대칭 키는 암호화 볼륨 사용 중에는 삭제할 수 없습니다. 암호화 볼륨을 삭제하면 대칭 키도 함께 삭제됩니다.
 > 키 저장소 ID를 변경하면 이후 생성하는 암호화 볼륨의 대칭 키가 변경된 키 저장소에 저장됩니다. 기존 키 저장소에 저장된 대칭 키는 유지됩니다.
 
 
 ```hcl
-# NFS 프로토콜의 빈 NAS 스토리지 생성
+# NFS 프로토콜의 빈 NAS 볼륨 생성
 resource "nhncloud_nas_storage_volume_v1" "volume_01" {
   name = "nas_volume_01"
   size_gb = 300
@@ -62,7 +63,7 @@ resource "nhncloud_nas_storage_volume_v1" "volume_01" {
   }
 }
 
-# CIFS 프로토콜의 빈 NAS 스토리지 생성
+# CIFS 프로토콜의 빈 NAS 볼륨 생성
 resource "nhncloud_nas_storage_volume_v1" "volume_02" {
   name = "nas_volume_02"
   size_gb = 300
@@ -101,7 +102,8 @@ resource "nhncloud_nas_storage_volume_v1" "volume_03" {
   }
 }
 ```
-| 이름  | 타입 | 필수 | 변경 가능 | 설명 |
+
+| 이름 | 타입 | 필수 | 변경 가능 | 설명 |
 | --- | --- | --- | --- | --- |
 | region | String | - | - | 생성할 볼륨의 리전<br>기본값은 공급자 설정 파일에 설정된 리전 |
 | name | String | O | - | 볼륨 이름 |
@@ -119,10 +121,11 @@ resource "nhncloud_nas_storage_volume_v1" "volume_03" {
 | snapshot_policy.schedule | Object | - | - | 스냅숏 자동 생성 객체<br>`null`일 경우 스냅숏 자동 생성이 설정되지 않습니다. |
 | snapshot_policy.schedule.time | String | - | O | 스냅숏 자동 생성 시간 |
 | snapshot_policy.schedule.time_offset | String | - | O | 스냅숏 자동 생성 기준 시간대 |
-| snapshot_policy.schedule.weekdays | List | - | O | 스냅숏 자동 생성 요일.<br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |
+| snapshot_policy.schedule.weekdays | List | - | O | 스냅숏 자동 생성 요일<br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |
 
 <a id="terraform-resources-connect-interface"></a>
 ### 볼륨에 인터페이스 연결하기
+
 ```hcl
 data "nhncloud_networking_vpcsubnet_v2" "default_subnet" {
   ...
@@ -133,7 +136,8 @@ resource "nhncloud_nas_storage_volume_interface_v1" "nas_interface_01" {
   subnet_id = data.nhncloud_networking_vpcsubnet_v2.default_subnet.id
 }
 ```
-| 이름  | 타입 | 필수 | 변경 가능 | 설명 |
+
+| 이름 | 타입 | 필수 | 변경 가능 | 설명 |
 | --- | --- | --- | --- | --- |
 | region | String | - | - | 연결할 볼륨의 리전<br>기본값은 공급자 설정 파일에 설정된 리전 |
 | volume_id | String | O | - | 연결할 볼륨의 ID |
@@ -141,6 +145,7 @@ resource "nhncloud_nas_storage_volume_interface_v1" "nas_interface_01" {
 
 <a id="terraform-resources-set-replication"></a>
 ### 복제 설정하기
+
 복제 설정 리소스를 생성하면 대상 볼륨이 자동으로 생성됩니다.
 복제 설정 리소스에서 `dst_volume`의 설정값을 변경하여 대상 볼륨을 업데이트할 수 있지만, 복제 설정 리소스를 삭제해도 대상 볼륨은 자동으로 삭제되지 않습니다.
 
@@ -153,7 +158,7 @@ resource "nhncloud_nas_storage_volume_interface_v1" "nas_interface_01" {
 > [참고]
 > 리소스 삭제 및 업데이트로 인해 삭제되지 않고 남아 있는 대상 볼륨은 콘솔에서 따로 관리해야 합니다.
 
-```
+```hcl
 resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
   src_volume_id = nhncloud_nas_storage_volume_v1.volume_01.id
   dst_region    = "KR2"
@@ -170,12 +175,13 @@ resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
   }
 }
 ```
-| 이름  | 타입 | 필수 | 변경 가능 | 설명 |
+
+| 이름 | 타입 | 필수 | 변경 가능 | 설명 |
 | --- | --- | --- | --- | --- |
 | src_region | String | - | - | 원본 볼륨의 리전<br>기본값은 공급자 설정 파일에 설정된 리전 |
 | src_volume_id | String | O | - | 원본 볼륨의 ID |
 | dst_region | String | O | - | 복제 대상 볼륨의 리전 |
-| dst_tenant_id| String | O | - | 복제 대상 볼륨의 테넌트 ID |
+| dst_tenant_id | String | O | - | 복제 대상 볼륨의 테넌트 ID |
 | dst_volume | Object | O | - | 복제 대상 볼륨 생성 요청 객체 |
 | dst_volume.acl | List | - | O | 볼륨 생성 시 설정할 ACL 목록<br>IP 또는 CIDR 형식으로 입력할 수 있습니다. |
 | dst_volume.description | String | - | O | 볼륨 설명 |
@@ -192,10 +198,11 @@ resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
 | dst_volume.snapshot_policy.schedule | Object | - | O | 스냅숏 자동 생성 객체<br>`null`일 경우 스냅숏 자동 생성이 설정되지 않습니다. |
 | dst_volume.snapshot_policy.schedule.time | String | - | O | 스냅숏 자동 생성 시간 |
 | dst_volume.snapshot_policy.schedule.time_offset | String | - | O | 스냅숏 자동 생성 기준 시간대 |
-| dst_volume.snapshot_policy.schedule.weekdays | List | - | O | 스냅숏 자동 생성 요일.<br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |
+| dst_volume.snapshot_policy.schedule.weekdays | List | - | O | 스냅숏 자동 생성 요일<br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |
 
 <a id="reference"></a>
 ## 참고 사이트
+
 Terraform - [https://www.terraform.io/](https://www.terraform.io/)
 Terraform Registry - [https://registry.terraform.io/](https://registry.terraform.io/)
 

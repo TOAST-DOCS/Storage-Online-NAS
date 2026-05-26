@@ -1,12 +1,15 @@
 ## Storage > NAS > Console User Guide
 
+<a id="volume"></a>
+## Volume
+
 <a id="create_volume"></a>
 ### Create Volume
 
 Create a new volume. The created volume can be accessed by instances using the network file system (NFS) and common internet file system (CIFS) protocols.
 
 | Item | Description |
-| -- | -- |
+| --- | --- |
 | Name | Name of the volume to be created. The NFS or CIFS access path can be created with the volume name. Volume name is limited to less than 100 alphabetic characters, numbers, and some symbols ('-', '_'). |
 | Description | A description for volume |
 | Size | Size of the volume to be created. It can be entered from a minimum of 300 GB to a maximum of 10,000 GB. |
@@ -19,7 +22,7 @@ Create a new volume. The created volume can be accessed by instances using the n
 | Encryption  | Select whether to enable volume encryption. This must be preceded by setting up encryption key store. |
 
 > [Note] 
-> The number of subnets available for each project is limited to 3. To increase the limit, contact the Customer Center.
+> The number of subnets available for each project is limited to 3. To increase the limit, contact Customer Support.
 
 <a id="create_volume.cifs"></a>
 #### Manage CIFS Credentials
@@ -56,6 +59,10 @@ When you change the key store ID, the symmetric key for encrypted volume you cre
 ### Change Volume Size
 
 Volume size is changed. Volume can be scaled up and down even while in use.
+> [Caution]
+> The size of a replication target volume can only be changed after replication is stopped.
+>
+> The size of the target volume must be equal to or greater than the size of the source volume. It is recommended to set the sizes of the source and target volumes to be the same.
 
 <a id="change_acl"></a>
 ### Change Access Control List Settings
@@ -73,12 +80,11 @@ The settings for Auto Create Snapshot and Snapshot Reserve Capacity are changed.
 Volume is deleted.
 
 > [Caution]
-> It is recommended to unmount the volume from the associated instance before deleting. Deleting the volume while it is mounted may cause problems on the user's system.
->
 > When deleting the volume, all data including snapshots are deleted. Deleted data cannot be recovered.
+> It is recommended to unmount the volume from the associated instance before deleting. Deleting the volume while it is mounted may cause problems on the user's system.
 
 <a id="snapshots"></a>
-### Snapshot
+## Snapshot
 Retrieve a list of created snapshots.
 
 | Item | Description |
@@ -100,23 +106,23 @@ Retrieve a list of created snapshots.
 Snapshots of volume are created immediately.
 
 <a id="snapshots.restore"></a>
-#### Restore Snapshots
+### Restore Snapshots
 Restores volume to the point in time when the snapshot was created.
 
 > [Caution]
 > When restoring, snapshots created after the point of restoration are automatically deleted.
 
 <a id="snapshots.restore_results"></a>
-#### View Snapshot Restore Results
+### View Snapshot Restore Results
 View the history of restoring volume.
 
 <a id="snapshots.delete"></a>
-#### Delete Snapshots
+### Delete Snapshots
 
 A specified snapshot is deleted. Once deleted, snapshots cannot be recovered.
 
 <a id="network"></a>
-### Network
+## Network
 Check the network connection information.
 
 | Item | Description |
@@ -126,21 +132,21 @@ Check the network connection information.
 | Status | The subnet association status. |
 
 <a id="network.add_subnet"></a>
-#### Add Subnet Association
+### Add Subnet Association
 Add a subnet association. Adding a subnet association allows you to access volume from the added subnet.
 
 > [Caution]
 > After adding a subnet association, if the subnet band does not exist in the ACL, mounting is not possible.
 
 <a id="network.detach_subnet"></a>
-#### Detach Subnet
+### Detach Subnet
 Remove the subnet associated with the volume. IP ACLs must be removed separately if needed.
 
 > [Caution]
 > It is recommended to detach the subnet after unmounting from a connected instance. Detaching while mounted can cause problems for user systems.
 
 <a id="monitoring"></a>
-### Monitoring
+## Monitoring
 
 Check various metrics of volume with graphs. After selecting the volume to check, click the **Monitoring** tab.
 
@@ -158,7 +164,7 @@ The default search period is the latest 1 hour, and you can search any period yo
 | Volume status | - | The volume status. |
 
 <a id="replication"></a>
-### Replication
+## Replication
 
 View information about replication settings.
 
@@ -171,12 +177,12 @@ View information about replication settings.
 | Last replication success time | The last time replication completed. |
 | Replication direction | The replication direction. |
 | Target region | The replication target region. Only exposed if this is the source volume that you set up replication for. |
-| Target volume | The replication target volume name. Exposed only if it is the source volume for which replication is set up.|
-| Source region | The replication source region. Only exposed if replication is enabled on the target volume.|
+| Target volume | The replication target volume name. Exposed only if it is the source volume for which replication is set up. |
+| Source region | The replication source region. Only exposed if replication is enabled on the target volume. |
 | Source volume | The replication source volume name. Only exposed if replication is enabled on the target volume. |
 
 <a id="replication.settings"></a>
-#### Replication Settings
+### Replication Settings
 
 Set up replication to a selected region of a project within your organization.
 When you set up replication, a target volume is created in the target location with the same size as the source volume. The target volume is created in a read-only state, and you must stop replication or turn off replication to change the state of the target volume.
@@ -185,7 +191,7 @@ When you update or delete data in the source volume, the data in the target volu
 Check the range of regions selectable by target project.
 
 | Target project | Selectable region |
-| -- | -- |
+| --- | --- |
 | Same project within an organization | Other regions |
 | Other projects in an organization | All regions |
 
@@ -196,14 +202,14 @@ Check the range of regions selectable by target project.
 > Volume replication is performed using snapshots. When configuring replication, snapshots in the format `{volume name}.mirror.%` are automatically created and cannot be deleted.
 
 > [Note]
-> The target volume created by the replication setup is billed for storage capacity according to the NAS service fee policy.
+> The target volume created by the replication setup is billed for volume capacity according to the NAS service fee policy.
 >
 > You are charged for network traffic generated by replication between different regions.
 >
 > For more information on pricing, see our [NAS pricing guide](https://www.nhncloud.com/kr/service/storage/nas).
 
 <a id="replication.start"></a>
-#### Start Replication
+### Start Replication
 
 Resumes replication of volume that is in a stopped state.
 Replication runs asynchronously when changes occur on the source volume. Before replication runs, the data on the source and target volume might not match.
@@ -214,7 +220,7 @@ Replication runs asynchronously when changes occur on the source volume. Before 
 > When replication runs, all existing data on the target volume is deleted and replaced with the same geometry as the source volume.
 
 <a id="replication.stop"></a>
-#### Stop Replication
+### Stop Replication
 
 Stops replicating volume.
 When you stop replication, the target volume becomes writable and can be mounted and used.
@@ -226,20 +232,20 @@ When you stop replication, the target volume becomes writable and can be mounted
 > Volume in the Stop replication state might also experience a small amount of traffic to check replication status.
 
 <a id="replication.change_direction"></a>
-#### Change Replication Direction
+### Change Replication Direction
 
 Change the direction of replication between source and target volume.
 
-* Change replication direction from **[source->target]** to **[target->source]**
+* Change replication direction from **[source→target]** to **[target→source]**
     * All existing data on the source volume is deleted, and the data on the target volume is replicated to the source volume.
     * Replication might fail if the source volume size is smaller than the target volume size.
 
-* Change replication direction from **[target->source]** to **[source->target]** (revert)
+* Change replication direction from **[target→source]** to **[source→target]** (revert)
     * All existing data on the target volume is deleted, and the data from the source volume is replicated to the target volume.
     * Replication might fail if the target volume size is smaller than the source volume size.
 
 <a id="replication.disable"></a>
-#### Disable Replication Settings
+### Disable Replication Settings
 
 Disables volume replication.
 When you disable replication, the target volume retains the source volume data as it was when the last replication completed.
@@ -248,42 +254,51 @@ When you disable replication, the target volume retains the source volume data a
 > When you re-establish replication, a new target volume is created. You cannot use the previously used target volume as the replication target volume again.
 
 <a id="connect_volume"></a>
-### Connect Volume
+## Connect Volume
 
 Volume can be mounted on instances by using the connection information of the created volume. However, the instance on which volume is mounted must be connected to the specified subnet.
 
 <a id="connect_volume.nfs"></a>
-#### NFS
+### NFS
 
-##### Install NFS Package 
+#### Install NFS Package 
 
-* Debian, Ubuntu: nfs-common, rpcbind
-  ```
-  sudo apt-get install nfs-common rpcbind
-  ```
-* CentOS: nfs-utils, rpcbind
-  ```
-  sudo yum install nfs-utils rpcbind
-  ```
+* **Debian, Ubuntu**
+```
+sudo apt-get install nfs-common rpcbind
+```
+<br/>
 
-##### Run rpcbind Service 
+* **CentOS**
+```
+sudo yum install nfs-utils rpcbind
+```
+<br/>
+
+#### Run rpcbind Service 
 
 ```
 sudo service rpcbind start
 ```
+<br/>
 
-##### Mount volume
+#### Mount volume
 
 ```
-sudo mount -t nfs {nas source} {mount point}
+sudo mount -t nfs <nas source> <mount point>
 ```
 
-* nas source: Volume information 
-Example: 192.168.0.241:/data
-* mount point: Directory on which volume is mounted 
-Example: /mnt
+| Item | Description |
+| --- | --- |
+| &lt;nas source&gt; | Volume information<br/>Example: 192.168.0.241:/data |
+| &lt;mount point&gt; | Directory to mount the volume<br/>Example: /mnt |
 
 <a id="connect_volume.cifs"></a>
-#### CIFS
+### CIFS
 
-In File Explorer, right-click **My PC** in the left navigation pane and **Connect Network Drive**. In the Connect Network Drive window, select the drive you want to mount and enter the folder path.  The folder path is formatted as `\\{volume IP}\{volume name}`, for example: \\\\192.168.0.100\\cifs
+In File Explorer, right-click **My PC** in the left navigation pane and **Connect Network Drive**. In the Connect Network Drive window, select the drive you want to mount and enter the folder path.
+The folder path is formatted as `\\{volume IP}\{volume name}`, for example: \\\\192.168.0.100\\cifs
+
+```
+Example: \\\\192.168.0.100\\cifs
+```
