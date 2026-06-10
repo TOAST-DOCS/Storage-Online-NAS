@@ -4,7 +4,7 @@ This document details how to use NHN Cloud NAS services with Terraform.
 <a id="terraform"></a>
 ## Terraform
 
-Terraform is an open-source tool designed for seamless infrastructure provisioning, secure updates, and efficient configuration management. For basics, refer to [User Guide > Compute > Instance > Terraform User Guide](/Compute/Instance/en/terraform-guide/).
+Terraform is an open-source tool designed for seamless infrastructure provisioning, secure updates, and efficient configuration management. For basics, refer to [User Guide > NHN Cloud > Terraform User Guide](/nhncloud/en/terraform-guide/).
 
 <a id="terraform-resource-dependency"></a>
 ### Resource dependency
