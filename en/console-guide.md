@@ -1,10 +1,11 @@
-## Storage > NAS > Console User Guide
+<a id="storage-nas-console-user-guide"></a>
+## Storage > NAS > Console User Guide { #storage-nas-console-user-guide }
 
 <a id="volume"></a>
-## Volume
+## Volume { #volume }
 
 <a id="create_volume"></a>
-### Create Volume
+### Create Volume { #create_volume }
 
 Create a new volume. The created volume can be accessed by instances using the network file system (NFS) and common internet file system (CIFS) protocols.
 
@@ -56,7 +57,7 @@ When you change the key store ID, the symmetric key for encrypted volume you cre
 > Encrypted volume encrypts data with the XTS-AES-256 algorithm using two different symmetric keys. Therefore, two symmetric keys are stored in the key store for each encrypted volume.
 
 <a id="change_volume_size"></a>
-### Change Volume Size
+### Change Volume Size { #change_volume_size }
 
 Volume size is changed. Volume can be scaled up and down even while in use.
 > [Caution]
@@ -65,17 +66,17 @@ Volume size is changed. Volume can be scaled up and down even while in use.
 > The size of the target volume must be equal to or greater than the size of the source volume. It is recommended to set the sizes of the source and target volumes to be the same.
 
 <a id="change_acl"></a>
-### Change Access Control List Settings
+### Change Access Control List Settings { #change_acl }
 
 The settings for the volume’s access control list is changed.
 
 <a id="change_snapshots_settings"></a>
-### Change Snapshot Settings
+### Change Snapshot Settings { #change_snapshots_settings }
 
 The settings for Auto Create Snapshot and Snapshot Reserve Capacity are changed.
 
 <a id="delete_volume"></a>
-### Delete Volume
+### Delete Volume { #delete_volume }
 
 Volume is deleted.
 
@@ -84,7 +85,7 @@ Volume is deleted.
 > It is recommended to unmount the volume from the associated instance before deleting. Deleting the volume while it is mounted may cause problems on the user's system.
 
 <a id="snapshots"></a>
-## Snapshot
+## Snapshot { #snapshots }
 Retrieve a list of created snapshots.
 
 | Item | Description |
@@ -101,28 +102,28 @@ Retrieve a list of created snapshots.
 
 
 <a id="snapshots.create"></a>
-### Create Snapshots
+### Create Snapshots { #snapshots.create }
 
 Snapshots of volume are created immediately.
 
 <a id="snapshots.restore"></a>
-### Restore Snapshots
+### Restore Snapshots { #snapshots.restore }
 Restores volume to the point in time when the snapshot was created.
 
 > [Caution]
 > When restoring, snapshots created after the point of restoration are automatically deleted.
 
 <a id="snapshots.restore_results"></a>
-### View Snapshot Restore Results
+### View Snapshot Restore Results { #snapshots.restore_results }
 View the history of restoring volume.
 
 <a id="snapshots.delete"></a>
-### Delete Snapshots
+### Delete Snapshots { #snapshots.delete }
 
 A specified snapshot is deleted. Once deleted, snapshots cannot be recovered.
 
 <a id="network"></a>
-## Network
+## Network { #network }
 Check the network connection information.
 
 | Item | Description |
@@ -132,21 +133,21 @@ Check the network connection information.
 | Status | The subnet association status. |
 
 <a id="network.add_subnet"></a>
-### Add Subnet Association
+### Add Subnet Association { #network.add_subnet }
 Add a subnet association. Adding a subnet association allows you to access volume from the added subnet.
 
 > [Caution]
 > After adding a subnet association, if the subnet band does not exist in the ACL, mounting is not possible.
 
 <a id="network.detach_subnet"></a>
-### Detach Subnet
+### Detach Subnet { #network.detach_subnet }
 Remove the subnet associated with the volume. IP ACLs must be removed separately if needed.
 
 > [Caution]
 > It is recommended to detach the subnet after unmounting from a connected instance. Detaching while mounted can cause problems for user systems.
 
 <a id="monitoring"></a>
-## Monitoring
+## Monitoring { #monitoring }
 
 Check various metrics of volume with graphs. After selecting the volume to check, click the **Monitoring** tab.
 
@@ -164,7 +165,7 @@ The default search period is the latest 1 hour, and you can search any period yo
 | Volume status | - | The volume status. |
 
 <a id="replication"></a>
-## Replication
+## Replication { #replication }
 
 View information about replication settings.
 
@@ -182,7 +183,7 @@ View information about replication settings.
 | Source volume | The replication source volume name. Only exposed if replication is enabled on the target volume. |
 
 <a id="replication.settings"></a>
-### Replication Settings
+### Replication Settings { #replication.settings }
 
 Set up replication to a selected region of a project within your organization.
 When you set up replication, a target volume is created in the target location with the same size as the source volume. The target volume is created in a read-only state, and you must stop replication or turn off replication to change the state of the target volume.
@@ -209,7 +210,7 @@ Check the range of regions selectable by target project.
 > For more information on pricing, see our [NAS pricing guide](https://www.nhncloud.com/kr/service/storage/nas).
 
 <a id="replication.start"></a>
-### Start Replication
+### Start Replication { #replication.start }
 
 Resumes replication of volume that is in a stopped state.
 Replication runs asynchronously when changes occur on the source volume. Before replication runs, the data on the source and target volume might not match.
@@ -220,7 +221,7 @@ Replication runs asynchronously when changes occur on the source volume. Before 
 > When replication runs, all existing data on the target volume is deleted and replaced with the same geometry as the source volume.
 
 <a id="replication.stop"></a>
-### Stop Replication
+### Stop Replication { #replication.stop }
 
 Stops replicating volume.
 When you stop replication, the target volume becomes writable and can be mounted and used.
@@ -232,7 +233,7 @@ When you stop replication, the target volume becomes writable and can be mounted
 > Volume in the Stop replication state might also experience a small amount of traffic to check replication status.
 
 <a id="replication.change_direction"></a>
-### Change Replication Direction
+### Change Replication Direction { #replication.change_direction }
 
 Change the direction of replication between source and target volume.
 
@@ -245,7 +246,7 @@ Change the direction of replication between source and target volume.
     * Replication might fail if the target volume size is smaller than the source volume size.
 
 <a id="replication.disable"></a>
-### Disable Replication Settings
+### Disable Replication Settings { #replication.disable }
 
 Disables volume replication.
 When you disable replication, the target volume retains the source volume data as it was when the last replication completed.
@@ -254,13 +255,14 @@ When you disable replication, the target volume retains the source volume data a
 > When you re-establish replication, a new target volume is created. You cannot use the previously used target volume as the replication target volume again.
 
 <a id="connect_volume"></a>
-## Connect Volume
+## Connect Volume { #connect_volume }
 
 Volume can be mounted on instances by using the connection information of the created volume. However, the instance on which volume is mounted must be connected to the specified subnet.
 
 <a id="connect_volume.nfs"></a>
-### NFS
+### NFS { #connect_volume.nfs }
 
+<a id="install-nfs-package"></a>
 #### Install NFS Package 
 
 * **Debian, Ubuntu**
@@ -275,6 +277,7 @@ sudo yum install nfs-utils rpcbind
 ```
 <br/>
 
+<a id="run-rpcbind-service"></a>
 #### Run rpcbind Service 
 
 ```
@@ -282,6 +285,7 @@ sudo service rpcbind start
 ```
 <br/>
 
+<a id="mount-volume"></a>
 #### Mount volume
 
 ```
@@ -294,7 +298,7 @@ sudo mount -t nfs <nas source> <mount point>
 | &lt;mount point&gt; | Directory to mount the volume<br/>Example: /mnt |
 
 <a id="connect_volume.cifs"></a>
-### CIFS
+### CIFS { #connect_volume.cifs }
 
 In File Explorer, right-click **My PC** in the left navigation pane and **Connect Network Drive**. In the Connect Network Drive window, select the drive you want to mount and enter the folder path.
 The folder path is formatted as `\\{volume IP}\{volume name}`, for example: \\\\192.168.0.100\\cifs

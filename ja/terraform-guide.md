@@ -1,14 +1,15 @@
-## Storage > NAS > Terraform使用ガイド
+<a id="storage-nas-terraform-user-guide"></a>
+## Storage > NAS > Terraform使用ガイド { #storage-nas-terraform-user-guide }
 
 このドキュメントでは、Terraformを使用してNHN Cloud NASサービスを使用する方法を説明します。
 
 <a id="terraform"></a>
-## Terraform
+## Terraform { #terraform }
 
 Terraformは、インフラを簡単に構築し、安全に変更し、効率的に構成を管理できるオープンソースツールです。基本的な使用法は、[ユーザーガイド > NHN Cloud > Terraform使用ガイド](/nhncloud/ja/terraform-guide/)を参照してください。
 
 <a id="terraform-resource-dependency"></a>
-### リソースの依存関係
+### リソースの依存関係 { #terraform-resource-dependency }
 
 一般的に各リソースは独立していますが、他の特定のリソースに依存関係を持つ場合もあります。リソースのラベルで他のリソースの情報を参照すると、Terraformは自動的に依存関係を設定します。
 例えば、`volume1`ボリュームに接続される`interface1`インターフェイスは次のように表現できます。
@@ -35,10 +36,10 @@ resource "nhncloud_nas_storage_volume_interface_v1" "interface1" {
 > 明示的なリソース依存関係の指定方法は、[TerraformのResource dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies)ドキュメントを参照してください。
 
 <a id="terraform-resources-nas"></a>
-## Resources
+## Resources { #terraform-resources-nas }
 
 <a id="terraform-resources-create-volume"></a>
-### ボリュームの作成
+### ボリュームの作成 { #terraform-resources-create-volume }
 
 > [参考] CIFSプロトコルの使用
 > CIFSプロトコルを使用するには、CIFS認証情報を作成する必要があります。認証情報はプロジェクト単位で管理され、CIFSボリュームごとにアクセスを許可するCIFS認証情報を登録する必要があります。
@@ -124,7 +125,7 @@ resource "nhncloud_nas_storage_volume_v1" "volume_03" {
 | snapshot_policy.schedule.weekdays | List | - | O | スナップショット自動作成曜日<br>空のリストは毎日を意味し、曜日は0(日曜日)から6(土曜日)までの数字のリストで指定します。 |
 
 <a id="terraform-resources-connect-interface"></a>
-### ボリュームにインターフェースを接続する
+### ボリュームにインターフェースを接続する { #terraform-resources-connect-interface }
 
 ```hcl
 data "nhncloud_networking_vpcsubnet_v2" "default_subnet" {
@@ -144,7 +145,7 @@ resource "nhncloud_nas_storage_volume_interface_v1" "nas_interface_01" {
 | subnet_id | String | O | - | 接続するサブネットID |
 
 <a id="terraform-resources-set-replication"></a>
-### レプリケーションの設定
+### レプリケーションの設定 { #terraform-resources-set-replication }
 
 レプリケーション設定リソースを作成すると、対象ボリュームが自動的に作成されます。
 レプリケーション設定リソースで`dst_volume`の設定値を変更して対象ボリュームをアップデートできますが、レプリケーション設定リソースを削除しても対象ボリュームは自動的に削除されません。
@@ -201,7 +202,7 @@ resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
 | dst_volume.snapshot_policy.schedule.weekdays | List | - | O | スナップショット自動作成曜日<br>空のリストは毎日を意味し、曜日は0(日曜日)から6(土曜日)までの数字のリストで指定します。 |
 
 <a id="reference"></a>
-## 参考サイト
+## 参考サイト { #reference }
 
 Terraform - [https://www.terraform.io/](https://www.terraform.io/)
 Terraform Registry - [https://registry.terraform.io/](https://registry.terraform.io/)

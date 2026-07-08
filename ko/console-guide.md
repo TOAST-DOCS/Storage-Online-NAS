@@ -1,10 +1,11 @@
-## Storage > NAS > 콘솔 사용 가이드
+<a id="storage-nas-console-user-guide"></a>
+## Storage > NAS > 콘솔 사용 가이드 { #storage-nas-console-user-guide }
 
 <a id="volume"></a>
-## 볼륨
+## 볼륨 { #volume }
 
 <a id="create_volume"></a>
-### 볼륨 생성
+### 볼륨 생성 { #create_volume }
 
 새로운 볼륨을 생성합니다. 생성된 볼륨은 NFS(network file system, 네트워크 파일 시스템) 및 CIFS(common internet file system, 공용 인터넷 파일 시스템) 프로토콜을 이용하여 인스턴스에서 접근할 수 있습니다.
 
@@ -56,7 +57,7 @@ CIFS 프로토콜을 사용하려면 CIFS 인증 정보를 생성해야 합니�
 > 암호화 볼륨은 XTS-AES-256 알고리즘으로 서로 다른 두 개의 대칭 키를 사용하여 데이터를 암호화합니다. 따라서 암호화 볼륨마다 두 개의 대칭 키를 키 저장소에 저장합니다.
 
 <a id="change_volume_size"></a>
-### 볼륨 크기 변경
+### 볼륨 크기 변경 { #change_volume_size }
 
 볼륨의 크기를 변경합니다. 볼륨 사용 중에도 확장 및 축소가 가능합니다.
 > [주의]
@@ -65,17 +66,17 @@ CIFS 프로토콜을 사용하려면 CIFS 인증 정보를 생성해야 합니�
 > 대상 볼륨의 크기는 원본 볼륨과 동일하거나 원본 볼륨보다 커야 하며, 원본 볼륨과 대상 볼륨의 크기를 동일하게 설정하는 것을 권장합니다.
 
 <a id="change_acl"></a>
-### 접근 제어 목록 설정 변경
+### 접근 제어 목록 설정 변경 { #change_acl }
 
 볼륨의 접근 제어 목록(ACL) 설정을 변경합니다.
 
 <a id="change_snapshots_settings"></a>
-### 스냅숏 설정 변경
+### 스냅숏 설정 변경 { #change_snapshots_settings }
 
 스냅숏 자동 생성 및 스냅숏 예약 용량에 대한 설정을 변경합니다.
 
 <a id="delete_volume"></a>
-### 볼륨 삭제
+### 볼륨 삭제 { #delete_volume }
 
 볼륨을 삭제합니다.
 
@@ -84,7 +85,7 @@ CIFS 프로토콜을 사용하려면 CIFS 인증 정보를 생성해야 합니�
 > 연결된 인스턴스에서 마운트 해제 후 삭제할 것을 권장합니다. 마운트 상태에서 볼륨을 삭제하면 사용자 시스템에 문제가 생길 수 있습니다.
 
 <a id="snapshots"></a>
-## 스냅숏
+## 스냅숏 { #snapshots }
 생성된 스냅숏 목록을 조회합니다.
 
 | 항목 | 설명 |
@@ -101,27 +102,27 @@ CIFS 프로토콜을 사용하려면 CIFS 인증 정보를 생성해야 합니�
 
 
 <a id="snapshots.create"></a>
-### 스냅숏 생성
+### 스냅숏 생성 { #snapshots.create }
 볼륨의 스냅숏을 즉시 생성합니다.
 
 <a id="snapshots.restore"></a>
-### 스냅숏 복원
+### 스냅숏 복원 { #snapshots.restore }
 볼륨을 스냅숏이 생성된 시점으로 복원합니다.
 
 > [주의]
 > 복원 시 복원 시점 이후에 생성된 스냅숏은 자동으로 삭제됩니다.
 
 <a id="snapshots.restore_results"></a>
-### 스냅숏 복원 결과 조회
+### 스냅숏 복원 결과 조회 { #snapshots.restore_results }
 스냅숏을 이용해 수행한 볼륨 복원 이력을 조회합니다.
 
 <a id="snapshots.delete"></a>
-### 스냅숏 삭제
+### 스냅숏 삭제 { #snapshots.delete }
 
 지정한 스냅숏을 삭제합니다. 한 번 삭제된 스냅숏은 복구할 수 없습니다.
 
 <a id="network"></a>
-## 네트워크
+## 네트워크 { #network }
 네트워크 연결 정보를 확인합니다.
 
 | 항목 | 설명 |
@@ -131,21 +132,21 @@ CIFS 프로토콜을 사용하려면 CIFS 인증 정보를 생성해야 합니�
 | 상태 | 서브넷 연결 상태를 표시합니다. |
 
 <a id="network.add_subnet"></a>
-### 서브넷 연결 추가
+### 서브넷 연결 추가 { #network.add_subnet }
 서브넷 연결을 추가합니다. 서브넷 연결을 추가하면 추가된 서브넷에서 볼륨에 접근 가능합니다.
 
 > [주의]
 > 서브넷 연결 추가 후 ACL에 서브넷 대역이 존재하지 않으면 마운트가 불가능합니다.
 
 <a id="network.detach_subnet"></a>
-### 서브넷 연결 해제
+### 서브넷 연결 해제 { #network.detach_subnet }
 볼륨에 연결된 서브넷을 제거합니다. 필요한 경우 IP ACL은 별도로 제거해야 합니다.
 
 > [주의]
 > 연결된 인스턴스에서 마운트 해제 후 서브넷 연결을 해제할 것을 권장합니다. 마운트 상태에서 연결을 해제하면 사용자 시스템에 문제가 생길 수 있습니다.
 
 <a id="monitoring"></a>
-## 모니터링
+## 모니터링 { #monitoring }
 
 볼륨의 여러 지표를 그래프와 함께 확인합니다. 확인할 볼륨을 선택한 후 **모니터링** 탭을 선택합니다.
 
@@ -163,7 +164,7 @@ CIFS 프로토콜을 사용하려면 CIFS 인증 정보를 생성해야 합니�
 | 볼륨 상태 | - | 볼륨의 상태를 표시합니다. |
 
 <a id="replication"></a>
-## 복제
+## 복제 { #replication }
 
 복제 설정 관련 정보를 확인합니다.
 
@@ -181,7 +182,7 @@ CIFS 프로토콜을 사용하려면 CIFS 인증 정보를 생성해야 합니�
 | 원본 볼륨 | 복제 원본 볼륨 이름을 표시합니다. 복제가 설정된 대상 볼륨인 경우에만 노출됩니다. |
 
 <a id="replication.settings"></a>
-### 복제 설정
+### 복제 설정 { #replication.settings }
 
 조직 내 프로젝트의 선택한 리전으로 복제를 설정할 수 있습니다.
 복제를 설정하면 대상 위치에 원본 볼륨과 같은 크기의 대상 볼륨이 생성됩니다. 대상 볼륨은 읽기 전용 상태로 생성되며, 대상 볼륨의 상태를 변경하려면 복제 중지를 하거나 복제 설정을 해제해야 합니다.
@@ -208,7 +209,7 @@ CIFS 프로토콜을 사용하려면 CIFS 인증 정보를 생성해야 합니�
 > 이용 요금에 대한 자세한 사항은 [NAS 요금 안내](https://www.nhncloud.com/kr/service/storage/nas)를 참고하세요.
 
 <a id="replication.start"></a>
-### 복제 시작
+### 복제 시작 { #replication.start }
 
 중지 상태의 볼륨 복제를 다시 시작합니다.
 원본 볼륨에 변경이 발생하면 비동기적으로 복제가 실행됩니다. 복제가 실행되기 전에는 원본 볼륨과 대상 볼륨의 데이터가 일치하지 않을 수 있습니다.
@@ -219,7 +220,7 @@ CIFS 프로토콜을 사용하려면 CIFS 인증 정보를 생성해야 합니�
 > 복제가 실행되면 대상 볼륨의 기존 데이터는 모두 삭제되며 원본 볼륨 형상과 동일한 상태로 적용됩니다.
 
 <a id="replication.stop"></a>
-### 복제 중지
+### 복제 중지 { #replication.stop }
 
 볼륨 복제를 중지합니다.
 복제를 중지하면 대상 볼륨이 쓰기 가능한 상태로 변경되며, 마운트하여 사용할 수 있습니다.
@@ -231,7 +232,7 @@ CIFS 프로토콜을 사용하려면 CIFS 인증 정보를 생성해야 합니�
 > 복제 중지 상태의 볼륨도 복제 상태 확인을 위해 소량의 트래픽이 발생할 수 있습니다.
 
 <a id="replication.change_direction"></a>
-### 복제 방향 변경
+### 복제 방향 변경 { #replication.change_direction }
 
 원본 볼륨과 대상 볼륨의 복제 방향을 변경합니다.
 
@@ -244,7 +245,7 @@ CIFS 프로토콜을 사용하려면 CIFS 인증 정보를 생성해야 합니�
     * 원본 볼륨 크기보다 대상 볼륨 크기가 작으면 복제에 실패할 수 있습니다.
 
 <a id="replication.disable"></a>
-### 복제 설정 해제
+### 복제 설정 해제 { #replication.disable }
 
 볼륨 복제 설정을 해제합니다.
 복제 설정을 해제하면 대상 볼륨은 마지막 복제 완료 시점의 원본 볼륨 데이터를 그대로 유지합니다.
@@ -253,13 +254,14 @@ CIFS 프로토콜을 사용하려면 CIFS 인증 정보를 생성해야 합니�
 > 복제를 다시 설정하면 새로운 대상 볼륨이 생성됩니다. 이전에 사용하던 대상 볼륨을 다시 복제 대상 볼륨으로 사용할 수 없습니다.
 
 <a id="connect_volume"></a>
-## 볼륨 연결
+## 볼륨 연결 { #connect_volume }
 
 생성된 볼륨의 연결 정보를 이용하여 인스턴스에 마운트할 수 있습니다. 단, 마운트할 인스턴스는 볼륨과 같은 서브넷에 연결되어 있어야 합니다.
 
 <a id="connect_volume.nfs"></a>
-### NFS
+### NFS { #connect_volume.nfs }
 
+<a id="install-nfs-package"></a>
 #### NFS 패키지 설치
 
 * **Debian, Ubuntu**
@@ -274,6 +276,7 @@ sudo yum install nfs-utils rpcbind
 ```
 <br/>
 
+<a id="run-rpcbind-service"></a>
 #### rpcbind 서비스 실행
 
 ```
@@ -281,6 +284,7 @@ sudo service rpcbind start
 ```
 <br/>
 
+<a id="mount-volume"></a>
 #### 볼륨 마운트
 
 ```
@@ -293,7 +297,7 @@ sudo mount -t nfs <nas source> <mount point>
 | &lt;mount point&gt; | 볼륨을 마운트할 디렉터리<br/>예: /mnt |
 
 <a id="connect_volume.cifs"></a>
-### CIFS
+### CIFS { #connect_volume.cifs }
 
 파일 탐색기의 왼쪽 탐색창에서 **내 PC**를 마우스 오른쪽 버튼으로 클릭한 후 **네트워크 드라이브 연결**을 선택합니다. 네트워크 드라이브 연결 창이 뜨면, 마운트할 드라이브를 선택 후 폴더 경로를 입력합니다. 
 폴더 경로 형식은 `\\{볼륨 ip}\\{볼륨명}`과 같습니다. 예: \\\\192.168.0.100\\cifs
