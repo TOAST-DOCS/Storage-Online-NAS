@@ -1,14 +1,17 @@
-## Storage > NAS > Terraform 사용 가이드
+<!-- pre-align:aligned sig=ab931ac9d8ba -->
+
+<a id="storage-nas-terraform-user-guide"></a>
+## Storage > NAS > Terraform 사용 가이드 { #storage-nas-terraform-user-guide }
 
 이 문서는 Terraform으로 NHN Cloud NAS 서비스를 사용하는 방법을 설명합니다.
 
 <a id="terraform"></a>
-## Terraform
+## Terraform { #terraform }
 
 Terraform은 인프라를 손쉽게 구축하고 안전하게 변경하며, 효율적으로 형상을 관리할 수 있는 오픈 소스 도구입니다. 기본적인 사용법은 [사용자 가이드 > NHN Cloud > Terraform 사용 가이드](/nhncloud/ko/terraform-guide/)를 참고하세요.
 
 <a id="terraform-resource-dependency"></a>
-### 리소스 의존성
+### 리소스 의존성 { #terraform-resource-dependency }
 
 일반적으로 각 리소스는 독립적이지만 다른 특정 리소스에 의존성을 가질 수도 있습니다. 리소스 레이블로 다른 리소스의 정보를 참조하면 Terraform은 자동으로 의존성을 설정합니다.
 예를 들어, `volume1` 볼륨에 연결되는 `interface1` 인터페이스는 다음과 같이 표현할 수 있습니다.
@@ -35,10 +38,10 @@ resource "nhncloud_nas_storage_volume_interface_v1" "interface1" {
 > 명시적인 리소스 의존성 지정 방법은 [Terraform의 Resource dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies) 문서를 참고하세요.
 
 <a id="terraform-resources-nas"></a>
-## Resources
+## Resources { #terraform-resources-nas }
 
 <a id="terraform-resources-create-volume"></a>
-### 볼륨 생성하기
+### 볼륨 생성하기 { #terraform-resources-create-volume }
 
 > [참고] CIFS 프로토콜 사용
 > CIFS 프로토콜을 사용하려면 CIFS 인증 정보를 생성해야 합니다. 인증 정보는 프로젝트 단위로 관리되며, CIFS 볼륨마다 접근을 허용할 CIFS 인증 정보를 등록해야 합니다.
@@ -124,7 +127,7 @@ resource "nhncloud_nas_storage_volume_v1" "volume_03" {
 | snapshot_policy.schedule.weekdays | List | - | O | 스냅숏 자동 생성 요일<br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |
 
 <a id="terraform-resources-connect-interface"></a>
-### 볼륨에 인터페이스 연결하기
+### 볼륨에 인터페이스 연결하기 { #terraform-resources-connect-interface }
 
 ```hcl
 data "nhncloud_networking_vpcsubnet_v2" "default_subnet" {
@@ -144,7 +147,7 @@ resource "nhncloud_nas_storage_volume_interface_v1" "nas_interface_01" {
 | subnet_id | String | O | - | 연결할 서브넷 ID |
 
 <a id="terraform-resources-set-replication"></a>
-### 복제 설정하기
+### 복제 설정하기 { #terraform-resources-set-replication }
 
 복제 설정 리소스를 생성하면 대상 볼륨이 자동으로 생성됩니다.
 복제 설정 리소스에서 `dst_volume`의 설정값을 변경하여 대상 볼륨을 업데이트할 수 있지만, 복제 설정 리소스를 삭제해도 대상 볼륨은 자동으로 삭제되지 않습니다.
@@ -201,7 +204,7 @@ resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
 | dst_volume.snapshot_policy.schedule.weekdays | List | - | O | 스냅숏 자동 생성 요일<br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |
 
 <a id="reference"></a>
-## 참고 사이트
+## 참고 사이트 { #reference }
 
 Terraform - [https://www.terraform.io/](https://www.terraform.io/)
 Terraform Registry - [https://registry.terraform.io/](https://registry.terraform.io/)

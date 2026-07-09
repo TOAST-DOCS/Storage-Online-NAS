@@ -1,10 +1,13 @@
-## Storage > NAS > API ガイド
+<!-- pre-align:aligned sig=06dac106ebf2 -->
+
+<a id="storage-nas-api-guide"></a>
+## Storage > NAS > API ガイド { #storage-nas-api-guide }
 
 <a id="nas_api_common"></a>
-## NAS API 共通情報
+## NAS API 共通情報 { #nas_api_common }
 
 <a id="nas_api_common.endpoint"></a>
-### API エンドポイント
+### API エンドポイント { #nas_api_common.endpoint }
 
 NASAPIは`nasv1`タイプのエンドポイントを使用します。正確なエンドポイントはトークン発行レスポンスの`serviceCatalog`を参照します。
 
@@ -16,12 +19,12 @@ NASAPIは`nasv1`タイプのエンドポイントを使用します。正確な�
 
 
 <a id="nas_api_common.authentication"></a>
-### 認証及び権限
+### 認証及び権限 { #nas_api_common.authentication }
 
 NASは、API呼び出し時の認証/認可のためにIaaSトークンを使用します。IaaSトークンは、NHN CloudのOpenStackベースのインフラサービス(IaaS)で使用する認証トークンです。IaaSトークンの発行及び使用に関する詳細は、[IaaSトークン](/nhncloud/ja/public-api/iaas-token/)を参照してください。
 
 <a id="nas_api_common.response"></a>
-### レスポンス共通情報
+### レスポンス共通情報 { #nas_api_common.response }
 
 NASAPIが提供する共通レスポンス情報の説明です。全てのAPIレスポンスは`header`オブジェクトでリクエスト結果を伝達します。
 
@@ -68,10 +71,10 @@ NASAPIが提供する共通レスポンス情報の説明です。全てのAPI�
 > APIレスポンスにガイドに記載されていないフィールドが表示される場合があります。これらのフィールドはNHN Cloudの内部用途で使用され、事前の通知なしに変更される可能性があるため、使用しないでください。
 
 <a id="volume"></a>
-## ボリューム
+## ボリューム { #volume }
 
 <a id="volume.list"></a>
-### ボリューム一覧表示
+### ボリューム一覧表示 { #volume.list }
 
 ボリューム一覧を照会します。
 
@@ -80,6 +83,7 @@ GET  /v1/volumes
 X-Auth-Token: {token-id}
 ```
 
+<a id="volume.list-request"></a>
 #### リクエスト
 
 リクエスト本文は必要ありません。
@@ -97,6 +101,7 @@ X-Auth-Token: {token-id}
 | page | Query | String | - | 照会するページ |
 | sort | Query | String | - | ソート基準となるフィールド名<br>`{key}:{direction}`の形で記述します。例：`name:asc`, `created_at:desc`<br>使用可能なkey値: `id`, `name`, `sizeGb`, `createdAt`, `updatedAt` |
 
+<a id="volume.list-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -245,7 +250,7 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.create"></a>
-### ボリューム作成
+### ボリューム作成 { #volume.create }
 
 新しいボリュームを作成します。
 
@@ -269,6 +274,7 @@ X-Auth-Token: {token-id}
 
 <br>
 
+<a id="volume.create-request"></a>
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -336,6 +342,7 @@ X-Auth-Token: {token-id}
 
 </details>
 
+<a id="volume.create-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -473,7 +480,7 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.delete"></a>
-### ボリューム削除
+### ボリューム削除 { #volume.delete }
 
 指定したボリュームを削除します。
 
@@ -482,6 +489,7 @@ DELETE  /v1/volumes/{volume_id}
 X-Auth-Token: {token-id}
 ```
 
+<a id="volume.delete-request"></a>
 #### リクエスト
 
 リクエスト本文は必要ありません。
@@ -491,6 +499,7 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | O | トークンID |
 | volume\_id | URL | String | O | 削除するボリュームID |
 
+<a id="volume.delete-response"></a>
 #### レスポンス
 
 レスポンス本文にはヘッダフィールド以外の内容は含まれません。
@@ -498,7 +507,7 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.view"></a>
-### ボリューム表示
+### ボリューム表示 { #volume.view }
 
 指定したボリュームの詳細情報を返します。
 
@@ -507,6 +516,7 @@ GET   /v1/volumes/{volume_id}
 X-Auth-Token: {token-id}
 ```
 
+<a id="volume.view-request"></a>
 #### リクエスト
 
 リクエスト本文は必要ありません。
@@ -516,6 +526,7 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | O | トークンID |
 | volume\_id | URL | String | O | 照会するボリュームID |
 
+<a id="volume.view-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -572,7 +583,7 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.change_settings"></a>
-### ボリュームの設定変更
+### ボリュームの設定変更 { #volume.change_settings }
 
 指定したボリュームの設定を変更します。
 
@@ -584,6 +595,7 @@ PATCH  /v1/volumes/{volume_id}
 X-Auth-Token: {token-id}
 ```
 
+<a id="volume.change_settings-request"></a>
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -641,6 +653,7 @@ X-Auth-Token: {token-id}
 
 </details>
 
+<a id="volume.change_settings-response"></a>
 #### レスポンス
 
 レスポンス本文にはヘッダフィールド以外の内容は含まれません。
@@ -648,7 +661,7 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.connect_interface"></a>
-### ボリュームにインターフェース接続
+### ボリュームにインターフェース接続 { #volume.connect_interface }
 
 指定したボリュームのインターフェースを設定します。
 設定されたアドレス及びサブネットからボリュームにアクセス可能です。アクセス可能なIP設定はアクセス制御(ACL)設定で別途設定する必要があります。
@@ -658,6 +671,7 @@ POST  /v1/volumes/{volume_id}/interfaces
 X-Auth-Token: {token-id}
 ```
 
+<a id="volume.connect_interface-request"></a>
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -680,6 +694,7 @@ X-Auth-Token: {token-id}
 
 </details>
 
+<a id="volume.connect_interface-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -717,7 +732,7 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.delete_interface"></a>
-### ボリュームのインターフェース削除
+### ボリュームのインターフェース削除 { #volume.delete_interface }
 
 指定したボリュームの指定したインターフェースを削除します。
 
@@ -726,6 +741,7 @@ DELETE  /v1/volumes/{volume_id}/interfaces/{interface_id}
 X-Auth-Token: {token-id}
 ```
 
+<a id="volume.delete_interface-request"></a>
 #### リクエスト
 
 リクエスト本文は必要ありません。
@@ -736,6 +752,7 @@ X-Auth-Token: {token-id}
 | volume\_id | URL | String | O | ボリュームID |
 | interface\_id | URL | String | O | 削除するインターフェースID |
 
+<a id="volume.delete_interface-response"></a>
 #### レスポンス
 
 レスポンス本文にはヘッダフィールド以外の内容は含まれません。
@@ -743,7 +760,7 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.view_snapshot_restore_history"></a>
-### スナップショット復元履歴を表示
+### スナップショット復元履歴を表示 { #volume.view_snapshot_restore_history }
 
 指定したボリュームのスナップショット復元履歴リストを返します。
 
@@ -752,6 +769,7 @@ GET  /v1/volumes/{volume_id}/restore-histories
 X-Auth-Token: {token-id}
 ```
 
+<a id="volume.view_snapshot_restore_history-request"></a>
 #### リクエスト
 
 リクエスト本文は必要ありません。
@@ -764,6 +782,7 @@ X-Auth-Token: {token-id}
 | page | Query | String | - | 照会するページ |
 | sort | Query | String | - | ソート基準となるフィールド名<br>`{key}:{direction}`の形で記述します。例：`snapshotId:asc`, `requestedAt:desc`<br>使用可能なkey値: `snapshotId`, `snapshotName`, `requestedAt`, `restoredAt`, `requestedUser`, `requestedIp`, `result` |
 
+<a id="volume.view_snapshot_restore_history-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -818,7 +837,7 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.view_usage"></a>
-### ボリューム使用状況表示
+### ボリューム使用状況表示 { #volume.view_usage }
 
 指定したボリュームの使用状況を返します。
 
@@ -827,6 +846,7 @@ GET  /v1/volumes/{volume_id}/usage
 X-Auth-Token: {token-id}
 ```
 
+<a id="volume.view_usage-request"></a>
 #### リクエスト
 
 リクエスト本文は必要ありません。
@@ -836,6 +856,7 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | O | トークンID |
 | volume\_id | URL | String | O | ボリュームID |
 
+<a id="volume.view_usage-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -875,10 +896,10 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="snapshots"></a>
-## スナップショット
+## スナップショット { #snapshots }
 
 <a id="snapshots.list"></a>
-### スナップショットリスト表示
+### スナップショットリスト表示 { #snapshots.list }
 
 スナップショットリストを照会します。
 
@@ -887,6 +908,7 @@ GET  /v1/volumes/{volume_id}/snapshots
 X-Auth-Token: {token-id}
 ```
 
+<a id="snapshots.list-request"></a>
 #### リクエスト
 
 リクエスト本文は必要ありません。
@@ -896,6 +918,7 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | O | トークンID |
 | volume\_id | URL | String | O | ボリュームID |
 
+<a id="snapshots.list-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -935,7 +958,7 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="snapshots.create"></a>
-### スナップショット作成
+### スナップショット作成 { #snapshots.create }
 
 指定したボリュームのスナップショットを作成します。
 
@@ -944,6 +967,7 @@ POST  /v1/volumes/{volume_id}/snapshots
 X-Auth-Token: {token-id}
 ```
 
+<a id="snapshots.create-request"></a>
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -966,6 +990,7 @@ X-Auth-Token: {token-id}
 
 </details>
 
+<a id="snapshots.create-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -1005,7 +1030,7 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="snapshots.delete"></a>
-### スナップショット削除
+### スナップショット削除 { #snapshots.delete }
 
 指定したボリュームのスナップショットを削除します。
 
@@ -1014,6 +1039,7 @@ DELETE  /v1/volumes/{volume_id}/snapshots/{snapshot_id}
 X-Auth-Token: {token-id}
 ```
 
+<a id="snapshots.delete-request"></a>
 #### リクエスト
 
 リクエスト本文は必要ありません。
@@ -1024,6 +1050,7 @@ X-Auth-Token: {token-id}
 | volume\_id | URL | String | O | ボリュームID |
 | snapshot\_id | URL | String | O | スナップショットID |
 
+<a id="snapshots.delete-response"></a>
 #### レスポンス
 
 レスポンス本文にはヘッダフィールド以外の内容は含まれません。
@@ -1031,7 +1058,7 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="snapshots.view"></a>
-### スナップショット表示
+### スナップショット表示 { #snapshots.view }
 
 指定したスナップショットの詳細情報を返します。
 
@@ -1040,6 +1067,7 @@ GET  /v1/volumes/{volume_id}/snapshots/{snapshot_id}
 X-Auth-Token: {token-id}
 ```
 
+<a id="snapshots.view-request"></a>
 #### リクエスト
 
 リクエスト本文は必要ありません。
@@ -1051,6 +1079,7 @@ X-Auth-Token: {token-id}
 | snapshot\_id | URL | String | O | スナップショットID |
 | showReclaimableSpace | Query | Boolean | - | スナップショット削除時に確保される容量を示す`reclaimableSpace`項目を表示するかどうか |
 
+<a id="snapshots.view-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -1067,7 +1096,7 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="snapshots.restore"></a>
-### スナップショット復元
+### スナップショット復元 { #snapshots.restore }
 
 指定したスナップショットでボリュームを復元します。
 
@@ -1076,6 +1105,7 @@ POST  /v1/volumes/{volume_id}/snapshots/{snapshot_id}/restore
 X-Auth-Token: {token-id}
 ```
 
+<a id="snapshots.restore-request"></a>
 #### リクエスト
 
 リクエスト本文は必要ありません。
@@ -1086,6 +1116,7 @@ X-Auth-Token: {token-id}
 | volume\_id | URL | String | O | ボリュームID |
 | snapshot\_id | URL | String | O | スナップショットID |
 
+<a id="snapshots.restore-response"></a>
 #### レスポンス
 
 レスポンス本文にはヘッダフィールド以外の内容は含まれません。
@@ -1093,10 +1124,10 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="replication"></a>
-## ボリューム複製設定
+## ボリューム複製設定 { #replication }
 
 <a id="replication.setup"></a>
-### 複製設定
+### 複製設定 { #replication.setup }
 
 指定したボリュームの複製を設定します。
 複製対象プロジェクトごとに選択可能なリージョン範囲は、以下の表で確認できます。
@@ -1127,6 +1158,7 @@ POST  /v1/volumes/{volume_id}/volume-mirrors
 X-Auth-Token: {token-id}
 ```
 
+<a id="replication.setup-request"></a>
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -1178,6 +1210,7 @@ X-Auth-Token: {token-id}
 
 </details>
 
+<a id="replication.setup-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -1237,7 +1270,7 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="replication.disable"></a>
-### 複製設定の解除
+### 複製設定の解除 { #replication.disable }
 
 指定したボリュームの複製設定を解除します。
 
@@ -1246,6 +1279,7 @@ DELETE  /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}
 X-Auth-Token: {token-id}
 ```
 
+<a id="replication.disable-request"></a>
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -1254,6 +1288,7 @@ X-Auth-Token: {token-id}
 | volume\_id | URL | String | O | ボリュームID |
 | volume\_mirror\_id | URL | String | O | 複製設定ID |
 
+<a id="replication.disable-response"></a>
 #### レスポンス
 
 レスポンス本文にはヘッダフィールド以外の内容は含まれません。
@@ -1261,7 +1296,7 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="replication.change_direction"></a>
-### 複製方向の変更
+### 複製方向の変更 { #replication.change_direction }
 
 ソースボリュームと対象ボリュームの複製方向を変更します。
 
@@ -1270,6 +1305,7 @@ POST  /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}/invert-direction
 X-Auth-Token: {token-id}
 ```
 
+<a id="replication.change_direction-request"></a>
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -1278,6 +1314,7 @@ X-Auth-Token: {token-id}
 | volume\_id | URL | String | O | ボリュームID |
 | volume\_mirror\_id | URL | String | O | 複製設定ID |
 
+<a id="replication.change_direction-response"></a>
 #### レスポンス
 
 レスポンス本文にはヘッダフィールド以外の内容は含まれません。
@@ -1285,7 +1322,7 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="replication.start"></a>
-### 複製開始
+### 複製開始 { #replication.start }
 
 ソースボリュームから対象ボリュームへの複製を開始します。
 
@@ -1294,6 +1331,7 @@ POST  /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}/start
 X-Auth-Token: {token-id}
 ```
 
+<a id="replication.start-request"></a>
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -1302,6 +1340,7 @@ X-Auth-Token: {token-id}
 | volume\_id | URL | String | O | ボリュームID |
 | volume\_mirror\_id | URL | String | O | 複製設定ID |
 
+<a id="replication.start-response"></a>
 #### レスポンス
 
 レスポンス本文にはヘッダフィールド以外の内容は含まれません。
@@ -1309,7 +1348,7 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="replication.status"></a>
-### 複製状態の確認
+### 複製状態の確認 { #replication.status }
 
 最近の複製状態を返します。
 
@@ -1318,6 +1357,7 @@ GET  /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}/stat
 X-Auth-Token: {token-id}
 ```
 
+<a id="replication.status-request"></a>
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -1326,6 +1366,7 @@ X-Auth-Token: {token-id}
 | volume\_id | URL | String | O | ボリュームID |
 | volume\_mirror\_id | URL | String | O | 複製設定ID |
 
+<a id="replication.status-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -1342,7 +1383,7 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="replication.stop"></a>
-### 複製停止
+### 複製停止 { #replication.stop }
 
 ソースボリュームから対象ボリュームへの複製を停止します。
 
@@ -1351,6 +1392,7 @@ POST  /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}/stop
 X-Auth-Token: {token-id}
 ```
 
+<a id="replication.stop-request"></a>
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -1359,6 +1401,7 @@ X-Auth-Token: {token-id}
 | volume\_id | URL | String | O | ボリュームID |
 | volume\_mirror\_id | URL | String | O | 複製設定ID |
 
+<a id="replication.stop-response"></a>
 #### レスポンス
 
 レスポンス本文にはヘッダフィールド以外の内容は含まれません。
