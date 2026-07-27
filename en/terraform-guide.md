@@ -1,13 +1,16 @@
-## Storage > NAS > Terraform User Guide
+<!-- pre-align:aligned sig=ab931ac9d8ba -->
+
+<a id="storage-nas-terraform-user-guide"></a>
+## Storage > NAS > Terraform User Guide { #storage-nas-terraform-user-guide }
 This document details how to use NHN Cloud NAS services with Terraform.
 
 <a id="terraform"></a>
-## Terraform
+## Terraform { #terraform }
 
 Terraform is an open-source tool designed for seamless infrastructure provisioning, secure updates, and efficient configuration management. For basics, refer to [User Guide > NHN Cloud > Terraform User Guide](/nhncloud/en/terraform-guide/).
 
 <a id="terraform-resource-dependency"></a>
-### Resource dependency
+### Resource dependency { #terraform-resource-dependency }
 
 While resources are generally independent, some may have dependencies on others. When a resource references information from another through its label, Terraform automatically establishes these dependencies.
 For example, an interface named `interface1` that connects to a volume named `volume1` can be defined as follows.
@@ -34,10 +37,10 @@ resource "nhncloud_nas_storage_volume_interface_v1" "interface1" {
 > For information on how to specify explicit resource dependencies, refer to [Terraform's Resource dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies) document.
 
 <a id="terraform-resources-nas"></a>
-## Resources
+## Resources { #terraform-resources-nas }
 
 <a id="terraform-resources-create-volume"></a>
-### Create a Volume
+### Create a Volume { #terraform-resources-create-volume }
 
 > [Note] Using the CIFS protocol
 > To use the CIFS protocol, you must create CIFS credentials. Credentials are managed on a per-project basis, and you must register CIFS credentials to allow to access each CIFS volume.
@@ -122,7 +125,7 @@ resource "nhncloud_nas_storage_volume_v1" "volume_03" {
 | snapshot_policy.schedule.weekdays | List | - | O | Automatic snapshot generation days<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday).
 
 <a id="terraform-resources-connect-interface"></a>
-### Attach an Interface to a Volume
+### Attach an Interface to a Volume { #terraform-resources-connect-interface }
 
 ```hcl
 data "nhncloud_networking_vpcsubnet_v2" "default_subnet" {
@@ -142,7 +145,7 @@ resource "nhncloud_nas_storage_volume_interface_v1" "nas_interface_01" {
 | subnet_id | String | O | - | ID of the subnet to attach |
 
 <a id="terraform-resources-set-replication"></a>
-### Set up Replication
+### Set up Replication { #terraform-resources-set-replication }
 
 Creating a replication configuration resource automatically generates a destination volume.
 While you can update the destination volume by modifying the `dst_volume` parameters within the replication resource, the destination volume is not automatically deleted even if the replication configuration resource is removed.
@@ -199,7 +202,7 @@ resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
 | dst_volume.snapshot_policy.schedule.weekdays | List | - | O | Automatic snapshot creation days<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday).
 
 <a id="reference"></a>
-## References
+## References { #reference }
 
 Terraform - [https://www.terraform.io/](https://www.terraform.io/)
 Terraform Registry - [https://registry.terraform.io/](https://registry.terraform.io/)
