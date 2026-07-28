@@ -1,13 +1,27 @@
-<!-- pre-align:aligned sig=70238dc92df0 -->
-
 <a id="storage-nas-release-notes"></a>
 ## Storage > NAS > 릴리스 노트 { #storage-nas-release-notes }
+
+<a id="august-25-2026"></a>
+## 2026. 08. 25. { #august-25-2026 }
+
+<a id="august-25-2026-added-features"></a>
+### 신규 기능 추가 { #august-25-2026-added-features }
+
+* NAS 리소스 접근 권한이 세분화됩니다.
+    * Infrastructure NAS ADMIN 역할이 추가되어 NAS 리소스의 생성, 수정, 삭제 권한을 제공합니다.
+    * Infrastructure ADMIN을 제외한 기존 기본 인프라 역할에서는 NAS 리소스의 생성, 수정, 삭제가 제한됩니다.
+
+<a id="august-25-2026-feature-updates"></a>
+### 기능 개선/변경 { #august-25-2026-feature-updates }
+
+* 볼륨 상태 표시가 개선됩니다.
+    * 볼륨 상태가 실패 또는 오류일 때 그 원인을 확인할 수 있도록 상세 사유가 함께 제공됩니다.
 
 <a id="may-27-2026"></a>
 ## 2026. 05. 27. { #may-27-2026 }
 
-<a id="added-features"></a>
-### 신규 기능 추가 { #added-features }
+<a id="may-27-2026-added-features"></a>
+### 신규 기능 추가 { #may-27-2026-added-features }
 
 * 볼륨 사용 현황에 스냅숏 사용량 정보가 추가됩니다.
     * 전체 스냅숏 사용량
@@ -17,8 +31,8 @@
 <a id="november-25-2025"></a>
 ## 2025. 11. 25. { #november-25-2025 }
 
-<a id="feature-updates"></a>
-### 기능 개선/변경 { #feature-updates }
+<a id="november-25-2025-feature-updates"></a>
+### 기능 개선/변경 { #november-25-2025-feature-updates }
 
 * 모니터링 기능이 변경됩니다.
     * CIFS 프로토콜 볼륨 모니터링 기능이 추가되었습니다.
@@ -94,16 +108,16 @@
 <a id="november-23-2022"></a>
 ## 2022. 11. 23. { #november-23-2022 }
 
-<a id="added-new-region"></a>
-### 신규 리전 추가 { #added-new-region }
+<a id="november-23-2022-added-new-region"></a>
+### 신규 리전 추가 { #november-23-2022-added-new-region }
 
 * 한국(평촌) 리전에 NAS 서비스가 출시되었습니다.
 
 <a id="july-26-2022"></a>
 ## 2022. 07. 26. { #july-26-2022 }
 
-<a id="new-service-release"></a>
-### 신규 서비스 출시 { #new-service-release }
+<a id="july-26-2022-new-service-release"></a>
+### 신규 서비스 출시 { #july-26-2022-new-service-release }
 
 * 한국(판교) 리전에 NAS 서비스가 출시되었습니다.
 * 프로젝트의 VPC 네트워크를 통해 볼륨을 인스턴스에 연결할 수 있습니다.
