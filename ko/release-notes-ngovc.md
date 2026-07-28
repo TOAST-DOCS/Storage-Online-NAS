@@ -1,40 +1,51 @@
-## Storage > NAS > 릴리스 노트
+<a id="storage-nas-release-notes"></a>
+## Storage > NAS > 릴리스 노트 { #storage-nas-release-notes }
 
-## 2026. 07. 24.
+<a id="july-24-2026"></a>
+## 2026. 07. 24. { #july-24-2026 }
 
-### 신규 기능 추가
+<a id="july-24-2026-added-features"></a>
+### 신규 기능 추가 { #july-24-2026-added-features }
 
 * 볼륨 사용 현황에 스냅숏 사용량 정보가 추가됩니다.
     * 전체 스냅숏 사용량
     * 스냅숏 예약 용량 내 사용량
     * 예약 용량 초과 스냅숏 사용량
 
-## 2025. 11. 29.
+<a id="november-29-2025"></a>
+## 2025. 11. 29. { #november-29-2025 }
 
-### 기능 개선/변경
+<a id="november-29-2025-feature-updates"></a>
+### 기능 개선/변경 { #november-29-2025-feature-updates }
 
 * 모니터링 기능이 변경됩니다.
     * CIFS 프로토콜 볼륨 모니터링 기능이 추가되었습니다.
     * 클라이언트 연결 개수 모니터링이 제거되었습니다.
 
-## 2024. 09. 05.
+<a id="september-5-2024"></a>
+## 2024. 09. 05. { #september-5-2024 }
 
-### 신규 기능 추가
+<a id="september-5-2024-added-features"></a>
+### 신규 기능 추가 { #september-5-2024-added-features }
 
 * 생성된 볼륨의 서브넷 연결 변경 기능이 추가되었습니다.
 * 스냅숏 생성 시점의 사용량이 스냅숏 목록에 표시됩니다.
 
-## 2024. 06. 04.
+<a id="june-4-2024"></a>
+## 2024. 06. 04. { #june-4-2024 }
 
-### 신규 기능 추가
+<a id="june-4-2024-added-features"></a>
+### 신규 기능 추가 { #june-4-2024-added-features }
 
 * CIFS 프로토콜이 추가되었습니다.
     * 윈도우 환경에서도 볼륨을 사용할 수 있습니다.
 * 스냅숏 복원 기능이 추가되었습니다.
 * 스냅숏 복원 히스토리 조회가 추가되었습니다.
 
-## 2023. 09. 05.
+<a id="september-5-2023"></a>
+## 2023. 09. 05. { #september-5-2023 }
 
-### 신규 서비스 출시
+<a id="september-5-2023-new-service-release"></a>
+### 신규 서비스 출시 { #september-5-2023-new-service-release }
 
 * 프로젝트의 VPC 네트워크를 통해 볼륨을 인스턴스에 연결할 수 있습니다.
