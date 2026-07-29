@@ -1,5 +1,3 @@
-<!-- pre-align:aligned sig=def3305c571c -->
-
 <a id="storage-nas-overview"></a>
 ## Storage > NAS > 개요 { #storage-nas-overview }
 
