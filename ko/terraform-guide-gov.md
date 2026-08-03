@@ -32,7 +32,7 @@ resource "nhncloud_nas_storage_volume_interface_v1" "interface1" {
 }
 ```
 
-!!! tip "참고"
+!!! tip "알아두기"
     명시적인 리소스 의존성 지정 방법은 [Terraform의 Resource dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies) 문서를 참고하세요.
 
 <a id="terraform-resources-nas"></a>
@@ -136,13 +136,13 @@ resource "nhncloud_nas_storage_volume_interface_v1" "nas_interface_01" {
 복제 설정 리소스를 생성하면 대상 볼륨이 자동으로 생성됩니다.
 복제 설정 리소스에서 `dst_volume`의 설정값을 변경하여 대상 볼륨을 업데이트할 수 있지만, 복제 설정 리소스를 삭제해도 대상 볼륨은 자동으로 삭제되지 않습니다.
 
-!!! tip "주의"
+!!! danger "주의"
     복제 설정 리소스의 값을 변경하면 기존 리소스가 삭제되고 새로 생성될 수 있지만, 기존 대상 볼륨은 삭제되지 않습니다.
     남아 있는 대상 볼륨과 새로운 대상 볼륨의 이름이 같으면 생성이 실패할 수 있으니 주의하세요.
 
 <!-- -->
 
-!!! tip "참고"
+!!! tip "알아두기"
     리소스 삭제 및 업데이트로 인해 삭제되지 않고 남아 있는 대상 볼륨은 콘솔에서 따로 관리해야 합니다.
 
 ```hcl
