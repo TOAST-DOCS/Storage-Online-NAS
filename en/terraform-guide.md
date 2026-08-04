@@ -33,8 +33,8 @@ resource "nhncloud_nas_storage_volume_interface_v1" "interface1" {
 }
 ```
 
-> [Note]
-> For information on how to specify explicit resource dependencies, refer to [Terraform's Resource dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies) document.
+!!! tip "Note"
+    For more information about how to specify explicit resource dependencies, see the [Resource dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies) documentation for Terraform.
 
 <a id="terraform-resources-nas"></a>
 ## Resources { #terraform-resources-nas }
@@ -150,14 +150,14 @@ resource "nhncloud_nas_storage_volume_interface_v1" "nas_interface_01" {
 Creating a replication configuration resource automatically generates a destination volume.
 While you can update the destination volume by modifying the `dst_volume` parameters within the replication resource, the destination volume is not automatically deleted even if the replication configuration resource is removed.
 
-> [Caution]
-> Modifying certain values in the replication configuration resource may cause the existing resource to be destroyed and recreated; however, the original destination volume will persist.
-> Please be aware that if the existing destination volume and the new one share the same name, the creation process may fail.
+!!! danger "Caution"
+    Changing values in the replication settings resource may delete the existing resource and create a new one, but the existing target volume will not be deleted.
+    If the remaining target volume and the new target volume have the same name, creation may fail. Use caution when making changes.
 
 <!-- -->
 
-> [Note]
-> Destination volumes that remain after a resource deletion or update must be managed manually via the console.
+!!! tip "Notice"
+    Target volumes that remain without being deleted due to resource deletion or updates must be managed separately in the console.
 
 ```hcl
 resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
