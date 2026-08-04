@@ -1,13 +1,11 @@
 <!-- pre-align:aligned sig=06dac106ebf2 -->
 
 <a id="storage-nas-api-guide"></a>
-
 ## Storage > NAS > API ガイド { #storage-nas-api-guide }
 
 このドキュメントは、NHN Cloud NAS が提供する API を使用してボリュームとスナップショットを管理する方法について説明します。
 
 <a id="nas_api_common"></a>
-
 ## NAS API 共通情報 { #nas_api_common }
 
 <a id="nas_api_common.endpoint"></a>
@@ -75,11 +73,9 @@ NASAPIが提供する共通レスポンス情報の説明です。全てのAPI�
     API レスポンスにガイドに記載されていないフィールドが表示される場合があります。これらのフィールドはNHN Cloudの内部用途で使用され、事前の通知なしに変更される可能性があるため、使用しないでください。
 
 <a id="volume"></a>
-
 ## ボリューム { #volume }
 
 <a id="volume.list"></a>
-
 ### ボリューム一覧表示 { #volume.list }
 
 ボリューム一覧を照会します。
@@ -90,7 +86,6 @@ X-Auth-Token: {token-id}
 ```
 
 <a id="volume.list-request"></a>
-
 #### リクエスト
 
 リクエスト本文は必要ありません。
@@ -109,7 +104,6 @@ X-Auth-Token: {token-id}
 | sort | Query | String | N | ソート基準となるフィールド名<br>`{key}:{direction}`の形で記述します。例：`name:asc`, `created_at:desc`<br>使用可能なkey値: `id`, `name`, `sizeGb`, `createdAt`, `updatedAt` |
 
 <a id="volume.list-response"></a>
-
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -258,7 +252,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.create"></a>
-
 ### ボリューム作成 { #volume.create }
 
 新しいボリュームを作成します。
@@ -284,7 +277,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.create-request"></a>
-
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -353,7 +345,6 @@ X-Auth-Token: {token-id}
 </details>
 
 <a id="volume.create-response"></a>
-
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -491,7 +482,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.delete"></a>
-
 ### ボリューム削除 { #volume.delete }
 
 指定したボリュームを削除します。
@@ -519,7 +509,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.view"></a>
-
 ### ボリューム表示 { #volume.view }
 
 指定したボリュームの詳細情報を返します。
@@ -530,7 +519,6 @@ X-Auth-Token: {token-id}
 ```
 
 <a id="volume.view-request"></a>
-
 #### リクエスト
 
 リクエスト本文は必要ありません。
@@ -541,7 +529,6 @@ X-Auth-Token: {token-id}
 | volume\_id | URL | String | O | 照会するボリュームID |
 
 <a id="volume.view-response"></a>
-
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -598,7 +585,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.change_settings"></a>
-
 ### ボリュームの設定変更 { #volume.change_settings }
 
 指定したボリュームの設定を変更します。
@@ -677,7 +663,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.connect_interface"></a>
-
 ### ボリュームにインターフェース接続 { #volume.connect_interface }
 
 指定したボリュームのインターフェースを設定します。
@@ -749,7 +734,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.delete_interface"></a>
-
 ### ボリュームのインターフェース削除 { #volume.delete_interface }
 
 指定したボリュームの指定したインターフェースを削除します。
@@ -778,7 +762,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.view_snapshot_restore_history"></a>
-
 ### スナップショット復元履歴を表示 { #volume.view_snapshot_restore_history }
 
 指定したボリュームのスナップショット復元履歴リストを返します。
@@ -856,7 +839,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.view_usage"></a>
-
 ### ボリューム使用状況表示 { #volume.view_usage }
 
 指定したボリュームの使用状況を返します。
@@ -916,7 +898,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="snapshots"></a>
-
 ## スナップショット { #snapshots }
 
 <a id="snapshots.list"></a>
@@ -1146,11 +1127,9 @@ X-Auth-Token: {token-id}
 
 
 <a id="replication"></a>
-
 ## ボリューム複製設定 { #replication }
 
 <a id="replication.setup"></a>
-
 ### 複製設定 { #replication.setup }
 
 指定したボリュームの複製を設定します。
@@ -1182,7 +1161,6 @@ X-Auth-Token: {token-id}
 ```
 
 <a id="replication.setup-request"></a>
-
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -1235,7 +1213,6 @@ X-Auth-Token: {token-id}
 </details>
 
 <a id="replication.setup-response"></a>
-
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -1295,7 +1272,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="replication.disable"></a>
-
 ### 複製設定の解除 { #replication.disable }
 
 指定したボリュームの複製設定を解除します。
@@ -1322,7 +1298,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="replication.change_direction"></a>
-
 ### 複製方向の変更 { #replication.change_direction }
 
 ソースボリュームと対象ボリュームの複製方向を変更します。
@@ -1349,7 +1324,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="replication.start"></a>
-
 ### 複製開始 { #replication.start }
 
 ソースボリュームから対象ボリュームへの複製を開始します。
@@ -1376,7 +1350,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="replication.status"></a>
-
 ### 複製状態の確認 { #replication.status }
 
 最近の複製状態を返します。
@@ -1412,7 +1385,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="replication.stop"></a>
-
 ### 複製停止 { #replication.stop }
 
 ソースボリュームから対象ボリュームへの複製を停止します。
