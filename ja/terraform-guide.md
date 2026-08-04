@@ -1,5 +1,3 @@
-<!-- pre-align:aligned sig=ab931ac9d8ba -->
-
 <a id="storage-nas-terraform-user-guide"></a>
 ## Storage > NAS > Terraform使用ガイド { #storage-nas-terraform-user-guide }
 
@@ -34,8 +32,8 @@ resource "nhncloud_nas_storage_volume_interface_v1" "interface1" {
 }
 ```
 
-> [参考]
-> 明示的なリソース依存関係の指定方法は、[TerraformのResource dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies)ドキュメントを参照してください。
+!!! tip "ヒント"
+    明示的なリソース依存関係の指定方法については、[Terraform の Resource dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies) を参照してください。
 
 <a id="terraform-resources-nas"></a>
 ## Resources { #terraform-resources-nas }
@@ -152,14 +150,14 @@ resource "nhncloud_nas_storage_volume_interface_v1" "nas_interface_01" {
 レプリケーション設定リソースを作成すると、対象ボリュームが自動的に作成されます。
 レプリケーション設定リソースで`dst_volume`の設定値を変更して対象ボリュームをアップデートできますが、レプリケーション設定リソースを削除しても対象ボリュームは自動的に削除されません。
 
-> [注意]
-> レプリケーション設定リソースの値を変更すると、既存リソースが削除され新しく作成される場合がありますが、既存の対象ボリュームは削除されません。
-> 残っている対象ボリュームと新しい対象ボリュームの名前が同じ場合、作成が失敗する可能性があるためご注意ください。
+!!! danger "注意"
+    複製設定リソースの値を変更すると、既存のリソースが削除されて新たに作成される場合がありますが、既存のターゲットボリュームは削除されません。
+    残存するターゲットボリュームと新しいターゲットボリュームの名前が同じ場合、作成が失敗する可能性がありますのでご注意ください。
 
 <!-- -->
 
-> [参考]
-> リソースの削除及びアップデートにより削除されずに残っている対象ボリュームは、コンソールで別途管理する必要があります。
+!!! tip "ヒント"
+    リソースの削除および更新によって削除されずに残ったターゲットボリュームは、コンソールで別途管理する必要があります。
 
 ```hcl
 resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
