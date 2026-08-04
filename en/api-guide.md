@@ -68,7 +68,7 @@ This section describes the common response information provided by the NAS API. 
 
 <br>
 
-> [Note]
+> [!tip] Caution
 > API response may show the fields not specified by the guide. These fields are internally used by NHN Cloud, and not used because they are subject to change without prior notice.
 
 <a id="volume"></a>
@@ -587,8 +587,8 @@ This API does not require a request body.
 
 Change the settings for the specified volume.
 
-> [Caution]
-To change the size of a replicated volume, you must change both the source volume and the target volume. If the size of the source volume and the target volume are different, replication might fail.
+> [!danger] Caution
+> To change the size of a replicated volume, you must change both the source volume and the target volume. If the size of the source volume and the target volume are different, replication might fail.
 
 ```
 PATCH  /v1/volumes/{volume_id}
@@ -1139,18 +1139,19 @@ The selectable region ranges for each replication target project can be found in
 
 <br>
 
-> [Caution]
-The size of the target volume for replication must be the same as the source volume.
-If the sizes of the source and target volumes differ, the replication may fail.
+> [!danger] Caution
+> The size of the target volume for replication must be the same as the source volume.
+> If the sizes of the source and target volumes differ, the replication may fail.
 
 <!-- -->
 
-> [Note]
+> [!tip] Note
 > To set up encryption on the target volume, you must configure a separate encryption keystore specific to the project or region the target volume belongs to.
 
 <!-- -->
 
-> [Note] If the source volume uses the CIFS protocol, the target volume must also use CIFS. To do this, you must create separate CIFS credentials (different from the source) and specify it in the`cifsAuthIds` field of the request body.
+> [!tip] Note
+> If the source volume uses the CIFS protocol, the target volume must also use CIFS. To do this, you must create separate CIFS credentials (different from the source) and specify it in the`cifsAuthIds` field of the request body.
 
 
 ```
