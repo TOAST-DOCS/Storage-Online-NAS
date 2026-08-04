@@ -588,7 +588,7 @@ This API does not require a request body.
 Change the settings for the specified volume.
 
 > [Caution]
-To change the size of a replicated volume, you must change both the source volume and the target volume. If the size of the source volume and the target volume are different, replication might fail.
+> To change the size of a replicated volume, you must change both the source volume and the target volume. If the size of the source volume and the target volume are different, replication might fail.
 
 ```
 PATCH  /v1/volumes/{volume_id}
@@ -1140,8 +1140,8 @@ The selectable region ranges for each replication target project can be found in
 <br>
 
 > [Caution]
-The size of the target volume for replication must be the same as the source volume.
-If the sizes of the source and target volumes differ, the replication may fail.
+> The size of the target volume for replication must be the same as the source volume.
+> If the sizes of the source and target volumes differ, the replication may fail.
 
 <!-- -->
 
