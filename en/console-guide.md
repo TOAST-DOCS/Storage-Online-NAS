@@ -24,7 +24,7 @@ Create a new volume. The created volume can be accessed by instances using the n
 | Snapshot Reserve Capacity | Pre-allocate space for snapshots to be stored. Data can be stored in any capacity except the one you set. If the actual size of the snapshot is larger than the snapshot reserve capacity setting, the data storage space beyond the reserve capacity is used to store the snapshot.|
 | Encryption  | Select whether to enable volume encryption. This must be preceded by setting up encryption key store. |
 
-> [Note] 
+> [Note]
 > The number of subnets available for each project is limited to 3. To increase the limit, contact Customer Support.
 
 <a id="create_volume.cifs"></a>
@@ -62,7 +62,7 @@ When you change the key store ID, the symmetric key for encrypted volume you cre
 ### Change Volume Size { #change_volume_size }
 
 Volume size is changed. Volume can be scaled up and down even while in use.
-> [Caution]
+> [Danger]
 > The size of a replication target volume can only be changed after replication is stopped.
 >
 > The size of the target volume must be equal to or greater than the size of the source volume. It is recommended to set the sizes of the source and target volumes to be the same.
@@ -82,7 +82,7 @@ The settings for Auto Create Snapshot and Snapshot Reserve Capacity are changed.
 
 Volume is deleted.
 
-> [Caution]
+> [Danger]
 > When deleting the volume, all data including snapshots are deleted. Deleted data cannot be recovered.
 > It is recommended to unmount the volume from the associated instance before deleting. Deleting the volume while it is mounted may cause problems on the user's system.
 
@@ -112,7 +112,7 @@ Snapshots of volume are created immediately.
 ### Restore Snapshots { #snapshots.restore }
 Restores volume to the point in time when the snapshot was created.
 
-> [Caution]
+> [Danger]
 > When restoring, snapshots created after the point of restoration are automatically deleted.
 
 <a id="snapshots.restore_results"></a>
@@ -138,14 +138,14 @@ Check the network connection information.
 ### Add Subnet Association { #network.add_subnet }
 Add a subnet association. Adding a subnet association allows you to access volume from the added subnet.
 
-> [Caution]
+> [Danger]
 > After adding a subnet association, if the subnet band does not exist in the ACL, mounting is not possible.
 
 <a id="network.detach_subnet"></a>
 ### Detach Subnet { #network.detach_subnet }
 Remove the subnet associated with the volume. IP ACLs must be removed separately if needed.
 
-> [Caution]
+> [Danger]
 > It is recommended to detach the subnet after unmounting from a connected instance. Detaching while mounted can cause problems for user systems.
 
 <a id="monitoring"></a>
@@ -198,7 +198,7 @@ Check the range of regions selectable by target project.
 | Same project within an organization | Other regions |
 | Other projects in an organization | All regions |
 
-> [Caution]
+> [Danger]
 > To change the size of a replicated volume, you must change both the source volume and the target volume. If the size of the source volume and the target volume are different, replication might fail.
 
 > [Note]
@@ -217,7 +217,7 @@ Check the range of regions selectable by target project.
 Resumes replication of volume that is in a stopped state.
 Replication runs asynchronously when changes occur on the source volume. Before replication runs, the data on the source and target volume might not match.
 
-> [Caution]
+> [Danger]
 > Replication might fail if the target volume size is smaller than the source volume size.
 >
 > When replication runs, all existing data on the target volume is deleted and replaced with the same geometry as the source volume.
@@ -228,8 +228,8 @@ Replication runs asynchronously when changes occur on the source volume. Before 
 Stops replicating volume.
 When you stop replication, the target volume becomes writable and can be mounted and used.
 
-> [Caution]
-> If you stop replication, the data on the source and target volume might not match. 
+> [Danger]
+> If you stop replication, the data on the source and target volume might not match.
 
 > [Note]
 > Volume in the Stop replication state might also experience a small amount of traffic to check replication status.
@@ -253,7 +253,7 @@ Change the direction of replication between source and target volume.
 Disables volume replication.
 When you disable replication, the target volume retains the source volume data as it was when the last replication completed.
 
-> [Caution]
+> [Danger]
 > When you re-establish replication, a new target volume is created. You cannot use the previously used target volume as the replication target volume again.
 
 <a id="connect_volume"></a>
