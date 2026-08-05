@@ -1,62 +1,94 @@
-## Storage > NAS > 릴리스 노트
+<a id="storage-nas-release-notes"></a>
+## Storage > NAS > 릴리스 노트 { #storage-nas-release-notes }
 
-## 2026. 06. 02.
+<a id="september-1-2026"></a>
+## 2026. 09. 01. { #september-1-2026 }
 
-### 신규 기능 추가
+<a id="september-1-2026-added-features"></a>
+### 신규 기능 추가 { #september-1-2026-added-features }
 
-* 볼륨 사용 현황에 스냅숏 사용량 정보가 추가됩니다.
+* NAS 리소스 접근 권한 세분화
+    * Infrastructure NAS ADMIN 역할이 추가되어 NAS 리소스의 생성, 수정, 삭제 권한을 제공합니다.
+    * Infrastructure ADMIN을 제외한 기존 기본 인프라 역할에서는 NAS 리소스의 생성, 수정, 삭제가 제한됩니다.
+
+<a id="september-1-2026-feature-updates"></a>
+### 기능 개선/변경 { #september-1-2026-feature-updates }
+
+* 볼륨 상태 표시 개선
+    * 볼륨 상태가 실패 또는 오류일 때 그 원인을 확인할 수 있도록 상세 사유가 함께 제공됩니다.
+
+<a id="june-2-2026"></a>
+## 2026. 06. 02. { #june-2-2026 }
+
+<a id="june-2-2026-added-features"></a>
+### 신규 기능 추가 { #june-2-2026-added-features }
+
+* 볼륨 사용 현황에 스냅숏 사용량 정보 추가
     * 전체 스냅숏 사용량
     * 스냅숏 예약 용량 내 사용량
     * 예약 용량 초과 스냅숏 사용량
 
-## 2025. 12. 02.
+<a id="december-2-2025"></a>
+## 2025. 12. 02. { #december-2-2025 }
 
-### 신규 기능 추가
+<a id="decemb걸리er-2-2025-added-features"></a>
+### 신규 기능 추가 { #december-2-2025-added-features }
 
-* NAS 모니터링 기능이 추가되었습니다.
+* NAS 모니터링 기능 추가
     * 볼륨에 대한 다양한 지표를 그래프와 함께 확인할 수 있습니다.
 
-## 2025. 06. 05.
+<a id="june-5-2025"></a>
+## 2025. 06. 05. { #june-5-2025 }
 
-### 신규 기능 추가
+<a id="june-5-2025-added-features"></a>
+### 신규 기능 추가 { #june-5-2025-added-features }
 
-* Public API가 제공됩니다.
-* 볼륨 이름 검색이 추가됩니다.
+* Public API 제공
+* 볼륨 이름 검색 추가
 
-### 기능 개선/변경
+<a id="june-5-2025-feature-updates"></a>
+### 기능 개선/변경 { #june-5-2025-feature-updates }
 
-* CIFS 인증 정보 관리에서 ID에 대한 제약 조건이 변경됩니다.
-* 볼륨 복제 기능이 변경됩니다.
+* CIFS 인증 정보 ID 제약 조건 변경
+* 볼륨 복제 기능 변경
     * 복제 방향 변경 즉시 복제가 활성화됩니다.
     * 복제를 중지하거나 복제 방향 변경 시 요청 시점까지의 데이터가 복제된 후 작업이 진행됩니다.
     
 
-## 2025. 03. 11.
+<a id="march-11-2025"></a>
+## 2025. 03. 11. { #march-11-2025 }
 
-### 신규 기능 추가
+<a id="march-11-2025-added-features"></a>
+### 신규 기능 추가 { #march-11-2025-added-features }
 
-* 볼륨 복제 기능이 개선되었습니다.
+* 볼륨 복제 기능 개선
     * CIFS 프로토콜 볼륨을 복제할 수 있습니다.
 
-## 2024. 09. 05.
+<a id="september-5-2024"></a>
+## 2024. 09. 05. { #september-5-2024 }
 
-### 신규 기능 추가
+<a id="september-5-2024-added-features"></a>
+### 신규 기능 추가 { #september-5-2024-added-features }
 
-* 생성된 볼륨의 서브넷 연결 변경 기능이 추가되었습니다.
-* 리전 간 볼륨 복제 기능이 추가되었습니다.
-* 스냅숏 생성 시점의 사용량이 스냅숏 목록에 표시됩니다.
+* 생성된 볼륨의 서브넷 연결 변경 기능 추가
+* 리전 간 볼륨 복제 기능 추가
+* 스냅숏 목록에 생성 시점 사용량 표시
 
-## 2024. 06. 04.
+<a id="june-4-2024"></a>
+## 2024. 06. 04. { #june-4-2024 }
 
-### 신규 기능 추가
+<a id="june-4-2024-added-features"></a>
+### 신규 기능 추가 { #june-4-2024-added-features }
 
-* CIFS 프로토콜이 추가되었습니다.
+* CIFS 프로토콜 추가
     * 윈도우 환경에서도 볼륨을 사용할 수 있습니다.
-* 스냅숏 복원 기능이 추가되었습니다.
-* 스냅숏 복원 히스토리 조회가 추가되었습니다.
+* 스냅숏 복원 기능 추가
+* 스냅숏 복원 히스토리 조회 추가
 
-## 2023. 09. 05.
+<a id="september-5-2023"></a>
+## 2023. 09. 05. { #september-5-2023 }
 
-### 신규 서비스 출시
+<a id="september-5-2023-new-service-release"></a>
+### 신규 서비스 출시 { #september-5-2023-new-service-release }
 
-* 프로젝트의 VPC 네트워크를 통해 볼륨을 인스턴스에 연결할 수 있습니다.
+* 프로젝트의 VPC 네트워크를 통한 인스턴스 볼륨 연결 지원
