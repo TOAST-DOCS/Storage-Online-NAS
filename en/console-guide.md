@@ -1,7 +1,7 @@
-<!-- pre-align:aligned sig=cdac5f1b7499 -->
-
 <a id="storage-nas-console-user-guide"></a>
 ## Storage > NAS > Console User Guide { #storage-nas-console-user-guide }
+
+This document describes how to manage NAS volumes and snapshots and connect them to instances in the NHN Cloud console.
 
 <a id="volume"></a>
 ## Volume { #volume }
@@ -24,8 +24,8 @@ Create a new volume. The created volume can be accessed by instances using the n
 | Snapshot Reserve Capacity | Pre-allocate space for snapshots to be stored. Data can be stored in any capacity except the one you set. If the actual size of the snapshot is larger than the snapshot reserve capacity setting, the data storage space beyond the reserve capacity is used to store the snapshot.|
 | Encryption  | Select whether to enable volume encryption. This must be preceded by setting up encryption key store. |
 
-> [Note] 
-> The number of subnets available for each project is limited to 3. To increase the limit, contact Customer Support.
+!!! tip "Note"
+    The number of subnets available for each project is limited to 3. To increase the limit, contact Customer Support.
 
 <a id="create_volume.cifs"></a>
 #### Manage CIFS Credentials
@@ -53,19 +53,20 @@ When you create encrypted volume, the symmetric key is stored in the key store y
 
 When you change the key store ID, the symmetric key for encrypted volume you create in the future is stored in the changed key store. Symmetric keys stored in the existing key store are retained.
 
-> [Note]
-> You will be charged for key store usage according to the Secure Key Manager service pricing policy. For more information, see [Secure Key Manager pricing](https://www.nhncloud.com/kr/service/security/secure-key-manager#price).
->
-> Encrypted volume encrypts data with the XTS-AES-256 algorithm using two different symmetric keys. Therefore, two symmetric keys are stored in the key store for each encrypted volume.
+!!! tip "Note"
+    You will be charged for key store usage according to the Secure Key Manager service pricing policy. For more information, see [Secure Key Manager pricing](https://www.nhncloud.com/kr/service/security/secure-key-manager#price).
+
+    Encrypted volume encrypts data with the XTS-AES-256 algorithm using two different symmetric keys. Therefore, two symmetric keys are stored in the key store for each encrypted volume.
 
 <a id="change_volume_size"></a>
 ### Change Volume Size { #change_volume_size }
 
 Volume size is changed. Volume can be scaled up and down even while in use.
-> [Caution]
-> The size of a replication target volume can only be changed after replication is stopped.
->
-> The size of the target volume must be equal to or greater than the size of the source volume. It is recommended to set the sizes of the source and target volumes to be the same.
+
+!!! danger "Caution"
+    The size of a replication target volume can only be changed after replication is stopped.
+
+    The size of the target volume must be equal to or greater than the size of the source volume. It is recommended to set the sizes of the source and target volumes to be the same.
 
 <a id="change_acl"></a>
 ### Change Access Control List Settings { #change_acl }
@@ -82,9 +83,9 @@ The settings for Auto Create Snapshot and Snapshot Reserve Capacity are changed.
 
 Volume is deleted.
 
-> [Caution]
-> When deleting the volume, all data including snapshots are deleted. Deleted data cannot be recovered.
-> It is recommended to unmount the volume from the associated instance before deleting. Deleting the volume while it is mounted may cause problems on the user's system.
+!!! danger "Caution"
+    When deleting the volume, all data including snapshots are deleted. Deleted data cannot be recovered.
+    It is recommended to unmount the volume from the associated instance before deleting. Deleting the volume while it is mounted may cause problems on the user's system.
 
 <a id="snapshots"></a>
 ## Snapshot { #snapshots }
@@ -96,11 +97,11 @@ Retrieve a list of created snapshots.
 | Volume usage when snapshots created | The volume usage at the time the snapshot is created. If the snapshot is being stored as it exceeded the snapshot reserve capacity, it appears as the data capacity excluding the excess capacity. |
 | Created date | When the snapshot is created. |
 
-> [Note]
-> Snapshots prioritize the storage space on the volume by using the reserved capacity for snapshots. If the total snapshot size exceeds the reserved capacity, the excess is stored in the data storage space.
+!!! tip "Note"
+    Snapshots prioritize the storage space on the volume by using the reserved capacity for snapshots. If the total snapshot size exceeds the reserved capacity, the excess is stored in the data storage space.
 
-> [Note]
-> Some snapshots are created by the system and cannot be deleted.
+!!! tip "Note"
+    Some snapshots are created by the system and cannot be deleted.
 
 
 <a id="snapshots.create"></a>
@@ -112,8 +113,8 @@ Snapshots of volume are created immediately.
 ### Restore Snapshots { #snapshots.restore }
 Restores volume to the point in time when the snapshot was created.
 
-> [Caution]
-> When restoring, snapshots created after the point of restoration are automatically deleted.
+!!! danger "Caution"
+    When restoring, snapshots created after the point of restoration are automatically deleted.
 
 <a id="snapshots.restore_results"></a>
 ### View Snapshot Restore Results { #snapshots.restore_results }
@@ -138,15 +139,15 @@ Check the network connection information.
 ### Add Subnet Association { #network.add_subnet }
 Add a subnet association. Adding a subnet association allows you to access volume from the added subnet.
 
-> [Caution]
-> After adding a subnet association, if the subnet band does not exist in the ACL, mounting is not possible.
+!!! danger "Caution"
+    After adding a subnet association, if the subnet band does not exist in the ACL, mounting is not possible.
 
 <a id="network.detach_subnet"></a>
 ### Detach Subnet { #network.detach_subnet }
 Remove the subnet associated with the volume. IP ACLs must be removed separately if needed.
 
-> [Caution]
-> It is recommended to detach the subnet after unmounting from a connected instance. Detaching while mounted can cause problems for user systems.
+!!! danger "Caution"
+    It is recommended to detach the subnet after unmounting from a connected instance. Detaching while mounted can cause problems for user systems.
 
 <a id="monitoring"></a>
 ## Monitoring { #monitoring }
@@ -198,18 +199,18 @@ Check the range of regions selectable by target project.
 | Same project within an organization | Other regions |
 | Other projects in an organization | All regions |
 
-> [Caution]
-> To change the size of a replicated volume, you must change both the source volume and the target volume. If the size of the source volume and the target volume are different, replication might fail.
+!!! danger "Caution"
+    To change the size of a replicated volume, you must change both the source volume and the target volume. If the size of the source volume and the target volume are different, replication might fail.
 
-> [Note]
-> Volume replication is performed using snapshots. When configuring replication, snapshots in the format `{volume name}.mirror.%` are automatically created and cannot be deleted.
+!!! tip "Note"
+    Volume replication is performed using snapshots. When configuring replication, snapshots in the format `{volume name}.mirror.%` are automatically created and cannot be deleted.
 
-> [Note]
-> The target volume created by the replication setup is billed for volume capacity according to the NAS service fee policy.
->
-> You are charged for network traffic generated by replication between different regions.
->
-> For more information on pricing, see our [NAS pricing guide](https://www.nhncloud.com/kr/service/storage/nas).
+!!! tip "Note"
+    The target volume created by the replication setup is billed for volume capacity according to the NAS service fee policy.
+
+    You are charged for network traffic generated by replication between different regions.
+
+    For more information on pricing, see our [NAS pricing guide](https://www.nhncloud.com/kr/service/storage/nas).
 
 <a id="replication.start"></a>
 ### Start Replication { #replication.start }
@@ -217,10 +218,10 @@ Check the range of regions selectable by target project.
 Resumes replication of volume that is in a stopped state.
 Replication runs asynchronously when changes occur on the source volume. Before replication runs, the data on the source and target volume might not match.
 
-> [Caution]
-> Replication might fail if the target volume size is smaller than the source volume size.
->
-> When replication runs, all existing data on the target volume is deleted and replaced with the same geometry as the source volume.
+!!! danger "Caution"
+    Replication might fail if the target volume size is smaller than the source volume size.
+
+    When replication runs, all existing data on the target volume is deleted and replaced with the same geometry as the source volume.
 
 <a id="replication.stop"></a>
 ### Stop Replication { #replication.stop }
@@ -228,11 +229,11 @@ Replication runs asynchronously when changes occur on the source volume. Before 
 Stops replicating volume.
 When you stop replication, the target volume becomes writable and can be mounted and used.
 
-> [Caution]
-> If you stop replication, the data on the source and target volume might not match. 
+!!! danger "Caution"
+    If you stop replication, the data on the source and target volume might not match. 
 
-> [Note]
-> Volume in the Stop replication state might also experience a small amount of traffic to check replication status.
+!!! tip "Note"
+    Volume in the Stop replication state might also experience a small amount of traffic to check replication status.
 
 <a id="replication.change_direction"></a>
 ### Change Replication Direction { #replication.change_direction }
@@ -253,8 +254,8 @@ Change the direction of replication between source and target volume.
 Disables volume replication.
 When you disable replication, the target volume retains the source volume data as it was when the last replication completed.
 
-> [Caution]
-> When you re-establish replication, a new target volume is created. You cannot use the previously used target volume as the replication target volume again.
+!!! danger "Caution"
+    When you re-establish replication, a new target volume is created. You cannot use the previously used target volume as the replication target volume again.
 
 <a id="connect_volume"></a>
 ## Connect Volume { #connect_volume }
