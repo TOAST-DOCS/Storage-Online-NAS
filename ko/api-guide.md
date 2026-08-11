@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=06dac106ebf2 -->
+
 <a id="storage-nas-api-guide"></a>
 ## Storage > NAS > API 가이드 { #storage-nas-api-guide }
 
