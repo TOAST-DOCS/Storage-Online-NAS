@@ -1,7 +1,11 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=06dac106ebf2 -->
 
 <a id="storage-nas-api-guide"></a>
 ## Storage > NAS > API Guide { #storage-nas-api-guide }
+
+This document describes how to manage volumes and snapshots by using the API provided by NHN Cloud NAS.
 
 <a id="nas_api_common"></a>
 ## NAS API Common Information { #nas_api_common }
@@ -68,8 +72,8 @@ This section describes the common response information provided by the NAS API. 
 
 <br>
 
-> [Note]
-> API response may show the fields not specified by the guide. These fields are internally used by NHN Cloud, and not used because they are subject to change without prior notice.
+!!! tip "Note"
+    Fields not specified in the guide may appear in API responses. These fields are used internally by NHN Cloud and are subject to change without prior notice, so they are not used.
 
 <a id="volume"></a>
 ## Volume { #volume }
@@ -91,16 +95,16 @@ This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | Token ID |
-| sizeGb | Query | String | - | Volume size |
-| maxSizeGb | Query | String | - | Volume maximum size |
-| minSizeGb | Query | String | - | Volume minimum size |
-| name | Query | String | - | Volume name |
-| nameContains | Query | String | - | Strings included in the volume name |
-| subnetId | Query | String | - | Volume with interfaces on a subnet |
-| limit | Query | String | - | Number of resources to expose on a page |
-| page | Query | String | - | Page to search |
-| sort | Query | String | - | Name of the field to sort by<br>Describe it in the form `{key}:{direction}`. Example: `name:asc`, `created_at:desc`<br>Possible key values: `id`, `name`, `sizeGb`, `createdAt`, `updatedAt` |
+| X-Auth-Token | Header | String | Y | Token ID |
+| sizeGb | Query | String | N | Volume size |
+| maxSizeGb | Query | String | N | Volume maximum size |
+| minSizeGb | Query | String | N | Volume minimum size |
+| name | Query | String | N | Volume name |
+| nameContains | Query | String | N | Strings included in the volume name |
+| subnetId | Query | String | N | Volume with interfaces on a subnet |
+| limit | Query | String | N | Number of resources to expose on a page |
+| page | Query | String | N | Page to search |
+| sort | Query | String | N | Name of the field to sort by<br>Describe it in the form `{key}:{direction}`. Example: `name:asc`, `created_at:desc`<br>Possible key values: `id`, `name`, `sizeGb`, `createdAt`, `updatedAt` |
 
 <a id="volume.list-response"></a>
 #### Response
@@ -255,16 +259,16 @@ This API does not require a request body.
 
 Create a new volume.
 
-> [Note] Using the CIFS protocol
-> To use the CIFS protocol, you must create CIFS credentials. Credentials are managed on a per-project basis, and you must register CIFS credentials to allow to access each CIFS volume.
-> You can create CIFS credentials through the **Storage > NAS > Manage CIFS Credentials** of the console.
+!!! tip "Note: Using the CIFS protocol"
+    To use the CIFS protocol, you must create CIFS credentials. Credentials are managed on a per-project basis, and you must register CIFS credentials to allow to access each CIFS volume.
+    You can create CIFS credentials through the **Storage > NAS > Manage CIFS Credentials** of the console.
 
 <!-- -->
 
-> [Note] Setting up encryption key storage
-> When an encrypted volume is created, the symmetric key used for encryption is stored in the NHN Cloud Secure Key Manager store. To create encrypted volume,[you must first create a keystore](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_1) in the Secure Key Manager service. After creating the keystore, [check its ID](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_2) and enter it in the encryption keystore settings.
-> You can enter the keystore ID from the **Storage > NAS > Encryption keystore settings** in the console. When you create encrypted volume, the symmetric key is stored in the specified keystore. The symmetric key stored in the keystore cannot be deleted while the encrypted volume is in use. When the encrypted volume is deleted, the corresponding symmetric key is also deleted.
-> If you change the keystore ID, symmetric keys for newly created encrypted volume will be stored in the new keystore. Symmetric keys already stored in the previous keystore are retained.
+!!! tip "Note: Setting up encryption key storage"
+    When an encrypted volume is created, the symmetric key used for encryption is stored in the NHN Cloud Secure Key Manager store. To create encrypted volume,[you must first create a keystore](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_1) in the Secure Key Manager service. After creating the keystore, [check its ID](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_2) and enter it in the encryption keystore settings.
+    You can enter the keystore ID from the **Storage > NAS > Encryption keystore settings** in the console. When you create encrypted volume, the symmetric key is stored in the specified keystore. The symmetric key stored in the keystore cannot be deleted while the encrypted volume is in use. When the encrypted volume is deleted, the corresponding symmetric key is also deleted.
+    If you change the keystore ID, symmetric keys for newly created encrypted volume will be stored in the new keystore. Symmetric keys already stored in the previous keystore are retained.
 
 
 ```
@@ -279,26 +283,26 @@ X-Auth-Token: {token-id}
 
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | Token ID |
-| volume | Body | Object | O | Volume creation request object |
-| volume.acl | Body | List | - | List of ACLs to set when creating volume<br>You can enter it in IP or CIDR format. |
-| volume.description | Body | String | - | Volume description |
-| volume.encryption | Body | Object | - | Encryption settings object when creating volume |
-| volume.encryption.enabled | Body | Boolean | - | Whether to enable encryption settings<br>After the encryption keystore is set up, setting its field to `true`enables encryption. |
-| volume.interfaces | Body | List | - | List of interfaces to access volume |
-| volume.interfaces.subnetId | Body | String | - | The subnet ID of the volume interface |
-| volume.mountProtocol | Body | Object | - | Protocol settings object when creating volume |
-| volume.mountProtocol.cifsAuthIds | Body | List | - | List of CIFS Authentication IDs<br>No input required for NFS protocol selection |
-| volume.mountProtocol.protocol | Body | String | O | Specifying protocols when mounting volume<br>You can choose between `NFS` and `CIFS`. |
-| volume.name | Body | String | O | Volume name |
-| volume.sizeGb | Body | Integer | O | Volume size (GB)<br>Volume can be set from a minimum of 300GB to a maximum of 10,000GB, in 100GB increments. |
-| volume.snapshotPolicy | Body | Object | - | Volume snapshot settings object |
-| volume.snapshotPolicy.maxScheduledCount | Body | Integer | - | The maximum number of snapshots that can be saved<br>You can set a maximum of 30, and the first automatically created snapshot will be deleted when the maximum number of saves is reached. |
-| volume.snapshotPolicy.reservePercent | Body | Integer | - | Snapshot capacity ratio |
-| volume.snapshotPolicy.schedule | Body | Object | - | Snapshot auto-create objects<br>If `null`, snapshot auto-creation will not be configured. |
-| volume.snapshotPolicy.schedule.time | Body | String | - | Snapshot auto-create time |
-| volume.snapshotPolicy.schedule.timeOffset | Body | String | - | Time zone for snapshot auto-create |
-| volume.snapshotPolicy.schedule.weekdays | Body | List | - | Days of the week that snapshots are automatically created<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |
+| X-Auth-Token | Header | String | Y | Token ID |
+| volume | Body | Object | Y | Volume creation request object |
+| volume.acl | Body | List | N | List of ACLs to set when creating volume<br>You can enter it in IP or CIDR format. |
+| volume.description | Body | String | N | Volume description |
+| volume.encryption | Body | Object | N | Encryption settings object when creating volume |
+| volume.encryption.enabled | Body | Boolean | N | Whether to enable encryption settings<br>After the encryption keystore is set up, setting its field to `true`enables encryption. |
+| volume.interfaces | Body | List | N | List of interfaces to access volume |
+| volume.interfaces.subnetId | Body | String | N | The subnet ID of the volume interface |
+| volume.mountProtocol | Body | Object | N | Protocol settings object when creating volume |
+| volume.mountProtocol.cifsAuthIds | Body | List | N | List of CIFS Authentication IDs<br>No input required for NFS protocol selection |
+| volume.mountProtocol.protocol | Body | String | Y | Specifying protocols when mounting volume<br>You can choose between `NFS` and `CIFS`. |
+| volume.name | Body | String | Y | Volume name |
+| volume.sizeGb | Body | Integer | Y | Volume size (GB)<br>Volume can be set from a minimum of 300GB to a maximum of 10,000GB, in 100GB increments. |
+| volume.snapshotPolicy | Body | Object | N | Volume snapshot settings object |
+| volume.snapshotPolicy.maxScheduledCount | Body | Integer | N | The maximum number of snapshots that can be saved<br>You can set a maximum of 30, and the first automatically created snapshot will be deleted when the maximum number of saves is reached. |
+| volume.snapshotPolicy.reservePercent | Body | Integer | N | Snapshot capacity ratio |
+| volume.snapshotPolicy.schedule | Body | Object | N | Snapshot auto-create objects<br>If `null`, snapshot auto-creation will not be configured. |
+| volume.snapshotPolicy.schedule.time | Body | String | N | Snapshot auto-create time |
+| volume.snapshotPolicy.schedule.timeOffset | Body | String | N | Time zone for snapshot auto-create |
+| volume.snapshotPolicy.schedule.weekdays | Body | List | N | Days of the week that snapshots are automatically created<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |
 
 <details>
   <summary>Request Example</summary>
@@ -496,8 +500,8 @@ This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | Token ID |
-| volume_id | URL | String | O | Volume ID to delete |
+| X-Auth-Token | Header | String | Y | Token ID |
+| volume_id | URL | String | Y | Volume ID to delete |
 
 <a id="volume.delete-response"></a>
 #### Response
@@ -523,8 +527,8 @@ This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | Token ID |
-| volume_id | URL | String | O | Volume ID to query |
+| X-Auth-Token | Header | String | Y | Token ID |
+| volume_id | URL | String | Y | Volume ID to query |
 
 <a id="volume.view-response"></a>
 #### Response
@@ -587,8 +591,8 @@ This API does not require a request body.
 
 Change the settings for the specified volume.
 
-> [Caution]
-To change the size of a replicated volume, you must change both the source volume and the target volume. If the size of the source volume and the target volume are different, replication might fail.
+!!! danger "Caution"
+    To change the size of a replicated volume, you must change both the source volume and the target volume. If the size of the source volume and the target volume are different, replication might fail.
 
 ```
 PATCH  /v1/volumes/{volume_id}
@@ -600,22 +604,22 @@ X-Auth-Token: {token-id}
 
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | Token ID |
-| volume_id | URL | String | O | Volume ID |
-| volume | Body | Object | O | Request object for changing volume settings |
-| volume.acl | Body | List | - | List of ACLs to set when creating volume<br>You can enter it in IP or CIDR format. |
-| volume.description | Body | String | - | Volume description |
-| volume.mountProtocol | Body | Object | - | Protocol settings object when creating volume |
-| volume.mountProtocol.cifsAuthIds | Body | List | - | List of CIFS Authentication IDs |
-| volume.mountProtocol.protocol | Body | String | - | You cannot change the protocol of volume that has already been created.<br>When changing the `cifsAuthIds` field, you must specify the `cifs` in that field. |
-| volume.sizeGb | Body | Integer | - | Volume size (GB)<br>Volume can be set from a minimum of 300 GB to a maximum of 10,000GB, in 100GB increments. |
-| volume.snapshotPolicy | Body | Object | - | Volume snapshot settings object |
-| volume.snapshotPolicy.maxScheduledCount | Body | Integer | - | The maximum number of snapshots that can be saved<br>You can set a maximum of 30, and the first automatically created snapshot will be deleted when the maximum number of saves is reached. |
-| volume.snapshotPolicy.reservePercent | Body | Integer | - | Snapshot capacity ratio |
-| volume.snapshotPolicy.schedule | Body | Object | - | Snapshot auto-create objects<br>If `null`, snapshot auto-creation will not be configured. |
-| volume.snapshotPolicy.schedule.time | Body | String | - | Snapshot auto-create time |
-| volume.snapshotPolicy.schedule.timeOffset | Body | String | - | Time zone for snapshot auto-create |
-| volume.snapshotPolicy.schedule.weekdays | Body | List | - | Days of the week that snapshots are automatically created<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |
+| X-Auth-Token | Header | String | Y | Token ID |
+| volume_id | URL | String | Y | Volume ID |
+| volume | Body | Object | Y | Request object for changing volume settings |
+| volume.acl | Body | List | N | List of ACLs to set when creating volume<br>You can enter it in IP or CIDR format. |
+| volume.description | Body | String | N | Volume description |
+| volume.mountProtocol | Body | Object | N | Protocol settings object when creating volume |
+| volume.mountProtocol.cifsAuthIds | Body | List | N | List of CIFS Authentication IDs |
+| volume.mountProtocol.protocol | Body | String | N | You cannot change the protocol of volume that has already been created.<br>When changing the `cifsAuthIds` field, you must specify the `cifs` in that field. |
+| volume.sizeGb | Body | Integer | N | Volume size (GB)<br>Volume can be set from a minimum of 300 GB to a maximum of 10,000GB, in 100GB increments. |
+| volume.snapshotPolicy | Body | Object | N | Volume snapshot settings object |
+| volume.snapshotPolicy.maxScheduledCount | Body | Integer | N | The maximum number of snapshots that can be saved<br>You can set a maximum of 30, and the first automatically created snapshot will be deleted when the maximum number of saves is reached. |
+| volume.snapshotPolicy.reservePercent | Body | Integer | N | Snapshot capacity ratio |
+| volume.snapshotPolicy.schedule | Body | Object | N | Snapshot auto-create objects<br>If `null`, snapshot auto-creation will not be configured. |
+| volume.snapshotPolicy.schedule.time | Body | String | N | Snapshot auto-create time |
+| volume.snapshotPolicy.schedule.timeOffset | Body | String | N | Time zone for snapshot auto-create |
+| volume.snapshotPolicy.schedule.weekdays | Body | List | N | Days of the week that snapshots are automatically created<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |
 
 <details>
   <summary>Request Example</summary>
@@ -676,10 +680,10 @@ X-Auth-Token: {token-id}
 
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | Token ID |
-| volume_id | URL | String | O | Volume ID |
-| interface | Body | Object | O | Interface Settings Object |
-| interface.subnetId | Body | String | O | Specify an interface subnet |
+| X-Auth-Token | Header | String | Y | Token ID |
+| volume_id | URL | String | Y | Volume ID |
+| interface | Body | Object | Y | Interface Settings Object |
+| interface.subnetId | Body | String | Y | Specify an interface subnet |
 
 <details>
   <summary>Request Example</summary>
@@ -748,9 +752,9 @@ This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | Token ID |
-| volume_id | URL | String | O | Volume ID |
-| interface_id | URL | String | O | Interface ID to delete |
+| X-Auth-Token | Header | String | Y | Token ID |
+| volume_id | URL | String | Y | Volume ID |
+| interface_id | URL | String | Y | Interface ID to delete |
 
 <a id="volume.delete_interface-response"></a>
 #### Response
@@ -776,11 +780,11 @@ This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 | --- | --- | --- |---| --- |
-| X-Auth-Token | Header | String | O | Token ID |
-| volume_id | URL | String | O | Volume ID |
-| limit | Query | String | - | Number of resources to expose on a page |
-| page | Query | String | - | Page to search |
-| sort | Query | String | - | Name of the field to sort by<br>Describe it in the form `{key}:{direction}`. Example: `snapshotId:asc`, `requestedAt:desc`<br>Possible key values: `snapshotId`, `snapshotName`, `requestedAt`, `restoredAt`, `requestedUser`, `requestedIp`, `result` |
+| X-Auth-Token | Header | String | Y | Token ID |
+| volume_id | URL | String | Y | Volume ID |
+| limit | Query | String | N | Number of resources to expose on a page |
+| page | Query | String | N | Page to search |
+| sort | Query | String | N | Name of the field to sort by<br>Describe it in the form `{key}:{direction}`. Example: `snapshotId:asc`, `requestedAt:desc`<br>Possible key values: `snapshotId`, `snapshotName`, `requestedAt`, `restoredAt`, `requestedUser`, `requestedIp`, `result` |
 
 <a id="volume.view_snapshot_restore_history-response"></a>
 #### Response
@@ -853,8 +857,8 @@ This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | Token ID |
-| volume_id | URL | String | O | Volume ID |
+| X-Auth-Token | Header | String | Y | Token ID |
+| volume_id | URL | String | Y | Volume ID |
 
 <a id="volume.view_usage-response"></a>
 #### Response
@@ -915,8 +919,8 @@ This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | Token ID |
-| volume_id | URL | String | O | Volume ID |
+| X-Auth-Token | Header | String | Y | Token ID |
+| volume_id | URL | String | Y | Volume ID |
 
 <a id="snapshots.list-response"></a>
 #### Response
@@ -972,10 +976,10 @@ X-Auth-Token: {token-id}
 
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | Token ID |
-| volume_id | URL | String | O | Volume ID |
-| snapshot | Body | Object | O | Snapshot creation objects |
-| snapshot.name | Body | String | O | Snapshot name |
+| X-Auth-Token | Header | String | Y | Token ID |
+| volume_id | URL | String | Y | Volume ID |
+| snapshot | Body | Object | Y | Snapshot creation objects |
+| snapshot.name | Body | String | Y | Snapshot name |
 
 <details>
   <summary>Request Example</summary>
@@ -1046,9 +1050,9 @@ This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | Token ID |
-| volume_id | URL | String | O | Volume ID |
-| snapshot_id | URL | String | O | Snapshot ID |
+| X-Auth-Token | Header | String | Y | Token ID |
+| volume_id | URL | String | Y | Volume ID |
+| snapshot_id | URL | String | Y | Snapshot ID |
 
 <a id="snapshots.delete-response"></a>
 #### Response
@@ -1074,10 +1078,10 @@ This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | Token ID |
-| volume_id | URL | String | O | Volume ID |
-| snapshot_id | URL | String | O | Snapshot ID |
-| showReclaimableSpace | Query | Boolean | - | Whether to expose `the reclaimableSpace` entry, which indicates the amount of space reclaimed when a snapshot is deleted. |
+| X-Auth-Token | Header | String | Y | Token ID |
+| volume_id | URL | String | Y | Volume ID |
+| snapshot_id | URL | String | Y | Snapshot ID |
+| showReclaimableSpace | Query | Boolean | N | Whether to expose `the reclaimableSpace` entry, which indicates the amount of space reclaimed when a snapshot is deleted. |
 
 <a id="snapshots.view-response"></a>
 #### Response
@@ -1112,9 +1116,9 @@ This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | Token ID |
-| volume_id | URL | String | O | Volume ID |
-| snapshot_id | URL | String | O | Snapshot ID |
+| X-Auth-Token | Header | String | Y | Token ID |
+| volume_id | URL | String | Y | Volume ID |
+| snapshot_id | URL | String | Y | Snapshot ID |
 
 <a id="snapshots.restore-response"></a>
 #### Response
@@ -1139,19 +1143,19 @@ The selectable region ranges for each replication target project can be found in
 
 <br>
 
-> [Caution]
-The size of the target volume for replication must be the same as the source volume.
-If the sizes of the source and target volumes differ, the replication may fail.
+!!! danger "Caution"
+    The size of the target volume for replication must be the same as the source volume.
+    If the sizes of the source and target volumes differ, the replication may fail.
 
 <!-- -->
 
-> [Note]
-> To set up encryption on the target volume, you must configure a separate encryption keystore specific to the project or region the target volume belongs to.
+!!! tip "Note"
+    To set up encryption on the target volume, you must configure a separate encryption key store specific to the project or region where the target volume belongs.
 
 <!-- -->
 
-> [Note] If the source volume uses the CIFS protocol, the target volume must also use CIFS. To do this, you must create separate CIFS credentials (different from the source) and specify it in the`cifsAuthIds` field of the request body.
-
+!!! tip "Note"
+    If the source volume uses the CIFS protocol, the target volume must also use the CIFS protocol. To do this, you must create separate CIFS credentials (different from the source volume) and specify them in the `cifsAuthIds` field of the request body.
 
 ```
 POST  /v1/volumes/{volume_id}/volume-mirrors
@@ -1163,30 +1167,30 @@ X-Auth-Token: {token-id}
 
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | Token ID |
-| volume_id | URL | String | O | Source volume ID |
-| volumeMirror | Body | Object | O | Volume replication settings request object  |
-| volumeMirror.dstRegion | Body | String | O | The region of replication target volume |
-| volumeMirror.dstTenantId | Body | String | O | The tenant ID of the replication target volume |
-| volumeMirror.dstVolume | Body | Object | O | Replication target volume request object |
-| volumeMirror.dstVolume.acl | Body | List | - | List of ACLs to set when creating volume<br>You can enter it in IP or CIDR format. |
-| volumeMirror.dstVolume.description | Body | String | - | Volume description |
-| volumeMirror.dstVolume.encryption | Body | Object | - | Encryption settings object when creating volume |
-| volumeMirror.dstVolume.encryption.enabled | Body | Boolean | - | Whether to enable encryption settings<br>After the encryption keystore is set up, setting its field to `true`enables encryption. |
-| volumeMirror.dstVolume.interfaces | Body | List | - | List of interfaces to access volume |
-| volumeMirror.dstVolume.interfaces.subnetId | Body | String | - | The subnet ID of the volume interface |
-| volumeMirror.dstVolume.mountProtocol | Body | Object | - | Protocol settings object when creating volume |
-| volumeMirror.dstVolume.mountProtocol.cifsAuthIds | Body | List | - | List of CIFS Authentication IDs<br>No input required for NFS protocol selection |
-| volumeMirror.dstVolume.mountProtocol.protocol | Body | String | O | Specifying protocols when mounting volume<br>You can choose between `NFS` and `CIFS`. |
-| volumeMirror.dstVolume.name | Body | String | O | Volume name |
-| volumeMirror.dstVolume.sizeGb | Body | Integer | O | Volume size (GB)<br>Volume can be set from a minimum of 300GB to a maximum of 10,000GB, in 100GB increments. |
-| volumeMirror.dstVolume.snapshotPolicy | Body | Object | - | Volume snapshot settings object |
-| volumeMirror.dstVolume.snapshotPolicy.maxScheduledCount | Body | Integer | - | The maximum number of snapshots that can be saved<br>You can set a maximum of 30, and the first automatically created snapshot will be deleted when the maximum number of saves is reached. |
-| volumeMirror.dstVolume.snapshotPolicy.reservePercent | Body | Integer | - | Snapshot capacity ratio |
-| volumeMirror.dstVolume.snapshotPolicy.schedule | Body | Object | - | Snapshot auto-create objects<br>If `null`, snapshot auto-creation will not be configured. |
-| volumeMirror.dstVolume.snapshotPolicy.schedule.time | Body | String | - | Snapshot auto-create time |
-| volumeMirror.dstVolume.snapshotPolicy.schedule.timeOffset | Body | String | - | Time zone for snapshot auto-create |
-| volumeMirror.dstVolume.snapshotPolicy.schedule.weekdays | Body | List | - | Days of the week that snapshots are automatically created<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |
+| X-Auth-Token | Header | String | Y | Token ID |
+| volume_id | URL | String | Y | Source volume ID |
+| volumeMirror | Body | Object | Y | Volume replication settings request object  |
+| volumeMirror.dstRegion | Body | String | Y | The region of replication target volume |
+| volumeMirror.dstTenantId | Body | String | Y | The tenant ID of the replication target volume |
+| volumeMirror.dstVolume | Body | Object | Y | Replication target volume request object |
+| volumeMirror.dstVolume.acl | Body | List | N | List of ACLs to set when creating volume<br>You can enter it in IP or CIDR format. |
+| volumeMirror.dstVolume.description | Body | String | N | Volume description |
+| volumeMirror.dstVolume.encryption | Body | Object | N | Encryption settings object when creating volume |
+| volumeMirror.dstVolume.encryption.enabled | Body | Boolean | N | Whether to enable encryption settings<br>After the encryption keystore is set up, setting its field to `true`enables encryption. |
+| volumeMirror.dstVolume.interfaces | Body | List | N | List of interfaces to access volume |
+| volumeMirror.dstVolume.interfaces.subnetId | Body | String | N | The subnet ID of the volume interface |
+| volumeMirror.dstVolume.mountProtocol | Body | Object | N | Protocol settings object when creating volume |
+| volumeMirror.dstVolume.mountProtocol.cifsAuthIds | Body | List | N | List of CIFS Authentication IDs<br>No input required for NFS protocol selection |
+| volumeMirror.dstVolume.mountProtocol.protocol | Body | String | Y | Specifying protocols when mounting volume<br>You can choose between `NFS` and `CIFS`. |
+| volumeMirror.dstVolume.name | Body | String | Y | Volume name |
+| volumeMirror.dstVolume.sizeGb | Body | Integer | Y | Volume size (GB)<br>Volume can be set from a minimum of 300GB to a maximum of 10,000GB, in 100GB increments. |
+| volumeMirror.dstVolume.snapshotPolicy | Body | Object | N | Volume snapshot settings object |
+| volumeMirror.dstVolume.snapshotPolicy.maxScheduledCount | Body | Integer | N | The maximum number of snapshots that can be saved<br>You can set a maximum of 30, and the first automatically created snapshot will be deleted when the maximum number of saves is reached. |
+| volumeMirror.dstVolume.snapshotPolicy.reservePercent | Body | Integer | N | Snapshot capacity ratio |
+| volumeMirror.dstVolume.snapshotPolicy.schedule | Body | Object | N | Snapshot auto-create objects<br>If `null`, snapshot auto-creation will not be configured. |
+| volumeMirror.dstVolume.snapshotPolicy.schedule.time | Body | String | N | Snapshot auto-create time |
+| volumeMirror.dstVolume.snapshotPolicy.schedule.timeOffset | Body | String | N | Time zone for snapshot auto-create |
+| volumeMirror.dstVolume.snapshotPolicy.schedule.weekdays | Body | List | N | Days of the week that snapshots are automatically created<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |
 
 <details>
   <summary>Request Example</summary>
@@ -1284,9 +1288,9 @@ X-Auth-Token: {token-id}
 
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | Token ID |
-| volume_id | URL | String | O | Volume ID |
-| volume_mirror_id | URL | String | O | Replication setting ID |
+| X-Auth-Token | Header | String | Y | Token ID |
+| volume_id | URL | String | Y | Volume ID |
+| volume_mirror_id | URL | String | Y | Replication setting ID |
 
 <a id="replication.disable-response"></a>
 #### Response
@@ -1310,9 +1314,9 @@ X-Auth-Token: {token-id}
 
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | Token ID |
-| volume_id | URL | String | O | Volume ID |
-| volume_mirror_id | URL | String | O | Replication setting ID |
+| X-Auth-Token | Header | String | Y | Token ID |
+| volume_id | URL | String | Y | Volume ID |
+| volume_mirror_id | URL | String | Y | Replication setting ID |
 
 <a id="replication.change_direction-response"></a>
 #### Response
@@ -1336,9 +1340,9 @@ X-Auth-Token: {token-id}
 
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | Token ID |
-| volume_id | URL | String | O | Volume ID |
-| volume_mirror_id | URL | String | O | Replication setting ID |
+| X-Auth-Token | Header | String | Y | Token ID |
+| volume_id | URL | String | Y | Volume ID |
+| volume_mirror_id | URL | String | Y | Replication setting ID |
 
 <a id="replication.start-response"></a>
 #### Response
@@ -1362,9 +1366,9 @@ X-Auth-Token: {token-id}
 
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | Token ID |
-| volume_id | URL | String | O | Volume ID |
-| volume_mirror_id | URL | String | O | Replication setting ID |
+| X-Auth-Token | Header | String | Y | Token ID |
+| volume_id | URL | String | Y | Volume ID |
+| volume_mirror_id | URL | String | Y | Replication setting ID |
 
 <a id="replication.status-response"></a>
 #### Response
@@ -1397,9 +1401,9 @@ X-Auth-Token: {token-id}
 
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | Token ID |
-| volume_id | URL | String | O | Volume ID |
-| volume_mirror_id | URL | String | O | Replication setting ID |
+| X-Auth-Token | Header | String | Y | Token ID |
+| volume_id | URL | String | Y | Volume ID |
+| volume_mirror_id | URL | String | Y | Replication setting ID |
 
 <a id="replication.stop-response"></a>
 #### Response
