@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=cdac5f1b7499 -->
+
 <a id="storage-nas-console-user-guide"></a>
 ## Storage > NAS > コンソール使用ガイド { #storage-nas-console-user-guide }
 
