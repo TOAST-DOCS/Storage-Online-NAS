@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=06dac106ebf2 -->
 
 <a id="storage-nas-api-guide"></a>
@@ -21,11 +23,14 @@ NASAPIは`nasv1`タイプのエンドポイントを使用します。正確な�
 
 
 <a id="nas_api_common.authentication"></a>
+
 ### 認証及び権限 { #nas_api_common.authentication }
 
-NASは、API呼び出し時の認証/認可のためにIaaSトークンを使用します。IaaSトークンは、NHN CloudのOpenStackベースのインフラサービス(IaaS)で使用する認証トークンです。IaaSトークンの発行及び使用に関する詳細は、[IaaSトークン](/nhncloud/ja/public-api/iaas-token/)を参照してください。
+NAS は API 呼び出し時の認証/認可に IaaS トークンを使用します。IaaS トークンは NHN Cloud の OpenStack ベースのインフラサービス (IaaS) で使用する認証トークンです。
+IaaS トークンの発行および使用方法の詳細については、[IaaS トークン](/nhncloud/ja/public-api/iaas-token/)を参照してください。
 
 <a id="nas_api_common.response"></a>
+
 ### レスポンス共通情報 { #nas_api_common.response }
 
 NASAPIが提供する共通レスポンス情報の説明です。全てのAPIレスポンスは`header`オブジェクトでリクエスト結果を伝達します。
@@ -34,7 +39,7 @@ NASAPIが提供する共通レスポンス情報の説明です。全てのAPI�
 | --- | --- | --- |
 | header | Object | ヘッダオブジェクト |
 | header.isSuccessful | Boolean | リクエストの成否(`true`または`false`) |
-| header.resultCode | Integer | HTTPステータスコードに該当する結果コード<br>- `200`:成功 <br>- `201`:リソース作成成功<br>- `202`:リクエストが正常に受信されたが、まだ処理されていない状態<br>- `400`:有効ではない値でリクエストされた<br>- `401`:権限、認証またはトークン関連エラー <br>- `404`:リクエストしたリソースが見つからない<br>- `405`:リクエストしたURLが指定したHTTPメソッドをサポートしていない<br>- `5XX`:クライアントのリクエストは有効ですがサーバーが処理に失敗する |
+| header.resultCode | Integer | HTTP ステータスコードに対応する結果コード<br>- `200`: 成功<br>- `201`: リソース作成成功<br>- `202`: リクエストは正常に受信されましたが、まだ処理されていない状態<br>- `400`: 無効な値でリクエストされました<br>- `401`: 権限、認証またはトークン関連のエラー<br>- `404`: リクエストされたリソースが見つかりません<br>- `405`: リクエストされた URL が指定した HTTP メソッドをサポートしていません<br>- `5XX`: クライアントのリクエストは有効ですが、サーバーが処理に失敗しました |
 | header.resultMessage | String | リクエスト処理結果メッセージ |
 
 <details>
@@ -76,12 +81,13 @@ NASAPIが提供する共通レスポンス情報の説明です。全てのAPI�
 ## ボリューム { #volume }
 
 <a id="volume.list"></a>
+
 ### ボリューム一覧表示 { #volume.list }
 
 ボリューム一覧を照会します。
 
 ```
-GET  /v1/volumes
+GET /v1/volumes
 X-Auth-Token: {token-id}
 ```
 
@@ -104,6 +110,7 @@ X-Auth-Token: {token-id}
 | sort | Query | String | N | ソート基準となるフィールド名<br>`{key}:{direction}`の形で記述します。例：`name:asc`, `created_at:desc`<br>使用可能なkey値: `id`, `name`, `sizeGb`, `createdAt`, `updatedAt` |
 
 <a id="volume.list-response"></a>
+
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -135,17 +142,17 @@ X-Auth-Token: {token-id}
 | volumes.mirrors.id | Body | String | 複製設定ID |
 | volumes.mirrors.role | Body | String | 複製ロール<br>- `SOURCE`:ソースボリューム<br>- `DESTINATION`:対象ボリューム |
 | volumes.mirrors.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
-| volumes.mirrors.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースボリューム→複製ボリューム <br>- `REVERSE`:複製ボリューム→ソースボリューム |
+| volumes.mirrors.direction | Body | String | 複製方向<br>- `FORWARD`: ソースボリューム → ターゲットボリューム<br>- `REVERSE`: ターゲットボリューム → ソースボリューム |
 | volumes.mirrors.directionChangedAt | Body | String | 複製方向変更時刻 |
 | volumes.mirrors.dstProjectId | Body | String | 複製対象ボリュームのプロジェクトID |
 | volumes.mirrors.dstRegion | Body | String | 複製対象ボリュームリージョン |
 | volumes.mirrors.dstTenantId | Body | String | 複製対象ボリュームテナントID |
-| volumes.mirrors.dstVolumeId | Body | String | 複製対象ボリュームID |
-| volumes.mirrors.dstVolumeName | Body | String | 複製対象ボリューム名 |
+| volumes.mirrors.dstVolumeId | Body | String | 複製ターゲットボリューム ID |
+| volumes.mirrors.dstVolumeName | Body | String | 複製ターゲットボリューム名 |
 | volumes.mirrors.srcProjectId | Body | String | ソースボリュームのプロジェクトID |
 | volumes.mirrors.srcRegion | Body | String | ソースボリュームリージョン |
 | volumes.mirrors.srcTenantId | Body | String | ソースボリュームテナントID |
-| volumes.mirrors.srcVolumeId | Body | String | ソースボリュームID |
+| volumes.mirrors.srcVolumeId | Body | String | ソースボリューム ID |
 | volumes.mirrors.srcVolumeName | Body | String | ソースボリューム名 |
 | volumes.mirrors.createdAt | Body | String | 複製作成時刻 |
 | volumes.mountProtocol | Body | Object | ボリュームマウントプロトコル |
@@ -252,6 +259,7 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.create"></a>
+
 ### ボリューム作成 { #volume.create }
 
 新しいボリュームを作成します。
@@ -270,13 +278,14 @@ X-Auth-Token: {token-id}
 
 
 ```
-POST  /v1/volumes
+POST /v1/volumes
 X-Auth-Token: {token-id}
 ```
 
 <br>
 
 <a id="volume.create-request"></a>
+
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -295,7 +304,7 @@ X-Auth-Token: {token-id}
 | volume.name | Body | String | Y | ボリューム名 |
 | volume.sizeGb | Body | Integer | Y | ボリュームサイズ(GB)<br>ボリュームは、最小300GBから最大10,000GBまで、100GB単位で設定できます。 |
 | volume.snapshotPolicy | Body | Object | N | ボリュームスナップショット設定オブジェクト |
-| volume.snapshotPolicy.maxScheduledCount | Body | Integer | N | スナップショット最大保存数<br>30個まで設定可能で、最大保存数に達する作成されたスナップショット中のうち、先に作成されたスナップショットがと自動的に削除されます。 |
+| volume.snapshotPolicy.maxScheduledCount | Body | Integer | N | スナップショットの最大保存数<br>30個まで設定可能で、最大保存数に達すると、自動的に作成されたスナップショットのうち、最も早く作成されたスナップショットが削除されます。 |
 | volume.snapshotPolicy.reservePercent | Body | Integer | N | スナップショット容量比率 |
 | volume.snapshotPolicy.schedule | Body | Object | N | スナップショット自動作成オブジェクト<br>`null`の場合、スナップショット自動作成が設定されません。 |
 | volume.snapshotPolicy.schedule.time | Body | String | N | スナップショット自動作成時間 |
@@ -345,6 +354,7 @@ X-Auth-Token: {token-id}
 </details>
 
 <a id="volume.create-response"></a>
+
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -372,17 +382,17 @@ X-Auth-Token: {token-id}
 | volume.mirrors.id | Body | String | 複製設定ID |
 | volume.mirrors.role | Body | String | 複製役割<br>- `SOURCE`:ソースボリューム<br>- `DESTINATION`:対象ボリューム |
 | volume.mirrors.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
-| volume.mirrors.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースボリューム → 複製ボリューム<br>- `REVERSE`:複製ボリューム → ソースボリューム |
+| volume.mirrors.direction | Body | String | 複製方向<br>- `FORWARD`: ソースボリューム → ターゲットボリューム<br>- `REVERSE`: ターゲットボリューム → ソースボリューム |
 | volume.mirrors.directionChangedAt | Body | String | 複製方向変更時刻 |
 | volume.mirrors.dstProjectId | Body | String | 複製対象ボリュームのプロジェクトID |
 | volume.mirrors.dstRegion | Body | String | 複製対象ボリュームリージョン |
 | volume.mirrors.dstTenantId | Body | String | 複製対象ボリュームテナントID |
-| volume.mirrors.dstVolumeId | Body | String | 複製対象ボリュームID |
-| volume.mirrors.dstVolumeName | Body | String | 複製対象ボリューム名 |
+| volume.mirrors.dstVolumeId | Body | String | 複製ターゲットボリューム ID |
+| volume.mirrors.dstVolumeName | Body | String | 複製ターゲットボリューム名 |
 | volume.mirrors.srcProjectId | Body | String | ソースボリュームのプロジェクトID |
 | volume.mirrors.srcRegion | Body | String | ソースボリュームリージョン |
 | volume.mirrors.srcTenantId | Body | String | ソースボリュームテナントID |
-| volume.mirrors.srcVolumeId | Body | String | ソースボリュームID |
+| volume.mirrors.srcVolumeId | Body | String | ソースボリューム ID |
 | volume.mirrors.srcVolumeName | Body | String | ソースボリューム名 |
 | volume.mirrors.createdAt | Body | String | 複製作成時刻 |
 | volume.mountProtocol | Body | Object | ボリュームマウントプロトコル |
@@ -482,12 +492,13 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.delete"></a>
+
 ### ボリューム削除 { #volume.delete }
 
 指定したボリュームを削除します。
 
 ```
-DELETE  /v1/volumes/{volume_id}
+DELETE /v1/volumes/{volume_id}
 X-Auth-Token: {token-id}
 ```
 
@@ -509,12 +520,13 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.view"></a>
+
 ### ボリューム表示 { #volume.view }
 
 指定したボリュームの詳細情報を返します。
 
 ```
-GET   /v1/volumes/{volume_id}
+GET /v1/volumes/{volume_id}
 X-Auth-Token: {token-id}
 ```
 
@@ -529,6 +541,7 @@ X-Auth-Token: {token-id}
 | volume\_id | URL | String | Y | 照会するボリュームID |
 
 <a id="volume.view-response"></a>
+
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -556,17 +569,17 @@ X-Auth-Token: {token-id}
 | volume.mirrors.id | Body | String | 複製設定ID |
 | volume.mirrors.role | Body | String | 複製役割<br>- `SOURCE`:ソースボリューム<br>- `DESTINATION`:対象ボリューム |
 | volume.mirrors.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
-| volume.mirrors.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースボリューム → 複製ボリューム<br>- `REVERSE`:複製ボリューム → ソースボリューム |
+| volume.mirrors.direction | Body | String | 複製方向<br>- `FORWARD`: ソースボリューム → ターゲットボリューム<br>- `REVERSE`: ターゲットボリューム → ソースボリューム |
 | volume.mirrors.directionChangedAt | Body | String | 複製方向変更時刻 |
 | volume.mirrors.dstProjectId | Body | String | 複製対象ボリュームのプロジェクトID |
 | volume.mirrors.dstRegion | Body | String | 複製対象ボリュームリージョン |
 | volume.mirrors.dstTenantId | Body | String | 複製対象ボリュームテナントID |
-| volume.mirrors.dstVolumeId | Body | String | 複製対象ボリュームID |
-| volume.mirrors.dstVolumeName | Body | String | 複製対象ボリューム名 |
+| volume.mirrors.dstVolumeId | Body | String | 複製ターゲットボリューム ID |
+| volume.mirrors.dstVolumeName | Body | String | 複製ターゲットボリューム名 |
 | volume.mirrors.srcProjectId | Body | String | ソースボリュームのプロジェクトID |
 | volume.mirrors.srcRegion | Body | String | ソースボリュームリージョン |
 | volume.mirrors.srcTenantId | Body | String | ソースボリュームテナントID |
-| volume.mirrors.srcVolumeId | Body | String | ソースボリュームID |
+| volume.mirrors.srcVolumeId | Body | String | ソースボリューム ID |
 | volume.mirrors.srcVolumeName | Body | String | ソースボリューム名 |
 | volume.mirrors.createdAt | Body | String | 複製作成時刻 |
 | volume.mountProtocol | Body | Object | ボリュームマウントプロトコル |
@@ -585,6 +598,7 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.change_settings"></a>
+
 ### ボリュームの設定変更 { #volume.change_settings }
 
 指定したボリュームの設定を変更します。
@@ -593,11 +607,12 @@ X-Auth-Token: {token-id}
     複製設定されたボリュームのサイズを変更するにはソースボリュームと対象ボリュームの両方を変更する必要があります。ソースボリュームと対象ボリュームのサイズが異なる場合、複製に失敗する可能性があります。
 
 ```
-PATCH  /v1/volumes/{volume_id}
+PATCH /v1/volumes/{volume_id}
 X-Auth-Token: {token-id}
 ```
 
 <a id="volume.change_settings-request"></a>
+
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -612,7 +627,7 @@ X-Auth-Token: {token-id}
 | volume.mountProtocol.protocol | Body | String | N | すでに作成されたボリュームのプロトコルは変更できません。<br>`cifsAuthIds`フィールドを変更する場合は該当フィールドに`cifs`を明示する必要があります。 |
 | volume.sizeGb | Body | Integer | N | ボリュームサイズ(GB)<br>ボリュームは、最小300GBから最大10,000GBまで、100GB単位で設定できます。 |
 | volume.snapshotPolicy | Body | Object | N | ボリュームスナップショット設定オブジェクト |
-| volume.snapshotPolicy.maxScheduledCount | Body | Integer | N | スナップショット最大保存数<br>30個まで設定可能で、最大保存数に達する作成されたスナップショット中のうち、先に作成されたスナップショットがと自動的に削除されます。 |
+| volume.snapshotPolicy.maxScheduledCount | Body | Integer | N | スナップショットの最大保存数<br>30個まで設定可能で、最大保存数に達すると、自動的に作成されたスナップショットのうち、最も早く作成されたスナップショットが削除されます。 |
 | volume.snapshotPolicy.reservePercent | Body | Integer | N | スナップショット容量比率 |
 | volume.snapshotPolicy.schedule | Body | Object | N | スナップショット自動作成オブジェクト<br>`null`の場合、スナップショット自動作成が設定されません。 |
 | volume.snapshotPolicy.schedule.time | Body | String | N | スナップショット自動作成時間 |
@@ -663,13 +678,14 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.connect_interface"></a>
+
 ### ボリュームにインターフェース接続 { #volume.connect_interface }
 
-指定したボリュームのインターフェースを設定します。
-設定されたアドレス及びサブネットからボリュームにアクセス可能です。アクセス可能なIP設定はアクセス制御(ACL)設定で別途設定する必要があります。
+指定したボリュームのインターフェイスを設定します。
+設定されたアドレスおよびサブネットからボリュームにアクセスできます。アクセス可能な IP はアクセス制御 (ACL) で別途設定する必要があります。
 
 ```
-POST  /v1/volumes/{volume_id}/interfaces
+POST /v1/volumes/{volume_id}/interfaces
 X-Auth-Token: {token-id}
 ```
 
@@ -734,12 +750,13 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.delete_interface"></a>
+
 ### ボリュームのインターフェース削除 { #volume.delete_interface }
 
 指定したボリュームの指定したインターフェースを削除します。
 
 ```
-DELETE  /v1/volumes/{volume_id}/interfaces/{interface_id}
+DELETE /v1/volumes/{volume_id}/interfaces/{interface_id}
 X-Auth-Token: {token-id}
 ```
 
@@ -762,12 +779,13 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.view_snapshot_restore_history"></a>
+
 ### スナップショット復元履歴を表示 { #volume.view_snapshot_restore_history }
 
 指定したボリュームのスナップショット復元履歴リストを返します。
 
 ```
-GET  /v1/volumes/{volume_id}/restore-histories
+GET /v1/volumes/{volume_id}/restore-histories
 X-Auth-Token: {token-id}
 ```
 
@@ -839,12 +857,13 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.view_usage"></a>
+
 ### ボリューム使用状況表示 { #volume.view_usage }
 
 指定したボリュームの使用状況を返します。
 
 ```
-GET  /v1/volumes/{volume_id}/usage
+GET /v1/volumes/{volume_id}/usage
 X-Auth-Token: {token-id}
 ```
 
@@ -901,12 +920,13 @@ X-Auth-Token: {token-id}
 ## スナップショット { #snapshots }
 
 <a id="snapshots.list"></a>
+
 ### スナップショットリスト表示 { #snapshots.list }
 
 スナップショットリストを照会します。
 
 ```
-GET  /v1/volumes/{volume_id}/snapshots
+GET /v1/volumes/{volume_id}/snapshots
 X-Auth-Token: {token-id}
 ```
 
@@ -921,6 +941,7 @@ X-Auth-Token: {token-id}
 | volume\_id | URL | String | Y | ボリュームID |
 
 <a id="snapshots.list-response"></a>
+
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -930,7 +951,7 @@ X-Auth-Token: {token-id}
 | snapshots.id | Body | String | スナップショットID |
 | snapshots.name | Body | String | スナップショット名 |
 | snapshots.size | Body | Integer | スナップショットサイズ |
-| snapshots.type | Body | String | スナップショットタイプ<br>- `NORMAL`: ユーザーが作成したスナップショット<br>- `SCHEDULED`: スナップショット自動作成で作成されたスナップショット<br>- `MIRROR`: 複製で作成されたスナップショット |
+| snapshots.type | Body | String | スナップショットタイプ<br>- `NORMAL`: ユーザーが作成したスナップショット<br>- `SCHEDULED`: スナップショット自動作成で生成されたスナップショット<br>- `MIRROR`: 複製で生成されたスナップショット |
 | snapshots.preserved | Body | Boolean | システムが削除不可に設定したスナップショットかどうか |
 | snapshots.createdAt | Body | String | スナップショット作成時刻 |
 
@@ -960,12 +981,13 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="snapshots.create"></a>
+
 ### スナップショット作成 { #snapshots.create }
 
 指定したボリュームのスナップショットを作成します。
 
 ```
-POST  /v1/volumes/{volume_id}/snapshots
+POST /v1/volumes/{volume_id}/snapshots
 X-Auth-Token: {token-id}
 ```
 
@@ -993,6 +1015,7 @@ X-Auth-Token: {token-id}
 </details>
 
 <a id="snapshots.create-response"></a>
+
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -1002,7 +1025,7 @@ X-Auth-Token: {token-id}
 | snapshot.id | Body | String | スナップショットID |
 | snapshot.name | Body | String | スナップショット名 |
 | snapshot.size | Body | Integer | スナップショットサイズ |
-| snapshot.type | Body | String | スナップショットタイプ<br>- `NORMAL`: ユーザーが作成したスナップショット<br>- `SCHEDULED`: スナップショット自動作成で作成されたスナップショット<br>- `MIRROR`: 複製で作成されたスナップショット |
+| snapshot.type | Body | String | スナップショットタイプ<br>- `NORMAL`: ユーザーが作成したスナップショット<br>- `SCHEDULED`: スナップショット自動作成によって作成されたスナップショット<br>- `MIRROR`: 複製によって作成されたスナップショット |
 | snapshot.preserved | Body | Boolean | システムが削除不可に設定したスナップショットかどうか |
 | snapshot.createdAt | Body | String | スナップショット作成時刻 |
 
@@ -1032,12 +1055,13 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="snapshots.delete"></a>
+
 ### スナップショット削除 { #snapshots.delete }
 
 指定したボリュームのスナップショットを削除します。
 
 ```
-DELETE  /v1/volumes/{volume_id}/snapshots/{snapshot_id}
+DELETE /v1/volumes/{volume_id}/snapshots/{snapshot_id}
 X-Auth-Token: {token-id}
 ```
 
@@ -1060,12 +1084,13 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="snapshots.view"></a>
+
 ### スナップショット表示 { #snapshots.view }
 
 指定したスナップショットの詳細情報を返します。
 
 ```
-GET  /v1/volumes/{volume_id}/snapshots/{snapshot_id}
+GET /v1/volumes/{volume_id}/snapshots/{snapshot_id}
 X-Auth-Token: {token-id}
 ```
 
@@ -1082,6 +1107,7 @@ X-Auth-Token: {token-id}
 | showReclaimableSpace | Query | Boolean | N | スナップショット削除時に確保される容量を示す`reclaimableSpace`項目を表示するかどうか |
 
 <a id="snapshots.view-response"></a>
+
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -1091,19 +1117,20 @@ X-Auth-Token: {token-id}
 | snapshot.id | Body | String | スナップショットID |
 | snapshot.name | Body | String | スナップショット名 |
 | snapshot.size | Body | Integer | スナップショットサイズ |
-| snapshot.type | Body | String | スナップショットタイプ<br>- `NORMAL`: ユーザーが作成したスナップショット<br>- `SCHEDULED`: スナップショット自動作成で作成されたスナップショット<br>- `MIRROR`: 複製で作成されたスナップショット |
+| snapshot.type | Body | String | スナップショットタイプ<br>- `NORMAL`: ユーザーが作成したスナップショット<br>- `SCHEDULED`: スナップショット自動作成によって作成されたスナップショット<br>- `MIRROR`: 複製によって作成されたスナップショット |
 | snapshot.preserved | Body | Boolean | システムが削除不可に設定したスナップショットかどうか |
 | snapshot.createdAt | Body | String | スナップショット作成時刻 |
 
 <br>
 
 <a id="snapshots.restore"></a>
+
 ### スナップショット復元 { #snapshots.restore }
 
 指定したスナップショットでボリュームを復元します。
 
 ```
-POST  /v1/volumes/{volume_id}/snapshots/{snapshot_id}/restore
+POST /v1/volumes/{volume_id}/snapshots/{snapshot_id}/restore
 X-Auth-Token: {token-id}
 ```
 
@@ -1129,6 +1156,7 @@ X-Auth-Token: {token-id}
 ## ボリューム複製設定 { #replication }
 
 <a id="replication.setup"></a>
+
 ### 複製設定 { #replication.setup }
 
 指定したボリュームの複製を設定します。
@@ -1147,7 +1175,7 @@ X-Auth-Token: {token-id}
 <!-- -->
 
 !!! tip "ヒント"
-    複製対象ボリュームに暗号化を設定するには、ソースボリュームとは別の（複製対象ボリュームが属するプロジェクトまたはリージョンの）暗号化キーストア設定が必要です。
+    複製先ボリュームに暗号化を設定するには、複製先ボリュームが属するプロジェクトまたはリージョンに、ソースボリュームとは別の暗号化キーストアを設定する必要があります。
 
 <!-- -->
 
@@ -1155,11 +1183,12 @@ X-Auth-Token: {token-id}
     ソースボリュームが CIFS プロトコルを使用している場合、ターゲットボリュームも CIFS プロトコルを使用する必要があります。そのため、ソースボリュームとは別の CIFS 認証情報を作成し、リクエスト本文の `cifsAuthIds` フィールドに入力する必要があります。
 
 ```
-POST  /v1/volumes/{volume_id}/volume-mirrors
+POST /v1/volumes/{volume_id}/volume-mirrors
 X-Auth-Token: {token-id}
 ```
 
 <a id="replication.setup-request"></a>
+
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -1182,7 +1211,7 @@ X-Auth-Token: {token-id}
 | volumeMirror.dstVolume.name | Body | String | Y | ボリューム名 |
 | volumeMirror.dstVolume.sizeGb | Body | Integer | Y | ボリュームサイズ(GB)<br>ボリュームは、最小300GBから最大10,000GBまで、100GB単位で設定できます。 |
 | volumeMirror.dstVolume.snapshotPolicy | Body | Object | N | ボリュームスナップショット設定オブジェクト |
-| volumeMirror.dstVolume.snapshotPolicy.maxScheduledCount | Body | Integer | N | スナップショット最大保存数<br>30個まで設定可能で、最大保存数に達すると、自動的に作成されたスナップショットのうち、最初に作成されたスナップショットが削除されます。 |
+| volumeMirror.dstVolume.snapshotPolicy.maxScheduledCount | Body | Integer | N | スナップショットの最大保存数<br>最大 30 個まで設定可能で、最大保存数に達すると、自動生成されたスナップショットのうち最も古いものが削除されます。 |
 | volumeMirror.dstVolume.snapshotPolicy.reservePercent | Body | Integer | N | スナップショット容量比率 |
 | volumeMirror.dstVolume.snapshotPolicy.schedule | Body | Object | N | スナップショット自動作成オブジェクト<br>`null`の場合、スナップショット自動作成が設定されません。 |
 | volumeMirror.dstVolume.snapshotPolicy.schedule.time | Body | String | N | スナップショット自動作成時間 |
@@ -1212,6 +1241,7 @@ X-Auth-Token: {token-id}
 </details>
 
 <a id="replication.setup-response"></a>
+
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -1221,17 +1251,17 @@ X-Auth-Token: {token-id}
 | volumeMirror.id | Body | String | 複製設定ID |
 | volumeMirror.role | Body | String | 複製役割<br>- `SOURCE`:ソースボリューム<br>- `DESTINATION`:対象ボリューム |
 | volumeMirror.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
-| volumeMirror.direction | Body | String | 複製方向 <br>- `FORWARD`:ソースボリューム → 複製ボリューム<br>- `REVERSE`:複製ボリューム → ソースボリューム |
+| volumeMirror.direction | Body | String | 複製方向<br>- `FORWARD`: ソースボリューム → ターゲットボリューム<br>- `REVERSE`: ターゲットボリューム → ソースボリューム |
 | volumeMirror.directionChangedAt | Body | String | 複製方向変更時刻 |
 | volumeMirror.dstProjectId | Body | String | 複製対象ボリュームのプロジェクトID |
 | volumeMirror.dstRegion | Body | String | 複製対象ボリュームリージョン |
 | volumeMirror.dstTenantId | Body | String | 複製対象ボリュームテナントID |
-| volumeMirror.dstVolumeId | Body | String | 複製対象ボリュームID |
-| volumeMirror.dstVolumeName | Body | String | 複製対象ボリューム名 |
+| volumeMirror.dstVolumeId | Body | String | 複製ターゲットボリューム ID |
+| volumeMirror.dstVolumeName | Body | String | 複製ターゲットボリューム名 |
 | volumeMirror.srcProjectId | Body | String | ソースボリュームのプロジェクトID |
 | volumeMirror.srcRegion | Body | String | ソースボリュームリージョン |
 | volumeMirror.srcTenantId | Body | String | ソースボリュームテナントID |
-| volumeMirror.srcVolumeId | Body | String | ソースボリュームID |
+| volumeMirror.srcVolumeId | Body | String | ソースボリューム ID |
 | volumeMirror.srcVolumeName | Body | String | ソースボリューム名 |
 | volumeMirror.createdAt | Body | String | 複製作成時刻 |
 
@@ -1271,12 +1301,13 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="replication.disable"></a>
+
 ### 複製設定の解除 { #replication.disable }
 
 指定したボリュームの複製設定を解除します。
 
 ```
-DELETE  /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}
+DELETE /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}
 X-Auth-Token: {token-id}
 ```
 
@@ -1297,12 +1328,13 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="replication.change_direction"></a>
+
 ### 複製方向の変更 { #replication.change_direction }
 
 ソースボリュームと対象ボリュームの複製方向を変更します。
 
 ```
-POST  /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}/invert-direction
+POST /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}/invert-direction
 X-Auth-Token: {token-id}
 ```
 
@@ -1323,12 +1355,13 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="replication.start"></a>
+
 ### 複製開始 { #replication.start }
 
 ソースボリュームから対象ボリュームへの複製を開始します。
 
 ```
-POST  /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}/start
+POST /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}/start
 X-Auth-Token: {token-id}
 ```
 
@@ -1349,12 +1382,13 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="replication.status"></a>
+
 ### 複製状態の確認 { #replication.status }
 
 最近の複製状態を返します。
 
 ```
-GET  /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}/stat
+GET /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}/stat
 X-Auth-Token: {token-id}
 ```
 
@@ -1368,6 +1402,7 @@ X-Auth-Token: {token-id}
 | volume\_mirror\_id | URL | String | Y | 複製設定ID |
 
 <a id="replication.status-response"></a>
+
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -1379,17 +1414,18 @@ X-Auth-Token: {token-id}
 | volumeMirrorStat.lastTransferBytes | Body | Integer | 最近実行した複製で転送されたデータサイズ(Byte) |
 | volumeMirrorStat.lastTransferEndTime | Body | String | 最近実行した複製完了時間 |
 | volumeMirrorStat.lastTransferStatus | Body | String | 最近の複製実行結果 |
-| volumeMirrorStat.status | Body | String | 複製設定状態<br>- `ACTIVE`:複製有効化状態<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 <br>- `HALT`:複製停止状態<br>- `RETRIEVE FAILED`:一時的な情報取得失敗 |
+| volumeMirrorStat.status | Body | String | 複製設定の状態<br>- `ACTIVE`: 複製アクティブ状態<br>- `UPDATING`: 設定変更中<br>- `DELETING`: 設定削除中<br>- `PENDING`: 設定作成中<br>- `HALT`: 複製停止状態<br>- `RETRIEVE FAILED`: 一時的な情報取得失敗 |
 
 <br>
 
 <a id="replication.stop"></a>
+
 ### 複製停止 { #replication.stop }
 
 ソースボリュームから対象ボリュームへの複製を停止します。
 
 ```
-POST  /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}/stop
+POST /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}/stop
 X-Auth-Token: {token-id}
 ```
 
