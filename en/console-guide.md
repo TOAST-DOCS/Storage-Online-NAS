@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=cdac5f1b7499 -->
 
 <a id="storage-nas-console-user-guide"></a>
@@ -9,44 +11,46 @@ This document describes how to manage NAS volumes and snapshots and connect them
 ## Volume { #volume }
 
 <a id="create_volume"></a>
+
 ### Create Volume { #create_volume }
 
-Create a new volume. The created volume can be accessed by instances using the network file system (NFS) and common internet file system (CIFS) protocols.
+Creates a new volume. The created volume can be accessed from instances using the network file system (NFS) and common internet file system (CIFS) protocols.
 
 | Item | Description |
-| --- | --- |
-| Name | Name of the volume to be created. The NFS or CIFS access path can be created with the volume name. Volume name is limited to less than 100 alphabetic characters, numbers, and some symbols ('-', '_'). |
-| Description | A description for volume |
+| --- |---------------------------------------------------------------------------------------------------------------------------|
+| Name | Name of the volume to be created. The NFS or CIFS access path is created using the volume name. The volume name is limited to up to 100 characters, including letters, numbers, and some symbols ('-', '_'). |
+| Description | Description of the volume. |
 | Size | Size of the volume to be created. It can be entered from a minimum of 300 GB to a maximum of 10,000 GB. |
 | Protocol | Select a protocol to access the volume. CIFS and NFS are supported, but not simultaneously. |
 | VPC | The virtual private cloud (VPC) to access the volume. |
 | Subnet | The subnet to access the volume. Only subnets in the selected VPC can be chosen. |
 | Access Control List (ACL) | A list of the IPs or CIDR blocks that allow read and write permissions. |
-| Auto Create Snapshot | Snapshots are created automatically at a specified time once per day. When the maximum number of saves is reached, the first automatically created snapshot is deleted.  |
+| Auto Create Snapshot | Snapshots are created automatically at a specified time once per day. When the maximum number of saves is reached, the first automatically created snapshot is deleted. |
 | Snapshot Reserve Capacity | Pre-allocate space for snapshots to be stored. Data can be stored in any capacity except the one you set. If the actual size of the snapshot is larger than the snapshot reserve capacity setting, the data storage space beyond the reserve capacity is used to store the snapshot.|
 | Encryption  | Select whether to enable volume encryption. This must be preceded by setting up encryption key store. |
 
 !!! tip "Note"
     The number of subnets available for each project is limited to 3. To increase the limit, contact Customer Support.
 
-<a id="create_volume.cifs"></a>
 #### Manage CIFS Credentials
 To use the CIFS protocol, you must create CIFS credentials. Credentials are managed on a per-project basis, and you must register a CIFS credential to access each CIFS volume.
 
+<a id="create_volume.cifs-rules"></a>
 ##### CIFS Credential Rules
 
-* ID Rules
-    * It must start with a lowercase letter or number and cannot end with a period (.).
-    * Only lowercase letters (a–z), numbers (0–9), hyphens (-), periods (.), and underscores (_) are allowed. All other characters are not permitted.
-    * You can enter a maximum of 20 characters.
-    * You can't use IDs that consist only of numbers, match reserved words (e.g., administrator, default, guest, krbtgt), or duplicate existing IDs.
+* ID rules
+    * Must start with a lowercase letter or number, and cannot end with a period (.).
+    * Allowed characters are lowercase letters (a-z), numbers (0-9), hyphens (-), periods (.), and underscores (_). No other characters are allowed.
+    * You can enter up to 20 characters.
+    * IDs consisting of numbers only, reserved words (administrator, default, guest, krbtgt), and duplicate IDs cannot be used.
 
-* Password Rules
-    * It must be at least 6 characters long and contain at least three of the following character types: uppercase letters, lowercase letters, numbers, and special characters.
-    * The special characters that can be used are `~!@#^*_-+=\\|()[]:;"'<>,.?/`, and spaces are not allowed.
-    * Passwords that include the ID cannot be used.
+* Password rules
+    * Must be at least 6 characters long and must contain at least three of the following character types: uppercase letters, lowercase letters, numbers, and special characters.
+    * Allowed special characters are `~!@#^*_-+=\|()[]:;"'<>,.?/`. Spaces are not allowed.
+    * Passwords that contain the ID cannot be used.
 
 <a id="create_volume.encryption"></a>
+
 #### Encryption Key Store Settings
 
 Encrypted volume stores symmetric keys used for encryption in a key store in the NHN Cloud Secure Key Manager service. Therefore, to create encrypted volume, you must [create a key store](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_1) in the Secure Key Manager service in advance. [Check the ID of the key store](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_2) and enter it in the encryption key store settings.
@@ -119,8 +123,9 @@ Restores volume to the point in time when the snapshot was created.
     When restoring, snapshots created after the point of restoration are automatically deleted.
 
 <a id="snapshots.restore_results"></a>
+
 ### View Snapshot Restore Results { #snapshots.restore_results }
-View the history of restoring volume.
+View the history of volume restores performed using snapshots.
 
 <a id="snapshots.delete"></a>
 ### Delete Snapshots { #snapshots.delete }
@@ -128,12 +133,13 @@ View the history of restoring volume.
 A specified snapshot is deleted. Once deleted, snapshots cannot be recovered.
 
 <a id="network"></a>
+
 ## Network { #network }
 Check the network connection information.
 
 | Item | Description |
 | --- | --- |
-| Connection information | The connection path that the instance will use when mounting. |
+| Connection information | Displays the connection path to use when mounting from an instance. |
 | Subnet | The subnet information associated with the volume. |
 | Status | The subnet association status. |
 
@@ -188,10 +194,13 @@ View information about replication settings.
 | Source volume | The replication source volume name. Only exposed if replication is enabled on the target volume. |
 
 <a id="replication.settings"></a>
+
 ### Replication Settings { #replication.settings }
 
-Set up replication to a selected region of a project within your organization.
-When you set up replication, a target volume is created in the target location with the same size as the source volume. The target volume is created in a read-only state, and you must stop replication or turn off replication to change the state of the target volume.
+You can set up replication to selected regions of a project within your organization.
+
+When you set up replication, a target volume is created at the target location that is the same size as the source volume. The target volume is created in a read-only state, and you must stop replication or turn off replication settings to change the state of the target volume.
+
 When you update or delete data in the source volume, the data in the target volume is also updated or deleted.
 
 Check the range of regions selectable by target project.
@@ -204,17 +213,18 @@ Check the range of regions selectable by target project.
 !!! danger "Caution"
     To change the size of a replicated volume, you must change both the source volume and the target volume. If the size of the source volume and the target volume are different, replication might fail.
 
-!!! tip "Note"
-    Volume replication is performed using snapshots. When configuring replication, snapshots in the format `{volume name}.mirror.%` are automatically created and cannot be deleted.
+!!! tip "Tip"
+    Volume replication is performed using snapshots. When replication is configured, snapshots in the format `{volume name}.mirror.%` are automatically created and cannot be deleted.
 
 !!! tip "Note"
     The target volume created by the replication setup is billed for volume capacity according to the NAS service fee policy.
 
     You are charged for network traffic generated by replication between different regions.
 
-    For more information on pricing, see our [NAS pricing guide](https://www.nhncloud.com/kr/service/storage/nas).
+For more information on pricing, see our [NAS pricing guide](https://www.nhncloud.com/kr/service/storage/nas).
 
 <a id="replication.start"></a>
+
 ### Start Replication { #replication.start }
 
 Resumes replication of volume that is in a stopped state.
@@ -223,7 +233,7 @@ Replication runs asynchronously when changes occur on the source volume. Before 
 !!! danger "Caution"
     Replication might fail if the target volume size is smaller than the source volume size.
 
-    When replication runs, all existing data on the target volume is deleted and replaced with the same geometry as the source volume.
+When replication runs, all existing data on the target volume is deleted, and the target volume is set to the same state as the source volume.
 
 <a id="replication.stop"></a>
 ### Stop Replication { #replication.stop }
@@ -260,37 +270,42 @@ When you disable replication, the target volume retains the source volume data a
     When you re-establish replication, a new target volume is created. You cannot use the previously used target volume as the replication target volume again.
 
 <a id="connect_volume"></a>
+
 ## Connect Volume { #connect_volume }
 
-Volume can be mounted on instances by using the connection information of the created volume. However, the instance on which volume is mounted must be connected to the specified subnet.
+The created volume can be mounted on an instance using the connection information. However, the instance to be mounted must be connected to the same subnet as the volume.
 
 <a id="connect_volume.nfs"></a>
 ### NFS { #connect_volume.nfs }
 
 <a id="connect_volume.nfs-install-nfs-package"></a>
+
 #### Install NFS Package 
 
 * **Debian, Ubuntu**
 ```
 sudo apt-get install nfs-common rpcbind
 ```
-<br/>
+<br>
 
 * **CentOS**
 ```
 sudo yum install nfs-utils rpcbind
 ```
-<br/>
+<br>
 
 <a id="connect_volume.nfs-run-rpcbind-service"></a>
+
 #### Run rpcbind Service 
 
 ```
 sudo service rpcbind start
 ```
-<br/>
+
+<br>
 
 <a id="connect_volume.nfs-mount-volume"></a>
+
 #### Mount volume
 
 ```
@@ -299,15 +314,16 @@ sudo mount -t nfs <nas source> <mount point>
 
 | Item | Description |
 | --- | --- |
-| &lt;nas source&gt; | Volume information<br/>Example: 192.168.0.241:/data |
-| &lt;mount point&gt; | Directory to mount the volume<br/>Example: /mnt |
+| &lt;nas source&gt; | Volume information<br>Example: 192.168.0.241:/data |
+| &lt;mount point&gt; | Directory to mount the volume<br>Example: /mnt |
 
 <a id="connect_volume.cifs"></a>
+
 ### CIFS { #connect_volume.cifs }
 
-In File Explorer, right-click **My PC** in the left navigation pane and **Connect Network Drive**. In the Connect Network Drive window, select the drive you want to mount and enter the folder path.
-The folder path is formatted as `\\{volume IP}\{volume name}`, for example: \\\\192.168.0.100\\cifs
+In File Explorer, right-click **My PC** in the left navigation pane and select **Connect Network Drive**. In the Connect Network Drive window, select the drive you want to mount and enter the folder path.
+The folder path is formatted as `\\{volume IP}\{volume name}`.
 
 ```
-Example: \\\\192.168.0.100\\cifs
+예: \\192.168.0.100\cifs
 ```
