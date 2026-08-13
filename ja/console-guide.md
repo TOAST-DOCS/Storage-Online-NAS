@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=cdac5f1b7499 -->
+<!-- pre-align:aligned sig=716f88137cb3 -->
 
 <a id="storage-nas-console-user-guide"></a>
 ## Storage > NAS > コンソール使用ガイド { #storage-nas-console-user-guide }
