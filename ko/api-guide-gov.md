@@ -22,7 +22,7 @@ NAS API는 `nasv1` 타입 엔드포인트를 사용합니다. 정확한 엔드�
 ### 인증 및 권한 { #nas_api_common.authentication }
 
 NAS는 API 호출 시 인증/인가를 위해 IaaS 토큰을 사용합니다. IaaS 토큰은 NHN Cloud의 OpenStack 기반 인프라 서비스(IaaS)에서 사용하는 인증 토큰입니다.
-IaaS 토큰 발급 및 사용에 대한 자세한 내용은 [IaaS 토큰](/nhncloud/ko/public-api/iaas-token-gov/)을 참고합니다.
+IaaS 토큰 발급 및 사용 방법에 대한 자세한 내용은 [IaaS 토큰](/nhncloud/ko/public-api/iaas-token-gov/)을 참고합니다.
 
 <a id="nas_api_common.response"></a>
 ### 응답 공통 정보 { #nas_api_common.response }
@@ -136,13 +136,13 @@ X-Auth-Token: {token-id}
 | volumes.mirrors.dstProjectId | Body | String | 복제 대상 볼륨의 프로젝트 ID |
 | volumes.mirrors.dstRegion | Body | String | 복제 대상 볼륨 리전 |
 | volumes.mirrors.dstTenantId | Body | String | 복제 대상 볼륨 테넌트 ID |
-| volumes.mirrors.dstVolumeId | Body | String | 복제 대상 볼륨의 볼륨 ID |
-| volumes.mirrors.dstVolumeName | Body | String | 복제 대상 볼륨의 볼륨 이름 |
+| volumes.mirrors.dstVolumeId | Body | String | 복제 대상 볼륨 ID |
+| volumes.mirrors.dstVolumeName | Body | String | 복제 대상 볼륨 이름 |
 | volumes.mirrors.srcProjectId | Body | String | 원본 볼륨의 프로젝트 ID |
 | volumes.mirrors.srcRegion | Body | String | 원본 볼륨 리전 |
 | volumes.mirrors.srcTenantId | Body | String | 원본 볼륨 테넌트 ID |
-| volumes.mirrors.srcVolumeId | Body | String | 원본 볼륨의 볼륨 ID |
-| volumes.mirrors.srcVolumeName | Body | String | 원본 볼륨의 볼륨 이름 |
+| volumes.mirrors.srcVolumeId | Body | String | 원본 볼륨 ID |
+| volumes.mirrors.srcVolumeName | Body | String | 원본 볼륨 이름 |
 | volumes.mirrors.createdAt | Body | String | 복제 생성 시각 |
 | volumes.mountProtocol | Body | Object | 볼륨 마운트 프로토콜 |
 | volumes.mountProtocol.cifsAuthIds | Body | List | 볼륨 CIFS 인증 ID 목록 |
@@ -278,7 +278,7 @@ X-Auth-Token: {token-id}
 | volume.name | Body | String | Y | 볼륨 이름 |
 | volume.sizeGb | Body | Integer | Y | 볼륨 크기(GB)<br>볼륨은 최소 300GB에서 최대 10,000GB까지, 100GB 단위로 설정할 수 있습니다. |
 | volume.snapshotPolicy | Body | Object | N | 볼륨 스냅숏 설정 객체 |
-| volume.snapshotPolicy.maxScheduledCount | Body | Integer | N | 스냅숏 최대 저장 개수<br>30개까지 설정 가능하며, 최대 저장 개수에 도달하면 자동으로 생성된 스냅숏 중 가장 먼저 만들어진 스냅숏이 삭제됩니다. |
+| volume.snapshotPolicy.maxScheduledCount | Body | Integer | N | 스냅숏 최대 저장 개수<br>30개까지 설정 가능하며, 최대 저장 개수에 도달하면 자동으로 생성된 스냅숏 중 가장 먼저 생성된 스냅숏이 삭제됩니다. |
 | volume.snapshotPolicy.reservePercent | Body | Integer | N | 스냅숏 용량 비율 |
 | volume.snapshotPolicy.schedule | Body | Object | N | 스냅숏 자동 생성 객체<br>`null`일 경우 스냅숏 자동 생성이 설정되지 않습니다. |
 | volume.snapshotPolicy.schedule.time | Body | String | N | 스냅숏 자동 생성 시간 |
@@ -354,13 +354,13 @@ X-Auth-Token: {token-id}
 | volume.mirrors.dstProjectId | Body | String | 복제 대상 볼륨의 프로젝트 ID |
 | volume.mirrors.dstRegion | Body | String | 복제 대상 볼륨 리전 |
 | volume.mirrors.dstTenantId | Body | String | 복제 대상 볼륨 테넌트 ID |
-| volume.mirrors.dstVolumeId | Body | String | 복제 대상 볼륨의 볼륨 ID |
-| volume.mirrors.dstVolumeName | Body | String | 복제 대상 볼륨의 볼륨 이름 |
+| volume.mirrors.dstVolumeId | Body | String | 복제 대상 볼륨 ID |
+| volume.mirrors.dstVolumeName | Body | String | 복제 대상 볼륨 이름 |
 | volume.mirrors.srcProjectId | Body | String | 원본 볼륨의 프로젝트 ID |
 | volume.mirrors.srcRegion | Body | String | 원본 볼륨 리전 |
 | volume.mirrors.srcTenantId | Body | String | 원본 볼륨 테넌트 ID |
-| volume.mirrors.srcVolumeId | Body | String | 원본 볼륨의 볼륨 ID |
-| volume.mirrors.srcVolumeName | Body | String | 원본 볼륨의 볼륨 이름 |
+| volume.mirrors.srcVolumeId | Body | String | 원본 볼륨 ID |
+| volume.mirrors.srcVolumeName | Body | String | 원본 볼륨 이름 |
 | volume.mirrors.createdAt | Body | String | 복제 생성 시각 |
 | volume.mountProtocol | Body | Object | 볼륨 마운트 프로토콜 |
 | volume.mountProtocol.cifsAuthIds | Body | List | 볼륨 CIFS 인증 ID 목록 |
@@ -532,13 +532,13 @@ X-Auth-Token: {token-id}
 | volume.mirrors.dstProjectId | Body | String | 복제 대상 볼륨의 프로젝트 ID |
 | volume.mirrors.dstRegion | Body | String | 복제 대상 볼륨 리전 |
 | volume.mirrors.dstTenantId | Body | String | 복제 대상 볼륨 테넌트 ID |
-| volume.mirrors.dstVolumeId | Body | String | 복제 대상 볼륨의 볼륨 ID |
-| volume.mirrors.dstVolumeName | Body | String | 복제 대상 볼륨의 볼륨 이름 |
+| volume.mirrors.dstVolumeId | Body | String | 복제 대상 볼륨 ID |
+| volume.mirrors.dstVolumeName | Body | String | 복제 대상 볼륨 이름 |
 | volume.mirrors.srcProjectId | Body | String | 원본 볼륨의 프로젝트 ID |
 | volume.mirrors.srcRegion | Body | String | 원본 볼륨 리전 |
 | volume.mirrors.srcTenantId | Body | String | 원본 볼륨 테넌트 ID |
-| volume.mirrors.srcVolumeId | Body | String | 원본 볼륨의 볼륨 ID |
-| volume.mirrors.srcVolumeName | Body | String | 원본 볼륨의 볼륨 이름 |
+| volume.mirrors.srcVolumeId | Body | String | 원본 볼륨 ID |
+| volume.mirrors.srcVolumeName | Body | String | 원본 볼륨 이름 |
 | volume.mirrors.createdAt | Body | String | 복제 생성 시각 |
 | volume.mountProtocol | Body | Object | 볼륨 마운트 프로토콜 |
 | volume.mountProtocol.cifsAuthIds | Body | List | 볼륨 CIFS 인증 ID 목록 |
@@ -583,7 +583,7 @@ X-Auth-Token: {token-id}
 | volume.mountProtocol.protocol | Body | String | N | 이미 생성된 볼륨의 프로토콜은 변경할 수 없습니다.<br>`cifsAuthIds` 필드 변경 시 해당 필드에 `cifs`를 명시해야 합니다. |
 | volume.sizeGb | Body | Integer | N | 볼륨 크기(GB)<br>볼륨은 최소 300GB에서 최대 10,000GB까지, 100GB 단위로 설정할 수 있습니다. |
 | volume.snapshotPolicy | Body | Object | N | 볼륨 스냅숏 설정 객체 |
-| volume.snapshotPolicy.maxScheduledCount | Body | Integer | N | 스냅숏 최대 저장 개수<br>30개까지 설정 가능하며, 최대 저장 개수에 도달하면 자동으로 생성된 스냅숏 중 가장 먼저 만들어진 스냅숏이 삭제됩니다. |
+| volume.snapshotPolicy.maxScheduledCount | Body | Integer | N | 스냅숏 최대 저장 개수<br>30개까지 설정 가능하며, 최대 저장 개수에 도달하면 자동으로 생성된 스냅숏 중 가장 먼저 생성된 스냅숏이 삭제됩니다. |
 | volume.snapshotPolicy.reservePercent | Body | Integer | N | 스냅숏 용량 비율 |
 | volume.snapshotPolicy.schedule | Body | Object | N | 스냅숏 자동 생성 객체<br>`null`일 경우 스냅숏 자동 생성이 설정되지 않습니다. |
 | volume.snapshotPolicy.schedule.time | Body | String | N | 스냅숏 자동 생성 시간 |
@@ -901,7 +901,7 @@ X-Auth-Token: {token-id}
 | snapshots.id | Body | String | 스냅숏 ID |
 | snapshots.name | Body | String | 스냅숏 이름 |
 | snapshots.size | Body | Integer | 스냅숏 크기 |
-| snapshots.type | Body | String | 스냅숏 타입<br>- `NORMAL`: 사용자가 생성한 스냅숏<br>- `SCHEDULED`: 스냅숏 자동 생성으로 만들어진 스냅숏<br>- `MIRROR`: 복제로 만들어진 스냅숏 |
+| snapshots.type | Body | String | 스냅숏 타입<br>- `NORMAL`: 사용자가 생성한 스냅숏<br>- `SCHEDULED`: 스냅숏 자동 생성으로 생성된 스냅숏<br>- `MIRROR`: 복제로 생성된 스냅숏 |
 | snapshots.preserved | Body | Boolean | 시스템이 삭제 불가로 설정한 스냅숏 여부 |
 | snapshots.createdAt | Body | String | 스냅숏 생성 시각 |
 
@@ -973,7 +973,7 @@ X-Auth-Token: {token-id}
 | snapshot.id | Body | String | 스냅숏 ID |
 | snapshot.name | Body | String | 스냅숏 이름 |
 | snapshot.size | Body | Integer | 스냅숏 크기 |
-| snapshot.type | Body | String | 스냅숏 타입<br>- `NORMAL`: 사용자가 생성한 스냅숏<br>- `SCHEDULED`: 스냅숏 자동 생성으로 만들어진 스냅숏<br>- `MIRROR`: 복제로 만들어진 스냅숏 |
+| snapshot.type | Body | String | 스냅숏 타입<br>- `NORMAL`: 사용자가 생성한 스냅숏<br>- `SCHEDULED`: 스냅숏 자동 생성으로 생성된 스냅숏<br>- `MIRROR`: 복제로 생성된 스냅숏 |
 | snapshot.preserved | Body | Boolean | 시스템이 삭제 불가로 설정한 스냅숏 여부 |
 | snapshot.createdAt | Body | String | 스냅숏 생성 시각 |
 
@@ -1062,7 +1062,7 @@ X-Auth-Token: {token-id}
 | snapshot.id | Body | String | 스냅숏 ID |
 | snapshot.name | Body | String | 스냅숏 이름 |
 | snapshot.size | Body | Integer | 스냅숏 크기 |
-| snapshot.type | Body | String | 스냅숏 타입<br>- `NORMAL`: 사용자가 생성한 스냅숏<br>- `SCHEDULED`: 스냅숏 자동 생성으로 만들어진 스냅숏<br>- `MIRROR`: 복제로 만들어진 스냅숏 |
+| snapshot.type | Body | String | 스냅숏 타입<br>- `NORMAL`: 사용자가 생성한 스냅숏<br>- `SCHEDULED`: 스냅숏 자동 생성으로 생성된 스냅숏<br>- `MIRROR`: 복제로 생성된 스냅숏 |
 | snapshot.preserved | Body | Boolean | 시스템이 삭제 불가로 설정한 스냅숏 여부 |
 | snapshot.createdAt | Body | String | 스냅숏 생성 시각 |
 
@@ -1152,7 +1152,7 @@ X-Auth-Token: {token-id}
 | volumeMirror.dstVolume.name | Body | String | Y | 볼륨 이름 |
 | volumeMirror.dstVolume.sizeGb | Body | Integer | Y | 볼륨 크기(GB)<br>볼륨은 최소 300GB에서 최대 10,000GB까지, 100GB 단위로 설정할 수 있습니다. |
 | volumeMirror.dstVolume.snapshotPolicy | Body | Object | N | 볼륨 스냅숏 설정 객체 |
-| volumeMirror.dstVolume.snapshotPolicy.maxScheduledCount | Body | Integer | N | 스냅숏 최대 저장 개수<br>30개까지 설정 가능하며, 최대 저장 개수에 도달하면 자동으로 생성된 스냅숏 중 가장 먼저 만들어진 스냅숏이 삭제됩니다. |
+| volumeMirror.dstVolume.snapshotPolicy.maxScheduledCount | Body | Integer | N | 스냅숏 최대 저장 개수<br>30개까지 설정 가능하며, 최대 저장 개수에 도달하면 자동으로 생성된 스냅숏 중 가장 먼저 생성된 스냅숏이 삭제됩니다. |
 | volumeMirror.dstVolume.snapshotPolicy.reservePercent | Body | Integer | N | 스냅숏 용량 비율 |
 | volumeMirror.dstVolume.snapshotPolicy.schedule | Body | Object | N | 스냅숏 자동 생성 객체<br>`null`일 경우 스냅숏 자동 생성이 설정되지 않습니다. |
 | volumeMirror.dstVolume.snapshotPolicy.schedule.time | Body | String | N | 스냅숏 자동 생성 시간 |
@@ -1196,13 +1196,13 @@ X-Auth-Token: {token-id}
 | volumeMirror.dstProjectId | Body | String | 복제 대상 볼륨의 프로젝트 ID |
 | volumeMirror.dstRegion | Body | String | 복제 대상 볼륨 리전 |
 | volumeMirror.dstTenantId | Body | String | 복제 대상 볼륨 테넌트 ID |
-| volumeMirror.dstVolumeId | Body | String | 복제 대상 볼륨의 볼륨 ID |
-| volumeMirror.dstVolumeName | Body | String | 복제 대상 볼륨의 볼륨 이름 |
+| volumeMirror.dstVolumeId | Body | String | 복제 대상 볼륨 ID |
+| volumeMirror.dstVolumeName | Body | String | 복제 대상 볼륨 이름 |
 | volumeMirror.srcProjectId | Body | String | 원본 볼륨의 프로젝트 ID |
 | volumeMirror.srcRegion | Body | String | 원본 볼륨 리전 |
 | volumeMirror.srcTenantId | Body | String | 원본 볼륨 테넌트 ID |
-| volumeMirror.srcVolumeId | Body | String | 원본 볼륨의 볼륨 ID |
-| volumeMirror.srcVolumeName | Body | String | 원본 볼륨의 볼륨 이름 |
+| volumeMirror.srcVolumeId | Body | String | 원본 볼륨 ID |
+| volumeMirror.srcVolumeName | Body | String | 원본 볼륨 이름 |
 | volumeMirror.createdAt | Body | String | 복제 생성 시각 |
 
 <details>

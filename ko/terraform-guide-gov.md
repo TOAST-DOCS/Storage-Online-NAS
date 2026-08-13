@@ -105,7 +105,7 @@ resource "nhncloud_nas_storage_volume_v1" "volume_03" {
 | mount_protocol.cifs_auth_ids | List(String) | N | O | CIFS 인증 ID 목록<br>NFS 프로토콜 선택 시 입력 불필요 |
 | mount_protocol.protocol | String | Y | - | 볼륨 마운트 시 프로토콜 지정<br>`nfs`, `cifs` 중 하나를 선택할 수 있습니다. |
 | snapshot_policy | Object | N | - | 볼륨 스냅숏 설정 객체 |
-| snapshot_policy.max_scheduled_count | Integer | N | O | 스냅숏 최대 저장 개수<br>30개까지 설정 가능하며, 최대 저장 개수에 도달하면 자동으로 생성된 스냅숏 중 가장 먼저 만들어진 스냅숏이 삭제됩니다. |
+| snapshot_policy.max_scheduled_count | Integer | N | O | 스냅숏 최대 저장 개수<br>30개까지 설정 가능하며, 최대 저장 개수에 도달하면 자동으로 생성된 스냅숏 중 가장 먼저 생성된 스냅숏이 삭제됩니다. |
 | snapshot_policy.reserve_percent | Integer | N | O | 스냅숏 용량 비율 |
 | snapshot_policy.schedule | Object | N | - | 스냅숏 자동 생성 객체<br>`null`일 경우 스냅숏 자동 생성이 설정되지 않습니다. |
 | snapshot_policy.schedule.time | String | N | O | 스냅숏 자동 생성 시간 |
@@ -182,7 +182,7 @@ resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
 | dst_volume.name | String | Y | - | 볼륨 이름 |
 | dst_volume.size_gb | Integer | Y | O | 볼륨 크기(GB)<br>볼륨은 최소 300GB에서 최대 10,000GB까지, 100GB 단위로 설정할 수 있습니다. |
 | dst_volume.snapshot_policy | Object | N | - | 볼륨 스냅숏 설정 객체 |
-| dst_volume.snapshot_policy.max_scheduled_count | Integer | N | O | 스냅숏 최대 저장 개수<br>30개까지 설정 가능하며, 최대 저장 개수에 도달하면 자동으로 생성된 스냅숏 중 가장 먼저 만들어진 스냅숏이 삭제됩니다. |
+| dst_volume.snapshot_policy.max_scheduled_count | Integer | N | O | 스냅숏 최대 저장 개수<br>30개까지 설정 가능하며, 최대 저장 개수에 도달하면 자동으로 생성된 스냅숏 중 가장 먼저 생성된 스냅숏이 삭제됩니다. |
 | dst_volume.snapshot_policy.reserve_percent | Integer | N | O | 스냅숏 용량 비율 |
 | dst_volume.snapshot_policy.schedule | Object | N | O | 스냅숏 자동 생성 객체<br>`null`일 경우 스냅숏 자동 생성이 설정되지 않습니다. |
 | dst_volume.snapshot_policy.schedule.time | String | N | O | 스냅숏 자동 생성 시간 |
