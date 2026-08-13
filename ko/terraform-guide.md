@@ -8,12 +8,13 @@
 <a id="terraform"></a>
 ## Terraform { #terraform }
 
-Terraform은 인프라를 손쉽게 구축하고 안전하게 변경하며, 효율적으로 형상을 관리할 수 있는 오픈 소스 도구입니다. 기본적인 사용법은 [사용자 가이드 > NHN Cloud > Terraform 사용 가이드](/nhncloud/ko/terraform-guide/)를 참고하세요.
+Terraform은 인프라를 손쉽게 구축하고 안전하게 변경하며, 효율적으로 형상을 관리할 수 있는 오픈 소스 도구입니다. 기본적인 사용법은 [사용자 가이드 > NHN Cloud > Terraform 사용 가이드](/nhncloud/ko/terraform-guide/)를 참고합니다.
 
 <a id="terraform-resource-dependency"></a>
 ### 리소스 의존성 { #terraform-resource-dependency }
 
 일반적으로 각 리소스는 독립적이지만 다른 특정 리소스에 의존성을 가질 수도 있습니다. 리소스 레이블로 다른 리소스의 정보를 참조하면 Terraform은 자동으로 의존성을 설정합니다.
+
 예를 들어, `volume1` 볼륨에 연결되는 `interface1` 인터페이스는 다음과 같이 표현할 수 있습니다.
 
 ```hcl
@@ -35,10 +36,10 @@ resource "nhncloud_nas_storage_volume_interface_v1" "interface1" {
 ```
 
 !!! tip "알아두기"
-    명시적인 리소스 의존성 지정 방법은 [Terraform의 Resource dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies) 문서를 참고하세요.
+    명시적인 리소스 의존성 지정 방법은 [Terraform의 Resource dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies) 문서를 참고합니다.
 
 <a id="terraform-resources-nas"></a>
-## Resources { #terraform-resources-nas }
+## 리소스 { #terraform-resources-nas }
 
 <a id="terraform-resources-create-volume"></a>
 ### 볼륨 생성하기 { #terraform-resources-create-volume }
@@ -47,14 +48,12 @@ resource "nhncloud_nas_storage_volume_interface_v1" "interface1" {
     CIFS 프로토콜을 사용하려면 CIFS 인증 정보를 생성해야 합니다. 인증 정보는 프로젝트 단위로 관리되며, CIFS 볼륨마다 접근을 허용할 CIFS 인증 정보를 등록해야 합니다.
     CIFS 인증 정보는 콘솔의 **Storage > NAS > CIFS 인증 정보 관리** 창에서 생성할 수 있습니다.
 
-
 <!-- -->
 
 !!! tip "참고: 암호화 키 저장소 설정"
     암호화 볼륨을 생성하면 암호화에 사용하는 대칭 키가 NHN Cloud Secure Key Manager 서비스의 키 저장소에 저장됩니다. 따라서 암호화 볼륨을 만들려면 미리 Secure Key Manager 서비스에서 [키 저장소를 생성](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_1)해야 합니다. [키 저장소의 ID를 확인](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_2)하여 암호화 키 저장소 설정에 입력합니다.
     생성한 키 저장소 ID는 콘솔의 **Storage > NAS > 암호화 키 저장소 설정** 창에서 입력할 수 있습니다. 암호화 볼륨을 생성하면 설정한 키 저장소에 대칭 키가 저장됩니다. 키 저장소에 저장된 대칭 키는 암호화 볼륨 사용 중에는 삭제할 수 없습니다. 암호화 볼륨을 삭제하면 대칭 키도 함께 삭제됩니다.
     키 저장소 ID를 변경하면 이후 생성하는 암호화 볼륨의 대칭 키가 변경된 키 저장소에 저장됩니다. 기존 키 저장소에 저장된 대칭 키는 유지됩니다.
-
 
 ```hcl
 # NFS 프로토콜의 빈 NAS 볼륨 생성
@@ -150,10 +149,12 @@ resource "nhncloud_nas_storage_volume_interface_v1" "nas_interface_01" {
 ### 복제 설정하기 { #terraform-resources-set-replication }
 
 복제 설정 리소스를 생성하면 대상 볼륨이 자동으로 생성됩니다.
+
 복제 설정 리소스에서 `dst_volume`의 설정값을 변경하여 대상 볼륨을 업데이트할 수 있지만, 복제 설정 리소스를 삭제해도 대상 볼륨은 자동으로 삭제되지 않습니다.
 
 !!! danger "주의"
     복제 설정 리소스의 값을 변경하면 기존 리소스가 삭제되고 새로 생성될 수 있지만, 기존 대상 볼륨은 삭제되지 않습니다.
+
     남아 있는 대상 볼륨과 새로운 대상 볼륨의 이름이 같으면 생성이 실패할 수 있으니 주의하세요.
 
 <!-- -->
@@ -191,7 +192,7 @@ resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
 | dst_volume.encryption | Object | N | - | 볼륨 생성 시 암호화 설정 객체 |
 | dst_volume.encryption.enabled | Boolean | N | - | 암호화 설정 활성화 여부<br>암호화 키 저장소가 설정된 후 해당 필드를 `true`로 설정하면 암호화가 활성화됩니다. |
 | dst_volume.mount_protocol | Object | N | - | 볼륨 생성 시 프로토콜 설정 객체 |
-| dst_volume.mount_protocol.cifs_auth_ids | List | N | O | CIFS 인증 ID 목록<br>NFS 프로토콜 선택 시 입력 불필요 |
+| dst_volume.mount_protocol.cifs_auth_ids | List(String) | N | O | CIFS 인증 ID 목록<br>NFS 프로토콜 선택 시 입력 불필요 |
 | dst_volume.mount_protocol.protocol | String | Y | - | 볼륨 마운트 시 프로토콜 지정<br>`nfs`, `cifs` 중 하나를 선택할 수 있습니다. |
 | dst_volume.name | String | Y | - | 볼륨 이름 |
 | dst_volume.size_gb | Integer | Y | O | 볼륨 크기(GB)<br>볼륨은 최소 300GB에서 최대 10,000GB까지, 100GB 단위로 설정할 수 있습니다. |
@@ -206,6 +207,6 @@ resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
 <a id="reference"></a>
 ## 참고 사이트 { #reference }
 
-Terraform - [https://www.terraform.io/](https://www.terraform.io/)
-Terraform Registry - [https://registry.terraform.io/](https://registry.terraform.io/)
+* Terraform - [https://www.terraform.io/](https://www.terraform.io/)
+* Terraform Registry - [https://registry.terraform.io/](https://registry.terraform.io/)
 

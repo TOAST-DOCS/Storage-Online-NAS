@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=06dac106ebf2 -->
+
 <a id="storage-nas-api-guide"></a>
 ## Storage > NAS > API 가이드 { #storage-nas-api-guide }
 
@@ -15,12 +17,11 @@ NAS API는 `nasv1` 타입 엔드포인트를 사용합니다. 정확한 엔드�
 | --- | --- |
 | 한국(판교) 리전 | https://kr1-api-nas-infrastructure.gncloud.go.kr |
 
-
 <a id="nas_api_common.authentication"></a>
 ### 인증 및 권한 { #nas_api_common.authentication }
 
 NAS는 API 호출 시 인증/인가를 위해 IaaS 토큰을 사용합니다. IaaS 토큰은 NHN Cloud의 OpenStack 기반 인프라 서비스(IaaS)에서 사용하는 인증 토큰입니다.
-IaaS 토큰 발급 및 사용에 대한 자세한 내용은 [IaaS 토큰](/nhncloud/ko/public-api/iaas-token/)을 참고하세요.
+IaaS 토큰 발급 및 사용에 대한 자세한 내용은 [IaaS 토큰](/nhncloud/ko/public-api/iaas-token/)을 참고합니다.
 
 <a id="nas_api_common.response"></a>
 ### 응답 공통 정보 { #nas_api_common.response }
@@ -31,7 +32,7 @@ NAS API에서 제공하는 공통 응답 정보의 설명입니다. 모든 API �
 | --- | --- | --- |
 | header | Object | 헤더 객체 |
 | header.isSuccessful | Boolean | 요청의 성공 여부(`true` 또는 `false`) |
-| header.resultCode | Integer | HTTP 상태 코드에 해당하는 결과 코드<br>- `200`: 성공 <br>- `201`: 리소스 생성 성공<br>- `202`: 요청이 정상적으로 수신되었으나, 아직 처리되지 않은 상태<br>- `400`: 유효하지 않은 값으로 요청됨<br>- `401`: 권한, 인증 또는 토큰 관련 오류 <br>- `404`: 요청한 리소스를 찾을 수 없음<br>- `405`: 요청한 URL이 지정한 HTTP 메서드를 지원하지 않음<br>- `5XX`: 클라이언트의 요청은 유효하지만 서버가 처리에 실패함 |
+| header.resultCode | Integer | HTTP 상태 코드에 해당하는 결과 코드<br>- `200`: 성공<br>- `201`: 리소스 생성 성공<br>- `202`: 요청이 정상적으로 수신되었으나, 아직 처리되지 않은 상태<br>- `400`: 유효하지 않은 값으로 요청됨<br>- `401`: 권한, 인증 또는 토큰 관련 오류<br>- `404`: 요청한 리소스를 찾을 수 없음<br>- `405`: 요청한 URL이 지정한 HTTP 메서드를 지원하지 않음<br>- `5XX`: 클라이언트의 요청은 유효하지만 서버가 처리에 실패함 |
 | header.resultMessage | String | 요청 처리 결과 메시지 |
 
 <details>
@@ -78,7 +79,7 @@ NAS API에서 제공하는 공통 응답 정보의 설명입니다. 모든 API �
 볼륨 목록을 조회합니다.
 
 ```
-GET  /v1/volumes
+GET /v1/volumes
 X-Auth-Token: {token-id}
 ```
 
@@ -160,9 +161,6 @@ X-Auth-Token: {token-id}
       ],
       "createdAt": "2025-04-01T06:44:25+00:00",
       "description": "NAS for Testing",
-      "encryption": {
-        "enabled": false
-      },
       "id": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
       "interfaces": [
         {
@@ -239,7 +237,7 @@ X-Auth-Token: {token-id}
 
 
 ```
-POST  /v1/volumes
+POST /v1/volumes
 X-Auth-Token: {token-id}
 ```
 
@@ -358,9 +356,6 @@ X-Auth-Token: {token-id}
     ],
     "createdAt": "2025-04-01T06:44:25+00:00",
     "description": "NAS for Testing",
-    "encryption": {
-      "enabled": false
-    },
     "id": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
     "interfaces": [
       {
@@ -431,7 +426,7 @@ X-Auth-Token: {token-id}
 지정한 볼륨을 삭제합니다.
 
 ```
-DELETE  /v1/volumes/{volume_id}
+DELETE /v1/volumes/{volume_id}
 X-Auth-Token: {token-id}
 ```
 
@@ -458,7 +453,7 @@ X-Auth-Token: {token-id}
 지정한 볼륨의 상세 정보를 반환합니다.
 
 ```
-GET   /v1/volumes/{volume_id}
+GET /v1/volumes/{volume_id}
 X-Auth-Token: {token-id}
 ```
 
@@ -517,7 +512,7 @@ X-Auth-Token: {token-id}
     복제 설정된 볼륨의 크기를 변경하려면 원본 볼륨과 대상 볼륨 모두 변경해야 합니다. 원본 볼륨과 대상 볼륨의 크기가 다른 경우 복제에 실패할 수 있습니다.
 
 ```
-PATCH  /v1/volumes/{volume_id}
+PATCH /v1/volumes/{volume_id}
 X-Auth-Token: {token-id}
 ```
 
@@ -590,10 +585,10 @@ X-Auth-Token: {token-id}
 ### 볼륨에 인터페이스 연결하기 { #volume.connect_interface }
 
 지정한 볼륨의 인터페이스를 설정합니다.
-설정된 주소 및 서브넷에서 볼륨에 접근 가능합니다. 접근 가능한 IP 설정은 접근 제어(ACL) 설정에서 별도 설정해야 합니다.
+설정된 주소 및 서브넷에서 볼륨에 접근 가능합니다. 접근 가능한 IP는 접근 제어(ACL)에서 별도로 설정해야 합니다.
 
 ```
-POST  /v1/volumes/{volume_id}/interfaces
+POST /v1/volumes/{volume_id}/interfaces
 X-Auth-Token: {token-id}
 ```
 
@@ -663,7 +658,7 @@ X-Auth-Token: {token-id}
 지정한 볼륨의 지정한 인터페이스를 삭제합니다.
 
 ```
-DELETE  /v1/volumes/{volume_id}/interfaces/{interface_id}
+DELETE /v1/volumes/{volume_id}/interfaces/{interface_id}
 X-Auth-Token: {token-id}
 ```
 
@@ -691,7 +686,7 @@ X-Auth-Token: {token-id}
 지정한 볼륨의 스냅숏 복원 내역 목록을 반환합니다.
 
 ```
-GET  /v1/volumes/{volume_id}/restore-histories
+GET /v1/volumes/{volume_id}/restore-histories
 X-Auth-Token: {token-id}
 ```
 
@@ -768,7 +763,7 @@ X-Auth-Token: {token-id}
 지정한 볼륨의 사용 현황을 반환합니다.
 
 ```
-GET  /v1/volumes/{volume_id}/usage
+GET /v1/volumes/{volume_id}/usage
 X-Auth-Token: {token-id}
 ```
 
@@ -830,7 +825,7 @@ X-Auth-Token: {token-id}
 스냅숏 목록을 조회합니다.
 
 ```
-GET  /v1/volumes/{volume_id}/snapshots
+GET /v1/volumes/{volume_id}/snapshots
 X-Auth-Token: {token-id}
 ```
 
@@ -889,7 +884,7 @@ X-Auth-Token: {token-id}
 지정한 볼륨의 스냅숏을 생성합니다.
 
 ```
-POST  /v1/volumes/{volume_id}/snapshots
+POST /v1/volumes/{volume_id}/snapshots
 X-Auth-Token: {token-id}
 ```
 
@@ -961,7 +956,7 @@ X-Auth-Token: {token-id}
 지정한 볼륨의 스냅숏을 삭제합니다.
 
 ```
-DELETE  /v1/volumes/{volume_id}/snapshots/{snapshot_id}
+DELETE /v1/volumes/{volume_id}/snapshots/{snapshot_id}
 X-Auth-Token: {token-id}
 ```
 
@@ -989,7 +984,7 @@ X-Auth-Token: {token-id}
 지정한 스냅숏의 상세 정보를 반환합니다.
 
 ```
-GET  /v1/volumes/{volume_id}/snapshots/{snapshot_id}
+GET /v1/volumes/{volume_id}/snapshots/{snapshot_id}
 X-Auth-Token: {token-id}
 ```
 
@@ -1027,7 +1022,7 @@ X-Auth-Token: {token-id}
 지정한 스냅숏으로 볼륨을 복원합니다.
 
 ```
-POST  /v1/volumes/{volume_id}/snapshots/{snapshot_id}/restore
+POST /v1/volumes/{volume_id}/snapshots/{snapshot_id}/restore
 X-Auth-Token: {token-id}
 ```
 
