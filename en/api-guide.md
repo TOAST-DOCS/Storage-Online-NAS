@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=06dac106ebf2 -->
 
 <a id="storage-nas-api-guide"></a>
@@ -21,12 +23,14 @@ NAS API uses the `nasv1` type endpoint. Refer to the `serviceCatalog` in the tok
 
 
 <a id="nas_api_common.authentication"></a>
+
 ### Authentication and Authorization { #nas_api_common.authentication }
 
-NAS uses IaaS tokens for authentication and authorization when making API calls. The IaaS token is an authentication token used for NHN Cloud's OpenStack-based infrastructure services (IaaS). For more information on issuing and using IaaS tokens, please refer to the [IaaS Token](/nhncloud/en/public-api/iaas-token/).
-
+NAS uses IaaS tokens for authentication and authorization when making API calls. The IaaS token is an authentication token used for NHN Cloud's OpenStack-based infrastructure services (IaaS).
+For more information on issuing and using IaaS tokens, see [IaaS token](/nhncloud/en/public-api/iaas-token/).
 
 <a id="nas_api_common.response"></a>
+
 ### Response Common Information { #nas_api_common.response }
 
 This section describes the common response information provided by the NAS API. All API responses convey the result of a request with a `header` object.
@@ -35,7 +39,7 @@ This section describes the common response information provided by the NAS API. 
 | --- | --- | --- |
 | header | Object | Header Objects |
 | header.isSuccessful | Boolean | Whether the request was successful (`true` or `false`) |
-| header.resultCode | Integer | Result codes corresponding to HTTP status codes<br>- `200`: Success <br>- `201`: Resource creation successful<br>- `202`: Request received successfully, but not yet processed<br>- `400`: Requested with an invalid value<br>- `401`: Permission, authentication, or token-related error <br>- `404`: Requested resource not found<br>- `405`: The requested URL does not support the specified HTTP method<br>- `5XX`: The client's request is valid but the server failed to process it |
+| header.resultCode | Integer | Result codes corresponding to HTTP status codes<br>- `200`: Success<br>- `201`: Resource creation successful<br>- `202`: Request received successfully, but not yet processed<br>- `400`: Requested with an invalid value<br>- `401`: Permission, authentication, or token-related error<br>- `404`: Requested resource not found<br>- `405`: The requested URL does not support the specified HTTP method<br>- `5XX`: The client's request is valid but the server failed to process it |
 | header.resultMessage | String | Messages about the request processing results |
 
 <details>
@@ -77,12 +81,13 @@ This section describes the common response information provided by the NAS API. 
 ## Volume { #volume }
 
 <a id="volume.list"></a>
+
 ### List Volume { #volume.list }
 
 Return the list of volumes.
 
 ```
-GET  /v1/volumes
+GET /v1/volumes
 X-Auth-Token: {token-id}
 ```
 
@@ -105,6 +110,7 @@ This API does not require a request body.
 | sort | Query | String | N | Name of the field to sort by<br>Describe it in the form `{key}:{direction}`. Example: `name:asc`, `created_at:desc`<br>Possible key values: `id`, `name`, `sizeGb`, `createdAt`, `updatedAt` |
 
 <a id="volume.list-response"></a>
+
 #### Response
 
 | Name | Type | Format | Description |
@@ -136,17 +142,17 @@ This API does not require a request body.
 | volumes.mirrors.id | Body | String | Replication setting ID |
 | volumes.mirrors.role | Body | String | Replication roles<br>- `SOURCE`: Source volume<br>- `DESTINATION`: Target volume |
 | volumes.mirrors.status | Body | String | Replication setting status<br>- `INITIALIZED`: Setup complete<br>- `UPDATING`: Updating settings<br>- `DELETING`: Deleting settings<br>- `PENDING`: Creating settings |
-| volumes.mirrors.direction | Body | String | Replication direction<br>- `FORWARD`: Source volume → Replica volume <br>- `REVERSE`: Replica volume → Source volume |
+| volumes.mirrors.direction | Body | String | Replication direction<br>- `FORWARD`: Source volume → Target volume<br>- `REVERSE`: Target volume → Source volume |
 | volumes.mirrors.directionChangedAt | Body | String | When to change replication direction |
 | volumes.mirrors.dstProjectId | Body | String | The project ID of the replication target volume |
 | volumes.mirrors.dstRegion | Body | String | The region of the replication target volume |
 | volumes.mirrors.dstTenantId | Body | String | The tenant ID of the replication target volume |
-| volumes.mirrors.dstVolumeId | Body | String | The volume ID of the replication target volume |
-| volumes.mirrors.dstVolumeName | Body | String | The volume name of the replication target volume |
+| volumes.mirrors.dstVolumeId | Body | String | The volume ID of the replication target |
+| volumes.mirrors.dstVolumeName | Body | String | Replication target volume name |
 | volumes.mirrors.srcProjectId | Body | String | The project ID of the source volume |
 | volumes.mirrors.srcRegion | Body | String | The region of the source volume |
 | volumes.mirrors.srcTenantId | Body | String | The tenant ID of the source volume |
-| volumes.mirrors.srcVolumeId | Body | String | The volume ID of the source volume |
+| volumes.mirrors.srcVolumeId | Body | String | Original volume id |
 | volumes.mirrors.srcVolumeName | Body | String | Source volume name |
 | volumes.mirrors.createdAt | Body | String | Replication creation time |
 | volumes.mountProtocol | Body | Object | Volume mount protocols |
@@ -253,6 +259,7 @@ This API does not require a request body.
 <br>
 
 <a id="volume.create"></a>
+
 ### Create Volume { #volume.create }
 
 Create a new volume.
@@ -270,13 +277,14 @@ Create a new volume.
 
 
 ```
-POST  /v1/volumes
+POST /v1/volumes
 X-Auth-Token: {token-id}
 ```
 
 <br>
 
 <a id="volume.create-request"></a>
+
 #### Request
 
 | Name | Type | Format | Required | Description |
@@ -345,6 +353,7 @@ X-Auth-Token: {token-id}
 </details>
 
 <a id="volume.create-response"></a>
+
 #### Response
 
 | Name | Type | Format | Description |
@@ -372,17 +381,17 @@ X-Auth-Token: {token-id}
 | volume.mirrors.id | Body | String | Replication setting ID |
 | volume.mirrors.role | Body | String | Replication roles<br>- `SOURCE`: Source volume<br>- `DESTINATION`: Target volume |
 | volume.mirrors.status | Body | String | Replication setting status<br>- `INITIALIZED`: Setup complete<br>- `UPDATING`: Updating settings<br>- `DELETING`: Deleting settings<br>- `PENDING`: Creating settings |
-| volume.mirrors.direction | Body | String | Replication direction<br>- `FORWARD`: Original volume → Replica volume<br>- `REVERSE`: Replica volume → Original volume |
+| volume.mirrors.direction | Body | String | Replication direction<br>- `FORWARD`: Source volume → Target volume<br>- `REVERSE`: Target volume → Source volume |
 | volume.mirrors.directionChangedAt | Body | String | When to change replication direction |
 | volume.mirrors.dstProjectId | Body | String | The project ID of the replication target volume |
 | volume.mirrors.dstRegion | Body | String | The region of the replication target volume |
 | volume.mirrors.dstTenantId | Body | String | The tenant ID of the replication target volume |
-| volume.mirrors.dstVolumeId | Body | String | The volume ID of the replication target volume |
-| volume.mirrors.dstVolumeName | Body | String | The volume name of the replication target volume |
+| volume.mirrors.dstVolumeId | Body | String | The volume ID of the replication target |
+| volume.mirrors.dstVolumeName | Body | String | Replication target volume name |
 | volume.mirrors.srcProjectId | Body | String | The project ID of the source volume |
 | volume.mirrors.srcRegion | Body | String | The region of the source volume |
 | volume.mirrors.srcTenantId | Body | String | The tenant ID of the source volume |
-| volume.mirrors.srcVolumeId | Body | String | The volume ID of the source volume |
+| volume.mirrors.srcVolumeId | Body | String | Original volume id |
 | volume.mirrors.srcVolumeName | Body | String | Source volume name |
 | volume.mirrors.createdAt | Body | String | Replication creation time |
 | volume.mountProtocol | Body | Object | Volume mount protocols |
@@ -482,12 +491,13 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.delete"></a>
+
 ### Delete Volume { #volume.delete }
 
 Deletes the specified volume.
 
 ```
-DELETE  /v1/volumes/{volume_id}
+DELETE /v1/volumes/{volume_id}
 X-Auth-Token: {token-id}
 ```
 
@@ -509,12 +519,13 @@ The response body does not contain any content other than header fields.
 <br>
 
 <a id="volume.view"></a>
+
 ### View Volume { #volume.view }
 
 Returns details about the specified volume.
 
 ```
-GET   /v1/volumes/{volume_id}
+GET /v1/volumes/{volume_id}
 X-Auth-Token: {token-id}
 ```
 
@@ -529,6 +540,7 @@ This API does not require a request body.
 | volume_id | URL | String | Y | Volume ID to query |
 
 <a id="volume.view-response"></a>
+
 #### Response
 
 | Name | Type | Format | Description |
@@ -556,17 +568,17 @@ This API does not require a request body.
 | volume.mirrors.id | Body | String | Replication setting ID |
 | volume.mirrors.role | Body | String | Replication roles<br>- `SOURCE`: Source volume<br>- `DESTINATION`: Target volume |
 | volume.mirrors.status | Body | String | Replication setting status<br>- `INITIALIZED`: Setup complete<br>- `UPDATING`: Updating settings<br>- `DELETING`: Deleting settings<br>- `PENDING`: Creating settings |
-| volume.mirrors.direction | Body | String | Replication direction<br>- `FORWARD`: Original volume → Replica volume<br>- `REVERSE`: Replica volume → Original volume |
+| volume.mirrors.direction | Body | String | Replication direction<br>- `FORWARD`: Source volume → Target volume<br>- `REVERSE`: Target volume → Source volume |
 | volume.mirrors.directionChangedAt | Body | String | When to change replication direction |
 | volume.mirrors.dstProjectId | Body | String | The project ID of the replication target volume |
 | volume.mirrors.dstRegion | Body | String | The region of the replication target volume |
 | volume.mirrors.dstTenantId | Body | String | The tenant ID of the replication target volume |
-| volume.mirrors.dstVolumeId | Body | String | The volume ID of the replication target volume |
-| volume.mirrors.dstVolumeName | Body | String | The volume name of the replication target volume |
+| volume.mirrors.dstVolumeId | Body | String | The volume ID of the replication target |
+| volume.mirrors.dstVolumeName | Body | String | Replication target volume name |
 | volume.mirrors.srcProjectId | Body | String | The project ID of the source volume |
 | volume.mirrors.srcRegion | Body | String | The region of the source volume |
 | volume.mirrors.srcTenantId | Body | String | The tenant ID of the source volume |
-| volume.mirrors.srcVolumeId | Body | String | The volume ID of the source volume |
+| volume.mirrors.srcVolumeId | Body | String | Original volume id |
 | volume.mirrors.srcVolumeName | Body | String | Source volume name |
 | volume.mirrors.createdAt | Body | String | Replication creation time |
 | volume.mountProtocol | Body | Object | Volume mount protocols |
@@ -585,6 +597,7 @@ This API does not require a request body.
 <br>
 
 <a id="volume.change_settings"></a>
+
 ### Change Volume Settings { #volume.change_settings }
 
 Change the settings for the specified volume.
@@ -593,11 +606,12 @@ Change the settings for the specified volume.
     To change the size of a replicated volume, you must change both the source volume and the target volume. If the size of the source volume and the target volume are different, replication might fail.
 
 ```
-PATCH  /v1/volumes/{volume_id}
+PATCH /v1/volumes/{volume_id}
 X-Auth-Token: {token-id}
 ```
 
 <a id="volume.change_settings-request"></a>
+
 #### Request
 
 | Name | Type | Format | Required | Description |
@@ -663,13 +677,14 @@ The response body does not contain any content other than header fields.
 <br>
 
 <a id="volume.connect_interface"></a>
+
 ### Connect an interface to volume { #volume.connect_interface }
 
 Sets the interface for the specified volume.
-The volume is accessible from the set address and subnet. The accessible IP setting must be set separately in the access control (ACL) settings.
+The volume is accessible from the set address and subnet. The accessible IP must be set separately in the access control (ACL) settings.
 
 ```
-POST  /v1/volumes/{volume_id}/interfaces
+POST /v1/volumes/{volume_id}/interfaces
 X-Auth-Token: {token-id}
 ```
 
@@ -734,12 +749,13 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.delete_interface"></a>
+
 ### Delete an interface on volume { #volume.delete_interface }
 
 Deletes the specified interface of the specified volume.
 
 ```
-DELETE  /v1/volumes/{volume_id}/interfaces/{interface_id}
+DELETE /v1/volumes/{volume_id}/interfaces/{interface_id}
 X-Auth-Token: {token-id}
 ```
 
@@ -762,12 +778,13 @@ The response body does not contain any content other than header fields.
 <br>
 
 <a id="volume.view_snapshot_restore_history"></a>
+
 ### View snapshot restore history { #volume.view_snapshot_restore_history }
 
 Returns a list of snapshot restore history for the specified volume.
 
 ```
-GET  /v1/volumes/{volume_id}/restore-histories
+GET /v1/volumes/{volume_id}/restore-histories
 X-Auth-Token: {token-id}
 ```
 
@@ -839,12 +856,13 @@ This API does not require a request body.
 <br>
 
 <a id="volume.view_usage"></a>
+
 ### View volume usage { #volume.view_usage }
 
 Returns the usage status of the specified volume.
 
 ```
-GET  /v1/volumes/{volume_id}/usage
+GET /v1/volumes/{volume_id}/usage
 X-Auth-Token: {token-id}
 ```
 
@@ -901,12 +919,13 @@ This API does not require a request body.
 ## Snapshots { #snapshots }
 
 <a id="snapshots.list"></a>
+
 ### List Snapshots { #snapshots.list }
 
 View a list of snapshots.
 
 ```
-GET  /v1/volumes/{volume_id}/snapshots
+GET /v1/volumes/{volume_id}/snapshots
 X-Auth-Token: {token-id}
 ```
 
@@ -921,6 +940,7 @@ This API does not require a request body.
 | volume_id | URL | String | Y | Volume ID |
 
 <a id="snapshots.list-response"></a>
+
 #### Response
 
 | Name | Type | Format | Description |
@@ -960,12 +980,13 @@ This API does not require a request body.
 <br>
 
 <a id="snapshots.create"></a>
+
 ### Create Snapshots { #snapshots.create }
 
 Creates a snapshot of the specified volume.
 
 ```
-POST  /v1/volumes/{volume_id}/snapshots
+POST /v1/volumes/{volume_id}/snapshots
 X-Auth-Token: {token-id}
 ```
 
@@ -993,6 +1014,7 @@ X-Auth-Token: {token-id}
 </details>
 
 <a id="snapshots.create-response"></a>
+
 #### Response
 
 | Name | Type | Format | Description |
@@ -1032,12 +1054,13 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="snapshots.delete"></a>
+
 ### Delete Snapshots { #snapshots.delete }
 
 Deletes a snapshot of the specified volume.
 
 ```
-DELETE  /v1/volumes/{volume_id}/snapshots/{snapshot_id}
+DELETE /v1/volumes/{volume_id}/snapshots/{snapshot_id}
 X-Auth-Token: {token-id}
 ```
 
@@ -1060,12 +1083,13 @@ The response body does not contain any content other than header fields.
 <br>
 
 <a id="snapshots.view"></a>
+
 ### View Snapshot { #snapshots.view }
 
 Returns details of the specified snapshot.
 
 ```
-GET  /v1/volumes/{volume_id}/snapshots/{snapshot_id}
+GET /v1/volumes/{volume_id}/snapshots/{snapshot_id}
 X-Auth-Token: {token-id}
 ```
 
@@ -1082,6 +1106,7 @@ This API does not require a request body.
 | showReclaimableSpace | Query | Boolean | N | Whether to expose `the reclaimableSpace` entry, which indicates the amount of space reclaimed when a snapshot is deleted. |
 
 <a id="snapshots.view-response"></a>
+
 #### Response
 
 | Name | Type | Format | Description |
@@ -1098,12 +1123,13 @@ This API does not require a request body.
 <br>
 
 <a id="snapshots.restore"></a>
+
 ### Restore Snapshot { #snapshots.restore }
 
 Restores volume to the specified snapshot.
 
 ```
-POST  /v1/volumes/{volume_id}/snapshots/{snapshot_id}/restore
+POST /v1/volumes/{volume_id}/snapshots/{snapshot_id}/restore
 X-Auth-Token: {token-id}
 ```
 
@@ -1129,6 +1155,7 @@ The response body does not contain any content other than header fields.
 ## Set up volume replication { #replication }
 
 <a id="replication.setup"></a>
+
 ### Set up replication { #replication.setup }
 
 Set up replication of the specified volume.
@@ -1148,7 +1175,7 @@ The selectable region ranges for each replication target project can be found in
 <!-- -->
 
 !!! tip "Note"
-    To set up encryption on the target volume, you must configure a separate encryption key store specific to the project or region where the target volume belongs.
+    To set up encryption on the target volume for replication, you must configure a separate encryption key store for the project or region where the target volume belongs, independent of the source volume.
 
 <!-- -->
 
@@ -1156,11 +1183,12 @@ The selectable region ranges for each replication target project can be found in
     If the source volume uses the CIFS protocol, the target volume must also use the CIFS protocol. To do this, you must create separate CIFS credentials (different from the source volume) and specify them in the `cifsAuthIds` field of the request body.
 
 ```
-POST  /v1/volumes/{volume_id}/volume-mirrors
+POST /v1/volumes/{volume_id}/volume-mirrors
 X-Auth-Token: {token-id}
 ```
 
 <a id="replication.setup-request"></a>
+
 #### Request
 
 | Name | Type | Format | Required | Description |
@@ -1213,6 +1241,7 @@ X-Auth-Token: {token-id}
 </details>
 
 <a id="replication.setup-response"></a>
+
 #### Response
 
 | Name | Type | Format | Description |
@@ -1222,17 +1251,17 @@ X-Auth-Token: {token-id}
 | volumeMirror.id | Body | String | Replication setting ID |
 | volumeMirror.role | Body | String | Replication roles<br>- `SOURCE`: Source volume<br>- `DESTINATION`: Target volume |
 | volumeMirror.status | Body | String | Replication setting status<br>- `INITIALIZED`: Setup complete<br>- `UPDATING`: Updating settings<br>- `DELETING`: Deleting settings<br>- `PENDING`: Creating settings |
-| volumeMirror.direction | Body | String | Replication direction<br>- `FORWARD`: Source volume → Replica volume<br>- `REVERSE`: Replica volume → Source volume |
+| volumeMirror.direction | Body | String | Replication direction<br>- `FORWARD`: Source volume → Target volume<br>- `REVERSE`: Target volume → Source volume |
 | volumeMirror.directionChangedAt | Body | String | When to change replication direction |
 | volumeMirror.dstProjectId | Body | String | The project ID of the replication target volume |
 | volumeMirror.dstRegion | Body | String | The region of the replication target volume |
 | volumeMirror.dstTenantId | Body | String | The tenant ID of the replication target volume |
-| volumeMirror.dstVolumeId | Body | String | The volume ID of the replication target volume |
-| volumeMirror.dstVolumeName | Body | String | The volume name of the replication target volume |
+| volumeMirror.dstVolumeId | Body | String | The volume ID of the replication target |
+| volumeMirror.dstVolumeName | Body | String | Replication target volume name |
 | volumeMirror.srcProjectId | Body | String | The project ID of the source volume |
 | volumeMirror.srcRegion | Body | String | The region of the source volume |
 | volumeMirror.srcTenantId | Body | String | The tenant ID of the source volume |
-| volumeMirror.srcVolumeId | Body | String | The volume ID of the source volume |
+| volumeMirror.srcVolumeId | Body | String | Original volume id |
 | volumeMirror.srcVolumeName | Body | String | Source volume name |
 | volumeMirror.createdAt | Body | String | Replication creation time |
 
@@ -1272,12 +1301,13 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="replication.disable"></a>
+
 ### Disable Replication Settings { #replication.disable }
 
 Disable replication settings for the specified volume.
 
 ```
-DELETE  /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}
+DELETE /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}
 X-Auth-Token: {token-id}
 ```
 
@@ -1298,12 +1328,13 @@ The response body does not contain any content other than header fields.
 <br>
 
 <a id="replication.change_direction"></a>
+
 ### Change the replication direction { #replication.change_direction }
 
 Change the direction of replication between source and target volume.
 
 ```
-POST  /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}/invert-direction
+POST /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}/invert-direction
 X-Auth-Token: {token-id}
 ```
 
@@ -1324,12 +1355,13 @@ The response body does not contain any content other than header fields.
 <br>
 
 <a id="replication.start"></a>
+
 ### Start Replication { #replication.start }
 
 Start replication from the source volume to the target volume.
 
 ```
-POST  /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}/start
+POST /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}/start
 X-Auth-Token: {token-id}
 ```
 
@@ -1350,12 +1382,13 @@ The response body does not contain any content other than header fields.
 <br>
 
 <a id="replication.status"></a>
+
 ### View replication status { #replication.status }
 
 Returns the most recent replication state.
 
 ```
-GET  /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}/stat
+GET /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}/stat
 X-Auth-Token: {token-id}
 ```
 
@@ -1369,6 +1402,7 @@ X-Auth-Token: {token-id}
 | volume_mirror_id | URL | String | Y | Replication setting ID |
 
 <a id="replication.status-response"></a>
+
 #### Response
 
 | Name | Type | Format | Description |
@@ -1380,17 +1414,18 @@ X-Auth-Token: {token-id}
 | volumeMirrorStat.lastTransferBytes | Body | Integer | Size of data transferred in the last replication run (bytes) |
 | volumeMirrorStat.lastTransferEndTime | Body | String | Last completed replication time |
 | volumeMirrorStat.lastTransferStatus | Body | String | Recent replication run results |
-| volumeMirrorStat.status | Body | String | Replication setting status<br>- `ACTIVE`: Replication active status<br>- `UPDATING`: Updating settings<br>- `DELETING`: Deleting settings<br>- `PENDING`: Creating settings <br>- `HALT`: Halted replication status<br>- `RETRIEVE FAILED`: Temporary failure to obtain information |
+| volumeMirrorStat.status | Body | String | Replication setting status<br>- `ACTIVE`: Active replication status<br>- `UPDATING`: Updating settings<br>- `DELETING`: Deleting settings<br>- `PENDING`: Creating settings<br>- `HALT`: Replication stopped status<br>- `RETRIEVE FAILED`: Temporary failure to obtain information |
 
 <br>
 
 <a id="replication.stop"></a>
+
 ### Stop replication { #replication.stop }
 
 Stops replication from the source volume to the target volume.
 
 ```
-POST  /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}/stop
+POST /v1/volumes/{volume_id}/volume-mirrors/{volume_mirror_id}/stop
 X-Auth-Token: {token-id}
 ```
 
