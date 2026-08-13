@@ -23,14 +23,12 @@ NAS API uses the `nasv1` type endpoint. Refer to the `serviceCatalog` in the tok
 
 
 <a id="nas_api_common.authentication"></a>
-
 ### Authentication and Authorization { #nas_api_common.authentication }
 
 NAS uses IaaS tokens for authentication and authorization when making API calls. The IaaS token is an authentication token used for NHN Cloud's OpenStack-based infrastructure services (IaaS).
 For more information on issuing and using IaaS tokens, see [IaaS token](/nhncloud/en/public-api/iaas-token/).
 
 <a id="nas_api_common.response"></a>
-
 ### Response Common Information { #nas_api_common.response }
 
 This section describes the common response information provided by the NAS API. All API responses convey the result of a request with a `header` object.
@@ -81,7 +79,6 @@ This section describes the common response information provided by the NAS API. 
 ## Volume { #volume }
 
 <a id="volume.list"></a>
-
 ### List Volume { #volume.list }
 
 Return the list of volumes.
@@ -110,7 +107,6 @@ This API does not require a request body.
 | sort | Query | String | N | Name of the field to sort by<br>Describe it in the form `{key}:{direction}`. Example: `name:asc`, `created_at:desc`<br>Possible key values: `id`, `name`, `sizeGb`, `createdAt`, `updatedAt` |
 
 <a id="volume.list-response"></a>
-
 #### Response
 
 | Name | Type | Format | Description |
@@ -259,7 +255,6 @@ This API does not require a request body.
 <br>
 
 <a id="volume.create"></a>
-
 ### Create Volume { #volume.create }
 
 Create a new volume.
@@ -284,7 +279,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.create-request"></a>
-
 #### Request
 
 | Name | Type | Format | Required | Description |
@@ -353,7 +347,6 @@ X-Auth-Token: {token-id}
 </details>
 
 <a id="volume.create-response"></a>
-
 #### Response
 
 | Name | Type | Format | Description |
@@ -491,7 +484,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.delete"></a>
-
 ### Delete Volume { #volume.delete }
 
 Deletes the specified volume.
@@ -519,7 +511,6 @@ The response body does not contain any content other than header fields.
 <br>
 
 <a id="volume.view"></a>
-
 ### View Volume { #volume.view }
 
 Returns details about the specified volume.
@@ -540,7 +531,6 @@ This API does not require a request body.
 | volume_id | URL | String | Y | Volume ID to query |
 
 <a id="volume.view-response"></a>
-
 #### Response
 
 | Name | Type | Format | Description |
@@ -597,7 +587,6 @@ This API does not require a request body.
 <br>
 
 <a id="volume.change_settings"></a>
-
 ### Change Volume Settings { #volume.change_settings }
 
 Change the settings for the specified volume.
@@ -611,7 +600,6 @@ X-Auth-Token: {token-id}
 ```
 
 <a id="volume.change_settings-request"></a>
-
 #### Request
 
 | Name | Type | Format | Required | Description |
@@ -677,7 +665,6 @@ The response body does not contain any content other than header fields.
 <br>
 
 <a id="volume.connect_interface"></a>
-
 ### Connect an interface to volume { #volume.connect_interface }
 
 Sets the interface for the specified volume.
@@ -749,7 +736,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.delete_interface"></a>
-
 ### Delete an interface on volume { #volume.delete_interface }
 
 Deletes the specified interface of the specified volume.
@@ -778,7 +764,6 @@ The response body does not contain any content other than header fields.
 <br>
 
 <a id="volume.view_snapshot_restore_history"></a>
-
 ### View snapshot restore history { #volume.view_snapshot_restore_history }
 
 Returns a list of snapshot restore history for the specified volume.
@@ -856,7 +841,6 @@ This API does not require a request body.
 <br>
 
 <a id="volume.view_usage"></a>
-
 ### View volume usage { #volume.view_usage }
 
 Returns the usage status of the specified volume.
@@ -919,7 +903,6 @@ This API does not require a request body.
 ## Snapshots { #snapshots }
 
 <a id="snapshots.list"></a>
-
 ### List Snapshots { #snapshots.list }
 
 View a list of snapshots.
@@ -940,7 +923,6 @@ This API does not require a request body.
 | volume_id | URL | String | Y | Volume ID |
 
 <a id="snapshots.list-response"></a>
-
 #### Response
 
 | Name | Type | Format | Description |
@@ -980,7 +962,6 @@ This API does not require a request body.
 <br>
 
 <a id="snapshots.create"></a>
-
 ### Create Snapshots { #snapshots.create }
 
 Creates a snapshot of the specified volume.
@@ -1014,7 +995,6 @@ X-Auth-Token: {token-id}
 </details>
 
 <a id="snapshots.create-response"></a>
-
 #### Response
 
 | Name | Type | Format | Description |
@@ -1054,7 +1034,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="snapshots.delete"></a>
-
 ### Delete Snapshots { #snapshots.delete }
 
 Deletes a snapshot of the specified volume.
@@ -1083,7 +1062,6 @@ The response body does not contain any content other than header fields.
 <br>
 
 <a id="snapshots.view"></a>
-
 ### View Snapshot { #snapshots.view }
 
 Returns details of the specified snapshot.
@@ -1106,7 +1084,6 @@ This API does not require a request body.
 | showReclaimableSpace | Query | Boolean | N | Whether to expose `the reclaimableSpace` entry, which indicates the amount of space reclaimed when a snapshot is deleted. |
 
 <a id="snapshots.view-response"></a>
-
 #### Response
 
 | Name | Type | Format | Description |
@@ -1123,7 +1100,6 @@ This API does not require a request body.
 <br>
 
 <a id="snapshots.restore"></a>
-
 ### Restore Snapshot { #snapshots.restore }
 
 Restores volume to the specified snapshot.
@@ -1155,7 +1131,6 @@ The response body does not contain any content other than header fields.
 ## Set up volume replication { #replication }
 
 <a id="replication.setup"></a>
-
 ### Set up replication { #replication.setup }
 
 Set up replication of the specified volume.
@@ -1188,7 +1163,6 @@ X-Auth-Token: {token-id}
 ```
 
 <a id="replication.setup-request"></a>
-
 #### Request
 
 | Name | Type | Format | Required | Description |
@@ -1241,7 +1215,6 @@ X-Auth-Token: {token-id}
 </details>
 
 <a id="replication.setup-response"></a>
-
 #### Response
 
 | Name | Type | Format | Description |
@@ -1301,7 +1274,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="replication.disable"></a>
-
 ### Disable Replication Settings { #replication.disable }
 
 Disable replication settings for the specified volume.
@@ -1328,7 +1300,6 @@ The response body does not contain any content other than header fields.
 <br>
 
 <a id="replication.change_direction"></a>
-
 ### Change the replication direction { #replication.change_direction }
 
 Change the direction of replication between source and target volume.
@@ -1355,7 +1326,6 @@ The response body does not contain any content other than header fields.
 <br>
 
 <a id="replication.start"></a>
-
 ### Start Replication { #replication.start }
 
 Start replication from the source volume to the target volume.
@@ -1382,7 +1352,6 @@ The response body does not contain any content other than header fields.
 <br>
 
 <a id="replication.status"></a>
-
 ### View replication status { #replication.status }
 
 Returns the most recent replication state.
@@ -1402,7 +1371,6 @@ X-Auth-Token: {token-id}
 | volume_mirror_id | URL | String | Y | Replication setting ID |
 
 <a id="replication.status-response"></a>
-
 #### Response
 
 | Name | Type | Format | Description |
@@ -1419,7 +1387,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="replication.stop"></a>
-
 ### Stop replication { #replication.stop }
 
 Stops replication from the source volume to the target volume.
