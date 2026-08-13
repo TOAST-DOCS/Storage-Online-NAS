@@ -11,7 +11,6 @@
 ## ボリューム { #volume }
 
 <a id="create_volume"></a>
-
 ### ボリュームの作成 { #create_volume }
 
 新しいボリュームを作成します。作成されたボリュームは、NFS (network file system、ネットワークファイルシステム) および CIFS (common internet file system、共用インターネットファイルシステム) プロトコルを使用してインスタンスからアクセスできます。
@@ -32,6 +31,7 @@
 !!! tip "ご参考"
     プロジェクトごとに使用可能なサブネットは合計3つに制限されます。サブネット数の限度を増やす場合はサポートにお問い合わせください。
 
+<a id="create_volume.cifs"></a>
 #### CIFS認証情報管理
 CIFS プロトコルを使用するには、CIFS 認証情報を作成する必要があります。認証情報はプロジェクト単位で管理され、CIFS ボリュームごとにアクセスする CIFS 認証情報を登録する必要があります。
 
@@ -50,7 +50,6 @@ CIFS プロトコルを使用するには、CIFS 認証情報を作成する必�
     * ID を含むパスワードは使用できません。
 
 <a id="create_volume.encryption"></a>
-
 #### 暗号化キーストア設定
 
 NAS暗号化ボリュームは、暗号化に使用する共通鍵をNHN Cloud Secure Key Managerサービスのキーストアに保存します。したがって、暗号化ボリュームを作成するには、事前にSecure Key Managerサービスで[キーストアを作成](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_1)する必要があります。 [キーストアのIDを確認](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_2)して暗号化キーストア設定に入力します。
@@ -122,7 +121,6 @@ NAS暗号化ボリュームは、暗号化に使用する共通鍵をNHN Cloud S
     復元すると、復元時点以降に作成されたスナップショットは自動的に削除されます。
 
 <a id="snapshots.restore_results"></a>
-
 ### スナップショット復元結果照会 { #snapshots.restore_results }
 スナップショットを使用して実行したボリュームの復元履歴を照会します。
 
@@ -132,7 +130,6 @@ NAS暗号化ボリュームは、暗号化に使用する共通鍵をNHN Cloud S
 指定されたスナップショットを削除します。一度削除されたスナップショットは復元できません。
 
 <a id="network"></a>
-
 ## ネットワーク { #network }
 ネットワーク接続情報を確認します。
 
@@ -193,7 +190,6 @@ NAS暗号化ボリュームは、暗号化に使用する共通鍵をNHN Cloud S
 | 原本ボリューム | 複製原本ボリューム名を表示します。複製が設定された対象ボリュームの場合にのみ表示されます。 |
 
 <a id="replication.settings"></a>
-
 ### 複製設定 { #replication.settings }
 
 組織内のプロジェクトの選択したリージョンへの複製を設定できます。
@@ -223,7 +219,6 @@ NAS暗号化ボリュームは、暗号化に使用する共通鍵をNHN Cloud S
 使用料金の詳細については、[NAS 料金案内](https://www.nhncloud.com/kr/service/storage/nas)を参照してください。
 
 <a id="replication.start"></a>
-
 ### 複製開始 { #replication.start }
 
 停止状態のボリュームの複製を再開します。
@@ -269,7 +264,6 @@ NAS暗号化ボリュームは、暗号化に使用する共通鍵をNHN Cloud S
     複製を再設定すると、新しいターゲットボリュームが作成されます。以前使用していたターゲットボリュームを再び複製対象ボリュームとして使用することはできません。
 
 <a id="connect_volume"></a>
-
 ## ボリューム接続 { #connect_volume }
 
 作成されたボリュームの接続情報を使用して、インスタンスにマウントできます。ただし、マウントするインスタンスはボリュームと同じサブネットに接続されている必要があります。
@@ -278,7 +272,6 @@ NAS暗号化ボリュームは、暗号化に使用する共通鍵をNHN Cloud S
 ### NFS { #connect_volume.nfs }
 
 <a id="connect_volume.nfs-install-nfs-package"></a>
-
 #### NFSパッケージのインストール
 
 * **Debian, Ubuntu**
@@ -294,7 +287,6 @@ sudo yum install nfs-utils rpcbind
 <br>
 
 <a id="connect_volume.nfs-run-rpcbind-service"></a>
-
 #### rpcbindサービス実行
 
 ```
@@ -304,7 +296,6 @@ sudo service rpcbind start
 <br>
 
 <a id="connect_volume.nfs-mount-volume"></a>
-
 #### ボリュームマウント
 
 ```
@@ -317,7 +308,6 @@ sudo mount -t nfs <nas source> <mount point>
 | &lt;mount point&gt; | ボリュームをマウントするディレクトリ<br>例: /mnt |
 
 <a id="connect_volume.cifs"></a>
-
 ### CIFS { #connect_volume.cifs }
 
 ファイルエクスプローラーの左側ナビゲーションペインで **[PC]** を右クリックし、**[ネットワークドライブ接続]** を選択します。ネットワークドライブ接続ウィンドウが表示されたら、マウントするドライブを選択し、フォルダーパスを入力します。
