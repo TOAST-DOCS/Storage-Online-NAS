@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=ab931ac9d8ba -->
 
 <a id="storage-nas-terraform-user-guide"></a>
@@ -189,7 +191,7 @@ resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
 | dst_volume.encryption | Object | N | - | Encryption setting object when creating a volume |
 | dst_volume.encryption.enabled | Boolean | N | - | Whether to enable encryption setting<br>Encryption is enabled when this field is set to `true` after the encryption keystore is set. |
 | dst_volume.mount_protocol | Object | N | - | Protocol setting object when creating a volume |
-| dst_volume.mount_protocol.cifs_auth_ids | List | N | O | List of CIFS authentication IDs<br>No input required when selecting an NFS protocol |
+| dst_volume.mount_protocol.cifs_auth_ids | List(String) | N | O | List of CIFS authentication IDs<br>No input required when selecting an NFS protocol |
 | dst_volume.mount_protocol.protocol | String | Y | - | Specify protocol when mounting a volume<br>You can select either `nfs` or `cifs`. |
 | dst_volume.name | String | Y | - | Volume name |
 | dst_volume.size_gb | Integer | Y | O | Volume Size (GB)<br>The volume can be set from a minimum of 300 GB to a maximum of 10,000 GB, in 100 GB increments. |
@@ -204,5 +206,5 @@ resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
 <a id="reference"></a>
 ## References { #reference }
 
-Terraform - [https://www.terraform.io/](https://www.terraform.io/)
-Terraform Registry - [https://registry.terraform.io/](https://registry.terraform.io/)
+* Terraform - [https://www.terraform.io/](https://www.terraform.io/)
+* Terraform Registry - [https://registry.terraform.io/](https://registry.terraform.io/)
