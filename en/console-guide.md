@@ -11,7 +11,6 @@ This document describes how to manage NAS volumes and snapshots and connect them
 ## Volume { #volume }
 
 <a id="create_volume"></a>
-
 ### Create Volume { #create_volume }
 
 Creates a new volume. The created volume can be accessed from instances using the network file system (NFS) and common internet file system (CIFS) protocols.
@@ -32,6 +31,7 @@ Creates a new volume. The created volume can be accessed from instances using th
 !!! tip "Note"
     The number of subnets available for each project is limited to 3. To increase the limit, contact Customer Support.
 
+<a id="create_volume.cifs"></a>
 #### Manage CIFS Credentials
 To use the CIFS protocol, you must create CIFS credentials. Credentials are managed on a per-project basis, and you must register a CIFS credential to access each CIFS volume.
 
@@ -50,7 +50,6 @@ To use the CIFS protocol, you must create CIFS credentials. Credentials are mana
     * Passwords that contain the ID cannot be used.
 
 <a id="create_volume.encryption"></a>
-
 #### Encryption Key Store Settings
 
 Encrypted volume stores symmetric keys used for encryption in a key store in the NHN Cloud Secure Key Manager service. Therefore, to create encrypted volume, you must [create a key store](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_1) in the Secure Key Manager service in advance. [Check the ID of the key store](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_2) and enter it in the encryption key store settings.
@@ -123,7 +122,6 @@ Restores volume to the point in time when the snapshot was created.
     When restoring, snapshots created after the point of restoration are automatically deleted.
 
 <a id="snapshots.restore_results"></a>
-
 ### View Snapshot Restore Results { #snapshots.restore_results }
 View the history of volume restores performed using snapshots.
 
@@ -133,7 +131,6 @@ View the history of volume restores performed using snapshots.
 A specified snapshot is deleted. Once deleted, snapshots cannot be recovered.
 
 <a id="network"></a>
-
 ## Network { #network }
 Check the network connection information.
 
@@ -194,7 +191,6 @@ View information about replication settings.
 | Source volume | The replication source volume name. Only exposed if replication is enabled on the target volume. |
 
 <a id="replication.settings"></a>
-
 ### Replication Settings { #replication.settings }
 
 You can set up replication to selected regions of a project within your organization.
@@ -224,7 +220,6 @@ Check the range of regions selectable by target project.
 For more information on pricing, see our [NAS pricing guide](https://www.nhncloud.com/kr/service/storage/nas).
 
 <a id="replication.start"></a>
-
 ### Start Replication { #replication.start }
 
 Resumes replication of volume that is in a stopped state.
@@ -270,7 +265,6 @@ When you disable replication, the target volume retains the source volume data a
     When you re-establish replication, a new target volume is created. You cannot use the previously used target volume as the replication target volume again.
 
 <a id="connect_volume"></a>
-
 ## Connect Volume { #connect_volume }
 
 The created volume can be mounted on an instance using the connection information. However, the instance to be mounted must be connected to the same subnet as the volume.
@@ -279,7 +273,6 @@ The created volume can be mounted on an instance using the connection informatio
 ### NFS { #connect_volume.nfs }
 
 <a id="connect_volume.nfs-install-nfs-package"></a>
-
 #### Install NFS Package 
 
 * **Debian, Ubuntu**
@@ -295,7 +288,6 @@ sudo yum install nfs-utils rpcbind
 <br>
 
 <a id="connect_volume.nfs-run-rpcbind-service"></a>
-
 #### Run rpcbind Service 
 
 ```
@@ -305,7 +297,6 @@ sudo service rpcbind start
 <br>
 
 <a id="connect_volume.nfs-mount-volume"></a>
-
 #### Mount volume
 
 ```
@@ -318,7 +309,6 @@ sudo mount -t nfs <nas source> <mount point>
 | &lt;mount point&gt; | Directory to mount the volume<br>Example: /mnt |
 
 <a id="connect_volume.cifs"></a>
-
 ### CIFS { #connect_volume.cifs }
 
 In File Explorer, right-click **My PC** in the left navigation pane and select **Connect Network Drive**. In the Connect Network Drive window, select the drive you want to mount and enter the folder path.
