@@ -31,7 +31,7 @@
 <a id="december-2-2025"></a>
 ## 2025. 12. 02. { #december-2-2025 }
 
-<a id="decemb걸리er-2-2025-added-features"></a>
+<a id="december-2-2025-added-features"></a>
 ### 신규 기능 추가 { #december-2-2025-added-features }
 
 * NAS 모니터링 기능 추가
@@ -53,7 +53,6 @@
 * 볼륨 복제 기능 변경
     * 복제 방향 변경 즉시 복제가 활성화됩니다.
     * 복제를 중지하거나 복제 방향 변경 시 요청 시점까지의 데이터가 복제된 후 작업이 진행됩니다.
-    
 
 <a id="march-11-2025"></a>
 ## 2025. 03. 11. { #march-11-2025 }
