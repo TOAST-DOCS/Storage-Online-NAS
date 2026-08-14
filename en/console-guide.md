@@ -1,6 +1,8 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=716f88137cb3 -->
+{% include-markdown '../_online-nas-vars.md' %}
+
+<!-- pre-align:aligned sig=cdac5f1b7499 -->
 
 <a id="storage-nas-console-user-guide"></a>
 ## Storage > NAS > Console User Guide { #storage-nas-console-user-guide }
@@ -11,6 +13,7 @@ This document describes how to manage NAS volumes and snapshots and connect them
 ## Volume { #volume }
 
 <a id="create_volume"></a>
+
 ### Create Volume { #create_volume }
 
 Creates a new volume. The created volume can be accessed from instances using the network file system (NFS) and common internet file system (CIFS) protocols.
@@ -26,12 +29,15 @@ Creates a new volume. The created volume can be accessed from instances using th
 | Access Control List (ACL) | A list of the IPs or CIDR blocks that allow read and write permissions. |
 | Auto Create Snapshot | Snapshots are created automatically at a specified time once per day. When the maximum number of saves is reached, the first automatically created snapshot is deleted. |
 | Snapshot Reserve Capacity | Pre-allocate space for snapshots to be stored. Data can be stored in any capacity except the one you set. If the actual size of the snapshot is larger than the snapshot reserve capacity setting, the data storage space beyond the reserve capacity is used to store the snapshot.|
-| Encryption  | Select whether to enable volume encryption. This must be preceded by setting up encryption key store. |
+{% if encryption -%}
+| Encryption | Select whether to enable volume encryption. This must be preceded by setting up encryption key storage. |
+{%- endif %}
 
 !!! tip "Note"
     The number of subnets available for each project is limited to 3. To increase the limit, contact Customer Support.
 
 <a id="create_volume.cifs"></a>
+
 #### Manage CIFS Credentials
 To use the CIFS protocol, you must create CIFS credentials. Credentials are managed on a per-project basis, and you must register a CIFS credential to access each CIFS volume.
 
@@ -49,7 +55,9 @@ To use the CIFS protocol, you must create CIFS credentials. Credentials are mana
     * Allowed special characters are `~!@#^*_-+=\|()[]:;"'<>,.?/`. Spaces are not allowed.
     * Passwords that contain the ID cannot be used.
 
+{% if encryption %}
 <a id="create_volume.encryption"></a>
+
 #### Encryption Key Store Settings
 
 Encrypted volume stores symmetric keys used for encryption in a key store in the NHN Cloud Secure Key Manager service. Therefore, to create encrypted volume, you must [create a key store](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_1) in the Secure Key Manager service in advance. [Check the ID of the key store](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_2) and enter it in the encryption key store settings.
@@ -63,16 +71,20 @@ When you change the key store ID, the symmetric key for encrypted volume you cre
 
     Encrypted volume encrypts data with the XTS-AES-256 algorithm using two different symmetric keys. Therefore, two symmetric keys are stored in the key store for each encrypted volume.
 
+{% endif %}
 <a id="change_volume_size"></a>
+
 ### Change Volume Size { #change_volume_size }
 
 Volume size is changed. Volume can be scaled up and down even while in use.
 
+{% if replication -%}
 !!! danger "Caution"
     The size of a replication target volume can only be changed after replication is stopped.
 
     The size of the target volume must be equal to or greater than the size of the source volume. It is recommended to set the sizes of the source and target volumes to be the same.
 
+{% endif %}
 <a id="change_acl"></a>
 ### Change Access Control List Settings { #change_acl }
 
@@ -148,13 +160,16 @@ Add a subnet association. Adding a subnet association allows you to access volum
     After adding a subnet association, if the subnet band does not exist in the ACL, mounting is not possible.
 
 <a id="network.detach_subnet"></a>
+
 ### Detach Subnet { #network.detach_subnet }
 Remove the subnet associated with the volume. IP ACLs must be removed separately if needed.
 
 !!! danger "Caution"
     It is recommended to detach the subnet after unmounting from a connected instance. Detaching while mounted can cause problems for user systems.
 
+{% if monitoring %}
 <a id="monitoring"></a>
+
 ## Monitoring { #monitoring }
 
 Check various metrics of volume with graphs. After selecting the volume to check, click the **Monitoring** tab.
@@ -172,6 +187,8 @@ The default search period is the latest 1 hour, and you can search any period yo
 | Inode | - | The number of volume inodes. |
 | Volume status | - | The volume status. |
 
+{% endif %}
+{% if replication %}
 <a id="replication"></a>
 ## Replication { #replication }
 
@@ -256,6 +273,7 @@ Change the direction of replication between source and target volume.
     * Replication might fail if the target volume size is smaller than the source volume size.
 
 <a id="replication.disable"></a>
+
 ### Disable Replication Settings { #replication.disable }
 
 Disables volume replication.
@@ -264,6 +282,7 @@ When you disable replication, the target volume retains the source volume data a
 !!! danger "Caution"
     When you re-establish replication, a new target volume is created. You cannot use the previously used target volume as the replication target volume again.
 
+{% endif %}
 <a id="connect_volume"></a>
 ## Connect Volume { #connect_volume }
 
