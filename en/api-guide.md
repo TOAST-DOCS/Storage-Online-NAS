@@ -195,7 +195,6 @@ This document describes how to manage volumes and snapshots by using the API pro
 ## NAS API Common Information { #nas_api_common }
 
 <a id="nas_api_common.endpoint"></a>
-
 ### API Endpoint { #nas_api_common.endpoint }
 
 NAS API uses the `nasv1` type endpoint. Refer to the `serviceCatalog` in the token issuance response for the valid endpoint.
@@ -205,7 +204,6 @@ NAS API uses the `nasv1` type endpoint. Refer to the `serviceCatalog` in the tok
 {% for region in regions %}| $[ region.name ]$ | $[ region.endpoint ]$ |
 {% endfor %}
 <a id="nas_api_common.authentication"></a>
-
 ### Authentication and Authorization { #nas_api_common.authentication }
 
 NAS uses IaaS tokens for authentication and authorization when making API calls. The IaaS token is an authentication token used for NHN Cloud's OpenStack-based infrastructure services (IaaS).
@@ -290,7 +288,6 @@ This API does not require a request body.
 | sort | Query | String | N | Name of the field to sort by<br>Describe it in the form `{key}:{direction}`. Example: `name:asc`, `created_at:desc`<br>Possible key values: `id`, `name`, `sizeGb`, `createdAt`, `updatedAt` |
 
 <a id="volume.list-response"></a>
-
 #### Response
 
 | Name | Type | Format | Description |
@@ -331,7 +328,6 @@ $[ volume_response_json(indent=6) ]$
 <br>
 
 <a id="volume.create"></a>
-
 ### Create Volume { #volume.create }
 
 Create a new volume.
@@ -358,7 +354,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.create-request"></a>
-
 #### Request
 
 | Name | Type | Format | Required | Description |
@@ -412,7 +407,6 @@ $[ volume_request_table('volume.', 'post') ]$
 </details>
 
 <a id="volume.create-response"></a>
-
 #### Response
 
 | Name | Type | Format | Description |
@@ -489,7 +483,6 @@ This API does not require a request body.
 | volume_id | URL | String | Y | Volume ID to query |
 
 <a id="volume.view-response"></a>
-
 #### Response
 
 | Name | Type | Format | Description |
@@ -514,7 +507,6 @@ X-Auth-Token: {token-id}
 ```
 
 <a id="volume.change_settings-request"></a>
-
 #### Request
 
 | Name | Type | Format | Required | Description |
@@ -602,7 +594,6 @@ X-Auth-Token: {token-id}
 </details>
 
 <a id="volume.connect_interface-response"></a>
-
 #### Response
 
 | Name | Type | Format | Description |
@@ -823,7 +814,6 @@ This API does not require a request body.
 | volume_id | URL | String | Y | Volume ID |
 
 <a id="snapshots.list-response"></a>
-
 #### Response
 
 | Name | Type | Format | Description |
@@ -886,7 +876,6 @@ X-Auth-Token: {token-id}
 </details>
 
 <a id="snapshots.create-response"></a>
-
 #### Response
 
 | Name | Type | Format | Description |
@@ -966,7 +955,6 @@ This API does not require a request body.
 | showReclaimableSpace | Query | Boolean | N | Whether to expose `the reclaimableSpace` entry, which indicates the amount of space reclaimed when a snapshot is deleted. |
 
 <a id="snapshots.view-response"></a>
-
 #### Response
 
 | Name | Type | Format | Description |
@@ -999,7 +987,6 @@ This API does not require a request body.
 | snapshot_id | URL | String | Y | Snapshot ID |
 
 <a id="snapshots.restore-response"></a>
-
 #### Response
 
 The response body does not contain any content other than header fields.
@@ -1044,7 +1031,6 @@ X-Auth-Token: {token-id}
 ```
 
 <a id="replication.setup-request"></a>
-
 #### Request
 
 | Name | Type | Format | Required | Description |
@@ -1080,7 +1066,6 @@ $[ volume_request_table('volumeMirror.dstVolume.', 'post') ]$
 </details>
 
 <a id="replication.setup-response"></a>
-
 #### Response
 
 | Name | Type | Format | Description |
@@ -1242,7 +1227,6 @@ X-Auth-Token: {token-id}
 | volume_mirror_id | URL | String | Y | Replication setting ID |
 
 <a id="replication.stop-response"></a>
-
 #### Response
 
 The response body does not contain any content other than header fields.
