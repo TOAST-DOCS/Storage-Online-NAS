@@ -29,7 +29,6 @@ Mounting of file-level storage removes the need for additional file system confi
 Volume capacity can be scaled up and down even while using in use.
 
 <a id="features.secure"></a>
-
 ### Secure { #features.secure }
 
 Volumes are accessible only through a project's network and are isolated from other projects' networks.
