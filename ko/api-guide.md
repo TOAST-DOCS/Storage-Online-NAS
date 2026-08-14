@@ -1,5 +1,189 @@
+{% include-markdown '../_online-nas-vars.md' %}
+
 <!-- pre-align:aligned sig=06dac106ebf2 -->
 
+{% macro interface_response_table(prefix='', desc_prefix='') %}
+| $[ prefix ]$id | Body | String | $[ desc_prefix ]$인터페이스 ID |
+| $[ prefix ]$path | Body | String | $[ desc_prefix ]$인터페이스 경로 |
+| $[ prefix ]$status | Body | String | $[ desc_prefix ]$인터페이스 상태 |
+| $[ prefix ]$subnetId | Body | String | $[ desc_prefix ]$인터페이스의 서브넷 ID |
+| $[ prefix ]$tenantId | Body | String | $[ desc_prefix ]$인터페이스의 테넌트 ID |{% endmacro %}
+{# end macro interface_response_table #}
+{% macro volume_mirror_response_table(prefix='') %}
+| $[ prefix ]$id | Body | String | 복제 설정 ID |
+| $[ prefix ]$role | Body | String | 복제 역할<br>- `SOURCE`: 원본 볼륨<br>- `DESTINATION`: 대상 볼륨 |
+| $[ prefix ]$status | Body | String | 복제 설정 상태<br>- `INITIALIZED`: 설정 완료<br>- `UPDATING`: 설정 변경 중<br>- `DELETING`: 설정 삭제 중<br>- `PENDING`: 설정 생성 중 |
+| $[ prefix ]$direction | Body | String | 복제 방향<br>- `FORWARD`: 원본 볼륨 → 대상 볼륨<br>- `REVERSE`: 대상 볼륨 → 원본 볼륨 |
+| $[ prefix ]$directionChangedAt | Body | String | 복제 방향 변경 시각 |
+| $[ prefix ]$dstProjectId | Body | String | 복제 대상 볼륨의 프로젝트 ID |
+| $[ prefix ]$dstRegion | Body | String | 복제 대상 볼륨 리전 |
+| $[ prefix ]$dstTenantId | Body | String | 복제 대상 볼륨 테넌트 ID |
+| $[ prefix ]$dstVolumeId | Body | String | 복제 대상 볼륨 ID |
+| $[ prefix ]$dstVolumeName | Body | String | 복제 대상 볼륨 이름 |
+| $[ prefix ]$srcProjectId | Body | String | 원본 볼륨의 프로젝트 ID |
+| $[ prefix ]$srcRegion | Body | String | 원본 볼륨 리전 |
+| $[ prefix ]$srcTenantId | Body | String | 원본 볼륨 테넌트 ID |
+| $[ prefix ]$srcVolumeId | Body | String | 원본 볼륨 ID |
+| $[ prefix ]$srcVolumeName | Body | String | 원본 볼륨 이름 |
+| $[ prefix ]$createdAt | Body | String | 복제 생성 시각 |{% endmacro %}
+{# end macro volume_mirror_response_table #}
+{% macro volume_response_table(prefix='') %}
+| $[ prefix ]$id | Body | String | 볼륨 ID |
+| $[ prefix ]$name | Body | String | 볼륨 이름 |
+| $[ prefix ]$status | Body | String | 볼륨 상태 |
+| $[ prefix ]$description | Body | String | 볼륨 설명 |
+| $[ prefix ]$sizeGb | Body | Integer | 볼륨 크기(GB) |
+| $[ prefix ]$projectId | Body | String | 볼륨이 속한 프로젝트 ID |
+| $[ prefix ]$tenantId | Body | String | 볼륨이 속한 테넌트 ID |
+| $[ prefix ]$acl | Body | List | 볼륨 ACL 목록 |
+{% if encryption -%}
+| $[ prefix ]$encryption | Body | Object | 볼륨 암호화 정보 |
+| $[ prefix ]$encryption.enabled | Body | Boolean | 볼륨 암호화 활성 여부 |
+| $[ prefix ]$encryption.keys | Body | List | 볼륨 암호화 키 정보 |
+{%- endif %}
+| $[ prefix ]$interfaces | Body | List | 볼륨 인터페이스 객체 목록 |
+$[ interface_response_table(prefix + 'interfaces.') ]$
+{% if replication -%}
+| $[ prefix ]$mirrors | Body | List | 볼륨 복제 설정 객체 목록 |
+$[ volume_mirror_response_table(prefix + 'mirrors.') ]$
+{%- endif %}
+| $[ prefix ]$mountProtocol | Body | Object | 볼륨 마운트 프로토콜 |
+| $[ prefix ]$mountProtocol.cifsAuthIds | Body | List | 볼륨 CIFS 인증 ID 목록 |
+| $[ prefix ]$mountProtocol.protocol | Body | String | 볼륨 마운트 프로토콜 |
+| $[ prefix ]$snapshotPolicy | Body | Object | 볼륨 스냅숏 설정 객체 |
+| $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | 스냅숏 최대 저장 개수 |
+| $[ prefix ]$snapshotPolicy.reservePercent | Body | Integer | 스냅숏 용량 비율 |
+| $[ prefix ]$snapshotPolicy.schedule | Body | Object | 스냅숏 자동 생성 객체 |
+| $[ prefix ]$snapshotPolicy.schedule.time | Body | String | 스냅숏 자동 생성 시간 |
+| $[ prefix ]$snapshotPolicy.schedule.timeOffset | Body | String | 스냅숏 자동 생성 기준 시간대 |
+| $[ prefix ]$snapshotPolicy.schedule.weekdays | Body | List | 스냅숏 자동 생성 요일<br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |
+| $[ prefix ]$createdAt | Body | String | 볼륨 생성 시각 |
+| $[ prefix ]$updatedAt | Body | String | 볼륨 변경 시각 |{% endmacro %}
+{# end macro volume_response_table #}
+{% macro volume_request_table(prefix='', method='') %}
+| $[ prefix ]$acl | Body | List | N | 볼륨 생성 시 설정할 ACL 목록<br>IP 또는 CIDR 형식으로 입력할 수 있습니다. |
+| $[ prefix ]$description | Body | String | N | 볼륨 설명 |
+{% if method == 'post' %}
+{% if encryption -%}
+| $[ prefix ]$encryption | Body | Object | N | 볼륨 생성 시 암호화 설정 객체 |
+| $[ prefix ]$encryption.enabled | Body | Boolean | N | 암호화 설정 활성화 여부<br>암호화 키 저장소가 설정된 후 해당 필드를 `true`로 설정하면 암호화가 활성화됩니다. |
+{%- endif %}
+{% endif %}
+{% if method == 'post' %}
+| $[ prefix ]$interfaces | Body | List | N | 볼륨에 접근할 인터페이스 목록 |
+| $[ prefix ]$interfaces.subnetId | Body | String | N | 볼륨 인터페이스의 서브넷 ID |
+{% endif %}
+| $[ prefix ]$mountProtocol | Body | Object | N | 볼륨 생성 시 프로토콜 설정 객체 |
+{% if method == 'post' %}
+| $[ prefix ]$mountProtocol.cifsAuthIds | Body | List | N | CIFS 인증 ID 목록<br>NFS 프로토콜 선택 시 입력 불필요 |
+| $[ prefix ]$mountProtocol.protocol | Body | String | Y | 볼륨 마운트 시 프로토콜 지정<br>`nfs`, `cifs` 중 하나를 선택할 수 있습니다. |
+{% elif method == 'patch' %}
+| $[ prefix ]$mountProtocol.cifsAuthIds | Body | List | N | CIFS 인증 ID 목록 |
+| $[ prefix ]$mountProtocol.protocol | Body | String | N | 이미 생성된 볼륨의 프로토콜은 변경할 수 없습니다.<br>`cifsAuthIds` 필드 변경 시 해당 필드에 `cifs`를 명시해야 합니다. |
+{% endif %}
+{% if method == 'post' %}
+| $[ prefix ]$name | Body | String | Y | 볼륨 이름 |
+{% endif %}
+| $[ prefix ]$sizeGb | Body | Integer | $[ 'Y' if method == 'post'  else 'N' ]$ | 볼륨 크기(GB)<br>볼륨은 최소 300GB에서 최대 10,000GB까지, 100GB 단위로 설정할 수 있습니다. |
+| $[ prefix ]$snapshotPolicy | Body | Object | N | 볼륨 스냅숏 설정 객체 |
+| $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | N | 스냅숏 최대 저장 개수<br>30개까지 설정 가능하며, 최대 저장 개수에 도달하면 자동으로 생성된 스냅숏 중 가장 먼저 생성된 스냅숏이 삭제됩니다. |
+| $[ prefix ]$snapshotPolicy.reservePercent | Body | Integer | N | 스냅숏 용량 비율 |
+| $[ prefix ]$snapshotPolicy.schedule | Body | Object | N | 스냅숏 자동 생성 객체<br>`null`일 경우 스냅숏 자동 생성이 설정되지 않습니다. |
+| $[ prefix ]$snapshotPolicy.schedule.time | Body | String | N | 스냅숏 자동 생성 시간 |
+| $[ prefix ]$snapshotPolicy.schedule.timeOffset | Body | String | N | 스냅숏 자동 생성 기준 시간대 |
+| $[ prefix ]$snapshotPolicy.schedule.weekdays | Body | List | N | 스냅숏 자동 생성 요일<br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |{% endmacro %}
+{# end macro volume_request_table #}
+{% macro volume_mirror_response_json(indent=0, method='')   %}
+$[ ' ' * indent ]$"createdAt":"2025-04-01T06:45:45+00:00",
+$[ ' ' * indent ]$"direction": "FORWARD",
+$[ ' ' * indent ]$"directionChangedAt": null,
+$[ ' ' * indent ]$"dstProjectId": "K3y0CgOy",
+$[ ' ' * indent ]$"dstRegion": "KR2",
+$[ ' ' * indent ]$"dstTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
+$[ ' ' * indent ]$"dstVolumeId": "e09281d2-0b1c-48a9-8a01-0098aa59f624",
+$[ ' ' * indent ]$"dstVolumeName": "TEST-NAS-MIRROR-1",
+$[ ' ' * indent ]$"id": "8116892c-7306-48be-9e3d-143311b2254c",
+$[ ' ' * indent ]$"role": "SOURCE",
+$[ ' ' * indent ]$"srcProjectId": "K3y0CgOy",
+$[ ' ' * indent ]$"srcRegion": "KR1",
+$[ ' ' * indent ]$"srcTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
+$[ ' ' * indent ]$"srcVolumeId": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
+$[ ' ' * indent ]$"srcVolumeName": "TEST-NAS-1",
+$[ ' ' * indent ]$"status": "PENDING"{% endmacro %}
+{# end macro #}
+{% macro volume_response_json(indent=0, method='')   %}
+$[ ' ' * indent ]$"acl": [
+$[ ' ' * indent ]$  "10.0.1.0/24"
+$[ ' ' * indent ]$],
+$[ ' ' * indent ]$"createdAt": "2025-04-01T06:44:25+00:00",
+$[ ' ' * indent ]$"description": "NAS for Testing",
+{% if encryption %}
+$[ ' ' * indent ]$"encryption": {
+$[ ' ' * indent ]$  "enabled": false
+$[ ' ' * indent ]$},
+{% endif %}
+$[ ' ' * indent ]$"id": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
+$[ ' ' * indent ]$"interfaces": [
+$[ ' ' * indent ]$  {
+$[ ' ' * indent ]$    "id": "9a8ec90f-cc27-4649-9bda-a1f0b193a402",
+$[ ' ' * indent ]$    "path": "10.0.1.7:/TEST-NAS-1",
+$[ ' ' * indent ]$    "status": "ACTIVE",
+$[ ' ' * indent ]$    "subnetId": "cb779d62-72ef-43b6-b368-3fe28dcd812b",
+$[ ' ' * indent ]$    "tenantId": "3b6179e5fa6b499386b827357c4cb8c4"
+$[ ' ' * indent ]$  }
+$[ ' ' * indent ]$],
+{% if method == 'post' %}
+$[ ' ' * indent ]$"mirrors": []
+{% else %}
+$[ ' ' * indent ]$"mirrors": [
+$[ ' ' * indent ]$  {
+$[ volume_mirror_response_json(indent+4) ]$
+$[ ' ' * indent ]$  }
+$[ ' ' * indent ]$],
+{% endif %}
+$[ ' ' * indent ]$"mountProtocol": {
+$[ ' ' * indent ]$  "protocol": "cifs",
+$[ ' ' * indent ]$  "cifsAuthIds": [
+$[ ' ' * indent ]$    "cifs-test-id"
+$[ ' ' * indent ]$  ]
+$[ ' ' * indent ]$},
+$[ ' ' * indent ]$"name": "TEST-NAS-1",
+$[ ' ' * indent ]$"projectId": "K3y0CgOy",
+$[ ' ' * indent ]$"sizeGb": 300,
+$[ ' ' * indent ]$"snapshotPolicy": {
+$[ ' ' * indent ]$  "maxScheduledCount": 1,
+$[ ' ' * indent ]$  "reservePercent": 5,
+$[ ' ' * indent ]$  "schedule": {
+$[ ' ' * indent ]$    "time": "00:00",
+$[ ' ' * indent ]$    "timeOffset": "+09:00",
+$[ ' ' * indent ]$    "weekdays": [
+$[ ' ' * indent ]$      1,
+$[ ' ' * indent ]$      3,
+$[ ' ' * indent ]$      5
+$[ ' ' * indent ]$    ]
+$[ ' ' * indent ]$  }
+$[ ' ' * indent ]$},
+$[ ' ' * indent ]$"stationId": null,
+$[ ' ' * indent ]$"status": "ACTIVE",
+$[ ' ' * indent ]$"tenantId": "3b6179e5fa6b499386b827357c4cb8c4",
+$[ ' ' * indent ]$"updatedAt": "2025-04-01T06:47:13+00:00"{% endmacro %}
+{# end macro #}
+{% macro snapshot_response_table(prefix='')   %}
+| $[ prefix ]$id | Body | String | 스냅숏 ID |
+| $[ prefix ]$name | Body | String | 스냅숏 이름 |
+| $[ prefix ]$size | Body | Integer | 스냅숏 크기 |
+| $[ prefix ]$type | Body | String | 스냅숏 타입<br>- `NORMAL`: 사용자가 생성한 스냅숏<br>- `SCHEDULED`: 스냅숏 자동 생성으로 생성된 스냅숏<br>- `MIRROR`: 복제로 생성된 스냅숏 |
+| $[ prefix ]$preserved | Body | Boolean | 시스템이 삭제 불가로 설정한 스냅숏 여부 |
+| $[ prefix ]$createdAt | Body | String | 스냅숏 생성 시각 |{% endmacro %}
+{# end macro snapshot_response_table #}
+{% macro snapshot_response_json(indent=0)   %}
+$[ ' ' * indent ]$"createdAt": "2025-04-01T09:34:27+00:00",
+$[ ' ' * indent ]$"id": "8151fe33-0edc-11f0-b0e3-d039eaa3e920",
+$[ ' ' * indent ]$"name": "TEST-SNAPSHOT-1",
+$[ ' ' * indent ]$"preserved": false,
+$[ ' ' * indent ]$"size": 3112960,
+$[ ' ' * indent ]$"type": "NORMAL"{% endmacro %}
+{# end macro #}
 <a id="storage-nas-api-guide"></a>
 ## Storage > NAS > API 가이드 { #storage-nas-api-guide }
 
@@ -15,15 +199,14 @@ NAS API는 `nasv1` 타입 엔드포인트를 사용합니다. 정확한 엔드�
 
 | 리전 | 엔드포인트 |
 | --- | --- |
-| 한국(판교) 리전 | https://kr1-api-nas-infrastructure.nhncloudservice.com |
-| 한국(평촌) 리전 | https://kr2-api-nas-infrastructure.nhncloudservice.com |
-| 한국(광주) 리전 | https://kr3-api-nas-infrastructure.nhncloudservice.com |
+{% for region in regions %}| $[ region.name ]$ | $[ region.endpoint ]$ |
+{% endfor %}
 
 <a id="nas_api_common.authentication"></a>
 ### 인증 및 권한 { #nas_api_common.authentication }
 
 NAS는 API 호출 시 인증/인가를 위해 IaaS 토큰을 사용합니다. IaaS 토큰은 NHN Cloud의 OpenStack 기반 인프라 서비스(IaaS)에서 사용하는 인증 토큰입니다.
-IaaS 토큰 발급 및 사용 방법에 대한 자세한 내용은 [IaaS 토큰](/nhncloud/ko/public-api/iaas-token/)을 참고합니다.
+IaaS 토큰 발급 및 사용 방법에 대한 자세한 내용은 [IaaS 토큰]($[ identity_guide_url ]$)을 참고합니다.
 
 <a id="nas_api_common.response"></a>
 ### 응답 공통 정보 { #nas_api_common.response }
@@ -114,52 +297,7 @@ X-Auth-Token: {token-id}
 | paging.page | Body | Integer | 현재 페이지 번호 |
 | paging.totalCount | Body | Integer | 전체 수 |
 | volumes | Body | List | 볼륨 객체 목록 |
-| volumes.id | Body | String | 볼륨 ID |
-| volumes.name | Body | String | 볼륨 이름 |
-| volumes.status | Body | String | 볼륨 상태 |
-| volumes.description | Body | String | 볼륨 설명 |
-| volumes.sizeGb | Body | Integer | 볼륨 크기(GB) |
-| volumes.projectId | Body | String | 볼륨이 속한 프로젝트 ID |
-| volumes.tenantId | Body | String | 볼륨이 속한 테넌트 ID |
-| volumes.acl | Body | List | 볼륨 ACL 목록 |
-| volumes.encryption | Body | Object | 볼륨 암호화 정보 |
-| volumes.encryption.enabled | Body | Boolean | 볼륨 암호화 활성 여부 |
-| volumes.encryption.keys | Body | List | 볼륨 암호화 키 정보 |
-| volumes.interfaces | Body | List | 볼륨 인터페이스 객체 목록 |
-| volumes.interfaces.id | Body | String | 인터페이스 ID |
-| volumes.interfaces.path | Body | String | 인터페이스 경로 |
-| volumes.interfaces.status | Body | String | 인터페이스 상태 |
-| volumes.interfaces.subnetId | Body | String | 인터페이스의 서브넷 ID |
-| volumes.interfaces.tenantId | Body | String | 인터페이스의 테넌트 ID |
-| volumes.mirrors | Body | List | 볼륨 복제 설정 객체 목록 |
-| volumes.mirrors.id | Body | String | 복제 설정 ID |
-| volumes.mirrors.role | Body | String | 복제 역할<br>- `SOURCE`: 원본 볼륨<br>- `DESTINATION`: 대상 볼륨 |
-| volumes.mirrors.status | Body | String | 복제 설정 상태<br>- `INITIALIZED`: 설정 완료<br>- `UPDATING`: 설정 변경 중<br>- `DELETING`: 설정 삭제 중<br>- `PENDING`: 설정 생성 중 |
-| volumes.mirrors.direction | Body | String | 복제 방향<br>- `FORWARD`: 원본 볼륨 → 대상 볼륨<br>- `REVERSE`: 대상 볼륨 → 원본 볼륨 |
-| volumes.mirrors.directionChangedAt | Body | String | 복제 방향 변경 시각 |
-| volumes.mirrors.dstProjectId | Body | String | 복제 대상 볼륨의 프로젝트 ID |
-| volumes.mirrors.dstRegion | Body | String | 복제 대상 볼륨 리전 |
-| volumes.mirrors.dstTenantId | Body | String | 복제 대상 볼륨 테넌트 ID |
-| volumes.mirrors.dstVolumeId | Body | String | 복제 대상 볼륨 ID |
-| volumes.mirrors.dstVolumeName | Body | String | 복제 대상 볼륨 이름 |
-| volumes.mirrors.srcProjectId | Body | String | 원본 볼륨의 프로젝트 ID |
-| volumes.mirrors.srcRegion | Body | String | 원본 볼륨 리전 |
-| volumes.mirrors.srcTenantId | Body | String | 원본 볼륨 테넌트 ID |
-| volumes.mirrors.srcVolumeId | Body | String | 원본 볼륨 ID |
-| volumes.mirrors.srcVolumeName | Body | String | 원본 볼륨 이름 |
-| volumes.mirrors.createdAt | Body | String | 복제 생성 시각 |
-| volumes.mountProtocol | Body | Object | 볼륨 마운트 프로토콜 |
-| volumes.mountProtocol.cifsAuthIds | Body | List | 볼륨 CIFS 인증 ID 목록 |
-| volumes.mountProtocol.protocol | Body | String | 볼륨 마운트 프로토콜 |
-| volumes.snapshotPolicy | Body | Object | 볼륨 스냅숏 설정 객체 |
-| volumes.snapshotPolicy.maxScheduledCount | Body | Integer | 스냅숏 최대 저장 개수 |
-| volumes.snapshotPolicy.reservePercent | Body | Integer | 스냅숏 용량 비율 |
-| volumes.snapshotPolicy.schedule | Body | Object | 스냅숏 자동 생성 객체 |
-| volumes.snapshotPolicy.schedule.time | Body | String | 스냅숏 자동 생성 시간 |
-| volumes.snapshotPolicy.schedule.timeOffset | Body | String | 스냅숏 자동 생성 기준 시간대 |
-| volumes.snapshotPolicy.schedule.weekdays | Body | List | 스냅숏 자동 생성 요일<br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |
-| volumes.createdAt | Body | String | 볼륨 생성 시각 |
-| volumes.updatedAt | Body | String | 볼륨 변경 시각 |
+$[ volume_response_table('volumes.') ]$
 
 <details>
   <summary>응답 예시</summary>
@@ -178,70 +316,7 @@ X-Auth-Token: {token-id}
   },
   "volumes": [
     {
-      "acl": [
-        "10.0.1.0/24"
-      ],
-      "createdAt": "2025-04-01T06:44:25+00:00",
-      "description": "NAS for Testing",
-      "encryption": {
-        "enabled": false
-      },
-      "id": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
-      "interfaces": [
-        {
-          "id": "9a8ec90f-cc27-4649-9bda-a1f0b193a402",
-          "path": "10.0.1.7:/TEST-NAS-1",
-          "status": "ACTIVE",
-          "subnetId": "cb779d62-72ef-43b6-b368-3fe28dcd812b",
-          "tenantId": "3b6179e5fa6b499386b827357c4cb8c4"
-        }
-      ],
-      "mirrors": [
-        {
-          "createdAt":"2025-04-01T06:45:45+00:00",
-          "direction": "FORWARD",
-          "directionChangedAt": null,
-          "dstProjectId": "K3y0CgOy",
-          "dstRegion": "KR2",
-          "dstTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
-          "dstVolumeId": "e09281d2-0b1c-48a9-8a01-0098aa59f624",
-          "dstVolumeName": "TEST-NAS-MIRROR-1",
-          "id": "8116892c-7306-48be-9e3d-143311b2254c",
-          "role": "SOURCE",
-          "srcProjectId": "K3y0CgOy",
-          "srcRegion": "KR1",
-          "srcTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
-          "srcVolumeId": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
-          "srcVolumeName": "TEST-NAS-1",
-          "status": "PENDING"
-        }
-      ],
-      "mountProtocol": {
-        "protocol": "cifs",
-        "cifsAuthIds": [
-          "cifs-test-id"
-        ]
-      },
-      "name": "TEST-NAS-1",
-      "projectId": "K3y0CgOy",
-      "sizeGb": 300,
-      "snapshotPolicy": {
-        "maxScheduledCount": 1,
-        "reservePercent": 5,
-        "schedule": {
-          "time": "00:00",
-          "timeOffset": "+09:00",
-          "weekdays": [
-            1,
-            3,
-            5
-          ]
-        }
-      },
-      "stationId": null,
-      "status": "ACTIVE",
-      "tenantId": "3b6179e5fa6b499386b827357c4cb8c4",
-      "updatedAt": "2025-04-01T06:47:13+00:00"
+$[ volume_response_json(indent=6) ]$
     }
   ]
 }
@@ -260,7 +335,7 @@ X-Auth-Token: {token-id}
     CIFS 프로토콜을 사용하려면 CIFS 인증 정보를 생성해야 합니다. 인증 정보는 프로젝트 단위로 관리되며, CIFS 볼륨마다 접근을 허용할 CIFS 인증 정보를 등록해야 합니다.
     CIFS 인증 정보는 콘솔의 **Storage > NAS > CIFS 인증 정보 관리** 창에서 생성할 수 있습니다.
 
-
+{% if encryption %}
 <!-- -->
 
 !!! tip "참고: 암호화 키 저장소 설정"
@@ -268,7 +343,7 @@ X-Auth-Token: {token-id}
     생성한 키 저장소 ID는 콘솔의 **Storage > NAS > 암호화 키 저장소 설정** 창에서 입력할 수 있습니다. 암호화 볼륨을 생성하면 설정한 키 저장소에 대칭 키가 저장됩니다. 키 저장소에 저장된 대칭 키는 암호화 볼륨 사용 중에는 삭제할 수 없습니다. 암호화 볼륨을 삭제하면 대칭 키도 함께 삭제됩니다.
     키 저장소 ID를 변경하면 이후 생성하는 암호화 볼륨의 대칭 키가 변경된 키 저장소에 저장됩니다. 기존 키 저장소에 저장된 대칭 키는 유지됩니다.
 
-
+{% endif %}
 ```
 POST /v1/volumes
 X-Auth-Token: {token-id}
@@ -283,24 +358,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- | --- |
 | X-Auth-Token | Header | String | Y | 토큰 ID |
 | volume | Body | Object | Y | 볼륨 생성 요청 객체 |
-| volume.acl | Body | List | N | 볼륨 생성 시 설정할 ACL 목록<br>IP 또는 CIDR 형식으로 입력할 수 있습니다. |
-| volume.description | Body | String | N | 볼륨 설명 |
-| volume.encryption | Body | Object | N | 볼륨 생성 시 암호화 설정 객체 |
-| volume.encryption.enabled | Body | Boolean | N | 암호화 설정 활성화 여부<br>암호화 키 저장소가 설정된 후 해당 필드를 `true`로 설정하면 암호화가 활성화됩니다. |
-| volume.interfaces | Body | List | N | 볼륨에 접근할 인터페이스 목록 |
-| volume.interfaces.subnetId | Body | String | N | 볼륨 인터페이스의 서브넷 ID |
-| volume.mountProtocol | Body | Object | N | 볼륨 생성 시 프로토콜 설정 객체 |
-| volume.mountProtocol.cifsAuthIds | Body | List | N | CIFS 인증 ID 목록<br>NFS 프로토콜 선택 시 입력 불필요 |
-| volume.mountProtocol.protocol | Body | String | Y | 볼륨 마운트 시 프로토콜 지정<br>`nfs`, `cifs` 중 하나를 선택할 수 있습니다. |
-| volume.name | Body | String | Y | 볼륨 이름 |
-| volume.sizeGb | Body | Integer | Y | 볼륨 크기(GB)<br>볼륨은 최소 300GB에서 최대 10,000GB까지, 100GB 단위로 설정할 수 있습니다. |
-| volume.snapshotPolicy | Body | Object | N | 볼륨 스냅숏 설정 객체 |
-| volume.snapshotPolicy.maxScheduledCount | Body | Integer | N | 스냅숏 최대 저장 개수<br>30개까지 설정 가능하며, 최대 저장 개수에 도달하면 자동으로 생성된 스냅숏 중 가장 먼저 생성된 스냅숏이 삭제됩니다. |
-| volume.snapshotPolicy.reservePercent | Body | Integer | N | 스냅숏 용량 비율 |
-| volume.snapshotPolicy.schedule | Body | Object | N | 스냅숏 자동 생성 객체<br>`null`일 경우 스냅숏 자동 생성이 설정되지 않습니다. |
-| volume.snapshotPolicy.schedule.time | Body | String | N | 스냅숏 자동 생성 시간 |
-| volume.snapshotPolicy.schedule.timeOffset | Body | String | N | 스냅숏 자동 생성 기준 시간대 |
-| volume.snapshotPolicy.schedule.weekdays | Body | List | N | 스냅숏 자동 생성 요일<br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |
+$[ volume_request_table('volume.', 'post') ]$
 
 <details>
   <summary>요청 예시</summary>
@@ -312,9 +370,11 @@ X-Auth-Token: {token-id}
       "10.0.1.0/24"
     ],
     "description": "NAS for Testing",
+{% if encryption %}
     "encryption": {
       "enabled": true
     },
+{% endif %}
     "interfaces": [
       {
         "subnetId": "cb779d62-72ef-43b6-b368-3fe28dcd812b"
@@ -351,52 +411,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- |
 | header | Body | Object | 헤더 객체 |
 | volume | Body | Object | 볼륨 객체 |
-| volume.id | Body | String | 볼륨 ID |
-| volume.name | Body | String | 볼륨 이름 |
-| volume.status | Body | String | 볼륨 상태 |
-| volume.description | Body | String | 볼륨 설명 |
-| volume.sizeGb | Body | Integer | 볼륨 크기(GB) |
-| volume.projectId | Body | String | 볼륨이 속한 프로젝트 ID |
-| volume.tenantId | Body | String | 볼륨이 속한 테넌트 ID |
-| volume.acl | Body | List | 볼륨 ACL 목록 |
-| volume.encryption | Body | Object | 볼륨 암호화 정보 |
-| volume.encryption.enabled | Body | Boolean | 볼륨 암호화 활성 여부 |
-| volume.encryption.keys | Body | List | 볼륨 암호화 키 정보 |
-| volume.interfaces | Body | List | 볼륨 인터페이스 객체 목록 |
-| volume.interfaces.id | Body | String | 인터페이스 ID |
-| volume.interfaces.path | Body | String | 인터페이스 경로 |
-| volume.interfaces.status | Body | String | 인터페이스 상태 |
-| volume.interfaces.subnetId | Body | String | 인터페이스의 서브넷 ID |
-| volume.interfaces.tenantId | Body | String | 인터페이스의 테넌트 ID |
-| volume.mirrors | Body | List | 볼륨 복제 설정 객체 목록 |
-| volume.mirrors.id | Body | String | 복제 설정 ID |
-| volume.mirrors.role | Body | String | 복제 역할<br>- `SOURCE`: 원본 볼륨<br>- `DESTINATION`: 대상 볼륨 |
-| volume.mirrors.status | Body | String | 복제 설정 상태<br>- `INITIALIZED`: 설정 완료<br>- `UPDATING`: 설정 변경 중<br>- `DELETING`: 설정 삭제 중<br>- `PENDING`: 설정 생성 중 |
-| volume.mirrors.direction | Body | String | 복제 방향<br>- `FORWARD`: 원본 볼륨 → 대상 볼륨<br>- `REVERSE`: 대상 볼륨 → 원본 볼륨 |
-| volume.mirrors.directionChangedAt | Body | String | 복제 방향 변경 시각 |
-| volume.mirrors.dstProjectId | Body | String | 복제 대상 볼륨의 프로젝트 ID |
-| volume.mirrors.dstRegion | Body | String | 복제 대상 볼륨 리전 |
-| volume.mirrors.dstTenantId | Body | String | 복제 대상 볼륨 테넌트 ID |
-| volume.mirrors.dstVolumeId | Body | String | 복제 대상 볼륨 ID |
-| volume.mirrors.dstVolumeName | Body | String | 복제 대상 볼륨 이름 |
-| volume.mirrors.srcProjectId | Body | String | 원본 볼륨의 프로젝트 ID |
-| volume.mirrors.srcRegion | Body | String | 원본 볼륨 리전 |
-| volume.mirrors.srcTenantId | Body | String | 원본 볼륨 테넌트 ID |
-| volume.mirrors.srcVolumeId | Body | String | 원본 볼륨 ID |
-| volume.mirrors.srcVolumeName | Body | String | 원본 볼륨 이름 |
-| volume.mirrors.createdAt | Body | String | 복제 생성 시각 |
-| volume.mountProtocol | Body | Object | 볼륨 마운트 프로토콜 |
-| volume.mountProtocol.cifsAuthIds | Body | List | 볼륨 CIFS 인증 ID 목록 |
-| volume.mountProtocol.protocol | Body | String | 볼륨 마운트 프로토콜 |
-| volume.snapshotPolicy | Body | Object | 볼륨 스냅숏 설정 객체 |
-| volume.snapshotPolicy.maxScheduledCount | Body | Integer | 스냅숏 최대 저장 개수 |
-| volume.snapshotPolicy.reservePercent | Body | Integer | 스냅숏 용량 비율 |
-| volume.snapshotPolicy.schedule | Body | Object | 스냅숏 자동 생성 객체 |
-| volume.snapshotPolicy.schedule.time | Body | String | 스냅숏 자동 생성 시간 |
-| volume.snapshotPolicy.schedule.timeOffset | Body | String | 스냅숏 자동 생성 기준 시간대 |
-| volume.snapshotPolicy.schedule.weekdays | Body | List | 스냅숏 자동 생성 요일<br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |
-| volume.createdAt | Body | String | 볼륨 생성 시각 |
-| volume.updatedAt | Body | String | 볼륨 변경 시각 |
+$[ volume_response_table('volume.') ]$
 
 <details>
   <summary>응답 예시</summary>
@@ -409,70 +424,7 @@ X-Auth-Token: {token-id}
     "resultMessage": "Created"
   },
   "volume": {
-    "acl": [
-      "10.0.1.0/24"
-    ],
-    "createdAt": "2025-04-01T06:44:25+00:00",
-    "description": "NAS for Testing",
-    "encryption": {
-      "enabled": false
-    },
-    "id": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
-    "interfaces": [
-      {
-        "id": "9a8ec90f-cc27-4649-9bda-a1f0b193a402",
-        "path": "10.0.1.7:/TEST-NAS-1",
-        "status": "ACTIVE",
-        "subnetId": "cb779d62-72ef-43b6-b368-3fe28dcd812b",
-        "tenantId": "3b6179e5fa6b499386b827357c4cb8c4"
-      }
-    ],
-    "mirrors": [
-      {
-        "createdAt":"2025-04-01T06:45:45+00:00",
-        "direction": "FORWARD",
-        "directionChangedAt": null,
-        "dstProjectId": "K3y0CgOy",
-        "dstRegion": "KR2",
-        "dstTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
-        "dstVolumeId": "e09281d2-0b1c-48a9-8a01-0098aa59f624",
-        "dstVolumeName": "TEST-NAS-MIRROR-1",
-        "id": "8116892c-7306-48be-9e3d-143311b2254c",
-        "role": "SOURCE",
-        "srcProjectId": "K3y0CgOy",
-        "srcRegion": "KR1",
-        "srcTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
-        "srcVolumeId": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
-        "srcVolumeName": "TEST-NAS-1",
-        "status": "PENDING"
-      }
-    ],
-    "mountProtocol": {
-      "protocol": "cifs",
-      "cifsAuthIds": [
-        "cifs-test-id"
-      ]
-    },
-    "name": "TEST-NAS-1",
-    "projectId": "K3y0CgOy",
-    "sizeGb": 300,
-    "snapshotPolicy": {
-      "maxScheduledCount": 1,
-      "reservePercent": 5,
-      "schedule": {
-        "time": "00:00",
-        "timeOffset": "+09:00",
-        "weekdays": [
-          1,
-          3,
-          5
-        ]
-      }
-    },
-    "stationId": null,
-    "status": "ACTIVE",
-    "tenantId": "3b6179e5fa6b499386b827357c4cb8c4",
-    "updatedAt": "2025-04-01T06:47:13+00:00"
+$[ volume_response_json(indent=4) ]$
   }
 }
 ```
@@ -535,52 +487,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- |
 | header | Body | Object | 헤더 객체 |
 | volume | Body | Object | 볼륨 객체 |
-| volume.id | Body | String | 볼륨 ID |
-| volume.name | Body | String | 볼륨 이름 |
-| volume.status | Body | String | 볼륨 상태 |
-| volume.description | Body | String | 볼륨 설명 |
-| volume.sizeGb | Body | Integer | 볼륨 크기(GB) |
-| volume.projectId | Body | String | 볼륨이 속한 프로젝트 ID |
-| volume.tenantId | Body | String | 볼륨이 속한 테넌트 ID |
-| volume.acl | Body | List | 볼륨 ACL 목록 |
-| volume.encryption | Body | Object | 볼륨 암호화 정보 |
-| volume.encryption.enabled | Body | Boolean | 볼륨 암호화 활성 여부 |
-| volume.encryption.keys | Body | List | 볼륨 암호화 키 정보 |
-| volume.interfaces | Body | List | 볼륨 인터페이스 객체 목록 |
-| volume.interfaces.id | Body | String | 인터페이스 ID |
-| volume.interfaces.path | Body | String | 인터페이스 경로 |
-| volume.interfaces.status | Body | String | 인터페이스 상태 |
-| volume.interfaces.subnetId | Body | String | 인터페이스의 서브넷 ID |
-| volume.interfaces.tenantId | Body | String | 인터페이스의 테넌트 ID |
-| volume.mirrors | Body | List | 볼륨 복제 설정 객체 목록 |
-| volume.mirrors.id | Body | String | 복제 설정 ID |
-| volume.mirrors.role | Body | String | 복제 역할<br>- `SOURCE`: 원본 볼륨<br>- `DESTINATION`: 대상 볼륨 |
-| volume.mirrors.status | Body | String | 복제 설정 상태<br>- `INITIALIZED`: 설정 완료<br>- `UPDATING`: 설정 변경 중<br>- `DELETING`: 설정 삭제 중<br>- `PENDING`: 설정 생성 중 |
-| volume.mirrors.direction | Body | String | 복제 방향<br>- `FORWARD`: 원본 볼륨 → 대상 볼륨<br>- `REVERSE`: 대상 볼륨 → 원본 볼륨 |
-| volume.mirrors.directionChangedAt | Body | String | 복제 방향 변경 시각 |
-| volume.mirrors.dstProjectId | Body | String | 복제 대상 볼륨의 프로젝트 ID |
-| volume.mirrors.dstRegion | Body | String | 복제 대상 볼륨 리전 |
-| volume.mirrors.dstTenantId | Body | String | 복제 대상 볼륨 테넌트 ID |
-| volume.mirrors.dstVolumeId | Body | String | 복제 대상 볼륨 ID |
-| volume.mirrors.dstVolumeName | Body | String | 복제 대상 볼륨 이름 |
-| volume.mirrors.srcProjectId | Body | String | 원본 볼륨의 프로젝트 ID |
-| volume.mirrors.srcRegion | Body | String | 원본 볼륨 리전 |
-| volume.mirrors.srcTenantId | Body | String | 원본 볼륨 테넌트 ID |
-| volume.mirrors.srcVolumeId | Body | String | 원본 볼륨 ID |
-| volume.mirrors.srcVolumeName | Body | String | 원본 볼륨 이름 |
-| volume.mirrors.createdAt | Body | String | 복제 생성 시각 |
-| volume.mountProtocol | Body | Object | 볼륨 마운트 프로토콜 |
-| volume.mountProtocol.cifsAuthIds | Body | List | 볼륨 CIFS 인증 ID 목록 |
-| volume.mountProtocol.protocol | Body | String | 볼륨 마운트 프로토콜 |
-| volume.snapshotPolicy | Body | Object | 볼륨 스냅숏 설정 객체 |
-| volume.snapshotPolicy.maxScheduledCount | Body | Integer | 스냅숏 최대 저장 개수 |
-| volume.snapshotPolicy.reservePercent | Body | Integer | 스냅숏 용량 비율 |
-| volume.snapshotPolicy.schedule | Body | Object | 스냅숏 자동 생성 객체 |
-| volume.snapshotPolicy.schedule.time | Body | String | 스냅숏 자동 생성 시간 |
-| volume.snapshotPolicy.schedule.timeOffset | Body | String | 스냅숏 자동 생성 기준 시간대 |
-| volume.snapshotPolicy.schedule.weekdays | Body | List | 스냅숏 자동 생성 요일<br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |
-| volume.createdAt | Body | String | 볼륨 생성 시각 |
-| volume.updatedAt | Body | String | 볼륨 변경 시각 |
+$[ volume_response_table('volume.') ]$
 
 <br>
 
@@ -605,19 +512,7 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | Y | 토큰 ID |
 | volume\_id | URL | String | Y | 볼륨 ID |
 | volume | Body | Object | Y | 볼륨 설정 변경 요청 객체 |
-| volume.acl | Body | List | N | 볼륨 생성 시 설정할 ACL 목록<br>IP 또는 CIDR 형식으로 입력할 수 있습니다. |
-| volume.description | Body | String | N | 볼륨 설명 |
-| volume.mountProtocol | Body | Object | N | 볼륨 생성 시 프로토콜 설정 객체 |
-| volume.mountProtocol.cifsAuthIds | Body | List | N | CIFS 인증 ID 목록 |
-| volume.mountProtocol.protocol | Body | String | N | 이미 생성된 볼륨의 프로토콜은 변경할 수 없습니다.<br>`cifsAuthIds` 필드 변경 시 해당 필드에 `cifs`를 명시해야 합니다. |
-| volume.sizeGb | Body | Integer | N | 볼륨 크기(GB)<br>볼륨은 최소 300GB에서 최대 10,000GB까지, 100GB 단위로 설정할 수 있습니다. |
-| volume.snapshotPolicy | Body | Object | N | 볼륨 스냅숏 설정 객체 |
-| volume.snapshotPolicy.maxScheduledCount | Body | Integer | N | 스냅숏 최대 저장 개수<br>30개까지 설정 가능하며, 최대 저장 개수에 도달하면 자동으로 생성된 스냅숏 중 가장 먼저 생성된 스냅숏이 삭제됩니다. |
-| volume.snapshotPolicy.reservePercent | Body | Integer | N | 스냅숏 용량 비율 |
-| volume.snapshotPolicy.schedule | Body | Object | N | 스냅숏 자동 생성 객체<br>`null`일 경우 스냅숏 자동 생성이 설정되지 않습니다. |
-| volume.snapshotPolicy.schedule.time | Body | String | N | 스냅숏 자동 생성 시간 |
-| volume.snapshotPolicy.schedule.timeOffset | Body | String | N | 스냅숏 자동 생성 기준 시간대 |
-| volume.snapshotPolicy.schedule.weekdays | Body | List | N | 스냅숏 자동 생성 요일<br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |
+$[ volume_request_table('volume.', 'patch') ]$
 
 <details>
   <summary>요청 예시</summary>
@@ -703,11 +598,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- |
 | header | Body | Object | 헤더 객체 |
 | interface | Body | Object | 생성된 인터페이스 정보 객체 |
-| interface.id | Body | String | 생성된 인터페이스 ID |
-| interface.path | Body | String | 생성된 인터페이스 경로 |
-| interface.status | Body | String | 생성된 인터페이스 상태 |
-| interface.subnetId | Body | String | 생성된 인터페이스의 서브넷 ID |
-| interface.tenantId | Body | String | 생성된 인터페이스의 테넌트 ID |
+$[ interface_response_table('interface.', '생성된 ') ]$
 
 <details>
   <summary>응답 예시</summary>
@@ -927,12 +818,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- |
 | header | Body | Object | 헤더 객체 |
 | snapshots | Body | List | 스냅숏 정보 객체 목록 |
-| snapshots.id | Body | String | 스냅숏 ID |
-| snapshots.name | Body | String | 스냅숏 이름 |
-| snapshots.size | Body | Integer | 스냅숏 크기 |
-| snapshots.type | Body | String | 스냅숏 타입<br>- `NORMAL`: 사용자가 생성한 스냅숏<br>- `SCHEDULED`: 스냅숏 자동 생성으로 생성된 스냅숏<br>- `MIRROR`: 복제로 생성된 스냅숏 |
-| snapshots.preserved | Body | Boolean | 시스템이 삭제 불가로 설정한 스냅숏 여부 |
-| snapshots.createdAt | Body | String | 스냅숏 생성 시각 |
+$[ snapshot_response_table('snapshots.') ]$
 
 <details><summary>응답 예시</summary>
 
@@ -945,12 +831,7 @@ X-Auth-Token: {token-id}
   },
   "snapshots": [
     {
-      "createdAt": "2025-04-01T09:34:27+00:00",
-      "id": "8151fe33-0edc-11f0-b0e3-d039eaa3e920",
-      "name": "TEST-SNAPSHOT-1",
-      "preserved": false,
-      "size": 3112960,
-      "type": "NORMAL"
+$[ snapshot_response_json(6) ]$
     }
   ]
 }
@@ -999,12 +880,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- |
 | header | Body | Object | 헤더 객체 |
 | snapshot | Body | Object | 스냅숏 정보 객체 |
-| snapshot.id | Body | String | 스냅숏 ID |
-| snapshot.name | Body | String | 스냅숏 이름 |
-| snapshot.size | Body | Integer | 스냅숏 크기 |
-| snapshot.type | Body | String | 스냅숏 타입<br>- `NORMAL`: 사용자가 생성한 스냅숏<br>- `SCHEDULED`: 스냅숏 자동 생성으로 생성된 스냅숏<br>- `MIRROR`: 복제로 생성된 스냅숏 |
-| snapshot.preserved | Body | Boolean | 시스템이 삭제 불가로 설정한 스냅숏 여부 |
-| snapshot.createdAt | Body | String | 스냅숏 생성 시각 |
+$[ snapshot_response_table('snapshot.') ]$
 
 <details>
   <summary>응답 예시</summary>
@@ -1017,12 +893,7 @@ X-Auth-Token: {token-id}
     "resultMessage": "Created"
   },
   "snapshot": {
-    "createdAt": "2025-04-01T09:34:27+00:00",
-    "id": "8151fe33-0edc-11f0-b0e3-d039eaa3e920",
-    "name": "TEST-SNAPSHOT-1",
-    "preserved": false,
-    "size": 3112960,
-    "type": "NORMAL"
+$[ snapshot_response_json(4) ]$
   }
 }
 ```
@@ -1088,12 +959,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- |
 | header | Body | Object | 헤더 객체 |
 | snapshot | Body | Object | 스냅숏 정보 객체 |
-| snapshot.id | Body | String | 스냅숏 ID |
-| snapshot.name | Body | String | 스냅숏 이름 |
-| snapshot.size | Body | Integer | 스냅숏 크기 |
-| snapshot.type | Body | String | 스냅숏 타입<br>- `NORMAL`: 사용자가 생성한 스냅숏<br>- `SCHEDULED`: 스냅숏 자동 생성으로 생성된 스냅숏<br>- `MIRROR`: 복제로 생성된 스냅숏 |
-| snapshot.preserved | Body | Boolean | 시스템이 삭제 불가로 설정한 스냅숏 여부 |
-| snapshot.createdAt | Body | String | 스냅숏 생성 시각 |
+$[ snapshot_response_table('snapshot.') ]$
 
 <br>
 
@@ -1125,6 +991,7 @@ X-Auth-Token: {token-id}
 
 <br>
 
+{% if replication %}
 
 <a id="replication"></a>
 ## 볼륨 복제 설정 { #replication }
@@ -1171,24 +1038,7 @@ X-Auth-Token: {token-id}
 | volumeMirror.dstRegion | Body | String | Y | 복제 대상 볼륨의 리전 |
 | volumeMirror.dstTenantId | Body | String | Y | 복제 대상 볼륨의 테넌트 ID |
 | volumeMirror.dstVolume | Body | Object | Y | 복제 대상 볼륨 생성 요청 객체 |
-| volumeMirror.dstVolume.acl | Body | List | N | 볼륨 생성 시 설정할 ACL 목록<br>IP 또는 CIDR 형식으로 입력할 수 있습니다. |
-| volumeMirror.dstVolume.description | Body | String | N | 볼륨 설명 |
-| volumeMirror.dstVolume.encryption | Body | Object | N | 볼륨 생성 시 암호화 설정 객체 |
-| volumeMirror.dstVolume.encryption.enabled | Body | Boolean | N | 암호화 설정 활성화 여부<br>암호화 키 저장소가 설정된 후 해당 필드를 `true`로 설정하면 암호화가 활성화됩니다. |
-| volumeMirror.dstVolume.interfaces | Body | List | N | 볼륨에 접근할 인터페이스 목록 |
-| volumeMirror.dstVolume.interfaces.subnetId | Body | String | N | 볼륨 인터페이스의 서브넷 ID |
-| volumeMirror.dstVolume.mountProtocol | Body | Object | N | 볼륨 생성 시 프로토콜 설정 객체 |
-| volumeMirror.dstVolume.mountProtocol.cifsAuthIds | Body | List | N | CIFS 인증 ID 목록<br>NFS 프로토콜 선택 시 입력 불필요 |
-| volumeMirror.dstVolume.mountProtocol.protocol | Body | String | Y | 볼륨 마운트 시 프로토콜 지정<br>`nfs`, `cifs` 중 하나를 선택할 수 있습니다. |
-| volumeMirror.dstVolume.name | Body | String | Y | 볼륨 이름 |
-| volumeMirror.dstVolume.sizeGb | Body | Integer | Y | 볼륨 크기(GB)<br>볼륨은 최소 300GB에서 최대 10,000GB까지, 100GB 단위로 설정할 수 있습니다. |
-| volumeMirror.dstVolume.snapshotPolicy | Body | Object | N | 볼륨 스냅숏 설정 객체 |
-| volumeMirror.dstVolume.snapshotPolicy.maxScheduledCount | Body | Integer | N | 스냅숏 최대 저장 개수<br>30개까지 설정 가능하며, 최대 저장 개수에 도달하면 자동으로 생성된 스냅숏 중 가장 먼저 생성된 스냅숏이 삭제됩니다. |
-| volumeMirror.dstVolume.snapshotPolicy.reservePercent | Body | Integer | N | 스냅숏 용량 비율 |
-| volumeMirror.dstVolume.snapshotPolicy.schedule | Body | Object | N | 스냅숏 자동 생성 객체<br>`null`일 경우 스냅숏 자동 생성이 설정되지 않습니다. |
-| volumeMirror.dstVolume.snapshotPolicy.schedule.time | Body | String | N | 스냅숏 자동 생성 시간 |
-| volumeMirror.dstVolume.snapshotPolicy.schedule.timeOffset | Body | String | N | 스냅숏 자동 생성 기준 시간대 |
-| volumeMirror.dstVolume.snapshotPolicy.schedule.weekdays | Body | List | N | 스냅숏 자동 생성 요일<br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |
+$[ volume_request_table('volumeMirror.dstVolume.', 'post') ]$
 
 <details>
   <summary>요청 예시</summary>
@@ -1219,22 +1069,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- |
 | header | Body | Object | 헤더 객체 |
 | volumeMirror | Body | Object | 복제 설정 생성 객체 |
-| volumeMirror.id | Body | String | 복제 설정 ID |
-| volumeMirror.role | Body | String | 복제 역할<br>- `SOURCE`: 원본 볼륨<br>- `DESTINATION`: 대상 볼륨 |
-| volumeMirror.status | Body | String | 복제 설정 상태<br>- `INITIALIZED`: 설정 완료<br>- `UPDATING`: 설정 변경 중<br>- `DELETING`: 설정 삭제 중<br>- `PENDING`: 설정 생성 중 |
-| volumeMirror.direction | Body | String | 복제 방향<br>- `FORWARD`: 원본 볼륨 → 대상 볼륨<br>- `REVERSE`: 대상 볼륨 → 원본 볼륨 |
-| volumeMirror.directionChangedAt | Body | String | 복제 방향 변경 시각 |
-| volumeMirror.dstProjectId | Body | String | 복제 대상 볼륨의 프로젝트 ID |
-| volumeMirror.dstRegion | Body | String | 복제 대상 볼륨 리전 |
-| volumeMirror.dstTenantId | Body | String | 복제 대상 볼륨 테넌트 ID |
-| volumeMirror.dstVolumeId | Body | String | 복제 대상 볼륨 ID |
-| volumeMirror.dstVolumeName | Body | String | 복제 대상 볼륨 이름 |
-| volumeMirror.srcProjectId | Body | String | 원본 볼륨의 프로젝트 ID |
-| volumeMirror.srcRegion | Body | String | 원본 볼륨 리전 |
-| volumeMirror.srcTenantId | Body | String | 원본 볼륨 테넌트 ID |
-| volumeMirror.srcVolumeId | Body | String | 원본 볼륨 ID |
-| volumeMirror.srcVolumeName | Body | String | 원본 볼륨 이름 |
-| volumeMirror.createdAt | Body | String | 복제 생성 시각 |
+$[ volume_mirror_response_table('volumeMirror.') ]$
 
 <details>
   <summary>응답 예시</summary>
@@ -1247,22 +1082,7 @@ X-Auth-Token: {token-id}
     "resultMessage": "Created"
   },
   "volumeMirror": {
-    "createdAt":"2025-04-01T06:45:45+00:00",
-    "direction": "FORWARD",
-    "directionChangedAt": null,
-    "dstProjectId": "K3y0CgOy",
-    "dstRegion": "KR2",
-    "dstTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
-    "dstVolumeId": "e09281d2-0b1c-48a9-8a01-0098aa59f624",
-    "dstVolumeName": "TEST-NAS-MIRROR-1",
-    "id": "8116892c-7306-48be-9e3d-143311b2254c",
-    "role": "SOURCE",
-    "srcProjectId": "K3y0CgOy",
-    "srcRegion": "KR1",
-    "srcTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
-    "srcVolumeId": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
-    "srcVolumeName": "TEST-NAS-1",
-    "status": "PENDING"
+$[ volume_mirror_response_json(4) ]$
   }
 }
 ```
@@ -1409,3 +1229,4 @@ X-Auth-Token: {token-id}
 응답 본문에는 헤더 필드 외의 내용이 포함되지 않습니다.
 
 <br>
+{% endif %}
