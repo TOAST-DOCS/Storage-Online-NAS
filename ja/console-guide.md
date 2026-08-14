@@ -13,7 +13,6 @@
 ## ボリューム { #volume }
 
 <a id="create_volume"></a>
-
 ### ボリュームの作成 { #create_volume }
 
 新しいボリュームを作成します。作成されたボリュームは、NFS (network file system、ネットワークファイルシステム) および CIFS (common internet file system、共用インターネットファイルシステム) プロトコルを使用してインスタンスからアクセスできます。
@@ -37,7 +36,6 @@
     プロジェクトごとに使用可能なサブネットは合計3つに制限されます。サブネット数の限度を増やす場合はサポートにお問い合わせください。
 
 <a id="create_volume.cifs"></a>
-
 #### CIFS認証情報管理
 CIFS プロトコルを使用するには、CIFS 認証情報を作成する必要があります。認証情報はプロジェクト単位で管理され、CIFS ボリュームごとにアクセスする CIFS 認証情報を登録する必要があります。
 
@@ -57,7 +55,6 @@ CIFS プロトコルを使用するには、CIFS 認証情報を作成する必�
 
 {% if encryption %}
 <a id="create_volume.encryption"></a>
-
 #### 暗号化キーストア設定
 
 NAS暗号化ボリュームは、暗号化に使用する共通鍵をNHN Cloud Secure Key Managerサービスのキーストアに保存します。したがって、暗号化ボリュームを作成するには、事前にSecure Key Managerサービスで[キーストアを作成](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_1)する必要があります。 [キーストアのIDを確認](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_2)して暗号化キーストア設定に入力します。
@@ -73,7 +70,6 @@ NAS暗号化ボリュームは、暗号化に使用する共通鍵をNHN Cloud S
 
 {% endif %}
 <a id="change_volume_size"></a>
-
 ### ボリュームサイズ変更 { #change_volume_size }
 
 ボリュームのサイズを変更します。ボリュームの使用中にも拡張および縮小が可能です。
@@ -159,7 +155,6 @@ NAS暗号化ボリュームは、暗号化に使用する共通鍵をNHN Cloud S
     サブネット接続を追加した後、ACLにサブネット帯域が存在しない場合、マウントはできません。
 
 <a id="network.detach_subnet"></a>
-
 ### サブネット接続解除 { #network.detach_subnet }
 ボリュームに接続されたサブネットを削除します。必要な場合、IP ACLは別途削除する必要があります。
 
@@ -168,7 +163,6 @@ NAS暗号化ボリュームは、暗号化に使用する共通鍵をNHN Cloud S
 
 {% if monitoring %}
 <a id="monitoring"></a>
-
 ## モニタリング { #monitoring }
 
 ボリュームの複数の指標をグラフで確認します。確認したいボリュームを選択した後、 **モニタリング**タブを選択します。
@@ -272,7 +266,6 @@ NAS暗号化ボリュームは、暗号化に使用する共通鍵をNHN Cloud S
     * ソースボリュームサイズよりターゲットボリュームサイズが小さい場合、複製に失敗する可能性があります。
 
 <a id="replication.disable"></a>
-
 ### 複製設定の解除 { #replication.disable }
 
 ボリュームの複製設定を解除します。
