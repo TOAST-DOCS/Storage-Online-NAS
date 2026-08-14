@@ -13,7 +13,6 @@ This document describes how to manage NAS volumes and snapshots and connect them
 ## Volume { #volume }
 
 <a id="create_volume"></a>
-
 ### Create Volume { #create_volume }
 
 Creates a new volume. The created volume can be accessed from instances using the network file system (NFS) and common internet file system (CIFS) protocols.
@@ -37,7 +36,6 @@ Creates a new volume. The created volume can be accessed from instances using th
     The number of subnets available for each project is limited to 3. To increase the limit, contact Customer Support.
 
 <a id="create_volume.cifs"></a>
-
 #### Manage CIFS Credentials
 To use the CIFS protocol, you must create CIFS credentials. Credentials are managed on a per-project basis, and you must register a CIFS credential to access each CIFS volume.
 
@@ -57,7 +55,6 @@ To use the CIFS protocol, you must create CIFS credentials. Credentials are mana
 
 {% if encryption %}
 <a id="create_volume.encryption"></a>
-
 #### Encryption Key Store Settings
 
 Encrypted volume stores symmetric keys used for encryption in a key store in the NHN Cloud Secure Key Manager service. Therefore, to create encrypted volume, you must [create a key store](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_1) in the Secure Key Manager service in advance. [Check the ID of the key store](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_2) and enter it in the encryption key store settings.
@@ -73,7 +70,6 @@ When you change the key store ID, the symmetric key for encrypted volume you cre
 
 {% endif %}
 <a id="change_volume_size"></a>
-
 ### Change Volume Size { #change_volume_size }
 
 Volume size is changed. Volume can be scaled up and down even while in use.
@@ -160,7 +156,6 @@ Add a subnet association. Adding a subnet association allows you to access volum
     After adding a subnet association, if the subnet band does not exist in the ACL, mounting is not possible.
 
 <a id="network.detach_subnet"></a>
-
 ### Detach Subnet { #network.detach_subnet }
 Remove the subnet associated with the volume. IP ACLs must be removed separately if needed.
 
@@ -169,7 +164,6 @@ Remove the subnet associated with the volume. IP ACLs must be removed separately
 
 {% if monitoring %}
 <a id="monitoring"></a>
-
 ## Monitoring { #monitoring }
 
 Check various metrics of volume with graphs. After selecting the volume to check, click the **Monitoring** tab.
@@ -273,7 +267,6 @@ Change the direction of replication between source and target volume.
     * Replication might fail if the target volume size is smaller than the source volume size.
 
 <a id="replication.disable"></a>
-
 ### Disable Replication Settings { #replication.disable }
 
 Disables volume replication.
