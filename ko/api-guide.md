@@ -2,14 +2,14 @@
 
 <!-- pre-align:aligned sig=06dac106ebf2 -->
 
-{% macro interface_response_table(prefix='', desc_prefix='') %}
+{% macro interface_response_table(prefix='', desc_prefix='') -%}
 | $[ prefix ]$id | Body | String | $[ desc_prefix ]$인터페이스 ID |
 | $[ prefix ]$path | Body | String | $[ desc_prefix ]$인터페이스 경로 |
 | $[ prefix ]$status | Body | String | $[ desc_prefix ]$인터페이스 상태 |
 | $[ prefix ]$subnetId | Body | String | $[ desc_prefix ]$인터페이스의 서브넷 ID |
 | $[ prefix ]$tenantId | Body | String | $[ desc_prefix ]$인터페이스의 테넌트 ID |{% endmacro %}
 {# end macro interface_response_table #}
-{% macro volume_mirror_response_table(prefix='') %}
+{% macro volume_mirror_response_table(prefix='') -%}
 | $[ prefix ]$id | Body | String | 복제 설정 ID |
 | $[ prefix ]$role | Body | String | 복제 역할<br>- `SOURCE`: 원본 볼륨<br>- `DESTINATION`: 대상 볼륨 |
 | $[ prefix ]$status | Body | String | 복제 설정 상태<br>- `INITIALIZED`: 설정 완료<br>- `UPDATING`: 설정 변경 중<br>- `DELETING`: 설정 삭제 중<br>- `PENDING`: 설정 생성 중 |
@@ -27,7 +27,7 @@
 | $[ prefix ]$srcVolumeName | Body | String | 원본 볼륨 이름 |
 | $[ prefix ]$createdAt | Body | String | 복제 생성 시각 |{% endmacro %}
 {# end macro volume_mirror_response_table #}
-{% macro volume_response_table(prefix='') %}
+{% macro volume_response_table(prefix='') -%}
 | $[ prefix ]$id | Body | String | 볼륨 ID |
 | $[ prefix ]$name | Body | String | 볼륨 이름 |
 | $[ prefix ]$status | Body | String | 볼륨 상태 |
@@ -60,7 +60,7 @@ $[ volume_mirror_response_table(prefix + 'mirrors.') ]$
 | $[ prefix ]$createdAt | Body | String | 볼륨 생성 시각 |
 | $[ prefix ]$updatedAt | Body | String | 볼륨 변경 시각 |{% endmacro %}
 {# end macro volume_response_table #}
-{% macro volume_request_table(prefix='', method='') %}
+{% macro volume_request_table(prefix='', method='') -%}
 | $[ prefix ]$acl | Body | List | N | 볼륨 생성 시 설정할 ACL 목록<br>IP 또는 CIDR 형식으로 입력할 수 있습니다. |
 | $[ prefix ]$description | Body | String | N | 볼륨 설명 |
 {% if method == 'post' %}
@@ -93,7 +93,7 @@ $[ volume_mirror_response_table(prefix + 'mirrors.') ]$
 | $[ prefix ]$snapshotPolicy.schedule.timeOffset | Body | String | N | 스냅숏 자동 생성 기준 시간대 |
 | $[ prefix ]$snapshotPolicy.schedule.weekdays | Body | List | N | 스냅숏 자동 생성 요일<br>빈 목록은 매일을 의미하며, 요일은 0(일요일)부터 6(토요일)까지의 숫자 목록으로 지정합니다. |{% endmacro %}
 {# end macro volume_request_table #}
-{% macro volume_mirror_response_json(indent=0, method='')   %}
+{% macro volume_mirror_response_json(indent=0, method='') -%}
 $[ ' ' * indent ]$"createdAt":"2025-04-01T06:45:45+00:00",
 $[ ' ' * indent ]$"direction": "FORWARD",
 $[ ' ' * indent ]$"directionChangedAt": null,
@@ -111,7 +111,7 @@ $[ ' ' * indent ]$"srcVolumeId": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
 $[ ' ' * indent ]$"srcVolumeName": "TEST-NAS-1",
 $[ ' ' * indent ]$"status": "PENDING"{% endmacro %}
 {# end macro #}
-{% macro volume_response_json(indent=0, method='')   %}
+{% macro volume_response_json(indent=0, method='') -%}
 $[ ' ' * indent ]$"acl": [
 $[ ' ' * indent ]$  "10.0.1.0/24"
 $[ ' ' * indent ]$],
@@ -168,7 +168,7 @@ $[ ' ' * indent ]$"status": "ACTIVE",
 $[ ' ' * indent ]$"tenantId": "3b6179e5fa6b499386b827357c4cb8c4",
 $[ ' ' * indent ]$"updatedAt": "2025-04-01T06:47:13+00:00"{% endmacro %}
 {# end macro #}
-{% macro snapshot_response_table(prefix='')   %}
+{% macro snapshot_response_table(prefix='') -%}
 | $[ prefix ]$id | Body | String | 스냅숏 ID |
 | $[ prefix ]$name | Body | String | 스냅숏 이름 |
 | $[ prefix ]$size | Body | Integer | 스냅숏 크기 |
@@ -176,7 +176,7 @@ $[ ' ' * indent ]$"updatedAt": "2025-04-01T06:47:13+00:00"{% endmacro %}
 | $[ prefix ]$preserved | Body | Boolean | 시스템이 삭제 불가로 설정한 스냅숏 여부 |
 | $[ prefix ]$createdAt | Body | String | 스냅숏 생성 시각 |{% endmacro %}
 {# end macro snapshot_response_table #}
-{% macro snapshot_response_json(indent=0)   %}
+{% macro snapshot_response_json(indent=0) -%}
 $[ ' ' * indent ]$"createdAt": "2025-04-01T09:34:27+00:00",
 $[ ' ' * indent ]$"id": "8151fe33-0edc-11f0-b0e3-d039eaa3e920",
 $[ ' ' * indent ]$"name": "TEST-SNAPSHOT-1",
