@@ -172,7 +172,7 @@ $[ ' ' * indent ]$"updatedAt": "2025-04-01T06:47:13+00:00"{% endmacro %}
 | $[ prefix ]$id | Body | String | 스냅숏 ID |
 | $[ prefix ]$name | Body | String | 스냅숏 이름 |
 | $[ prefix ]$size | Body | Integer | 스냅숏 크기 |
-| $[ prefix ]$type | Body | String | 스냅숏 타입<br>- `NORMAL`: 사용자가 생성한 스냅숏<br>- `SCHEDULED`: 스냅숏 자동 생성으로 생성된 스냅숏<br>- `MIRROR`: 복제로 생성된 스냅숏 |
+| $[ prefix ]$type | Body | String | 스냅숏 타입<br>- `NORMAL`: 사용자가 생성한 스냅숏<br>- `SCHEDULED`: 스냅숏 자동 생성으로 만들어진 스냅숏<br>- `MIRROR`: 복제로 생성된 스냅숏 |
 | $[ prefix ]$preserved | Body | Boolean | 시스템이 삭제 불가로 설정한 스냅숏 여부 |
 | $[ prefix ]$createdAt | Body | String | 스냅숏 생성 시각 |{% endmacro %}
 {# end macro snapshot_response_table #}
