@@ -195,7 +195,6 @@ $[ ' ' * indent ]$"type": "NORMAL"{% endmacro %}
 ## NAS API 共通情報 { #nas_api_common }
 
 <a id="nas_api_common.endpoint"></a>
-
 ### API エンドポイント { #nas_api_common.endpoint }
 
 NASAPIは`nasv1`タイプのエンドポイントを使用します。正確なエンドポイントはトークン発行レスポンスの`serviceCatalog`を参照します。
@@ -205,7 +204,6 @@ NASAPIは`nasv1`タイプのエンドポイントを使用します。正確な�
 {% for region in regions %}| $[ region.name ]$ | $[ region.endpoint ]$ |
 {% endfor %}
 <a id="nas_api_common.authentication"></a>
-
 ### 認証及び権限 { #nas_api_common.authentication }
 
 NAS は、API 呼び出し時の認証/認可に IaaS トークンを使用します。IaaS トークンは、NHN Cloud の OpenStack ベースのインフラストラクチャサービス (IaaS) で使用する認証トークンです。
@@ -290,7 +288,6 @@ X-Auth-Token: {token-id}
 | sort | Query | String | N | ソート基準となるフィールド名<br>`{key}:{direction}`の形で記述します。例：`name:asc`, `created_at:desc`<br>使用可能なkey値: `id`, `name`, `sizeGb`, `createdAt`, `updatedAt` |
 
 <a id="volume.list-response"></a>
-
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -331,7 +328,6 @@ $[ volume_response_json(indent=6) ]$
 <br>
 
 <a id="volume.create"></a>
-
 ### ボリューム作成 { #volume.create }
 
 新しいボリュームを作成します。
@@ -359,7 +355,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.create-request"></a>
-
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -413,7 +408,6 @@ $[ volume_request_table('volume.', 'post') ]$
 </details>
 
 <a id="volume.create-response"></a>
-
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -490,7 +484,6 @@ X-Auth-Token: {token-id}
 | volume\_id | URL | String | Y | 照会するボリュームID |
 
 <a id="volume.view-response"></a>
-
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -515,7 +508,6 @@ X-Auth-Token: {token-id}
 ```
 
 <a id="volume.change_settings-request"></a>
-
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -603,7 +595,6 @@ X-Auth-Token: {token-id}
 </details>
 
 <a id="volume.connect_interface-response"></a>
-
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -824,7 +815,6 @@ X-Auth-Token: {token-id}
 | volume\_id | URL | String | Y | ボリュームID |
 
 <a id="snapshots.list-response"></a>
-
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -887,7 +877,6 @@ X-Auth-Token: {token-id}
 </details>
 
 <a id="snapshots.create-response"></a>
-
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -967,7 +956,6 @@ X-Auth-Token: {token-id}
 | showReclaimableSpace | Query | Boolean | N | スナップショット削除時に確保される容量を示す`reclaimableSpace`項目を表示するかどうか |
 
 <a id="snapshots.view-response"></a>
-
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -1000,7 +988,6 @@ X-Auth-Token: {token-id}
 | snapshot\_id | URL | String | Y | スナップショットID |
 
 <a id="snapshots.restore-response"></a>
-
 #### レスポンス
 
 レスポンス本文にはヘッダフィールド以外の内容は含まれません。
@@ -1044,7 +1031,6 @@ X-Auth-Token: {token-id}
 ```
 
 <a id="replication.setup-request"></a>
-
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -1080,7 +1066,6 @@ $[ volume_request_table('volumeMirror.dstVolume.', 'post') ]$
 </details>
 
 <a id="replication.setup-response"></a>
-
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -1242,7 +1227,6 @@ X-Auth-Token: {token-id}
 | volume\_mirror\_id | URL | String | Y | 複製設定ID |
 
 <a id="replication.stop-response"></a>
-
 #### レスポンス
 
 レスポンス本文にはヘッダフィールド以外の内容は含まれません。
