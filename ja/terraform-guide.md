@@ -10,7 +10,7 @@
 <a id="terraform"></a>
 ## Terraform { #terraform }
 
-Terraformは、インフラを簡単に構築し、安全に変更し、効率的に構成を管理できるオープンソースツールです。基本的な使用法は、[ユーザーガイド > NHN Cloud > Terraform使用ガイド](/nhncloud/ja/terraform-guide/)を参照します。
+Terraformは、インフラを簡単に構築し、安全に変更し、効率的に構成を管理できるオープンソースツールです。基本的な使用法は、[ユーザーガイド > NHN Cloud > Terraform使用ガイド]($[ terraform_guide_url ]$)を参照します。
 
 <a id="terraform-resource-dependency"></a>
 ### リソースの依存関係 { #terraform-resource-dependency }
