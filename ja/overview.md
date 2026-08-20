@@ -1,5 +1,7 @@
 <!-- machine_translated: true -->
 
+{% include-markdown '../_online-nas-vars.md' %}
+
 <!-- pre-align:aligned sig=def3305c571c -->
 
 <a id="storage-nas-overview"></a>
@@ -31,8 +33,10 @@ NASサービスを使用すると、インスタンスに共有ストレージ�
 
 ボリュームはプロジェクトのネットワークを通じてのみアクセスでき、他のプロジェクトのネットワークから隔離されます。
 
+{% if encryption %}
 ボリュームを XTS-AES-256 アルゴリズムで暗号化して、データを安全に保管できます。
 
+{% endif %}
 <a id="glossary"></a>
 ## 用語 { #glossary }
 

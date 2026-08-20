@@ -1,7 +1,191 @@
 <!-- machine_translated: true -->
 
+{% include-markdown '../_online-nas-vars.md' %}
+
 <!-- pre-align:aligned sig=06dac106ebf2 -->
 
+{% macro interface_response_table(prefix='', desc_prefix='') -%}
+| $[ prefix ]$id | Body | String | $[ desc_prefix ]$Interface ID |
+| $[ prefix ]$path | Body | String | $[ desc_prefix ]$Interface path |
+| $[ prefix ]$status | Body | String | $[ desc_prefix ]$Interface status |
+| $[ prefix ]$subnetId | Body | String | $[ desc_prefix ]$Subnet ID of the interface |
+| $[ prefix ]$tenantId | Body | String | $[ desc_prefix ]$Tenant ID of the interface |{% endmacro %}
+{# end macro interface_response_table #}
+{% macro volume_mirror_response_table(prefix='') -%}
+| $[ prefix ]$id | Body | String | Replication settings ID |
+| $[ prefix ]$role | Body | String | Replication role<br>- `SOURCE`: Source volume<br>- `DESTINATION`: Target volume |
+| $[ prefix ]$status | Body | String | Replication settings status<br>- `INITIALIZED`: Settings complete<br>- `UPDATING`: Updating settings<br>- `DELETING`: Deleting settings<br>- `PENDING`: Creating settings |
+| $[ prefix ]$direction | Body | String | Replication direction<br>- `FORWARD`: Source volume → Target volume<br>- `REVERSE`: Target volume → Source volume |
+| $[ prefix ]$directionChangedAt | Body | String | Replication direction change time |
+| $[ prefix ]$dstProjectId | Body | String | Project ID of the replication target volume |
+| $[ prefix ]$dstRegion | Body | String | Replication target volume region |
+| $[ prefix ]$dstTenantId | Body | String | Replication target volume tenant ID |
+| $[ prefix ]$dstVolumeId | Body | String | Replication target volume ID |
+| $[ prefix ]$dstVolumeName | Body | String | Replication target volume name |
+| $[ prefix ]$srcProjectId | Body | String | Project ID of the source volume |
+| $[ prefix ]$srcRegion | Body | String | Source volume region |
+| $[ prefix ]$srcTenantId | Body | String | Source volume tenant ID |
+| $[ prefix ]$srcVolumeId | Body | String | Source volume ID |
+| $[ prefix ]$srcVolumeName | Body | String | Source volume name |
+| $[ prefix ]$createdAt | Body | String | Replication creation time |{% endmacro %}
+{# end macro volume_mirror_response_table #}
+{% macro volume_response_table(prefix='') -%}
+| $[ prefix ]$id | Body | String | Volume ID |
+| $[ prefix ]$name | Body | String | Volume name |
+| $[ prefix ]$status | Body | String | Volume status |
+| $[ prefix ]$description | Body | String | Volume description |
+| $[ prefix ]$sizeGb | Body | Integer | Volume size (GB) |
+| $[ prefix ]$projectId | Body | String | Project ID of the volume |
+| $[ prefix ]$tenantId | Body | String | Tenant ID of the volume |
+| $[ prefix ]$acl | Body | List | Volume ACL list |
+{% if encryption -%}
+| $[ prefix ]$encryption | Body | Object | Volume encryption information |
+| $[ prefix ]$encryption.enabled | Body | Boolean | Whether volume encryption is enabled |
+| $[ prefix ]$encryption.keys | Body | List | Volume encryption key information |
+{%- endif %}
+| $[ prefix ]$interfaces | Body | List | Volume interface object list |
+$[ interface_response_table(prefix + 'interfaces.') ]$
+{% if replication -%}
+| $[ prefix ]$mirrors | Body | List | Volume replication settings object list |
+$[ volume_mirror_response_table(prefix + 'mirrors.') ]$
+{%- endif %}
+| $[ prefix ]$mountProtocol | Body | Object | Volume mount protocol |
+| $[ prefix ]$mountProtocol.cifsAuthIds | Body | List | Volume CIFS authentication ID list |
+| $[ prefix ]$mountProtocol.protocol | Body | String | Volume mount protocol |
+| $[ prefix ]$snapshotPolicy | Body | Object | Volume snapshot settings object |
+| $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | Maximum number of snapshots to store |
+| $[ prefix ]$snapshotPolicy.reservePercent | Body | Integer | Snapshot capacity ratio |
+| $[ prefix ]$snapshotPolicy.schedule | Body | Object | Snapshot auto-creation object |
+| $[ prefix ]$snapshotPolicy.schedule.time | Body | String | Snapshot auto-creation time |
+| $[ prefix ]$snapshotPolicy.schedule.timeOffset | Body | String | Snapshot auto-creation reference timezone |
+| $[ prefix ]$snapshotPolicy.schedule.weekdays | Body | List | Snapshot auto-creation days of the week<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |
+| $[ prefix ]$createdAt | Body | String | Volume creation time |
+| $[ prefix ]$updatedAt | Body | String | Volume last updated time |{% endmacro %}
+{# end macro volume_response_table #}
+{% macro volume_request_table(prefix='', method='') -%}
+| $[ prefix ]$acl | Body | List | N | ACL list to configure when creating the volume<br>You can enter values in IP or CIDR format. |
+| $[ prefix ]$description | Body | String | N | Volume description |
+{% if method == 'post' %}
+{% if encryption -%}
+| $[ prefix ]$encryption | Body | Object | N | Encryption settings object when creating the volume |
+| $[ prefix ]$encryption.enabled | Body | Boolean | N | Whether encryption settings are enabled<br>After the encryption keystore is set up, setting this field to `true` enables encryption. |
+{%- endif %}
+{% endif %}
+{% if method == 'post' %}
+| $[ prefix ]$interfaces | Body | List | N | List of interfaces to access the volume |
+| $[ prefix ]$interfaces.subnetId | Body | String | N | Subnet ID of the volume interface |
+{% endif %}
+| $[ prefix ]$mountProtocol | Body | Object | N | Protocol settings object when creating the volume |
+{% if method == 'post' %}
+| $[ prefix ]$mountProtocol.cifsAuthIds | Body | List | N | CIFS authentication ID list<br>Not required when NFS protocol is selected |
+| $[ prefix ]$mountProtocol.protocol | Body | String | Y | Specifies the protocol when mounting the volume<br>You can select one of `nfs` or `cifs`. |
+{% elif method == 'patch' %}
+| $[ prefix ]$mountProtocol.cifsAuthIds | Body | List | N | CIFS authentication ID list |
+| $[ prefix ]$mountProtocol.protocol | Body | String | N | The protocol of an already created volume cannot be changed.<br>When changing the `cifsAuthIds` field, you must specify `cifs` in this field. |
+{% endif %}
+{% if method == 'post' %}
+| $[ prefix ]$name | Body | String | Y | Volume name |
+{% endif %}
+| $[ prefix ]$sizeGb | Body | Integer | $[ 'Y' if method == 'post'  else 'N' ]$ | Volume size (GB)<br>The volume can be set from a minimum of 300 GB to a maximum of 10,000 GB, in 100 GB increments. |
+| $[ prefix ]$snapshotPolicy | Body | Object | N | Volume snapshot settings object |
+| $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | N | Maximum number of snapshots to store<br>You can set a maximum of 30, and the first automatically created snapshot will be deleted when the maximum number of saves is reached. |
+| $[ prefix ]$snapshotPolicy.reservePercent | Body | Integer | N | Snapshot capacity ratio |
+| $[ prefix ]$snapshotPolicy.schedule | Body | Object | N | Snapshot auto-creation object<br>If `null`, snapshot auto-creation will not be configured. |
+| $[ prefix ]$snapshotPolicy.schedule.time | Body | String | N | Snapshot auto-creation time |
+| $[ prefix ]$snapshotPolicy.schedule.timeOffset | Body | String | N | Snapshot auto-creation reference timezone |
+| $[ prefix ]$snapshotPolicy.schedule.weekdays | Body | List | N | Snapshot auto-creation days of the week<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |{% endmacro %}
+{# end macro volume_request_table #}
+{% macro volume_mirror_response_json(indent=0, method='') -%}
+$[ ' ' * indent ]$"createdAt":"2025-04-01T06:45:45+00:00",
+$[ ' ' * indent ]$"direction": "FORWARD",
+$[ ' ' * indent ]$"directionChangedAt": null,
+$[ ' ' * indent ]$"dstProjectId": "K3y0CgOy",
+$[ ' ' * indent ]$"dstRegion": "KR2",
+$[ ' ' * indent ]$"dstTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
+$[ ' ' * indent ]$"dstVolumeId": "e09281d2-0b1c-48a9-8a01-0098aa59f624",
+$[ ' ' * indent ]$"dstVolumeName": "TEST-NAS-MIRROR-1",
+$[ ' ' * indent ]$"id": "8116892c-7306-48be-9e3d-143311b2254c",
+$[ ' ' * indent ]$"role": "SOURCE",
+$[ ' ' * indent ]$"srcProjectId": "K3y0CgOy",
+$[ ' ' * indent ]$"srcRegion": "KR1",
+$[ ' ' * indent ]$"srcTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
+$[ ' ' * indent ]$"srcVolumeId": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
+$[ ' ' * indent ]$"srcVolumeName": "TEST-NAS-1",
+$[ ' ' * indent ]$"status": "PENDING"{% endmacro %}
+{# end macro #}
+{% macro volume_response_json(indent=0, method='') -%}
+$[ ' ' * indent ]$"acl": [
+$[ ' ' * indent ]$  "10.0.1.0/24"
+$[ ' ' * indent ]$],
+$[ ' ' * indent ]$"createdAt": "2025-04-01T06:44:25+00:00",
+$[ ' ' * indent ]$"description": "NAS for Testing",
+{% if encryption %}
+$[ ' ' * indent ]$"encryption": {
+$[ ' ' * indent ]$  "enabled": false
+$[ ' ' * indent ]$},
+{% endif %}
+$[ ' ' * indent ]$"id": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
+$[ ' ' * indent ]$"interfaces": [
+$[ ' ' * indent ]$  {
+$[ ' ' * indent ]$    "id": "9a8ec90f-cc27-4649-9bda-a1f0b193a402",
+$[ ' ' * indent ]$    "path": "10.0.1.7:/TEST-NAS-1",
+$[ ' ' * indent ]$    "status": "ACTIVE",
+$[ ' ' * indent ]$    "subnetId": "cb779d62-72ef-43b6-b368-3fe28dcd812b",
+$[ ' ' * indent ]$    "tenantId": "3b6179e5fa6b499386b827357c4cb8c4"
+$[ ' ' * indent ]$  }
+$[ ' ' * indent ]$],
+{% if method == 'post' %}
+$[ ' ' * indent ]$"mirrors": []
+{% else %}
+$[ ' ' * indent ]$"mirrors": [
+$[ ' ' * indent ]$  {
+$[ volume_mirror_response_json(indent+4) ]$
+$[ ' ' * indent ]$  }
+$[ ' ' * indent ]$],
+{% endif %}
+$[ ' ' * indent ]$"mountProtocol": {
+$[ ' ' * indent ]$  "protocol": "cifs",
+$[ ' ' * indent ]$  "cifsAuthIds": [
+$[ ' ' * indent ]$    "cifs-test-id"
+$[ ' ' * indent ]$  ]
+$[ ' ' * indent ]$},
+$[ ' ' * indent ]$"name": "TEST-NAS-1",
+$[ ' ' * indent ]$"projectId": "K3y0CgOy",
+$[ ' ' * indent ]$"sizeGb": 300,
+$[ ' ' * indent ]$"snapshotPolicy": {
+$[ ' ' * indent ]$  "maxScheduledCount": 1,
+$[ ' ' * indent ]$  "reservePercent": 5,
+$[ ' ' * indent ]$  "schedule": {
+$[ ' ' * indent ]$    "time": "00:00",
+$[ ' ' * indent ]$    "timeOffset": "+09:00",
+$[ ' ' * indent ]$    "weekdays": [
+$[ ' ' * indent ]$      1,
+$[ ' ' * indent ]$      3,
+$[ ' ' * indent ]$      5
+$[ ' ' * indent ]$    ]
+$[ ' ' * indent ]$  }
+$[ ' ' * indent ]$},
+$[ ' ' * indent ]$"stationId": null,
+$[ ' ' * indent ]$"status": "ACTIVE",
+$[ ' ' * indent ]$"tenantId": "3b6179e5fa6b499386b827357c4cb8c4",
+$[ ' ' * indent ]$"updatedAt": "2025-04-01T06:47:13+00:00"{% endmacro %}
+{# end macro #}
+{% macro snapshot_response_table(prefix='') -%}
+| $[ prefix ]$id | Body | String | Snapshot ID |
+| $[ prefix ]$name | Body | String | Snapshot name |
+| $[ prefix ]$size | Body | Integer | Snapshot size |
+| $[ prefix ]$type | Body | String | Snapshot type<br>- `NORMAL`: Snapshot created by the user<br>- `SCHEDULED`: Snapshot created by auto-creation<br>- `MIRROR`: Snapshot created by replication |
+| $[ prefix ]$preserved | Body | Boolean | Whether the snapshot is set as non-deletable by the system |
+| $[ prefix ]$createdAt | Body | String | Snapshot creation time |{% endmacro %}
+{# end macro snapshot_response_table #}
+{% macro snapshot_response_json(indent=0) -%}
+$[ ' ' * indent ]$"createdAt": "2025-04-01T09:34:27+00:00",
+$[ ' ' * indent ]$"id": "8151fe33-0edc-11f0-b0e3-d039eaa3e920",
+$[ ' ' * indent ]$"name": "TEST-SNAPSHOT-1",
+$[ ' ' * indent ]$"preserved": false,
+$[ ' ' * indent ]$"size": 3112960,
+$[ ' ' * indent ]$"type": "NORMAL"{% endmacro %}
+{# end macro #}
 <a id="storage-nas-api-guide"></a>
 ## Storage > NAS > API Guide { #storage-nas-api-guide }
 
@@ -17,16 +201,13 @@ NAS API uses the `nasv1` type endpoint. Refer to the `serviceCatalog` in the tok
 
 | Region | Endpoint |
 | --- | --- |
-| Korea (Pangyo) Region | https://kr1-api-nas-infrastructure.nhncloudservice.com |
-| Korea (Pyeongchon) Region | https://kr2-api-nas-infrastructure.nhncloudservice.com |
-| Korea (Gwangju) Region | https://kr3-api-nas-infrastructure.nhncloudservice.com |
-
-
+{% for region in regions %}| $[ region.name ]$ | $[ region.endpoint ]$ |
+{% endfor %}
 <a id="nas_api_common.authentication"></a>
 ### Authentication and Authorization { #nas_api_common.authentication }
 
 NAS uses IaaS tokens for authentication and authorization when making API calls. The IaaS token is an authentication token used for NHN Cloud's OpenStack-based infrastructure services (IaaS).
-For more information on issuing and using IaaS tokens, see [IaaS token](/nhncloud/en/public-api/iaas-token/).
+For more information on issuing and using IaaS tokens, see [IaaS token]($[ identity_guide_url ]$).
 
 <a id="nas_api_common.response"></a>
 ### Response Common Information { #nas_api_common.response }
@@ -117,52 +298,7 @@ This API does not require a request body.
 | paging.page | Body | Integer | Current page number |
 | paging.totalCount | Body | Integer | Total Count |
 | volumes | Body | List | List of Volume objects |
-| volumes.id | Body | String | Volume ID |
-| volumes.name | Body | String | Volume name |
-| volumes.status | Body | String | Volume status |
-| volumes.description | Body | String | Volume description |
-| volumes.sizeGb | Body | Integer | Volume size (GB) |
-| volumes.projectId | Body | String | The project ID to which the volume belongs |
-| volumes.tenantId | Body | String | The tenant ID to which the volume belongs |
-| volumes.acl | Body | List | Volume ACL List |
-| volumes.encryption | Body | Object | Volume encryption information |
-| volumes.encryption.enabled | Body | Boolean | Whether to enable volume encryption |
-| volumes.encryption.keys | Body | List | Volume encryption keys information |
-| volumes.interfaces | Body | List | List of volume interface objects |
-| volumes.interfaces.id | Body | String | Interface ID |
-| volumes.interfaces.path | Body | String | Interface path |
-| volumes.interfaces.status | Body | String | Interface status |
-| volumes.interfaces.subnetId | Body | String | The subnet ID of the interface |
-| volumes.interfaces.tenantId | Body | String | The tenant ID of the interface |
-| volumes.mirrors | Body | List | Volume replication settings object list |
-| volumes.mirrors.id | Body | String | Replication setting ID |
-| volumes.mirrors.role | Body | String | Replication roles<br>- `SOURCE`: Source volume<br>- `DESTINATION`: Target volume |
-| volumes.mirrors.status | Body | String | Replication setting status<br>- `INITIALIZED`: Setup complete<br>- `UPDATING`: Updating settings<br>- `DELETING`: Deleting settings<br>- `PENDING`: Creating settings |
-| volumes.mirrors.direction | Body | String | Replication direction<br>- `FORWARD`: Source volume → Target volume<br>- `REVERSE`: Target volume → Source volume |
-| volumes.mirrors.directionChangedAt | Body | String | When to change replication direction |
-| volumes.mirrors.dstProjectId | Body | String | The project ID of the replication target volume |
-| volumes.mirrors.dstRegion | Body | String | The region of the replication target volume |
-| volumes.mirrors.dstTenantId | Body | String | The tenant ID of the replication target volume |
-| volumes.mirrors.dstVolumeId | Body | String | The volume ID of the replication target |
-| volumes.mirrors.dstVolumeName | Body | String | Replication target volume name |
-| volumes.mirrors.srcProjectId | Body | String | The project ID of the source volume |
-| volumes.mirrors.srcRegion | Body | String | The region of the source volume |
-| volumes.mirrors.srcTenantId | Body | String | The tenant ID of the source volume |
-| volumes.mirrors.srcVolumeId | Body | String | Original volume id |
-| volumes.mirrors.srcVolumeName | Body | String | Source volume name |
-| volumes.mirrors.createdAt | Body | String | Replication creation time |
-| volumes.mountProtocol | Body | Object | Volume mount protocols |
-| volumes.mountProtocol.cifsAuthIds | Body | List | Volume CIFS Authentication ID List |
-| volumes.mountProtocol.protocol | Body | String | Volume mount protocols |
-| volumes.snapshotPolicy | Body | Object | Volume snapshot settings object |
-| volumes.snapshotPolicy.maxScheduledCount | Body | Integer | The maximum number of snapshots that can be saved |
-| volumes.snapshotPolicy.reservePercent | Body | Integer | Snapshot capacity ratio |
-| volumes.snapshotPolicy.schedule | Body | Object | Snapshot auto-create objects |
-| volumes.snapshotPolicy.schedule.time | Body | String | Snapshot auto-create time |
-| volumes.snapshotPolicy.schedule.timeOffset | Body | String | Time zone for snapshot auto-create |
-| volumes.snapshotPolicy.schedule.weekdays | Body | List | Days of the week that snapshots are automatically created<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |
-| volumes.createdAt | Body | String | Volume created time |
-| volumes.updatedAt | Body | String | Volume changed time |
+$[ volume_response_table('volumes.') ]$
 
 <details>
   <summary>Example response</summary>
@@ -181,70 +317,7 @@ This API does not require a request body.
   },
   "volumes": [
     {
-      "acl": [
-        "10.0.1.0/24"
-      ],
-      "createdAt": "2025-04-01T06:44:25+00:00",
-      "description": "NAS for Testing",
-      "encryption": {
-        "enabled": false
-      },
-      "id": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
-      "interfaces": [
-        {
-          "id": "9a8ec90f-cc27-4649-9bda-a1f0b193a402",
-          "path": "10.0.1.7:/TEST-NAS-1",
-          "status": "ACTIVE",
-          "subnetId": "cb779d62-72ef-43b6-b368-3fe28dcd812b",
-          "tenantId": "3b6179e5fa6b499386b827357c4cb8c4"
-        }
-      ],
-      "mirrors": [
-        {
-          "createdAt":"2025-04-01T06:45:45+00:00",
-          "direction": "FORWARD",
-          "directionChangedAt": null,
-          "dstProjectId": "K3y0CgOy",
-          "dstRegion": "KR2",
-          "dstTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
-          "dstVolumeId": "e09281d2-0b1c-48a9-8a01-0098aa59f624",
-          "dstVolumeName": "TEST-NAS-MIRROR-1",
-          "id": "8116892c-7306-48be-9e3d-143311b2254c",
-          "role": "SOURCE",
-          "srcProjectId": "K3y0CgOy",
-          "srcRegion": "KR1",
-          "srcTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
-          "srcVolumeId": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
-          "srcVolumeName": "TEST-NAS-1",
-          "status": "PENDING"
-        }
-      ],
-      "mountProtocol": {
-        "protocol": "cifs",
-        "cifsAuthIds": [
-          "cifs-test-id"
-        ]
-      },
-      "name": "TEST-NAS-1",
-      "projectId": "K3y0CgOy",
-      "sizeGb": 300,
-      "snapshotPolicy": {
-        "maxScheduledCount": 1,
-        "reservePercent": 5,
-        "schedule": {
-          "time": "00:00",
-          "timeOffset": "+09:00",
-          "weekdays": [
-            1,
-            3,
-            5
-          ]
-        }
-      },
-      "stationId": null,
-      "status": "ACTIVE",
-      "tenantId": "3b6179e5fa6b499386b827357c4cb8c4",
-      "updatedAt": "2025-04-01T06:47:13+00:00"
+$[ volume_response_json(indent=6) ]$
     }
   ]
 }
@@ -263,6 +336,7 @@ Create a new volume.
     To use the CIFS protocol, you must create CIFS credentials. Credentials are managed on a per-project basis, and you must register CIFS credentials to allow to access each CIFS volume.
     You can create CIFS credentials through the **Storage > NAS > Manage CIFS Credentials** of the console.
 
+{% if encryption %}
 <!-- -->
 
 !!! tip "Note: Setting up encryption key storage"
@@ -271,6 +345,7 @@ Create a new volume.
     If you change the keystore ID, symmetric keys for newly created encrypted volume will be stored in the new keystore. Symmetric keys already stored in the previous keystore are retained.
 
 
+{% endif %}
 ```
 POST /v1/volumes
 X-Auth-Token: {token-id}
@@ -285,24 +360,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- | --- |
 | X-Auth-Token | Header | String | Y | Token ID |
 | volume | Body | Object | Y | Volume creation request object |
-| volume.acl | Body | List | N | List of ACLs to set when creating volume<br>You can enter it in IP or CIDR format. |
-| volume.description | Body | String | N | Volume description |
-| volume.encryption | Body | Object | N | Encryption settings object when creating volume |
-| volume.encryption.enabled | Body | Boolean | N | Whether to enable encryption settings<br>After the encryption keystore is set up, setting its field to `true`enables encryption. |
-| volume.interfaces | Body | List | N | List of interfaces to access volume |
-| volume.interfaces.subnetId | Body | String | N | The subnet ID of the volume interface |
-| volume.mountProtocol | Body | Object | N | Protocol settings object when creating volume |
-| volume.mountProtocol.cifsAuthIds | Body | List | N | List of CIFS Authentication IDs<br>No input required for NFS protocol selection |
-| volume.mountProtocol.protocol | Body | String | Y | Specifying protocols when mounting volume<br>You can choose between `NFS` and `CIFS`. |
-| volume.name | Body | String | Y | Volume name |
-| volume.sizeGb | Body | Integer | Y | Volume size (GB)<br>Volume can be set from a minimum of 300GB to a maximum of 10,000GB, in 100GB increments. |
-| volume.snapshotPolicy | Body | Object | N | Volume snapshot settings object |
-| volume.snapshotPolicy.maxScheduledCount | Body | Integer | N | The maximum number of snapshots that can be saved<br>You can set a maximum of 30, and the first automatically created snapshot will be deleted when the maximum number of saves is reached. |
-| volume.snapshotPolicy.reservePercent | Body | Integer | N | Snapshot capacity ratio |
-| volume.snapshotPolicy.schedule | Body | Object | N | Snapshot auto-create objects<br>If `null`, snapshot auto-creation will not be configured. |
-| volume.snapshotPolicy.schedule.time | Body | String | N | Snapshot auto-create time |
-| volume.snapshotPolicy.schedule.timeOffset | Body | String | N | Time zone for snapshot auto-create |
-| volume.snapshotPolicy.schedule.weekdays | Body | List | N | Days of the week that snapshots are automatically created<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |
+$[ volume_request_table('volume.', 'post') ]$
 
 <details>
   <summary>Request Example</summary>
@@ -314,9 +372,11 @@ X-Auth-Token: {token-id}
       "10.0.1.0/24"
     ],
     "description": "NAS for Testing",
+{% if encryption %}
     "encryption": {
       "enabled": true
     },
+{% endif %}
     "interfaces": [
       {
         "subnetId": "cb779d62-72ef-43b6-b368-3fe28dcd812b"
@@ -353,52 +413,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- |
 | header | Body | Object | Header Objects |
 | volume | Body | Object | Volume objects |
-| volume.id | Body | String | Volume ID |
-| volume.name | Body | String | Volume name |
-| volume.status | Body | String | Volume status |
-| volume.description | Body | String | Volume description |
-| volume.sizeGb | Body | Integer | Volume size (GB) |
-| volume.projectId | Body | String | The project ID to which the volume belongs |
-| volume.tenantId | Body | String | The tenant ID to which the volume belongs |
-| volume.acl | Body | List | Volume ACL List |
-| volume.encryption | Body | Object | Volume encryption information |
-| volume.encryption.enabled | Body | Boolean | Whether to enable volume encryption |
-| volume.encryption.keys | Body | List | Volume encryption keys information |
-| volume.interfaces | Body | List | List of volume interface objects |
-| volume.interfaces.id | Body | String | Interface ID |
-| volume.interfaces.path | Body | String | Interface path |
-| volume.interfaces.status | Body | String | Interface status |
-| volume.interfaces.subnetId | Body | String | The subnet ID of the interface |
-| volume.interfaces.tenantId | Body | String | The tenant ID of the interface |
-| volume.mirrors | Body | List | Volume replication settings object list |
-| volume.mirrors.id | Body | String | Replication setting ID |
-| volume.mirrors.role | Body | String | Replication roles<br>- `SOURCE`: Source volume<br>- `DESTINATION`: Target volume |
-| volume.mirrors.status | Body | String | Replication setting status<br>- `INITIALIZED`: Setup complete<br>- `UPDATING`: Updating settings<br>- `DELETING`: Deleting settings<br>- `PENDING`: Creating settings |
-| volume.mirrors.direction | Body | String | Replication direction<br>- `FORWARD`: Source volume → Target volume<br>- `REVERSE`: Target volume → Source volume |
-| volume.mirrors.directionChangedAt | Body | String | When to change replication direction |
-| volume.mirrors.dstProjectId | Body | String | The project ID of the replication target volume |
-| volume.mirrors.dstRegion | Body | String | The region of the replication target volume |
-| volume.mirrors.dstTenantId | Body | String | The tenant ID of the replication target volume |
-| volume.mirrors.dstVolumeId | Body | String | The volume ID of the replication target |
-| volume.mirrors.dstVolumeName | Body | String | Replication target volume name |
-| volume.mirrors.srcProjectId | Body | String | The project ID of the source volume |
-| volume.mirrors.srcRegion | Body | String | The region of the source volume |
-| volume.mirrors.srcTenantId | Body | String | The tenant ID of the source volume |
-| volume.mirrors.srcVolumeId | Body | String | Original volume id |
-| volume.mirrors.srcVolumeName | Body | String | Source volume name |
-| volume.mirrors.createdAt | Body | String | Replication creation time |
-| volume.mountProtocol | Body | Object | Volume mount protocols |
-| volume.mountProtocol.cifsAuthIds | Body | List | Volume CIFS Authentication ID List |
-| volume.mountProtocol.protocol | Body | String | Volume mount protocols |
-| volume.snapshotPolicy | Body | Object | Volume snapshot settings object |
-| volume.snapshotPolicy.maxScheduledCount | Body | Integer | The maximum number of snapshots that can be saved |
-| volume.snapshotPolicy.reservePercent | Body | Integer | Snapshot capacity ratio |
-| volume.snapshotPolicy.schedule | Body | Object | Snapshot auto-create objects |
-| volume.snapshotPolicy.schedule.time | Body | String | Snapshot auto-create time |
-| volume.snapshotPolicy.schedule.timeOffset | Body | String | Time zone for snapshot auto-create |
-| volume.snapshotPolicy.schedule.weekdays | Body | List | Days of the week that snapshots are automatically created<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |
-| volume.createdAt | Body | String | Volume created time |
-| volume.updatedAt | Body | String | Volume changed time |
+$[ volume_response_table('volume.') ]$
 
 <details>
   <summary>Example response</summary>
@@ -411,70 +426,7 @@ X-Auth-Token: {token-id}
     "resultMessage": "Created"
   },
   "volume": {
-    "acl": [
-      "10.0.1.0/24"
-    ],
-    "createdAt": "2025-04-01T06:44:25+00:00",
-    "description": "NAS for Testing",
-    "encryption": {
-      "enabled": false
-    },
-    "id": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
-    "interfaces": [
-      {
-        "id": "9a8ec90f-cc27-4649-9bda-a1f0b193a402",
-        "path": "10.0.1.7:/TEST-NAS-1",
-        "status": "ACTIVE",
-        "subnetId": "cb779d62-72ef-43b6-b368-3fe28dcd812b",
-        "tenantId": "3b6179e5fa6b499386b827357c4cb8c4"
-      }
-    ],
-    "mirrors": [
-      {
-        "createdAt":"2025-04-01T06:45:45+00:00",
-        "direction": "FORWARD",
-        "directionChangedAt": null,
-        "dstProjectId": "K3y0CgOy",
-        "dstRegion": "KR2",
-        "dstTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
-        "dstVolumeId": "e09281d2-0b1c-48a9-8a01-0098aa59f624",
-        "dstVolumeName": "TEST-NAS-MIRROR-1",
-        "id": "8116892c-7306-48be-9e3d-143311b2254c",
-        "role": "SOURCE",
-        "srcProjectId": "K3y0CgOy",
-        "srcRegion": "KR1",
-        "srcTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
-        "srcVolumeId": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
-        "srcVolumeName": "TEST-NAS-1",
-        "status": "PENDING"
-      }
-    ],
-    "mountProtocol": {
-      "protocol": "cifs",
-      "cifsAuthIds": [
-        "cifs-test-id"
-      ]
-    },
-    "name": "TEST-NAS-1",
-    "projectId": "K3y0CgOy",
-    "sizeGb": 300,
-    "snapshotPolicy": {
-      "maxScheduledCount": 1,
-      "reservePercent": 5,
-      "schedule": {
-        "time": "00:00",
-        "timeOffset": "+09:00",
-        "weekdays": [
-          1,
-          3,
-          5
-        ]
-      }
-    },
-    "stationId": null,
-    "status": "ACTIVE",
-    "tenantId": "3b6179e5fa6b499386b827357c4cb8c4",
-    "updatedAt": "2025-04-01T06:47:13+00:00"
+$[ volume_response_json(indent=4) ]$
   }
 }
 ```
@@ -537,52 +489,7 @@ This API does not require a request body.
 | --- | --- | --- | --- |
 | header | Body | Object | Header Objects |
 | volume | Body | Object | Volume objects |
-| volume.id | Body | String | Volume ID |
-| volume.name | Body | String | Volume name |
-| volume.status | Body | String | Volume status |
-| volume.description | Body | String | Volume description |
-| volume.sizeGb | Body | Integer | Volume size (GB) |
-| volume.projectId | Body | String | The project ID to which the volume belongs |
-| volume.tenantId | Body | String | The tenant ID to which the volume belongs |
-| volume.acl | Body | List | Volume ACL List |
-| volume.encryption | Body | Object | Volume encryption information |
-| volume.encryption.enabled | Body | Boolean | Whether to enable volume encryption |
-| volume.encryption.keys | Body | List | Volume encryption keys information |
-| volume.interfaces | Body | List | List of volume interface objects |
-| volume.interfaces.id | Body | String | Interface ID |
-| volume.interfaces.path | Body | String | Interface path |
-| volume.interfaces.status | Body | String | Interface status |
-| volume.interfaces.subnetId | Body | String | The subnet ID of the interface |
-| volume.interfaces.tenantId | Body | String | The tenant ID of the interface |
-| volume.mirrors | Body | List | Volume replication settings object list |
-| volume.mirrors.id | Body | String | Replication setting ID |
-| volume.mirrors.role | Body | String | Replication roles<br>- `SOURCE`: Source volume<br>- `DESTINATION`: Target volume |
-| volume.mirrors.status | Body | String | Replication setting status<br>- `INITIALIZED`: Setup complete<br>- `UPDATING`: Updating settings<br>- `DELETING`: Deleting settings<br>- `PENDING`: Creating settings |
-| volume.mirrors.direction | Body | String | Replication direction<br>- `FORWARD`: Source volume → Target volume<br>- `REVERSE`: Target volume → Source volume |
-| volume.mirrors.directionChangedAt | Body | String | When to change replication direction |
-| volume.mirrors.dstProjectId | Body | String | The project ID of the replication target volume |
-| volume.mirrors.dstRegion | Body | String | The region of the replication target volume |
-| volume.mirrors.dstTenantId | Body | String | The tenant ID of the replication target volume |
-| volume.mirrors.dstVolumeId | Body | String | The volume ID of the replication target |
-| volume.mirrors.dstVolumeName | Body | String | Replication target volume name |
-| volume.mirrors.srcProjectId | Body | String | The project ID of the source volume |
-| volume.mirrors.srcRegion | Body | String | The region of the source volume |
-| volume.mirrors.srcTenantId | Body | String | The tenant ID of the source volume |
-| volume.mirrors.srcVolumeId | Body | String | Original volume id |
-| volume.mirrors.srcVolumeName | Body | String | Source volume name |
-| volume.mirrors.createdAt | Body | String | Replication creation time |
-| volume.mountProtocol | Body | Object | Volume mount protocols |
-| volume.mountProtocol.cifsAuthIds | Body | List | Volume CIFS Authentication ID List |
-| volume.mountProtocol.protocol | Body | String | Volume mount protocols |
-| volume.snapshotPolicy | Body | Object | Volume snapshot settings object |
-| volume.snapshotPolicy.maxScheduledCount | Body | Integer | The maximum number of snapshots that can be saved |
-| volume.snapshotPolicy.reservePercent | Body | Integer | Snapshot capacity ratio |
-| volume.snapshotPolicy.schedule | Body | Object | Snapshot auto-create objects |
-| volume.snapshotPolicy.schedule.time | Body | String | Snapshot auto-create time |
-| volume.snapshotPolicy.schedule.timeOffset | Body | String | Time zone for snapshot auto-create |
-| volume.snapshotPolicy.schedule.weekdays | Body | List | Days of the week that snapshots are automatically created<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |
-| volume.createdAt | Body | String | Volume created time |
-| volume.updatedAt | Body | String | Volume changed time |
+$[ volume_response_table('volume.') ]$
 
 <br>
 
@@ -607,19 +514,7 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | Y | Token ID |
 | volume_id | URL | String | Y | Volume ID |
 | volume | Body | Object | Y | Request object for changing volume settings |
-| volume.acl | Body | List | N | List of ACLs to set when creating volume<br>You can enter it in IP or CIDR format. |
-| volume.description | Body | String | N | Volume description |
-| volume.mountProtocol | Body | Object | N | Protocol settings object when creating volume |
-| volume.mountProtocol.cifsAuthIds | Body | List | N | List of CIFS Authentication IDs |
-| volume.mountProtocol.protocol | Body | String | N | You cannot change the protocol of volume that has already been created.<br>When changing the `cifsAuthIds` field, you must specify the `cifs` in that field. |
-| volume.sizeGb | Body | Integer | N | Volume size (GB)<br>Volume can be set from a minimum of 300 GB to a maximum of 10,000GB, in 100GB increments. |
-| volume.snapshotPolicy | Body | Object | N | Volume snapshot settings object |
-| volume.snapshotPolicy.maxScheduledCount | Body | Integer | N | The maximum number of snapshots that can be saved<br>You can set a maximum of 30, and the first automatically created snapshot will be deleted when the maximum number of saves is reached. |
-| volume.snapshotPolicy.reservePercent | Body | Integer | N | Snapshot capacity ratio |
-| volume.snapshotPolicy.schedule | Body | Object | N | Snapshot auto-create objects<br>If `null`, snapshot auto-creation will not be configured. |
-| volume.snapshotPolicy.schedule.time | Body | String | N | Snapshot auto-create time |
-| volume.snapshotPolicy.schedule.timeOffset | Body | String | N | Time zone for snapshot auto-create |
-| volume.snapshotPolicy.schedule.weekdays | Body | List | N | Days of the week that snapshots are automatically created<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |
+$[ volume_request_table('volume.', 'patch') ]$
 
 <details>
   <summary>Request Example</summary>
@@ -705,11 +600,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- |
 | header | Body | Object | Header Objects |
 | interface | Body | Object | Created interface information object |
-| interface.id | Body | String | Created interface ID |
-| interface.path | Body | String | Created interface path |
-| interface.status | Body | String | Created interface status |
-| interface.subnetId | Body | String | The subnet ID of the created interface |
-| interface.tenantId | Body | String | The tenant ID of the created interface |
+$[ interface_response_table('interface.', 'Created ') ]$
 
 <details>
   <summary>Example response</summary>
@@ -929,12 +820,7 @@ This API does not require a request body.
 | --- | --- | --- | --- |
 | header | Body | Object | Header Objects |
 | snapshots | Body | List | Snapshot info object list |
-| snapshots.id | Body | String | Snapshot ID |
-| snapshots.name | Body | String | Snapshot name |
-| snapshots.size | Body | Integer | Snapshot size |
-| snapshots.type | Body | String | Snapshot types<br>- `NORMAL`: Snapshots created by the user<br>- `SCHEDULED`: Snapshots created by Auto Create Snapshot<br>- `MIRROR`: Snapshots created by replication |
-| snapshots.preserved | Body | Boolean | Whether snapshots are made undeletable by the system |
-| snapshots.createdAt | Body | String | Snapshot creation time |
+$[ snapshot_response_table('snapshots.') ]$
 
 <details><summary>Example response</summary>
 
@@ -947,12 +833,7 @@ This API does not require a request body.
   },
   "snapshots": [
     {
-      "createdAt": "2025-04-01T09:34:27+00:00",
-      "id": "8151fe33-0edc-11f0-b0e3-d039eaa3e920",
-      "name": "TEST-SNAPSHOT-1",
-      "preserved": false,
-      "size": 3112960,
-      "type": "NORMAL"
+$[ snapshot_response_json(6) ]$
     }
   ]
 }
@@ -1001,12 +882,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- |
 | header | Body | Object | Header Objects |
 | snapshot | Body | Object | Snapshot information objects |
-| snapshot.id | Body | String | Snapshot ID |
-| snapshot.name | Body | String | Snapshot name |
-| snapshot.size | Body | Integer | Snapshot size |
-| snapshot.type | Body | String | Snapshot types<br>- `NORMAL`: Snapshots created by the user<br>- `SCHEDULED`: Snapshots created by Auto Create Snapshot<br>- `MIRROR`: Snapshots created by replication |
-| snapshot.preserved | Body | Boolean | Whether snapshots are made undeletable by the system |
-| snapshot.createdAt | Body | String | Snapshot creation time |
+$[ snapshot_response_table('snapshot.') ]$
 
 <details>
   <summary>Example response</summary>
@@ -1019,12 +895,7 @@ X-Auth-Token: {token-id}
     "resultMessage": "Created"
   },
   "snapshot": {
-    "createdAt": "2025-04-01T09:34:27+00:00",
-    "id": "8151fe33-0edc-11f0-b0e3-d039eaa3e920",
-    "name": "TEST-SNAPSHOT-1",
-    "preserved": false,
-    "size": 3112960,
-    "type": "NORMAL"
+$[ snapshot_response_json(4) ]$
   }
 }
 ```
@@ -1090,12 +961,7 @@ This API does not require a request body.
 | --- | --- | --- | --- |
 | header | Body | Object | Header Objects |
 | snapshot | Body | Object | Snapshot information objects |
-| snapshot.id | Body | String | Snapshot ID |
-| snapshot.name | Body | String | Snapshot name |
-| snapshot.size | Body | Integer | Snapshot size |
-| snapshot.type | Body | String | Snapshot types<br>- `NORMAL`: Snapshots created by the user<br>- `SCHEDULED`: Snapshots created by Auto Create Snapshot<br>- `MIRROR`: Snapshots created by replication |
-| snapshot.preserved | Body | Boolean | Whether snapshots are made undeletable by the system |
-| snapshot.createdAt | Body | String | Snapshot creation time |
+$[ snapshot_response_table('snapshot.') ]$
 
 <br>
 
@@ -1126,6 +992,8 @@ This API does not require a request body.
 The response body does not contain any content other than header fields.
 
 <br>
+
+{% if replication %}
 
 <a id="replication"></a>
 ## Set up volume replication { #replication }
@@ -1173,24 +1041,7 @@ X-Auth-Token: {token-id}
 | volumeMirror.dstRegion | Body | String | Y | The region of replication target volume |
 | volumeMirror.dstTenantId | Body | String | Y | The tenant ID of the replication target volume |
 | volumeMirror.dstVolume | Body | Object | Y | Replication target volume request object |
-| volumeMirror.dstVolume.acl | Body | List | N | List of ACLs to set when creating volume<br>You can enter it in IP or CIDR format. |
-| volumeMirror.dstVolume.description | Body | String | N | Volume description |
-| volumeMirror.dstVolume.encryption | Body | Object | N | Encryption settings object when creating volume |
-| volumeMirror.dstVolume.encryption.enabled | Body | Boolean | N | Whether to enable encryption settings<br>After the encryption keystore is set up, setting its field to `true`enables encryption. |
-| volumeMirror.dstVolume.interfaces | Body | List | N | List of interfaces to access volume |
-| volumeMirror.dstVolume.interfaces.subnetId | Body | String | N | The subnet ID of the volume interface |
-| volumeMirror.dstVolume.mountProtocol | Body | Object | N | Protocol settings object when creating volume |
-| volumeMirror.dstVolume.mountProtocol.cifsAuthIds | Body | List | N | List of CIFS Authentication IDs<br>No input required for NFS protocol selection |
-| volumeMirror.dstVolume.mountProtocol.protocol | Body | String | Y | Specifying protocols when mounting volume<br>You can choose between `NFS` and `CIFS`. |
-| volumeMirror.dstVolume.name | Body | String | Y | Volume name |
-| volumeMirror.dstVolume.sizeGb | Body | Integer | Y | Volume size (GB)<br>Volume can be set from a minimum of 300GB to a maximum of 10,000GB, in 100GB increments. |
-| volumeMirror.dstVolume.snapshotPolicy | Body | Object | N | Volume snapshot settings object |
-| volumeMirror.dstVolume.snapshotPolicy.maxScheduledCount | Body | Integer | N | The maximum number of snapshots that can be saved<br>You can set a maximum of 30, and the first automatically created snapshot will be deleted when the maximum number of saves is reached. |
-| volumeMirror.dstVolume.snapshotPolicy.reservePercent | Body | Integer | N | Snapshot capacity ratio |
-| volumeMirror.dstVolume.snapshotPolicy.schedule | Body | Object | N | Snapshot auto-create objects<br>If `null`, snapshot auto-creation will not be configured. |
-| volumeMirror.dstVolume.snapshotPolicy.schedule.time | Body | String | N | Snapshot auto-create time |
-| volumeMirror.dstVolume.snapshotPolicy.schedule.timeOffset | Body | String | N | Time zone for snapshot auto-create |
-| volumeMirror.dstVolume.snapshotPolicy.schedule.weekdays | Body | List | N | Days of the week that snapshots are automatically created<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |
+$[ volume_request_table('volumeMirror.dstVolume.', 'post') ]$
 
 <details>
   <summary>Request Example</summary>
@@ -1221,22 +1072,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- |
 | header | Body | Object | Header Objects |
 | volumeMirror | Body | Object | Replication Settings Creation Object |
-| volumeMirror.id | Body | String | Replication setting ID |
-| volumeMirror.role | Body | String | Replication roles<br>- `SOURCE`: Source volume<br>- `DESTINATION`: Target volume |
-| volumeMirror.status | Body | String | Replication setting status<br>- `INITIALIZED`: Setup complete<br>- `UPDATING`: Updating settings<br>- `DELETING`: Deleting settings<br>- `PENDING`: Creating settings |
-| volumeMirror.direction | Body | String | Replication direction<br>- `FORWARD`: Source volume → Target volume<br>- `REVERSE`: Target volume → Source volume |
-| volumeMirror.directionChangedAt | Body | String | When to change replication direction |
-| volumeMirror.dstProjectId | Body | String | The project ID of the replication target volume |
-| volumeMirror.dstRegion | Body | String | The region of the replication target volume |
-| volumeMirror.dstTenantId | Body | String | The tenant ID of the replication target volume |
-| volumeMirror.dstVolumeId | Body | String | The volume ID of the replication target |
-| volumeMirror.dstVolumeName | Body | String | Replication target volume name |
-| volumeMirror.srcProjectId | Body | String | The project ID of the source volume |
-| volumeMirror.srcRegion | Body | String | The region of the source volume |
-| volumeMirror.srcTenantId | Body | String | The tenant ID of the source volume |
-| volumeMirror.srcVolumeId | Body | String | Original volume id |
-| volumeMirror.srcVolumeName | Body | String | Source volume name |
-| volumeMirror.createdAt | Body | String | Replication creation time |
+$[ volume_mirror_response_table('volumeMirror.') ]$
 
 <details>
   <summary>Example response</summary>
@@ -1249,22 +1085,7 @@ X-Auth-Token: {token-id}
     "resultMessage": "Created"
   },
   "volumeMirror": {
-    "createdAt":"2025-04-01T06:45:45+00:00",
-    "direction": "FORWARD",
-    "directionChangedAt": null,
-    "dstProjectId": "K3y0CgOy",
-    "dstRegion": "KR2",
-    "dstTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
-    "dstVolumeId": "e09281d2-0b1c-48a9-8a01-0098aa59f624",
-    "dstVolumeName": "TEST-NAS-MIRROR-1",
-    "id": "8116892c-7306-48be-9e3d-143311b2254c",
-    "role": "SOURCE",
-    "srcProjectId": "K3y0CgOy",
-    "srcRegion": "KR1",
-    "srcTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
-    "srcVolumeId": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
-    "srcVolumeName": "TEST-NAS-1",
-    "status": "PENDING"
+$[ volume_mirror_response_json(4) ]$
   }
 }
 ```
@@ -1411,3 +1232,4 @@ X-Auth-Token: {token-id}
 The response body does not contain any content other than header fields.
 
 <br>
+{% endif %}

@@ -1,7 +1,191 @@
 <!-- machine_translated: true -->
 
+{% include-markdown '../_online-nas-vars.md' %}
+
 <!-- pre-align:aligned sig=06dac106ebf2 -->
 
+{% macro interface_response_table(prefix='', desc_prefix='') -%}
+| $[ prefix ]$id | Body | String | $[ desc_prefix ]$インターフェイス ID |
+| $[ prefix ]$path | Body | String | $[ desc_prefix ]$インターフェイスパス |
+| $[ prefix ]$status | Body | String | $[ desc_prefix ]$インターフェイスステータス |
+| $[ prefix ]$subnetId | Body | String | $[ desc_prefix ]$インターフェイスのサブネット ID |
+| $[ prefix ]$tenantId | Body | String | $[ desc_prefix ]$インターフェイスのテナント ID |{% endmacro %}
+{# end macro interface_response_table #}
+{% macro volume_mirror_response_table(prefix='') -%}
+| $[ prefix ]$id | Body | String | 複製設定 ID |
+| $[ prefix ]$role | Body | String | 複製役割<br>- `SOURCE`: ソースボリューム<br>- `DESTINATION`: ターゲットボリューム |
+| $[ prefix ]$status | Body | String | 複製設定ステータス<br>- `INITIALIZED`: 設定完了<br>- `UPDATING`: 設定変更中<br>- `DELETING`: 設定削除中<br>- `PENDING`: 設定作成中 |
+| $[ prefix ]$direction | Body | String | 複製方向<br>- `FORWARD`: ソースボリューム → ターゲットボリューム<br>- `REVERSE`: ターゲットボリューム → ソースボリューム |
+| $[ prefix ]$directionChangedAt | Body | String | 複製方向変更日時 |
+| $[ prefix ]$dstProjectId | Body | String | ターゲットボリュームのプロジェクト ID |
+| $[ prefix ]$dstRegion | Body | String | ターゲットボリュームのリージョン |
+| $[ prefix ]$dstTenantId | Body | String | ターゲットボリュームのテナント ID |
+| $[ prefix ]$dstVolumeId | Body | String | ターゲットボリューム ID |
+| $[ prefix ]$dstVolumeName | Body | String | ターゲットボリューム名 |
+| $[ prefix ]$srcProjectId | Body | String | ソースボリュームのプロジェクト ID |
+| $[ prefix ]$srcRegion | Body | String | ソースボリュームのリージョン |
+| $[ prefix ]$srcTenantId | Body | String | ソースボリュームのテナント ID |
+| $[ prefix ]$srcVolumeId | Body | String | ソースボリューム ID |
+| $[ prefix ]$srcVolumeName | Body | String | ソースボリューム名 |
+| $[ prefix ]$createdAt | Body | String | 複製作成日時 |{% endmacro %}
+{# end macro volume_mirror_response_table #}
+{% macro volume_response_table(prefix='') -%}
+| $[ prefix ]$id | Body | String | ボリューム ID |
+| $[ prefix ]$name | Body | String | ボリューム名 |
+| $[ prefix ]$status | Body | String | ボリュームステータス |
+| $[ prefix ]$description | Body | String | ボリュームの説明 |
+| $[ prefix ]$sizeGb | Body | Integer | ボリュームサイズ (GB) |
+| $[ prefix ]$projectId | Body | String | ボリュームが属するプロジェクト ID |
+| $[ prefix ]$tenantId | Body | String | ボリュームが属するテナント ID |
+| $[ prefix ]$acl | Body | List | ボリューム ACL リスト |
+{% if encryption -%}
+| $[ prefix ]$encryption | Body | Object | ボリューム暗号化情報 |
+| $[ prefix ]$encryption.enabled | Body | Boolean | ボリューム暗号化の有効可否 |
+| $[ prefix ]$encryption.keys | Body | List | ボリューム暗号化キー情報 |
+{%- endif %}
+| $[ prefix ]$interfaces | Body | List | ボリュームインターフェイスオブジェクトリスト |
+$[ interface_response_table(prefix + 'interfaces.') ]$
+{% if replication -%}
+| $[ prefix ]$mirrors | Body | List | ボリューム複製設定オブジェクトリスト |
+$[ volume_mirror_response_table(prefix + 'mirrors.') ]$
+{%- endif %}
+| $[ prefix ]$mountProtocol | Body | Object | ボリュームマウントプロトコル |
+| $[ prefix ]$mountProtocol.cifsAuthIds | Body | List | ボリューム CIFS 認証 ID リスト |
+| $[ prefix ]$mountProtocol.protocol | Body | String | ボリュームマウントプロトコル |
+| $[ prefix ]$snapshotPolicy | Body | Object | ボリュームスナップショット設定オブジェクト |
+| $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | スナップショット最大保存数 |
+| $[ prefix ]$snapshotPolicy.reservePercent | Body | Integer | スナップショット容量割合 |
+| $[ prefix ]$snapshotPolicy.schedule | Body | Object | スナップショット自動作成オブジェクト |
+| $[ prefix ]$snapshotPolicy.schedule.time | Body | String | スナップショット自動作成時間 |
+| $[ prefix ]$snapshotPolicy.schedule.timeOffset | Body | String | スナップショット自動作成基準タイムゾーン |
+| $[ prefix ]$snapshotPolicy.schedule.weekdays | Body | List | スナップショット自動作成曜日<br>空のリストは毎日を意味し、曜日は 0 (日曜日) から 6 (土曜日) までの数字のリストで指定します。 |
+| $[ prefix ]$createdAt | Body | String | ボリューム作成日時 |
+| $[ prefix ]$updatedAt | Body | String | ボリューム更新日時 |{% endmacro %}
+{# end macro volume_response_table #}
+{% macro volume_request_table(prefix='', method='') -%}
+| $[ prefix ]$acl | Body | List | N | ボリューム作成時に設定する ACL リスト<br>IP または CIDR 形式で入力できます。 |
+| $[ prefix ]$description | Body | String | N | ボリュームの説明 |
+{% if method == 'post' %}
+{% if encryption -%}
+| $[ prefix ]$encryption | Body | Object | N | ボリューム作成時の暗号化設定オブジェクト |
+| $[ prefix ]$encryption.enabled | Body | Boolean | N | 暗号化設定の有効可否<br>暗号化キーストアが設定された後、該当フィールドを `true` に設定すると暗号化が有効になります。 |
+{%- endif %}
+{% endif %}
+{% if method == 'post' %}
+| $[ prefix ]$interfaces | Body | List | N | ボリュームにアクセスするインターフェイスリスト |
+| $[ prefix ]$interfaces.subnetId | Body | String | N | ボリュームインターフェイスのサブネット ID |
+{% endif %}
+| $[ prefix ]$mountProtocol | Body | Object | N | ボリューム作成時のプロトコル設定オブジェクト |
+{% if method == 'post' %}
+| $[ prefix ]$mountProtocol.cifsAuthIds | Body | List | N | CIFS 認証 ID リスト<br>NFS プロトコル選択時は入力不要 |
+| $[ prefix ]$mountProtocol.protocol | Body | String | Y | ボリュームマウント時のプロトコル指定<br>`nfs`、`cifs` のいずれかを選択できます。 |
+{% elif method == 'patch' %}
+| $[ prefix ]$mountProtocol.cifsAuthIds | Body | List | N | CIFS 認証 ID リスト |
+| $[ prefix ]$mountProtocol.protocol | Body | String | N | 既に作成されたボリュームのプロトコルは変更できません。<br>`cifsAuthIds` フィールド変更時は、該当フィールドに `cifs` を明示する必要があります。 |
+{% endif %}
+{% if method == 'post' %}
+| $[ prefix ]$name | Body | String | Y | ボリューム名 |
+{% endif %}
+| $[ prefix ]$sizeGb | Body | Integer | $[ 'Y' if method == 'post'  else 'N' ]$ | ボリュームサイズ (GB)<br>ボリュームは最小 300 GB から最大 10,000 GB まで、100 GB 単位で設定できます。 |
+| $[ prefix ]$snapshotPolicy | Body | Object | N | ボリュームスナップショット設定オブジェクト |
+| $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | N | スナップショット最大保存数<br>30 個まで設定可能で、最大保存数に達すると、自動生成されたスナップショットのうち最も先に生成されたスナップショットが削除されます。 |
+| $[ prefix ]$snapshotPolicy.reservePercent | Body | Integer | N | スナップショット容量割合 |
+| $[ prefix ]$snapshotPolicy.schedule | Body | Object | N | スナップショット自動作成オブジェクト<br>`null` の場合、スナップショット自動作成は設定されません。 |
+| $[ prefix ]$snapshotPolicy.schedule.time | Body | String | N | スナップショット自動作成時間 |
+| $[ prefix ]$snapshotPolicy.schedule.timeOffset | Body | String | N | スナップショット自動作成基準タイムゾーン |
+| $[ prefix ]$snapshotPolicy.schedule.weekdays | Body | List | N | スナップショット自動作成曜日<br>空のリストは毎日を意味し、曜日は 0 (日曜日) から 6 (土曜日) までの数字のリストで指定します。 |{% endmacro %}
+{# end macro volume_request_table #}
+{% macro volume_mirror_response_json(indent=0, method='') -%}
+$[ ' ' * indent ]$"createdAt":"2025-04-01T06:45:45+00:00",
+$[ ' ' * indent ]$"direction": "FORWARD",
+$[ ' ' * indent ]$"directionChangedAt": null,
+$[ ' ' * indent ]$"dstProjectId": "K3y0CgOy",
+$[ ' ' * indent ]$"dstRegion": "KR2",
+$[ ' ' * indent ]$"dstTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
+$[ ' ' * indent ]$"dstVolumeId": "e09281d2-0b1c-48a9-8a01-0098aa59f624",
+$[ ' ' * indent ]$"dstVolumeName": "TEST-NAS-MIRROR-1",
+$[ ' ' * indent ]$"id": "8116892c-7306-48be-9e3d-143311b2254c",
+$[ ' ' * indent ]$"role": "SOURCE",
+$[ ' ' * indent ]$"srcProjectId": "K3y0CgOy",
+$[ ' ' * indent ]$"srcRegion": "KR1",
+$[ ' ' * indent ]$"srcTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
+$[ ' ' * indent ]$"srcVolumeId": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
+$[ ' ' * indent ]$"srcVolumeName": "TEST-NAS-1",
+$[ ' ' * indent ]$"status": "PENDING"{% endmacro %}
+{# end macro #}
+{% macro volume_response_json(indent=0, method='') -%}
+$[ ' ' * indent ]$"acl": [
+$[ ' ' * indent ]$  "10.0.1.0/24"
+$[ ' ' * indent ]$],
+$[ ' ' * indent ]$"createdAt": "2025-04-01T06:44:25+00:00",
+$[ ' ' * indent ]$"description": "NAS for Testing",
+{% if encryption %}
+$[ ' ' * indent ]$"encryption": {
+$[ ' ' * indent ]$  "enabled": false
+$[ ' ' * indent ]$},
+{% endif %}
+$[ ' ' * indent ]$"id": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
+$[ ' ' * indent ]$"interfaces": [
+$[ ' ' * indent ]$  {
+$[ ' ' * indent ]$    "id": "9a8ec90f-cc27-4649-9bda-a1f0b193a402",
+$[ ' ' * indent ]$    "path": "10.0.1.7:/TEST-NAS-1",
+$[ ' ' * indent ]$    "status": "ACTIVE",
+$[ ' ' * indent ]$    "subnetId": "cb779d62-72ef-43b6-b368-3fe28dcd812b",
+$[ ' ' * indent ]$    "tenantId": "3b6179e5fa6b499386b827357c4cb8c4"
+$[ ' ' * indent ]$  }
+$[ ' ' * indent ]$],
+{% if method == 'post' %}
+$[ ' ' * indent ]$"mirrors": []
+{% else %}
+$[ ' ' * indent ]$"mirrors": [
+$[ ' ' * indent ]$  {
+$[ volume_mirror_response_json(indent+4) ]$
+$[ ' ' * indent ]$  }
+$[ ' ' * indent ]$],
+{% endif %}
+$[ ' ' * indent ]$"mountProtocol": {
+$[ ' ' * indent ]$  "protocol": "cifs",
+$[ ' ' * indent ]$  "cifsAuthIds": [
+$[ ' ' * indent ]$    "cifs-test-id"
+$[ ' ' * indent ]$  ]
+$[ ' ' * indent ]$},
+$[ ' ' * indent ]$"name": "TEST-NAS-1",
+$[ ' ' * indent ]$"projectId": "K3y0CgOy",
+$[ ' ' * indent ]$"sizeGb": 300,
+$[ ' ' * indent ]$"snapshotPolicy": {
+$[ ' ' * indent ]$  "maxScheduledCount": 1,
+$[ ' ' * indent ]$  "reservePercent": 5,
+$[ ' ' * indent ]$  "schedule": {
+$[ ' ' * indent ]$    "time": "00:00",
+$[ ' ' * indent ]$    "timeOffset": "+09:00",
+$[ ' ' * indent ]$    "weekdays": [
+$[ ' ' * indent ]$      1,
+$[ ' ' * indent ]$      3,
+$[ ' ' * indent ]$      5
+$[ ' ' * indent ]$    ]
+$[ ' ' * indent ]$  }
+$[ ' ' * indent ]$},
+$[ ' ' * indent ]$"stationId": null,
+$[ ' ' * indent ]$"status": "ACTIVE",
+$[ ' ' * indent ]$"tenantId": "3b6179e5fa6b499386b827357c4cb8c4",
+$[ ' ' * indent ]$"updatedAt": "2025-04-01T06:47:13+00:00"{% endmacro %}
+{# end macro #}
+{% macro snapshot_response_table(prefix='') -%}
+| $[ prefix ]$id | Body | String | スナップショット ID |
+| $[ prefix ]$name | Body | String | スナップショット名 |
+| $[ prefix ]$size | Body | Integer | スナップショットサイズ |
+| $[ prefix ]$type | Body | String | スナップショットタイプ<br>- `NORMAL`: ユーザーが作成したスナップショット<br>- `SCHEDULED`: スナップショット自動作成で作成されたスナップショット<br>- `MIRROR`: 複製で作成されたスナップショット |
+| $[ prefix ]$preserved | Body | Boolean | システムが削除不可に設定したスナップショットかどうか |
+| $[ prefix ]$createdAt | Body | String | スナップショット作成日時 |{% endmacro %}
+{# end macro snapshot_response_table #}
+{% macro snapshot_response_json(indent=0) -%}
+$[ ' ' * indent ]$"createdAt": "2025-04-01T09:34:27+00:00",
+$[ ' ' * indent ]$"id": "8151fe33-0edc-11f0-b0e3-d039eaa3e920",
+$[ ' ' * indent ]$"name": "TEST-SNAPSHOT-1",
+$[ ' ' * indent ]$"preserved": false,
+$[ ' ' * indent ]$"size": 3112960,
+$[ ' ' * indent ]$"type": "NORMAL"{% endmacro %}
+{# end macro #}
 <a id="storage-nas-api-guide"></a>
 ## Storage > NAS > API ガイド { #storage-nas-api-guide }
 
@@ -15,18 +199,15 @@
 
 NASAPIは`nasv1`タイプのエンドポイントを使用します。正確なエンドポイントはトークン発行レスポンスの`serviceCatalog`を参照します。
 
-| リージョン | エンドポイント | 
+| リージョン | エンドポイント |
 | --- | --- |
-| 韓国(パンギョ)リージョン | https://kr1-api-nas-infrastructure.nhncloudservice.com |
-| 韓国(ピョンチョン)リージョン | https://kr2-api-nas-infrastructure.nhncloudservice.com |
-| 韓国(光州)リージョン | https://kr3-api-nas-infrastructure.nhncloudservice.com |
-
-
+{% for region in regions %}| $[ region.name ]$ | $[ region.endpoint ]$ |
+{% endfor %}
 <a id="nas_api_common.authentication"></a>
 ### 認証及び権限 { #nas_api_common.authentication }
 
-NAS は API 呼び出し時の認証/認可に IaaS トークンを使用します。IaaS トークンは NHN Cloud の OpenStack ベースのインフラサービス (IaaS) で使用する認証トークンです。
-IaaS トークンの発行および使用方法の詳細については、[IaaS トークン](/nhncloud/ja/public-api/iaas-token/)を参照してください。
+NAS は、API 呼び出し時の認証/認可に IaaS トークンを使用します。IaaS トークンは、NHN Cloud の OpenStack ベースのインフラストラクチャサービス (IaaS) で使用する認証トークンです。
+IaaS トークンの発行および使用方法の詳細については、[IaaS トークン]($[ identity_guide_url ]$) を参照してください。
 
 <a id="nas_api_common.response"></a>
 ### レスポンス共通情報 { #nas_api_common.response }
@@ -117,52 +298,7 @@ X-Auth-Token: {token-id}
 | paging.page | Body | Integer | 現在ページ番号 |
 | paging.totalCount | Body | Integer | 全体数 |
 | volumes | Body | List | ボリュームオブジェクトリスト |
-| volumes.id | Body | String | ボリュームID |
-| volumes.name | Body | String | ボリューム名 |
-| volumes.status | Body | String | ボリュームの状態 |
-| volumes.description | Body | String | ボリュームの説明 |
-| volumes.sizeGb | Body | Integer | ボリュームサイズ(GB) |
-| volumes.projectId | Body | String | ボリュームが属するプロジェクトID |
-| volumes.tenantId | Body | String | ボリュームが属するテナントID |
-| volumes.acl | Body | List | ボリュームACLリスト |
-| volumes.encryption | Body | Object | ボリューム暗号化情報 |
-| volumes.encryption.enabled | Body | Boolean | ボリュームの暗号化が有効かどうか |
-| volumes.encryption.keys | Body | List | ボリューム暗号化キー情報 |
-| volumes.interfaces | Body | List | ボリュームインターフェースオブジェクトリスト |
-| volumes.interfaces.id | Body | String | インターフェースID |
-| volumes.interfaces.path | Body | String | インターフェースパス |
-| volumes.interfaces.status | Body | String | インターフェース状態 |
-| volumes.interfaces.subnetId | Body | String | インターフェースのサブネットID |
-| volumes.interfaces.tenantId | Body | String | インターフェースのテナントID |
-| volumes.mirrors | Body | List | ボリューム複製設定オブジェクトリスト |
-| volumes.mirrors.id | Body | String | 複製設定ID |
-| volumes.mirrors.role | Body | String | 複製ロール<br>- `SOURCE`:ソースボリューム<br>- `DESTINATION`:対象ボリューム |
-| volumes.mirrors.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
-| volumes.mirrors.direction | Body | String | 複製方向<br>- `FORWARD`: ソースボリューム → ターゲットボリューム<br>- `REVERSE`: ターゲットボリューム → ソースボリューム |
-| volumes.mirrors.directionChangedAt | Body | String | 複製方向変更時刻 |
-| volumes.mirrors.dstProjectId | Body | String | 複製対象ボリュームのプロジェクトID |
-| volumes.mirrors.dstRegion | Body | String | 複製対象ボリュームリージョン |
-| volumes.mirrors.dstTenantId | Body | String | 複製対象ボリュームテナントID |
-| volumes.mirrors.dstVolumeId | Body | String | 複製ターゲットボリューム ID |
-| volumes.mirrors.dstVolumeName | Body | String | 複製ターゲットボリューム名 |
-| volumes.mirrors.srcProjectId | Body | String | ソースボリュームのプロジェクトID |
-| volumes.mirrors.srcRegion | Body | String | ソースボリュームリージョン |
-| volumes.mirrors.srcTenantId | Body | String | ソースボリュームテナントID |
-| volumes.mirrors.srcVolumeId | Body | String | ソースボリューム ID |
-| volumes.mirrors.srcVolumeName | Body | String | ソースボリューム名 |
-| volumes.mirrors.createdAt | Body | String | 複製作成時刻 |
-| volumes.mountProtocol | Body | Object | ボリュームマウントプロトコル |
-| volumes.mountProtocol.cifsAuthIds | Body | List | ボリュームCIFS認証IDリスト |
-| volumes.mountProtocol.protocol | Body | String | ボリュームマウントプロトコル |
-| volumes.snapshotPolicy | Body | Object | ボリュームスナップショット設定オブジェクト |
-| volumes.snapshotPolicy.maxScheduledCount | Body | Integer | スナップショット最大保存数 |
-| volumes.snapshotPolicy.reservePercent | Body | Integer | スナップショット容量比率 |
-| volumes.snapshotPolicy.schedule | Body | Object | スナップショット自動作成オブジェクト |
-| volumes.snapshotPolicy.schedule.time | Body | String | スナップショット自動作成時間 |
-| volumes.snapshotPolicy.schedule.timeOffset | Body | String | スナップショット自動作成基準タイムゾーン |
-| volumes.snapshotPolicy.schedule.weekdays | Body | List | スナップショット自動作成曜日<br>空白のリストは毎日を意味し、曜日を0(日曜日)から6(土曜日)までの数字のリストで指定します。 |
-| volumes.createdAt | Body | String | ボリューム作成時刻 |
-| volumes.updatedAt | Body | String | ボリューム変更時刻 |
+$[ volume_response_table('volumes.') ]$
 
 <details>
   <summary>レスポンス例</summary>
@@ -181,70 +317,7 @@ X-Auth-Token: {token-id}
   },
   "volumes": [
     {
-      "acl": [
-        "10.0.1.0/24"
-      ],
-      "createdAt": "2025-04-01T06:44:25+00:00",
-      "description": "NAS for Testing",
-      "encryption": {
-        "enabled": false
-      },
-      "id": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
-      "interfaces": [
-        {
-          "id": "9a8ec90f-cc27-4649-9bda-a1f0b193a402",
-          "path": "10.0.1.7:/TEST-NAS-1",
-          "status": "ACTIVE",
-          "subnetId": "cb779d62-72ef-43b6-b368-3fe28dcd812b",
-          "tenantId": "3b6179e5fa6b499386b827357c4cb8c4"
-        }
-      ],
-      "mirrors": [
-        {
-          "createdAt":"2025-04-01T06:45:45+00:00",
-          "direction": "FORWARD",
-          "directionChangedAt": null,
-          "dstProjectId": "K3y0CgOy",
-          "dstRegion": "KR2",
-          "dstTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
-          "dstVolumeId": "e09281d2-0b1c-48a9-8a01-0098aa59f624",
-          "dstVolumeName": "TEST-NAS-MIRROR-1",
-          "id": "8116892c-7306-48be-9e3d-143311b2254c",
-          "role": "SOURCE",
-          "srcProjectId": "K3y0CgOy",
-          "srcRegion": "KR1",
-          "srcTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
-          "srcVolumeId": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
-          "srcVolumeName": "TEST-NAS-1",
-          "status": "PENDING"
-        }
-      ],
-      "mountProtocol": {
-        "protocol": "cifs",
-        "cifsAuthIds": [
-          "cifs-test-id"
-        ]
-      },
-      "name": "TEST-NAS-1",
-      "projectId": "K3y0CgOy",
-      "sizeGb": 300,
-      "snapshotPolicy": {
-        "maxScheduledCount": 1,
-        "reservePercent": 5,
-        "schedule": {
-          "time": "00:00",
-          "timeOffset": "+09:00",
-          "weekdays": [
-            1,
-            3,
-            5
-          ]
-        }
-      },
-      "stationId": null,
-      "status": "ACTIVE",
-      "tenantId": "3b6179e5fa6b499386b827357c4cb8c4",
-      "updatedAt": "2025-04-01T06:47:13+00:00"
+$[ volume_response_json(indent=6) ]$
     }
   ]
 }
@@ -264,6 +337,7 @@ X-Auth-Token: {token-id}
     CIFS認証情報はコンソールの **Storage > NAS > CIFS認証情報管理**ウィンドウから作成できます。
 
 
+{% if encryption %}
 <!-- -->
 
 !!! tip "参考: 暗号化キーストア設定"
@@ -272,6 +346,7 @@ X-Auth-Token: {token-id}
     キーストアIDを変更すると、その後に作成する暗号化ボリュームの共通鍵が変更されたキーストアに保存されます。既存キーストアに保存された共通鍵は維持されます。
 
 
+{% endif %}
 ```
 POST /v1/volumes
 X-Auth-Token: {token-id}
@@ -286,24 +361,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- | --- |
 | X-Auth-Token | Header | String | Y | トークンID |
 | volume | Body | Object | Y | ボリューム作成リクエストオブジェクト |
-| volume.acl | Body | List | N | ボリューム作成時設定するACLリスト<br>IPまたはCIDR形式で入力できます。 |
-| volume.description | Body | String | N | ボリュームの説明 |
-| volume.encryption | Body | Object | N | ボリューム作成時暗号化設定オブジェクト |
-| volume.encryption.enabled | Body | Boolean | N | 暗号化設定有効かどうか<br>暗号化キーストアが設定された後、該当フィールドを`true`に設定すると、暗号化が有効になります。 |
-| volume.interfaces | Body | List | N | ボリュームにアクセスするインターフェースリスト |
-| volume.interfaces.subnetId | Body | String | N | ボリュームインターフェースのサブネットID |
-| volume.mountProtocol | Body | Object | N | ボリュームを作成する際のプロトコル設定オブジェクト |
-| volume.mountProtocol.cifsAuthIds | Body | List | N | CIFS認証IDリスト<br>NFSプロトコル選択時入力不要 |
-| volume.mountProtocol.protocol | Body | String | Y | ボリュームをマウントする際のプロトコル指定<br>`nfs`, `cifs`のいずれかを選択できます。 |
-| volume.name | Body | String | Y | ボリューム名 |
-| volume.sizeGb | Body | Integer | Y | ボリュームサイズ(GB)<br>ボリュームは、最小300GBから最大10,000GBまで、100GB単位で設定できます。 |
-| volume.snapshotPolicy | Body | Object | N | ボリュームスナップショット設定オブジェクト |
-| volume.snapshotPolicy.maxScheduledCount | Body | Integer | N | スナップショットの最大保存数<br>30個まで設定可能で、最大保存数に達すると、自動的に作成されたスナップショットのうち、最も早く作成されたスナップショットが削除されます。 |
-| volume.snapshotPolicy.reservePercent | Body | Integer | N | スナップショット容量比率 |
-| volume.snapshotPolicy.schedule | Body | Object | N | スナップショット自動作成オブジェクト<br>`null`の場合、スナップショット自動作成が設定されません。 |
-| volume.snapshotPolicy.schedule.time | Body | String | N | スナップショット自動作成時間 |
-| volume.snapshotPolicy.schedule.timeOffset | Body | String | N | スナップショット自動作成基準タイムゾーン |
-| volume.snapshotPolicy.schedule.weekdays | Body | List | N | スナップショット自動作成曜日 <br>空白のリストは毎日を意味し、曜日を0(日曜日)から6(土曜日)までの数字のリストで指定します。 |
+$[ volume_request_table('volume.', 'post') ]$
 
 <details>
   <summary>リクエスト例</summary>
@@ -315,9 +373,11 @@ X-Auth-Token: {token-id}
       "10.0.1.0/24"
     ],
     "description": "NAS for Testing",
+{% if encryption %}
     "encryption": {
       "enabled": true
     },
+{% endif %}
     "interfaces": [
       {
         "subnetId": "cb779d62-72ef-43b6-b368-3fe28dcd812b"
@@ -354,52 +414,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- |
 | header | Body | Object | ヘッダオブジェクト |
 | volume | Body | Object | ボリュームオブジェクト |
-| volume.id | Body | String | ボリュームID |
-| volume.name | Body | String | ボリューム名 |
-| volume.status | Body | String | ボリュームの状態 |
-| volume.description | Body | String | ボリュームの説明 |
-| volume.sizeGb | Body | Integer | ボリュームサイズ(GB) |
-| volume.projectId | Body | String | ボリュームが属するプロジェクトID |
-| volume.tenantId | Body | String | ボリュームが属するテナントID |
-| volume.acl | Body | List | ボリュームACLリスト |
-| volume.encryption | Body | Object | ボリューム暗号化情報 |
-| volume.encryption.enabled | Body | Boolean | ボリュームの暗号化が有効かどうか |
-| volume.encryption.keys | Body | List | ボリューム暗号化キー情報 |
-| volume.interfaces | Body | List | ボリュームインターフェースオブジェクトリスト |
-| volume.interfaces.id | Body | String | インターフェースID |
-| volume.interfaces.path | Body | String | インターフェースパス |
-| volume.interfaces.status | Body | String | インターフェースの状態 |
-| volume.interfaces.subnetId | Body | String | インターフェースのサブネットID |
-| volume.interfaces.tenantId | Body | String | インターフェースのテナントID |
-| volume.mirrors | Body | List | ボリューム複製設定オブジェクトリスト |
-| volume.mirrors.id | Body | String | 複製設定ID |
-| volume.mirrors.role | Body | String | 複製役割<br>- `SOURCE`:ソースボリューム<br>- `DESTINATION`:対象ボリューム |
-| volume.mirrors.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
-| volume.mirrors.direction | Body | String | 複製方向<br>- `FORWARD`: ソースボリューム → ターゲットボリューム<br>- `REVERSE`: ターゲットボリューム → ソースボリューム |
-| volume.mirrors.directionChangedAt | Body | String | 複製方向変更時刻 |
-| volume.mirrors.dstProjectId | Body | String | 複製対象ボリュームのプロジェクトID |
-| volume.mirrors.dstRegion | Body | String | 複製対象ボリュームリージョン |
-| volume.mirrors.dstTenantId | Body | String | 複製対象ボリュームテナントID |
-| volume.mirrors.dstVolumeId | Body | String | 複製ターゲットボリューム ID |
-| volume.mirrors.dstVolumeName | Body | String | 複製ターゲットボリューム名 |
-| volume.mirrors.srcProjectId | Body | String | ソースボリュームのプロジェクトID |
-| volume.mirrors.srcRegion | Body | String | ソースボリュームリージョン |
-| volume.mirrors.srcTenantId | Body | String | ソースボリュームテナントID |
-| volume.mirrors.srcVolumeId | Body | String | ソースボリューム ID |
-| volume.mirrors.srcVolumeName | Body | String | ソースボリューム名 |
-| volume.mirrors.createdAt | Body | String | 複製作成時刻 |
-| volume.mountProtocol | Body | Object | ボリュームマウントプロトコル |
-| volume.mountProtocol.cifsAuthIds | Body | List | ボリュームCIFS認証IDリスト |
-| volume.mountProtocol.protocol | Body | String | ボリュームマウントプロトコル |
-| volume.snapshotPolicy | Body | Object | ボリュームスナップショット設定オブジェクト |
-| volume.snapshotPolicy.maxScheduledCount | Body | Integer | スナップショット最大保存数 |
-| volume.snapshotPolicy.reservePercent | Body | Integer | スナップショット容量比率 |
-| volume.snapshotPolicy.schedule | Body | Object | スナップショット自動作成オブジェクト |
-| volume.snapshotPolicy.schedule.time | Body | String | スナップショット自動作成時間 |
-| volume.snapshotPolicy.schedule.timeOffset | Body | String | スナップショット自動作成基準タイムゾーン |
-| volume.snapshotPolicy.schedule.weekdays | Body | List | スナップショット自動作成曜日<br>空白のリストは毎日を意味し、曜日を0(日曜日)から6(土曜日)までの数字のリストで指定します。 |
-| volume.createdAt | Body | String | ボリューム作成時刻 |
-| volume.updatedAt | Body | String | ボリューム変更時刻 |
+$[ volume_response_table('volume.') ]$
 
 <details>
   <summary>レスポンス例</summary>
@@ -412,70 +427,7 @@ X-Auth-Token: {token-id}
     "resultMessage": "Created"
   },
   "volume": {
-    "acl": [
-      "10.0.1.0/24"
-    ],
-    "createdAt": "2025-04-01T06:44:25+00:00",
-    "description": "NAS for Testing",
-    "encryption": {
-      "enabled": false
-    },
-    "id": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
-    "interfaces": [
-      {
-        "id": "9a8ec90f-cc27-4649-9bda-a1f0b193a402",
-        "path": "10.0.1.7:/TEST-NAS-1",
-        "status": "ACTIVE",
-        "subnetId": "cb779d62-72ef-43b6-b368-3fe28dcd812b",
-        "tenantId": "3b6179e5fa6b499386b827357c4cb8c4"
-      }
-    ],
-    "mirrors": [
-      {
-        "createdAt":"2025-04-01T06:45:45+00:00",
-        "direction": "FORWARD",
-        "directionChangedAt": null,
-        "dstProjectId": "K3y0CgOy",
-        "dstRegion": "KR2",
-        "dstTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
-        "dstVolumeId": "e09281d2-0b1c-48a9-8a01-0098aa59f624",
-        "dstVolumeName": "TEST-NAS-MIRROR-1",
-        "id": "8116892c-7306-48be-9e3d-143311b2254c",
-        "role": "SOURCE",
-        "srcProjectId": "K3y0CgOy",
-        "srcRegion": "KR1",
-        "srcTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
-        "srcVolumeId": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
-        "srcVolumeName": "TEST-NAS-1",
-        "status": "PENDING"
-      }
-    ],
-    "mountProtocol": {
-      "protocol": "cifs",
-      "cifsAuthIds": [
-        "cifs-test-id"
-      ]
-    },
-    "name": "TEST-NAS-1",
-    "projectId": "K3y0CgOy",
-    "sizeGb": 300,
-    "snapshotPolicy": {
-      "maxScheduledCount": 1,
-      "reservePercent": 5,
-      "schedule": {
-        "time": "00:00",
-        "timeOffset": "+09:00",
-        "weekdays": [
-          1,
-          3,
-          5
-        ]
-      }
-    },
-    "stationId": null,
-    "status": "ACTIVE",
-    "tenantId": "3b6179e5fa6b499386b827357c4cb8c4",
-    "updatedAt": "2025-04-01T06:47:13+00:00"
+$[ volume_response_json(indent=4) ]$
   }
 }
 ```
@@ -538,52 +490,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- |
 | header | Body | Object | ヘッダオブジェクト |
 | volume | Body | Object | ボリュームオブジェクト |
-| volume.id | Body | String | ボリュームID |
-| volume.name | Body | String | ボリューム名 |
-| volume.status | Body | String | ボリュームの状態 |
-| volume.description | Body | String | ボリュームの説明 |
-| volume.sizeGb | Body | Integer | ボリュームサイズ(GB) |
-| volume.projectId | Body | String | ボリュームが属するプロジェクトID |
-| volume.tenantId | Body | String | ボリュームが属するテナントID |
-| volume.acl | Body | List | ボリュームACLリスト |
-| volume.encryption | Body | Object | ボリューム暗号化情報 |
-| volume.encryption.enabled | Body | Boolean | ボリュームの暗号化が有効かどうか |
-| volume.encryption.keys | Body | List | ボリューム暗号化キー情報 |
-| volume.interfaces | Body | List | ボリュームインターフェースオブジェクトリスト |
-| volume.interfaces.id | Body | String | インターフェースID |
-| volume.interfaces.path | Body | String | インターフェースパス |
-| volume.interfaces.status | Body | String | インターフェースの状態 |
-| volume.interfaces.subnetId | Body | String | インターフェースのサブネットID |
-| volume.interfaces.tenantId | Body | String | インターフェースのテナントID |
-| volume.mirrors | Body | List | ボリューム複製設定オブジェクトリスト |
-| volume.mirrors.id | Body | String | 複製設定ID |
-| volume.mirrors.role | Body | String | 複製役割<br>- `SOURCE`:ソースボリューム<br>- `DESTINATION`:対象ボリューム |
-| volume.mirrors.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
-| volume.mirrors.direction | Body | String | 複製方向<br>- `FORWARD`: ソースボリューム → ターゲットボリューム<br>- `REVERSE`: ターゲットボリューム → ソースボリューム |
-| volume.mirrors.directionChangedAt | Body | String | 複製方向変更時刻 |
-| volume.mirrors.dstProjectId | Body | String | 複製対象ボリュームのプロジェクトID |
-| volume.mirrors.dstRegion | Body | String | 複製対象ボリュームリージョン |
-| volume.mirrors.dstTenantId | Body | String | 複製対象ボリュームテナントID |
-| volume.mirrors.dstVolumeId | Body | String | 複製ターゲットボリューム ID |
-| volume.mirrors.dstVolumeName | Body | String | 複製ターゲットボリューム名 |
-| volume.mirrors.srcProjectId | Body | String | ソースボリュームのプロジェクトID |
-| volume.mirrors.srcRegion | Body | String | ソースボリュームリージョン |
-| volume.mirrors.srcTenantId | Body | String | ソースボリュームテナントID |
-| volume.mirrors.srcVolumeId | Body | String | ソースボリューム ID |
-| volume.mirrors.srcVolumeName | Body | String | ソースボリューム名 |
-| volume.mirrors.createdAt | Body | String | 複製作成時刻 |
-| volume.mountProtocol | Body | Object | ボリュームマウントプロトコル |
-| volume.mountProtocol.cifsAuthIds | Body | List | ボリュームCIFS認証IDリスト |
-| volume.mountProtocol.protocol | Body | String | ボリュームマウントプロトコル |
-| volume.snapshotPolicy | Body | Object | ボリュームスナップショット設定オブジェクト |
-| volume.snapshotPolicy.maxScheduledCount | Body | Integer | スナップショット最大保存数 |
-| volume.snapshotPolicy.reservePercent | Body | Integer | スナップショット容量比率 |
-| volume.snapshotPolicy.schedule | Body | Object | スナップショット自動作成オブジェクト |
-| volume.snapshotPolicy.schedule.time | Body | String | スナップショット自動作成時間 |
-| volume.snapshotPolicy.schedule.timeOffset | Body | String | スナップショット自動作成基準タイムゾーン |
-| volume.snapshotPolicy.schedule.weekdays | Body | List | スナップショット自動作成曜日<br>空白のリストは毎日を意味し、曜日を0(日曜日)から6(土曜日)までの数字のリストで指定します。 |
-| volume.createdAt | Body | String | ボリューム作成時刻 |
-| volume.updatedAt | Body | String | ボリューム変更時刻 |
+$[ volume_response_table('volume.') ]$
 
 <br>
 
@@ -608,19 +515,7 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | Y | トークンID |
 | volume\_id | URL | String | Y | ボリュームID |
 | volume | Body | Object | Y | ボリューム設定変更リクエストオブジェクト |
-| volume.acl | Body | List | N | ボリューム作成時に設定するACLのリスト<br>IPまたはCIDR形式で入力できます。 |
-| volume.description | Body | String | N | ボリュームの説明 |
-| volume.mountProtocol | Body | Object | N | ボリュームを作成する際のプロトコル設定オブジェクト |
-| volume.mountProtocol.cifsAuthIds | Body | List | N | CIFS認証IDリスト |
-| volume.mountProtocol.protocol | Body | String | N | すでに作成されたボリュームのプロトコルは変更できません。<br>`cifsAuthIds`フィールドを変更する場合は該当フィールドに`cifs`を明示する必要があります。 |
-| volume.sizeGb | Body | Integer | N | ボリュームサイズ(GB)<br>ボリュームは、最小300GBから最大10,000GBまで、100GB単位で設定できます。 |
-| volume.snapshotPolicy | Body | Object | N | ボリュームスナップショット設定オブジェクト |
-| volume.snapshotPolicy.maxScheduledCount | Body | Integer | N | スナップショットの最大保存数<br>30個まで設定可能で、最大保存数に達すると、自動的に作成されたスナップショットのうち、最も早く作成されたスナップショットが削除されます。 |
-| volume.snapshotPolicy.reservePercent | Body | Integer | N | スナップショット容量比率 |
-| volume.snapshotPolicy.schedule | Body | Object | N | スナップショット自動作成オブジェクト<br>`null`の場合、スナップショット自動作成が設定されません。 |
-| volume.snapshotPolicy.schedule.time | Body | String | N | スナップショット自動作成時間 |
-| volume.snapshotPolicy.schedule.timeOffset | Body | String | N | スナップショット自動作成基準タイムゾーン |
-| volume.snapshotPolicy.schedule.weekdays | Body | List | N | スナップショット自動作成曜日<br>空白のリストは毎日を意味し、曜日を0(日曜日)から6(土曜日)までの数字のリストで指定します。 |
+$[ volume_request_table('volume.', 'patch') ]$
 
 <details>
   <summary>リクエスト例</summary>
@@ -706,11 +601,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- |
 | header | Body | Object | ヘッダオブジェクト |
 | interface | Body | Object | 作成されたインターフェース情報オブジェクト |
-| interface.id | Body | String | 作成されたインターフェースID |
-| interface.path | Body | String | 作成されたインターフェースパス |
-| interface.status | Body | String | 作成されたインターフェースの状態 |
-| interface.subnetId | Body | String | 作成されたインターフェースのサブネットID |
-| interface.tenantId | Body | String | 作成されたインターフェースのテナントID |
+$[ interface_response_table('interface.', '作成された ') ]$
 
 <details>
   <summary>レスポンス例</summary>
@@ -930,12 +821,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- |
 | header | Body | Object | ヘッダオブジェクト |
 | snapshots | Body | List | スナップショット情報オブジェクトリスト |
-| snapshots.id | Body | String | スナップショットID |
-| snapshots.name | Body | String | スナップショット名 |
-| snapshots.size | Body | Integer | スナップショットサイズ |
-| snapshots.type | Body | String | スナップショットタイプ<br>- `NORMAL`: ユーザーが作成したスナップショット<br>- `SCHEDULED`: スナップショット自動作成で生成されたスナップショット<br>- `MIRROR`: 複製で生成されたスナップショット |
-| snapshots.preserved | Body | Boolean | システムが削除不可に設定したスナップショットかどうか |
-| snapshots.createdAt | Body | String | スナップショット作成時刻 |
+$[ snapshot_response_table('snapshots.') ]$
 
 <details><summary>レスポンス例</summary>
 
@@ -948,12 +834,7 @@ X-Auth-Token: {token-id}
   },
   "snapshots": [
     {
-      "createdAt": "2025-04-01T09:34:27+00:00",
-      "id": "8151fe33-0edc-11f0-b0e3-d039eaa3e920",
-      "name": "TEST-SNAPSHOT-1",
-      "preserved": false,
-      "size": 3112960,
-      "type": "NORMAL"
+$[ snapshot_response_json(6) ]$
     }
   ]
 }
@@ -1002,12 +883,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- |
 | header | Body | Object | ヘッダオブジェクト |
 | snapshot | Body | Object | スナップショット情報オブジェクト |
-| snapshot.id | Body | String | スナップショットID |
-| snapshot.name | Body | String | スナップショット名 |
-| snapshot.size | Body | Integer | スナップショットサイズ |
-| snapshot.type | Body | String | スナップショットタイプ<br>- `NORMAL`: ユーザーが作成したスナップショット<br>- `SCHEDULED`: スナップショット自動作成によって作成されたスナップショット<br>- `MIRROR`: 複製によって作成されたスナップショット |
-| snapshot.preserved | Body | Boolean | システムが削除不可に設定したスナップショットかどうか |
-| snapshot.createdAt | Body | String | スナップショット作成時刻 |
+$[ snapshot_response_table('snapshot.') ]$
 
 <details>
   <summary>レスポンス例</summary>
@@ -1020,12 +896,7 @@ X-Auth-Token: {token-id}
     "resultMessage": "Created"
   },
   "snapshot": {
-    "createdAt": "2025-04-01T09:34:27+00:00",
-    "id": "8151fe33-0edc-11f0-b0e3-d039eaa3e920",
-    "name": "TEST-SNAPSHOT-1",
-    "preserved": false,
-    "size": 3112960,
-    "type": "NORMAL"
+$[ snapshot_response_json(4) ]$
   }
 }
 ```
@@ -1091,12 +962,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- |
 | header | Body | Object | ヘッダオブジェクト |
 | snapshot | Body | Object | スナップショット情報オブジェクト |
-| snapshot.id | Body | String | スナップショットID |
-| snapshot.name | Body | String | スナップショット名 |
-| snapshot.size | Body | Integer | スナップショットサイズ |
-| snapshot.type | Body | String | スナップショットタイプ<br>- `NORMAL`: ユーザーが作成したスナップショット<br>- `SCHEDULED`: スナップショット自動作成によって作成されたスナップショット<br>- `MIRROR`: 複製によって作成されたスナップショット |
-| snapshot.preserved | Body | Boolean | システムが削除不可に設定したスナップショットかどうか |
-| snapshot.createdAt | Body | String | スナップショット作成時刻 |
+$[ snapshot_response_table('snapshot.') ]$
 
 <br>
 
@@ -1127,6 +993,8 @@ X-Auth-Token: {token-id}
 レスポンス本文にはヘッダフィールド以外の内容は含まれません。
 
 <br>
+
+{% if replication %}
 
 <a id="replication"></a>
 ## ボリューム複製設定 { #replication }
@@ -1173,24 +1041,7 @@ X-Auth-Token: {token-id}
 | volumeMirror.dstRegion | Body | String | Y | 複製対象ボリュームのリージョン |
 | volumeMirror.dstTenantId | Body | String | Y | 複製対象ボリュームのテナントID |
 | volumeMirror.dstVolume | Body | Object | Y | 複製対象ボリューム作成リクエストオブジェクト |
-| volumeMirror.dstVolume.acl | Body | List | N | ボリューム作成時に設定するACLリスト<br>IPまたはCIDR形式で入力できます。 |
-| volumeMirror.dstVolume.description | Body | String | N | ボリュームの説明 |
-| volumeMirror.dstVolume.encryption | Body | Object | N | ボリューム作成時の暗号化設定オブジェクト |
-| volumeMirror.dstVolume.encryption.enabled | Body | Boolean | N | 暗号化設定が有効かどうか<br>暗号化キーストアが設定された後、該当フィールドを`true`に設定すると暗号化が有効になります。 |
-| volumeMirror.dstVolume.interfaces | Body | List | N | ボリュームにアクセスするインターフェースリスト |
-| volumeMirror.dstVolume.interfaces.subnetId | Body | String | N | ボリュームインターフェースのサブネットID |
-| volumeMirror.dstVolume.mountProtocol | Body | Object | N | ボリューム作成時のプロトコル設定オブジェクト |
-| volumeMirror.dstVolume.mountProtocol.cifsAuthIds | Body | List | N | CIFS認証IDリスト<br>NFSプロトコル選択時入力不要 |
-| volumeMirror.dstVolume.mountProtocol.protocol | Body | String | Y | ボリュームをマウントする際のプロトコル指定<br>`nfs`, `cifs`のいずれかを選択できます。 |
-| volumeMirror.dstVolume.name | Body | String | Y | ボリューム名 |
-| volumeMirror.dstVolume.sizeGb | Body | Integer | Y | ボリュームサイズ(GB)<br>ボリュームは、最小300GBから最大10,000GBまで、100GB単位で設定できます。 |
-| volumeMirror.dstVolume.snapshotPolicy | Body | Object | N | ボリュームスナップショット設定オブジェクト |
-| volumeMirror.dstVolume.snapshotPolicy.maxScheduledCount | Body | Integer | N | スナップショットの最大保存数<br>最大 30 個まで設定可能で、最大保存数に達すると、自動生成されたスナップショットのうち最も古いものが削除されます。 |
-| volumeMirror.dstVolume.snapshotPolicy.reservePercent | Body | Integer | N | スナップショット容量比率 |
-| volumeMirror.dstVolume.snapshotPolicy.schedule | Body | Object | N | スナップショット自動作成オブジェクト<br>`null`の場合、スナップショット自動作成が設定されません。 |
-| volumeMirror.dstVolume.snapshotPolicy.schedule.time | Body | String | N | スナップショット自動作成時間 |
-| volumeMirror.dstVolume.snapshotPolicy.schedule.timeOffset | Body | String | N | スナップショット自動作成基準タイムゾーン |
-| volumeMirror.dstVolume.snapshotPolicy.schedule.weekdays | Body | List | N | スナップショット自動作成曜日<br>空白のリストは毎日を意味し、曜日を0(日曜日)から6(土曜日)までの数字のリストで指定します。 |
+$[ volume_request_table('volumeMirror.dstVolume.', 'post') ]$
 
 <details>
   <summary>リクエスト例</summary>
@@ -1221,22 +1072,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- |
 | header | Body | Object | ヘッダオブジェクト |
 | volumeMirror | Body | Object | 複製設定作成オブジェクト |
-| volumeMirror.id | Body | String | 複製設定ID |
-| volumeMirror.role | Body | String | 複製役割<br>- `SOURCE`:ソースボリューム<br>- `DESTINATION`:対象ボリューム |
-| volumeMirror.status | Body | String | 複製設定状態<br>- `INITIALIZED`:設定完了<br>- `UPDATING`:設定変更中<br>- `DELETING`:設定削除中<br>- `PENDING`:設定作成中 |
-| volumeMirror.direction | Body | String | 複製方向<br>- `FORWARD`: ソースボリューム → ターゲットボリューム<br>- `REVERSE`: ターゲットボリューム → ソースボリューム |
-| volumeMirror.directionChangedAt | Body | String | 複製方向変更時刻 |
-| volumeMirror.dstProjectId | Body | String | 複製対象ボリュームのプロジェクトID |
-| volumeMirror.dstRegion | Body | String | 複製対象ボリュームリージョン |
-| volumeMirror.dstTenantId | Body | String | 複製対象ボリュームテナントID |
-| volumeMirror.dstVolumeId | Body | String | 複製ターゲットボリューム ID |
-| volumeMirror.dstVolumeName | Body | String | 複製ターゲットボリューム名 |
-| volumeMirror.srcProjectId | Body | String | ソースボリュームのプロジェクトID |
-| volumeMirror.srcRegion | Body | String | ソースボリュームリージョン |
-| volumeMirror.srcTenantId | Body | String | ソースボリュームテナントID |
-| volumeMirror.srcVolumeId | Body | String | ソースボリューム ID |
-| volumeMirror.srcVolumeName | Body | String | ソースボリューム名 |
-| volumeMirror.createdAt | Body | String | 複製作成時刻 |
+$[ volume_mirror_response_table('volumeMirror.') ]$
 
 <details>
   <summary>レスポンス例</summary>
@@ -1249,22 +1085,7 @@ X-Auth-Token: {token-id}
     "resultMessage": "Created"
   },
   "volumeMirror": {
-    "createdAt":"2025-04-01T06:45:45+00:00",
-    "direction": "FORWARD",
-    "directionChangedAt": null,
-    "dstProjectId": "K3y0CgOy",
-    "dstRegion": "KR2",
-    "dstTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
-    "dstVolumeId": "e09281d2-0b1c-48a9-8a01-0098aa59f624",
-    "dstVolumeName": "TEST-NAS-MIRROR-1",
-    "id": "8116892c-7306-48be-9e3d-143311b2254c",
-    "role": "SOURCE",
-    "srcProjectId": "K3y0CgOy",
-    "srcRegion": "KR1",
-    "srcTenantId": "3b6179e5fa6b499386b827357c4cb8c4",
-    "srcVolumeId": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
-    "srcVolumeName": "TEST-NAS-1",
-    "status": "PENDING"
+$[ volume_mirror_response_json(4) ]$
   }
 }
 ```
@@ -1411,3 +1232,4 @@ X-Auth-Token: {token-id}
 レスポンス本文にはヘッダフィールド以外の内容は含まれません。
 
 <br>
+{% endif %}
