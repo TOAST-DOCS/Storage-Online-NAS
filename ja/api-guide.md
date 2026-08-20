@@ -205,7 +205,6 @@ NASAPIは`nasv1`タイプのエンドポイントを使用します。正確な�
 
 
 <a id="nas_api_common.authentication"></a>
-
 ### 認証及び権限 { #nas_api_common.authentication }
 
 NAS は API 呼び出し時の認証/認可のために IaaS トークンを使用します。IaaS トークンは、NHN Cloud の OpenStack ベースのインフラサービス (IaaS) で使用する認証トークンです。
@@ -463,7 +462,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.create-request"></a>
-
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -517,7 +515,6 @@ $[ volume_request_table('volume.', 'post') ]$
 </details>
 
 <a id="volume.create-response"></a>
-
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -1576,7 +1573,6 @@ X-Auth-Token: {token-id}
 | volume\_mirror\_id | URL | String | Y | 複製設定ID |
 
 <a id="replication.stop-response"></a>
-
 #### レスポンス
 
 レスポンス本文にはヘッダフィールド以外の内容は含まれません。
