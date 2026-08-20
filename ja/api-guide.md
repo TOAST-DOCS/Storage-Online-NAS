@@ -38,14 +38,14 @@
 | $[ prefix ]$projectId | Body | String | ボリュームが属するプロジェクト ID |
 | $[ prefix ]$tenantId | Body | String | ボリュームが属するテナント ID |
 | $[ prefix ]$acl | Body | List | ボリューム ACL リスト |
-{% if encryption -%}
+{%- if encryption %}
 | $[ prefix ]$encryption | Body | Object | ボリューム暗号化情報 |
 | $[ prefix ]$encryption.enabled | Body | Boolean | ボリューム暗号化の有効可否 |
 | $[ prefix ]$encryption.keys | Body | List | ボリューム暗号化キー情報 |
 {%- endif %}
 | $[ prefix ]$interfaces | Body | List | ボリュームインターフェイスオブジェクトリスト |
 $[ interface_response_table(prefix + 'interfaces.') ]$
-{% if replication -%}
+{%- if replication %}
 | $[ prefix ]$mirrors | Body | List | ボリューム複製設定オブジェクトリスト |
 $[ volume_mirror_response_table(prefix + 'mirrors.') ]$
 {%- endif %}
@@ -65,27 +65,27 @@ $[ volume_mirror_response_table(prefix + 'mirrors.') ]$
 {% macro volume_request_table(prefix='', method='') -%}
 | $[ prefix ]$acl | Body | List | N | ボリューム作成時に設定する ACL リスト<br>IP または CIDR 形式で入力できます。 |
 | $[ prefix ]$description | Body | String | N | ボリュームの説明 |
-{% if method == 'post' %}
-{% if encryption -%}
+{%- if method == 'post' %}
+{%- if encryption %}
 | $[ prefix ]$encryption | Body | Object | N | ボリューム作成時の暗号化設定オブジェクト |
 | $[ prefix ]$encryption.enabled | Body | Boolean | N | 暗号化設定の有効可否<br>暗号化キーストアが設定された後、該当フィールドを `true` に設定すると暗号化が有効になります。 |
 {%- endif %}
-{% endif %}
-{% if method == 'post' %}
+{%- endif %}
+{%- if method == 'post' %}
 | $[ prefix ]$interfaces | Body | List | N | ボリュームにアクセスするインターフェイスリスト |
 | $[ prefix ]$interfaces.subnetId | Body | String | N | ボリュームインターフェイスのサブネット ID |
-{% endif %}
+{%- endif %}
 | $[ prefix ]$mountProtocol | Body | Object | N | ボリューム作成時のプロトコル設定オブジェクト |
-{% if method == 'post' %}
+{%- if method == 'post' %}
 | $[ prefix ]$mountProtocol.cifsAuthIds | Body | List | N | CIFS 認証 ID リスト<br>NFS プロトコル選択時は入力不要 |
 | $[ prefix ]$mountProtocol.protocol | Body | String | Y | ボリュームマウント時のプロトコル指定<br>`nfs`、`cifs` のいずれかを選択できます。 |
-{% elif method == 'patch' %}
+{%- elif method == 'patch' %}
 | $[ prefix ]$mountProtocol.cifsAuthIds | Body | List | N | CIFS 認証 ID リスト |
 | $[ prefix ]$mountProtocol.protocol | Body | String | N | 既に作成されたボリュームのプロトコルは変更できません。<br>`cifsAuthIds` フィールド変更時は、該当フィールドに `cifs` を明示する必要があります。 |
-{% endif %}
-{% if method == 'post' %}
+{%- endif %}
+{%- if method == 'post' %}
 | $[ prefix ]$name | Body | String | Y | ボリューム名 |
-{% endif %}
+{%- endif %}
 | $[ prefix ]$sizeGb | Body | Integer | $[ 'Y' if method == 'post'  else 'N' ]$ | ボリュームサイズ (GB)<br>ボリュームは最小 300 GB から最大 10,000 GB まで、100 GB 単位で設定できます。 |
 | $[ prefix ]$snapshotPolicy | Body | Object | N | ボリュームスナップショット設定オブジェクト |
 | $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | N | スナップショット最大保存数<br>30 個まで設定可能で、最大保存数に達すると、自動生成されたスナップショットのうち最も先に生成されたスナップショットが削除されます。 |
@@ -119,11 +119,11 @@ $[ ' ' * indent ]$  "10.0.1.0/24"
 $[ ' ' * indent ]$],
 $[ ' ' * indent ]$"createdAt": "2025-04-01T06:44:25+00:00",
 $[ ' ' * indent ]$"description": "NAS for Testing",
-{% if encryption %}
+{%- if encryption %}
 $[ ' ' * indent ]$"encryption": {
 $[ ' ' * indent ]$  "enabled": false
 $[ ' ' * indent ]$},
-{% endif %}
+{%- endif %}
 $[ ' ' * indent ]$"id": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
 $[ ' ' * indent ]$"interfaces": [
 $[ ' ' * indent ]$  {
@@ -134,7 +134,7 @@ $[ ' ' * indent ]$    "subnetId": "cb779d62-72ef-43b6-b368-3fe28dcd812b",
 $[ ' ' * indent ]$    "tenantId": "3b6179e5fa6b499386b827357c4cb8c4"
 $[ ' ' * indent ]$  }
 $[ ' ' * indent ]$],
-{% if method == 'post' %}
+{%- if method == 'post' %}
 $[ ' ' * indent ]$"mirrors": []
 {% else %}
 $[ ' ' * indent ]$"mirrors": [
@@ -142,7 +142,7 @@ $[ ' ' * indent ]$  {
 $[ volume_mirror_response_json(indent+4) ]$
 $[ ' ' * indent ]$  }
 $[ ' ' * indent ]$],
-{% endif %}
+{%- endif %}
 $[ ' ' * indent ]$"mountProtocol": {
 $[ ' ' * indent ]$  "protocol": "cifs",
 $[ ' ' * indent ]$  "cifsAuthIds": [
@@ -206,8 +206,8 @@ NASAPIは`nasv1`タイプのエンドポイントを使用します。正確な�
 <a id="nas_api_common.authentication"></a>
 ### 認証及び権限 { #nas_api_common.authentication }
 
-NAS は、API 呼び出し時の認証/認可に IaaS トークンを使用します。IaaS トークンは、NHN Cloud の OpenStack ベースのインフラストラクチャサービス (IaaS) で使用する認証トークンです。
-IaaS トークンの発行および使用方法の詳細については、[IaaS トークン]($[ identity_guide_url ]$) を参照してください。
+NAS は API 呼び出し時の認証/認可のために IaaS トークンを使用します。IaaS トークンは、NHN Cloud の OpenStack ベースのインフラサービス (IaaS) で使用する認証トークンです。
+IaaS トークンの発行および使用方法については、[IaaS トークン]($[ identity_guide_url ]$)を参照してください。
 
 <a id="nas_api_common.response"></a>
 ### レスポンス共通情報 { #nas_api_common.response }
@@ -373,11 +373,11 @@ $[ volume_request_table('volume.', 'post') ]$
       "10.0.1.0/24"
     ],
     "description": "NAS for Testing",
-{% if encryption %}
+{%- if encryption %}
     "encryption": {
       "enabled": true
     },
-{% endif %}
+{%- endif %}
     "interfaces": [
       {
         "subnetId": "cb779d62-72ef-43b6-b368-3fe28dcd812b"
@@ -1232,4 +1232,4 @@ X-Auth-Token: {token-id}
 レスポンス本文にはヘッダフィールド以外の内容は含まれません。
 
 <br>
-{% endif %}
+{%- endif %}
