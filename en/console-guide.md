@@ -30,7 +30,7 @@ Creates a new volume. The created volume can be accessed from instances using th
 | Access Control List (ACL) | A list of the IPs or CIDR blocks that allow read and write permissions. |
 | Auto Create Snapshot | Snapshots are created automatically at a specified time once per day. When the maximum number of saves is reached, the first automatically created snapshot is deleted. |
 | Snapshot Reserve Capacity | Pre-allocate space for snapshots to be stored. Data can be stored in any capacity except the one you set. If the actual size of the snapshot is larger than the snapshot reserve capacity setting, the data storage space beyond the reserve capacity is used to store the snapshot.|
-{% if encryption -%}
+{%- if encryption %}
 | Encryption | Select whether to enable volume encryption. This must be preceded by setting up encryption key storage. |
 {%- endif %}
 
@@ -184,7 +184,7 @@ The default search period is the latest 1 hour, and you can search any period yo
 | Volume status | - | The volume status. |
 
 {% endif %}
-{% if replication %}
+{%- if replication %}
 <a id="replication"></a>
 ## Replication { #replication }
 
