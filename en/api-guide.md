@@ -205,7 +205,6 @@ NAS API uses the `nasv1` type endpoint. Refer to the `serviceCatalog` in the tok
 
 
 <a id="nas_api_common.authentication"></a>
-
 ### Authentication and Authorization { #nas_api_common.authentication }
 
 NAS uses IaaS tokens for authentication and authorization when making API calls. The IaaS token is an authentication token used for NHN Cloud's OpenStack-based infrastructure services (IaaS).
@@ -462,7 +461,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="volume.create-request"></a>
-
 #### Request
 
 | Name | Type | Format | Required | Description |
@@ -516,7 +514,6 @@ $[ volume_request_table('volume.', 'post') ]$
 </details>
 
 <a id="volume.create-response"></a>
-
 #### Response
 
 | Name | Type | Format | Description |
@@ -1576,7 +1573,6 @@ X-Auth-Token: {token-id}
 | volume_mirror_id | URL | String | Y | Replication setting ID |
 
 <a id="replication.stop-response"></a>
-
 #### Response
 
 The response body does not contain any content other than header fields.
