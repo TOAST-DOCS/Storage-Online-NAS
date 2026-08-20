@@ -38,14 +38,14 @@
 | $[ prefix ]$projectId | Body | String | Project ID of the volume |
 | $[ prefix ]$tenantId | Body | String | Tenant ID of the volume |
 | $[ prefix ]$acl | Body | List | Volume ACL list |
-{% if encryption -%}
+{%- if encryption %}
 | $[ prefix ]$encryption | Body | Object | Volume encryption information |
 | $[ prefix ]$encryption.enabled | Body | Boolean | Whether volume encryption is enabled |
 | $[ prefix ]$encryption.keys | Body | List | Volume encryption key information |
 {%- endif %}
 | $[ prefix ]$interfaces | Body | List | Volume interface object list |
 $[ interface_response_table(prefix + 'interfaces.') ]$
-{% if replication -%}
+{%- if replication %}
 | $[ prefix ]$mirrors | Body | List | Volume replication settings object list |
 $[ volume_mirror_response_table(prefix + 'mirrors.') ]$
 {%- endif %}
@@ -65,27 +65,27 @@ $[ volume_mirror_response_table(prefix + 'mirrors.') ]$
 {% macro volume_request_table(prefix='', method='') -%}
 | $[ prefix ]$acl | Body | List | N | ACL list to configure when creating the volume<br>You can enter values in IP or CIDR format. |
 | $[ prefix ]$description | Body | String | N | Volume description |
-{% if method == 'post' %}
-{% if encryption -%}
+{%- if method == 'post' %}
+{%- if encryption %}
 | $[ prefix ]$encryption | Body | Object | N | Encryption settings object when creating the volume |
 | $[ prefix ]$encryption.enabled | Body | Boolean | N | Whether encryption settings are enabled<br>After the encryption keystore is set up, setting this field to `true` enables encryption. |
 {%- endif %}
-{% endif %}
-{% if method == 'post' %}
+{%- endif %}
+{%- if method == 'post' %}
 | $[ prefix ]$interfaces | Body | List | N | List of interfaces to access the volume |
 | $[ prefix ]$interfaces.subnetId | Body | String | N | Subnet ID of the volume interface |
-{% endif %}
+{%- endif %}
 | $[ prefix ]$mountProtocol | Body | Object | N | Protocol settings object when creating the volume |
-{% if method == 'post' %}
+{%- if method == 'post' %}
 | $[ prefix ]$mountProtocol.cifsAuthIds | Body | List | N | CIFS authentication ID list<br>Not required when NFS protocol is selected |
 | $[ prefix ]$mountProtocol.protocol | Body | String | Y | Specifies the protocol when mounting the volume<br>You can select one of `nfs` or `cifs`. |
-{% elif method == 'patch' %}
+{%- elif method == 'patch' %}
 | $[ prefix ]$mountProtocol.cifsAuthIds | Body | List | N | CIFS authentication ID list |
 | $[ prefix ]$mountProtocol.protocol | Body | String | N | The protocol of an already created volume cannot be changed.<br>When changing the `cifsAuthIds` field, you must specify `cifs` in this field. |
-{% endif %}
-{% if method == 'post' %}
+{%- endif %}
+{%- if method == 'post' %}
 | $[ prefix ]$name | Body | String | Y | Volume name |
-{% endif %}
+{%- endif %}
 | $[ prefix ]$sizeGb | Body | Integer | $[ 'Y' if method == 'post'  else 'N' ]$ | Volume size (GB)<br>The volume can be set from a minimum of 300 GB to a maximum of 10,000 GB, in 100 GB increments. |
 | $[ prefix ]$snapshotPolicy | Body | Object | N | Volume snapshot settings object |
 | $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | N | Maximum number of snapshots to store<br>You can set a maximum of 30, and the first automatically created snapshot will be deleted when the maximum number of saves is reached. |
@@ -119,11 +119,11 @@ $[ ' ' * indent ]$  "10.0.1.0/24"
 $[ ' ' * indent ]$],
 $[ ' ' * indent ]$"createdAt": "2025-04-01T06:44:25+00:00",
 $[ ' ' * indent ]$"description": "NAS for Testing",
-{% if encryption %}
+{%- if encryption %}
 $[ ' ' * indent ]$"encryption": {
 $[ ' ' * indent ]$  "enabled": false
 $[ ' ' * indent ]$},
-{% endif %}
+{%- endif %}
 $[ ' ' * indent ]$"id": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
 $[ ' ' * indent ]$"interfaces": [
 $[ ' ' * indent ]$  {
@@ -134,7 +134,7 @@ $[ ' ' * indent ]$    "subnetId": "cb779d62-72ef-43b6-b368-3fe28dcd812b",
 $[ ' ' * indent ]$    "tenantId": "3b6179e5fa6b499386b827357c4cb8c4"
 $[ ' ' * indent ]$  }
 $[ ' ' * indent ]$],
-{% if method == 'post' %}
+{%- if method == 'post' %}
 $[ ' ' * indent ]$"mirrors": []
 {% else %}
 $[ ' ' * indent ]$"mirrors": [
@@ -142,7 +142,7 @@ $[ ' ' * indent ]$  {
 $[ volume_mirror_response_json(indent+4) ]$
 $[ ' ' * indent ]$  }
 $[ ' ' * indent ]$],
-{% endif %}
+{%- endif %}
 $[ ' ' * indent ]$"mountProtocol": {
 $[ ' ' * indent ]$  "protocol": "cifs",
 $[ ' ' * indent ]$  "cifsAuthIds": [
@@ -204,10 +204,11 @@ NAS API uses the `nasv1` type endpoint. Refer to the `serviceCatalog` in the tok
 {% for region in regions %}| $[ region.name ]$ | $[ region.endpoint ]$ |
 {% endfor %}
 <a id="nas_api_common.authentication"></a>
+
 ### Authentication and Authorization { #nas_api_common.authentication }
 
 NAS uses IaaS tokens for authentication and authorization when making API calls. The IaaS token is an authentication token used for NHN Cloud's OpenStack-based infrastructure services (IaaS).
-For more information on issuing and using IaaS tokens, see [IaaS token]($[ identity_guide_url ]$).
+For more information about issuing and using IaaS tokens, see [IaaS token]($[ identity_guide_url ]$).
 
 <a id="nas_api_common.response"></a>
 ### Response Common Information { #nas_api_common.response }
@@ -372,11 +373,11 @@ $[ volume_request_table('volume.', 'post') ]$
       "10.0.1.0/24"
     ],
     "description": "NAS for Testing",
-{% if encryption %}
+{%- if encryption %}
     "encryption": {
       "enabled": true
     },
-{% endif %}
+{%- endif %}
     "interfaces": [
       {
         "subnetId": "cb779d62-72ef-43b6-b368-3fe28dcd812b"
@@ -1232,4 +1233,4 @@ X-Auth-Token: {token-id}
 The response body does not contain any content other than header fields.
 
 <br>
-{% endif %}
+{%- endif %}
