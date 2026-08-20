@@ -44,7 +44,6 @@ resource "nhncloud_nas_storage_volume_interface_v1" "interface1" {
 ## リソース { #terraform-resources-nas }
 
 <a id="terraform-resources-create-volume"></a>
-
 ### ボリュームの作成 { #terraform-resources-create-volume }
 
 !!! tip "注記: CIFS プロトコルの使用"
@@ -154,7 +153,6 @@ resource "nhncloud_nas_storage_volume_interface_v1" "nas_interface_01" {
 | subnet_id | String | Y | - | 接続するサブネットID |
 
 <a id="terraform-resources-set-replication"></a>
-
 ### レプリケーションの設定 { #terraform-resources-set-replication }
 
 レプリケーション設定リソースを作成すると、対象ボリュームが自動的に作成されます。
