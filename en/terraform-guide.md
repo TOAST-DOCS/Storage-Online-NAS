@@ -42,7 +42,6 @@ resource "nhncloud_nas_storage_volume_interface_v1" "interface1" {
 ## Resources { #terraform-resources-nas }
 
 <a id="terraform-resources-create-volume"></a>
-
 ### Create a Volume { #terraform-resources-create-volume }
 
 !!! tip "Note: Using the CIFS Protocol"
@@ -152,7 +151,6 @@ resource "nhncloud_nas_storage_volume_interface_v1" "nas_interface_01" {
 | subnet_id | String | Y | - | ID of the subnet to attach |
 
 <a id="terraform-resources-set-replication"></a>
-
 ### Set up Replication { #terraform-resources-set-replication }
 
 When you create a Replication Settings resource, the target volume is automatically created.
