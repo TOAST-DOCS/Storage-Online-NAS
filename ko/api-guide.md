@@ -36,14 +36,14 @@
 | $[ prefix ]$projectId | Body | String | 볼륨이 속한 프로젝트 ID |
 | $[ prefix ]$tenantId | Body | String | 볼륨이 속한 테넌트 ID |
 | $[ prefix ]$acl | Body | List | 볼륨 ACL 목록 |
-{% if encryption -%}
+{%- if encryption %}
 | $[ prefix ]$encryption | Body | Object | 볼륨 암호화 정보 |
 | $[ prefix ]$encryption.enabled | Body | Boolean | 볼륨 암호화 활성 여부 |
 | $[ prefix ]$encryption.keys | Body | List | 볼륨 암호화 키 정보 |
 {%- endif %}
 | $[ prefix ]$interfaces | Body | List | 볼륨 인터페이스 객체 목록 |
 $[ interface_response_table(prefix + 'interfaces.') ]$
-{% if replication -%}
+{%- if replication %}
 | $[ prefix ]$mirrors | Body | List | 볼륨 복제 설정 객체 목록 |
 $[ volume_mirror_response_table(prefix + 'mirrors.') ]$
 {%- endif %}
@@ -63,27 +63,27 @@ $[ volume_mirror_response_table(prefix + 'mirrors.') ]$
 {% macro volume_request_table(prefix='', method='') -%}
 | $[ prefix ]$acl | Body | List | N | 볼륨 생성 시 설정할 ACL 목록<br>IP 또는 CIDR 형식으로 입력할 수 있습니다. |
 | $[ prefix ]$description | Body | String | N | 볼륨 설명 |
-{% if method == 'post' %}
-{% if encryption -%}
+{%- if method == 'post' %}
+{%- if encryption %}
 | $[ prefix ]$encryption | Body | Object | N | 볼륨 생성 시 암호화 설정 객체 |
 | $[ prefix ]$encryption.enabled | Body | Boolean | N | 암호화 설정 활성화 여부<br>암호화 키 저장소가 설정된 후 해당 필드를 `true`로 설정하면 암호화가 활성화됩니다. |
 {%- endif %}
-{% endif %}
-{% if method == 'post' %}
+{%- endif %}
+{%- if method == 'post' %}
 | $[ prefix ]$interfaces | Body | List | N | 볼륨에 접근할 인터페이스 목록 |
 | $[ prefix ]$interfaces.subnetId | Body | String | N | 볼륨 인터페이스의 서브넷 ID |
-{% endif %}
+{%- endif %}
 | $[ prefix ]$mountProtocol | Body | Object | N | 볼륨 생성 시 프로토콜 설정 객체 |
-{% if method == 'post' %}
+{%- if method == 'post' %}
 | $[ prefix ]$mountProtocol.cifsAuthIds | Body | List | N | CIFS 인증 ID 목록<br>NFS 프로토콜 선택 시 입력 불필요 |
 | $[ prefix ]$mountProtocol.protocol | Body | String | Y | 볼륨 마운트 시 프로토콜 지정<br>`nfs`, `cifs` 중 하나를 선택할 수 있습니다. |
-{% elif method == 'patch' %}
+{%- elif method == 'patch' %}
 | $[ prefix ]$mountProtocol.cifsAuthIds | Body | List | N | CIFS 인증 ID 목록 |
 | $[ prefix ]$mountProtocol.protocol | Body | String | N | 이미 생성된 볼륨의 프로토콜은 변경할 수 없습니다.<br>`cifsAuthIds` 필드 변경 시 해당 필드에 `cifs`를 명시해야 합니다. |
-{% endif %}
-{% if method == 'post' %}
+{%- endif %}
+{%- if method == 'post' %}
 | $[ prefix ]$name | Body | String | Y | 볼륨 이름 |
-{% endif %}
+{%- endif %}
 | $[ prefix ]$sizeGb | Body | Integer | $[ 'Y' if method == 'post'  else 'N' ]$ | 볼륨 크기(GB)<br>볼륨은 최소 300GB에서 최대 10,000GB까지, 100GB 단위로 설정할 수 있습니다. |
 | $[ prefix ]$snapshotPolicy | Body | Object | N | 볼륨 스냅숏 설정 객체 |
 | $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | N | 스냅숏 최대 저장 개수<br>30개까지 설정 가능하며, 최대 저장 개수에 도달하면 자동으로 생성된 스냅숏 중 가장 먼저 생성된 스냅숏이 삭제됩니다. |
@@ -117,11 +117,11 @@ $[ ' ' * indent ]$  "10.0.1.0/24"
 $[ ' ' * indent ]$],
 $[ ' ' * indent ]$"createdAt": "2025-04-01T06:44:25+00:00",
 $[ ' ' * indent ]$"description": "NAS for Testing",
-{% if encryption %}
+{%- if encryption %}
 $[ ' ' * indent ]$"encryption": {
 $[ ' ' * indent ]$  "enabled": false
 $[ ' ' * indent ]$},
-{% endif %}
+{%- endif %}
 $[ ' ' * indent ]$"id": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
 $[ ' ' * indent ]$"interfaces": [
 $[ ' ' * indent ]$  {
@@ -132,7 +132,7 @@ $[ ' ' * indent ]$    "subnetId": "cb779d62-72ef-43b6-b368-3fe28dcd812b",
 $[ ' ' * indent ]$    "tenantId": "3b6179e5fa6b499386b827357c4cb8c4"
 $[ ' ' * indent ]$  }
 $[ ' ' * indent ]$],
-{% if method == 'post' %}
+{%- if method == 'post' %}
 $[ ' ' * indent ]$"mirrors": []
 {% else %}
 $[ ' ' * indent ]$"mirrors": [
@@ -140,7 +140,7 @@ $[ ' ' * indent ]$  {
 $[ volume_mirror_response_json(indent+4) ]$
 $[ ' ' * indent ]$  }
 $[ ' ' * indent ]$],
-{% endif %}
+{%- endif %}
 $[ ' ' * indent ]$"mountProtocol": {
 $[ ' ' * indent ]$  "protocol": "cifs",
 $[ ' ' * indent ]$  "cifsAuthIds": [
@@ -206,7 +206,7 @@ NAS API는 `nasv1` 타입 엔드포인트를 사용합니다. 정확한 엔드�
 ### 인증 및 권한 { #nas_api_common.authentication }
 
 NAS는 API 호출 시 인증/인가를 위해 IaaS 토큰을 사용합니다. IaaS 토큰은 NHN Cloud의 OpenStack 기반 인프라 서비스(IaaS)에서 사용하는 인증 토큰입니다.
-IaaS 토큰 발급 및 사용 방법에 대한 자세한 내용은 [IaaS 토큰]($[ identity_guide_url ]$)을 참고합니다.
+IaaS 토큰 발급 및 사용 방법은 [IaaS 토큰]($[ identity_guide_url ]$)을 참고합니다.
 
 <a id="nas_api_common.response"></a>
 ### 응답 공통 정보 { #nas_api_common.response }
@@ -370,11 +370,11 @@ $[ volume_request_table('volume.', 'post') ]$
       "10.0.1.0/24"
     ],
     "description": "NAS for Testing",
-{% if encryption %}
+{%- if encryption %}
     "encryption": {
       "enabled": true
     },
-{% endif %}
+{%- endif %}
     "interfaces": [
       {
         "subnetId": "cb779d62-72ef-43b6-b368-3fe28dcd812b"
@@ -1229,4 +1229,4 @@ X-Auth-Token: {token-id}
 응답 본문에는 헤더 필드 외의 내용이 포함되지 않습니다.
 
 <br>
-{% endif %}
+{%- endif %}
