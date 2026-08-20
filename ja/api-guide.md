@@ -204,7 +204,6 @@ NASAPIは`nasv1`タイプのエンドポイントを使用します。正確な�
 {% for region in regions %}| $[ region.name ]$ | $[ region.endpoint ]$ |
 {% endfor %}
 <a id="nas_api_common.authentication"></a>
-
 ### 認証及び権限 { #nas_api_common.authentication }
 
 NAS は API 呼び出し時の認証/認可のために IaaS トークンを使用します。IaaS トークンは、NHN Cloud の OpenStack ベースのインフラサービス (IaaS) で使用する認証トークンです。
