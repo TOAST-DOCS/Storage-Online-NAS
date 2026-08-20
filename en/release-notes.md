@@ -1,8 +1,9 @@
+<!-- pre-align:aligned sig=41a352a073ca -->
+
 <a id="storage-nas-release-notes"></a>
 ## Storage > NAS > Release Notes { #storage-nas-release-notes }
 
 <a id="august-25-2026"></a>
-
 ## August 25, 2026 { #august-25-2026 }
 
 <a id="august-25-2026-added-features"></a>

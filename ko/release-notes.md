@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=41a352a073ca -->
+
 <a id="storage-nas-release-notes"></a>
 ## Storage > NAS > 릴리스 노트 { #storage-nas-release-notes }
 

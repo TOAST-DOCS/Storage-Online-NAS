@@ -1,3 +1,11 @@
+<!-- machine_translated: true -->
+
+{% include-markdown '../_online-nas-vars.md' %}
+
+<!-- pre-align:aligned sig=ab931ac9d8ba -->
+
+{% if terraform_support %}
+
 <a id="storage-nas-terraform-user-guide"></a>
 ## Storage > NAS > Terraform User Guide { #storage-nas-terraform-user-guide }
 This document details how to use NHN Cloud NAS services with Terraform.
@@ -5,7 +13,7 @@ This document details how to use NHN Cloud NAS services with Terraform.
 <a id="terraform"></a>
 ## Terraform { #terraform }
 
-Terraform is an open-source tool designed for seamless infrastructure provisioning, secure updates, and efficient configuration management. For basics, refer to [User Guide > NHN Cloud > Terraform User Guide](/nhncloud/en/terraform-guide/).
+Terraform is an open-source tool designed for seamless infrastructure provisioning, secure updates, and efficient configuration management. For basics, refer to [User Guide > NHN Cloud > Terraform User Guide]($[ terraform_guide_url ]$).
 
 <a id="terraform-resource-dependency"></a>
 ### Resource dependency { #terraform-resource-dependency }
@@ -43,15 +51,14 @@ resource "nhncloud_nas_storage_volume_interface_v1" "interface1" {
 !!! tip "Note: Using the CIFS protocol"
     To use the CIFS protocol, you must create CIFS credentials. Credentials are managed on a per-project basis, and you must register CIFS credentials to allow to access each CIFS volume.
     You can create CIFS credentials through the **Storage > NAS > Manage CIFS Credentials** of the console.
-
+{%- if encryption %}
 <!-- -->
 
 !!! tip "Note: Setting up encryption key storage"
     When an encrypted volume is created, the symmetric key used for encryption is stored in the NHN Cloud Secure Key Manager store. To create encrypted volume,[you must first create a keystore](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_1) in the Secure Key Manager service. After creating the keystore, [check its ID](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_2) and enter it in the encryption keystore settings.
     You can enter the keystore ID from the **Storage > NAS > Encryption keystore settings** in the console. When you create encrypted volume, the symmetric key is stored in the specified keystore. The symmetric key stored in the keystore cannot be deleted while the encrypted volume is in use. When the encrypted volume is deleted, the corresponding symmetric key is also deleted.
     If you change the keystore ID, symmetric keys for newly created encrypted volume will be stored in the new keystore. Symmetric keys already stored in the previous keystore are retained.
-
-
+{%- endif %}
 ```hcl
 # Create an Empty NAS Volume with NFS Protocol
 resource "nhncloud_nas_storage_volume_v1" "volume_01" {
@@ -72,7 +79,7 @@ resource "nhncloud_nas_storage_volume_v1" "volume_02" {
   }
 }
 
-# Create a Volume with ACL and Encryption Settings
+# Create a Volume with ACL{% if encryption %}, Encryption Settings{% endif %} and Other Settings
 resource "nhncloud_nas_storage_volume_v1" "volume_03" {
   name = "nas_volume_03"
   description = "create nas volume by terraform"
@@ -80,10 +87,12 @@ resource "nhncloud_nas_storage_volume_v1" "volume_03" {
 
   acl = ["10.10.10.0/24"]
 
+{% if encryption %}
   encryption {
     enabled = true
   }
 
+{% endif %}
   mount_protocol {
     protocol = "cifs"
     cifs_auth_ids = ["auth_id"]
@@ -109,8 +118,10 @@ resource "nhncloud_nas_storage_volume_v1" "volume_03" {
 | description | String | N | O | Volume description |
 | size_gb | Integer | Y | O | Volume size (GB)<br>The volume can be set from a minimum of 300 GB to a maximum of 10,000 GB, in 100 GB increments. |
 | acl | List | N | O | ACL list to set when creating a volume<br>Can be entered in IP or CIDR format. |
+{%- if encryption %}
 | encryption | Object | N | - | Encryption setting object when creating a volume |
 | encryption.enabled | Boolean | N | - | Whether encryption is enabled<br>Encryption is enabled when this field is set to `true` after the encryption keystore is set. |
+{%- endif %}
 | mount_protocol | Object | N | - | Protocol setting object when creating a volume |
 | mount_protocol.cifs_auth_ids | List(String) | N | O | List of CIFS authentication IDs<br>No input required when selecting the NFS protocol |
 | mount_protocol.protocol | String | Y | - | Protocol specification when mounting a volume<br>You can select either `nfs` or `cifs`. |
@@ -142,6 +153,7 @@ resource "nhncloud_nas_storage_volume_interface_v1" "nas_interface_01" {
 | volume_id | String | Y | - | ID of the volume to attach |
 | subnet_id | String | Y | - | ID of the subnet to attach |
 
+{% if replication %}
 <a id="terraform-resources-set-replication"></a>
 ### Set up Replication { #terraform-resources-set-replication }
 
@@ -184,10 +196,12 @@ resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
 | dst_volume | Object | Y | - | Replication target volume creation request object |
 | dst_volume.acl | List | N | O | ACL list to set when creating a volume<br>Can be entered in IP or CIDR format. |
 | dst_volume.description | String | N | O | Volume description |
+{%- if encryption %}
 | dst_volume.encryption | Object | N | - | Encryption setting object when creating a volume |
 | dst_volume.encryption.enabled | Boolean | N | - | Whether to enable encryption setting<br>Encryption is enabled when this field is set to `true` after the encryption keystore is set. |
+{%- endif %}
 | dst_volume.mount_protocol | Object | N | - | Protocol setting object when creating a volume |
-| dst_volume.mount_protocol.cifs_auth_ids | List | N | O | List of CIFS authentication IDs<br>No input required when selecting an NFS protocol |
+| dst_volume.mount_protocol.cifs_auth_ids | List(String) | N | O | List of CIFS authentication IDs<br>No input required when selecting an NFS protocol |
 | dst_volume.mount_protocol.protocol | String | Y | - | Specify protocol when mounting a volume<br>You can select either `nfs` or `cifs`. |
 | dst_volume.name | String | Y | - | Volume name |
 | dst_volume.size_gb | Integer | Y | O | Volume Size (GB)<br>The volume can be set from a minimum of 300 GB to a maximum of 10,000 GB, in 100 GB increments. |
@@ -198,9 +212,12 @@ resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
 | dst_volume.snapshot_policy.schedule.time | String | N | O | Automatic snapshot creation time |
 | dst_volume.snapshot_policy.schedule.time_offset | String | N | O | Automatic snapshot creation time zone |
 | dst_volume.snapshot_policy.schedule.weekdays | List | N | O | Automatic snapshot creation days<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday).
+{%- endif %}
 
 <a id="reference"></a>
 ## References { #reference }
 
-Terraform - [https://www.terraform.io/](https://www.terraform.io/)
-Terraform Registry - [https://registry.terraform.io/](https://registry.terraform.io/)
+* Terraform - [https://www.terraform.io/](https://www.terraform.io/)
+* Terraform Registry - [https://registry.terraform.io/](https://registry.terraform.io/)
+
+{% endif %}

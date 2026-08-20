@@ -50,7 +50,6 @@
 ### 기능 개선/변경 { #may-29-2025-feature-updates }
 
 * CIFS 인증 정보 ID 제약 조건 변경
-    
 
 <a id="september-5-2024"></a>
 ## 2024. 09. 05. { #september-5-2024 }

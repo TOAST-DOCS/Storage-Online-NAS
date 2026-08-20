@@ -1,3 +1,7 @@
+{% include-markdown '../_online-nas-vars.md' %}
+
+<!-- pre-align:aligned sig=def3305c571c -->
+
 <a id="storage-nas-overview"></a>
 ## Storage > NAS > 개요 { #storage-nas-overview }
 
@@ -10,6 +14,7 @@ NAS 서비스를 사용하면 인스턴스에 공유 스토리지를 연결하�
 ### 공유 { #features.sharing }
 
 볼륨을 하나 이상의 인스턴스에 마운트하여 사용할 수 있습니다.
+
 지원하는 프로토콜: NFS v3(Linux), CIFS(Windows)
 
 <a id="features.convenient"></a>
@@ -26,8 +31,11 @@ NAS 서비스를 사용하면 인스턴스에 공유 스토리지를 연결하�
 ### 보안성 { #features.secure }
 
 볼륨은 프로젝트의 네트워크를 통해서만 접근할 수 있어, 다른 프로젝트의 네트워크와 격리됩니다.
-XTS-AES-256 알고리즘으로 암호화하여 데이터를 안전하게 보관할 수 있습니다.
 
+{% if encryption %}
+볼륨을 XTS-AES-256 알고리즘으로 암호화하여 데이터를 안전하게 보관할 수 있습니다.
+
+{% endif %}
 <a id="glossary"></a>
 ## 용어 { #glossary }
 
@@ -45,5 +53,7 @@ NAS는 네트워크를 통해 접근할 수 있는 파일 기반 저장 장치�
 ### 스냅숏 { #glossary.snapshots }
 
 스냅숏은 볼륨의 읽기 전용 복사본으로, 특정 시점의 데이터를 백업 및 복원하는 데 사용됩니다.
+
 사용자는 하루 1회 자동 생성 시점을 지정할 수 있으며, 생성된 스냅숏을 통해 해당 시점의 상태로 데이터를 복원할 수 있습니다.
+
 스냅숏은 볼륨의 저장 공간을 사용하므로, 필요하지 않은 경우 생성을 비활성화할 수 있습니다.

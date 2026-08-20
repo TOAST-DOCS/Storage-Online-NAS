@@ -1,3 +1,7 @@
+<!-- machine_translated: true -->
+
+{% include-markdown '../_online-nas-vars.md' %}
+
 <!-- pre-align:aligned sig=def3305c571c -->
 
 <a id="storage-nas-overview"></a>
@@ -27,9 +31,12 @@ Volume capacity can be scaled up and down even while using in use.
 <a id="features.secure"></a>
 ### Secure { #features.secure }
 
-Volume is isolated from other projects’ networks because it is accessed through a project’s network.
-You can keep your data safe by encrypting it with the XTS-AES-256 algorithm.
+Volumes are accessible only through a project's network and are isolated from other projects' networks.
 
+{% if encryption %}
+You can keep data safe by encrypting the volume with the XTS-AES-256 algorithm.
+
+{% endif %}
 <a id="glossary"></a>
 ## Glossary { #glossary }
 
