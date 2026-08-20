@@ -204,7 +204,6 @@ NAS API uses the `nasv1` type endpoint. Refer to the `serviceCatalog` in the tok
 {% for region in regions %}| $[ region.name ]$ | $[ region.endpoint ]$ |
 {% endfor %}
 <a id="nas_api_common.authentication"></a>
-
 ### Authentication and Authorization { #nas_api_common.authentication }
 
 NAS uses IaaS tokens for authentication and authorization when making API calls. The IaaS token is an authentication token used for NHN Cloud's OpenStack-based infrastructure services (IaaS).
