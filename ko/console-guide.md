@@ -1,8 +1,6 @@
-<!-- pre-align:aligned sig=716f88137cb3 -->
-
 {% include-markdown '../_online-nas-vars.md' %}
 
-
+<!-- pre-align:aligned sig=cdac5f1b7499 -->
 
 <a id="storage-nas-console-user-guide"></a>
 ## Storage > NAS > 콘솔 사용 가이드 { #storage-nas-console-user-guide }
@@ -57,7 +55,7 @@ CIFS 프로토콜을 사용하려면 CIFS 인증 정보를 생성해야 합니�
 <a id="create_volume.encryption"></a>
 #### 암호화 키 저장소 설정
 
-암호화 볼륨은 암호화에 사용하는 대칭 키를 NHN Cloud Secure Key Manager 서비스의 키 저장소에 저장합니다. 따라서 암호화 볼륨을 만들려면 미리 Secure Key Manager 서비스에서 [키 저장소를 생성](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_1)해야 합니다. [키 저장소의 ID를 확인](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_2)하여 암호화 키 저장소 설정에 입력합니다.
+암호화 볼륨은 암호화에 사용하는 대칭 키를 NHN Cloud Secure Key Manager 서비스의 키 저장소에 저장합니다. 따라서 암호화 볼륨을 만들려면 미리 Secure Key Manager 서비스에서 [키 저장소를 생성](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#create-a-key-store)해야 합니다. [키 저장소의 ID를 확인](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#key-store-details)하여 암호화 키 저장소 설정에 입력합니다.
 
 암호화 볼륨을 생성하면 설정한 키 저장소에 대칭 키가 저장됩니다. NAS 서비스가 키 저장소에 저장한 대칭 키는 암호화 볼륨 사용 중에는 삭제할 수 없습니다. 암호화 볼륨을 삭제하면 대칭 키도 함께 삭제됩니다.
 
@@ -226,7 +224,7 @@ CIFS 프로토콜을 사용하려면 CIFS 인증 정보를 생성해야 합니�
 
     복제로 인해 발생하는 네트워크 트래픽에 대해 다른 리전 간 트래픽 요금이 청구됩니다.
 
-    사용 요금에 관한 자세한 사항은 [NAS 요금 안내](https://www.nhncloud.com/kr/service/storage/nas)를 참고합니다.
+    사용 요금에 관한 자세한 사항은 [NAS 요금 안내]($[ nas_service_url ]$)를 참고합니다.
 
 <a id="replication.start"></a>
 ### 복제 시작 { #replication.start }
