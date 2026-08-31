@@ -1,4 +1,4 @@
-{% include-markdown '../_online-nas-vars.md' %}
+g{% include-markdown '../_online-nas-vars.md' %}
 
 <!-- pre-align:aligned sig=06dac106ebf2 -->
 
@@ -86,7 +86,7 @@ $[ volume_mirror_response_table(prefix + 'mirrors.') ]$
 {%- endif %}
 | $[ prefix ]$sizeGb | Body | Integer | $[ 'Y' if method == 'post'  else 'N' ]$ | 볼륨 크기(GB)<br>볼륨은 최소 300GB에서 최대 10,000GB까지, 100GB 단위로 설정할 수 있습니다. |
 | $[ prefix ]$snapshotPolicy | Body | Object | N | 볼륨 스냅숏 설정 객체 |
-| $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | N | 스냅숏 최대 저장 개수<br>30개까지 설정 가능하며, 최대 저장 개수에 도달하면 자동으로 생성된 스냅숏 중 가장 먼저 생성된 스냅숏이 삭제됩니다. |
+| $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | N | 스냅숏 최대 저장 개수<br>20개까지 설정 가능하며, 최대 저장 개수에 도달하면 자동으로 생성된 스냅숏 중 가장 먼저 생성된 스냅숏이 삭제됩니다. |
 | $[ prefix ]$snapshotPolicy.reservePercent | Body | Integer | N | 스냅숏 용량 비율 |
 | $[ prefix ]$snapshotPolicy.schedule | Body | Object | N | 스냅숏 자동 생성 객체<br>`null`일 경우 스냅숏 자동 생성이 설정되지 않습니다. |
 | $[ prefix ]$snapshotPolicy.schedule.time | Body | String | N | 스냅숏 자동 생성 시간 |
