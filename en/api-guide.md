@@ -17,12 +17,12 @@
 | $[ prefix ]$status | Body | String | Replication settings status<br>- `INITIALIZED`: Settings complete<br>- `UPDATING`: Updating settings<br>- `DELETING`: Deleting settings<br>- `PENDING`: Creating settings |
 | $[ prefix ]$direction | Body | String | Replication direction<br>- `FORWARD`: Source volume → Target volume<br>- `REVERSE`: Target volume → Source volume |
 | $[ prefix ]$directionChangedAt | Body | String | Replication direction change time |
-| $[ prefix ]$dstProjectId | Body | String | Project ID of the replication target volume |
+| $[ prefix ]$dstProjectId | Body | String | Replication target volume project ID |
 | $[ prefix ]$dstRegion | Body | String | Replication target volume region |
 | $[ prefix ]$dstTenantId | Body | String | Replication target volume tenant ID |
 | $[ prefix ]$dstVolumeId | Body | String | Replication target volume ID |
 | $[ prefix ]$dstVolumeName | Body | String | Replication target volume name |
-| $[ prefix ]$srcProjectId | Body | String | Project ID of the source volume |
+| $[ prefix ]$srcProjectId | Body | String | Source volume project ID |
 | $[ prefix ]$srcRegion | Body | String | Source volume region |
 | $[ prefix ]$srcTenantId | Body | String | Source volume tenant ID |
 | $[ prefix ]$srcVolumeId | Body | String | Source volume ID |
@@ -43,10 +43,10 @@
 | $[ prefix ]$encryption.enabled | Body | Boolean | Whether volume encryption is enabled |
 | $[ prefix ]$encryption.keys | Body | List | Volume encryption key information |
 {%- endif %}
-| $[ prefix ]$interfaces | Body | List | Volume interface object list |
+| $[ prefix ]$interfaces | Body | List | List of volume interface objects |
 $[ interface_response_table(prefix + 'interfaces.') ]$
 {%- if replication %}
-| $[ prefix ]$mirrors | Body | List | Volume replication settings object list |
+| $[ prefix ]$mirrors | Body | List | List of volume replication settings objects |
 $[ volume_mirror_response_table(prefix + 'mirrors.') ]$
 {%- endif %}
 | $[ prefix ]$mountProtocol | Body | Object | Volume mount protocol |
@@ -54,16 +54,16 @@ $[ volume_mirror_response_table(prefix + 'mirrors.') ]$
 | $[ prefix ]$mountProtocol.protocol | Body | String | Volume mount protocol |
 | $[ prefix ]$snapshotPolicy | Body | Object | Volume snapshot settings object |
 | $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | Maximum number of snapshots to store |
-| $[ prefix ]$snapshotPolicy.reservePercent | Body | Integer | Snapshot capacity ratio |
+| $[ prefix ]$snapshotPolicy.reservePercent | Body | Integer | Snapshot reserve capacity ratio |
 | $[ prefix ]$snapshotPolicy.schedule | Body | Object | Snapshot auto-creation object |
 | $[ prefix ]$snapshotPolicy.schedule.time | Body | String | Snapshot auto-creation time |
 | $[ prefix ]$snapshotPolicy.schedule.timeOffset | Body | String | Snapshot auto-creation reference timezone |
-| $[ prefix ]$snapshotPolicy.schedule.weekdays | Body | List | Snapshot auto-creation days of the week<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |
+| $[ prefix ]$snapshotPolicy.schedule.weekdays | Body | List | Days of the week for snapshot auto-creation<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |
 | $[ prefix ]$createdAt | Body | String | Volume creation time |
-| $[ prefix ]$updatedAt | Body | String | Volume last updated time |{% endmacro %}
+| $[ prefix ]$updatedAt | Body | String | Volume last modified time |{% endmacro %}
 {# end macro volume_response_table #}
 {% macro volume_request_table(prefix='', method='') -%}
-| $[ prefix ]$acl | Body | List | N | ACL list to configure when creating the volume<br>You can enter values in IP or CIDR format. |
+| $[ prefix ]$acl | Body | List | N | ACL list to set when creating the volume<br>Can be entered in IP or CIDR format. |
 | $[ prefix ]$description | Body | String | N | Volume description |
 {%- if method == 'post' %}
 {%- if encryption %}
@@ -77,23 +77,23 @@ $[ volume_mirror_response_table(prefix + 'mirrors.') ]$
 {%- endif %}
 | $[ prefix ]$mountProtocol | Body | Object | N | Protocol settings object when creating the volume |
 {%- if method == 'post' %}
-| $[ prefix ]$mountProtocol.cifsAuthIds | Body | List | N | CIFS authentication ID list<br>Not required when NFS protocol is selected |
-| $[ prefix ]$mountProtocol.protocol | Body | String | Y | Specifies the protocol when mounting the volume<br>You can select one of `nfs` or `cifs`. |
+| $[ prefix ]$mountProtocol.cifsAuthIds | Body | List | N | CIFS authentication ID list<br>Not required when selecting the NFS protocol |
+| $[ prefix ]$mountProtocol.protocol | Body | String | Y | Specify protocol when mounting the volume<br>You can choose either `nfs` or `cifs`. |
 {%- elif method == 'patch' %}
 | $[ prefix ]$mountProtocol.cifsAuthIds | Body | List | N | CIFS authentication ID list |
-| $[ prefix ]$mountProtocol.protocol | Body | String | N | The protocol of an already created volume cannot be changed.<br>When changing the `cifsAuthIds` field, you must specify `cifs` in this field. |
+| $[ prefix ]$mountProtocol.protocol | Body | String | N | The protocol of an already-created volume cannot be changed.<br>When changing the `cifsAuthIds` field, you must specify `cifs` in this field. |
 {%- endif %}
 {%- if method == 'post' %}
 | $[ prefix ]$name | Body | String | Y | Volume name |
 {%- endif %}
 | $[ prefix ]$sizeGb | Body | Integer | $[ 'Y' if method == 'post'  else 'N' ]$ | Volume size (GB)<br>The volume can be set from a minimum of 300 GB to a maximum of 10,000 GB, in 100 GB increments. |
 | $[ prefix ]$snapshotPolicy | Body | Object | N | Volume snapshot settings object |
-| $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | N | Maximum number of snapshots to store<br>You can set a maximum of 30, and the first automatically created snapshot will be deleted when the maximum number of saves is reached. |
-| $[ prefix ]$snapshotPolicy.reservePercent | Body | Integer | N | Snapshot capacity ratio |
+| $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | N | Maximum number of snapshots to store<br>You can set a maximum of 20, and the first automatically created snapshot will be deleted when the maximum number of saves is reached. |
+| $[ prefix ]$snapshotPolicy.reservePercent | Body | Integer | N | Snapshot reserve capacity ratio |
 | $[ prefix ]$snapshotPolicy.schedule | Body | Object | N | Snapshot auto-creation object<br>If `null`, snapshot auto-creation will not be configured. |
 | $[ prefix ]$snapshotPolicy.schedule.time | Body | String | N | Snapshot auto-creation time |
 | $[ prefix ]$snapshotPolicy.schedule.timeOffset | Body | String | N | Snapshot auto-creation reference timezone |
-| $[ prefix ]$snapshotPolicy.schedule.weekdays | Body | List | N | Snapshot auto-creation days of the week<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |{% endmacro %}
+| $[ prefix ]$snapshotPolicy.schedule.weekdays | Body | List | N | Days of the week for snapshot auto-creation<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |{% endmacro %}
 {# end macro volume_request_table #}
 {% macro volume_mirror_response_json(indent=0, method='') -%}
 $[ ' ' * indent ]$"createdAt":"2025-04-01T06:45:45+00:00",
@@ -174,7 +174,7 @@ $[ ' ' * indent ]$"updatedAt": "2025-04-01T06:47:13+00:00"{% endmacro %}
 | $[ prefix ]$id | Body | String | Snapshot ID |
 | $[ prefix ]$name | Body | String | Snapshot name |
 | $[ prefix ]$size | Body | Integer | Snapshot size |
-| $[ prefix ]$type | Body | String | Snapshot type<br>- `NORMAL`: Snapshot created by the user<br>- `SCHEDULED`: Snapshot created by auto-creation<br>- `MIRROR`: Snapshot created by replication |
+| $[ prefix ]$type | Body | String | Snapshot type<br>- `NORMAL`: Snapshot created by the user<br>- `SCHEDULED`: Snapshot created by snapshot auto-creation<br>- `MIRROR`: Snapshot created by replication |
 | $[ prefix ]$preserved | Body | Boolean | Whether the snapshot is set as non-deletable by the system |
 | $[ prefix ]$createdAt | Body | String | Snapshot creation time |{% endmacro %}
 {# end macro snapshot_response_table #}
@@ -186,6 +186,7 @@ $[ ' ' * indent ]$"preserved": false,
 $[ ' ' * indent ]$"size": 3112960,
 $[ ' ' * indent ]$"type": "NORMAL"{% endmacro %}
 {# end macro #}
+
 <a id="storage-nas-api-guide"></a>
 ## Storage > NAS > API Guide { #storage-nas-api-guide }
 

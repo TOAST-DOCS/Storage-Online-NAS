@@ -1,4 +1,4 @@
-g{% include-markdown '../_online-nas-vars.md' %}
+{% include-markdown '../_online-nas-vars.md' %}
 
 <!-- pre-align:aligned sig=06dac106ebf2 -->
 
