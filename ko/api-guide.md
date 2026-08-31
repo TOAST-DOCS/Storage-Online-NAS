@@ -86,7 +86,7 @@ $[ volume_mirror_response_table(prefix + 'mirrors.') ]$
 {%- endif %}
 | $[ prefix ]$sizeGb | Body | Integer | $[ 'Y' if method == 'post'  else 'N' ]$ | 볼륨 크기(GB)<br>볼륨은 최소 300GB에서 최대 10,000GB까지, 100GB 단위로 설정할 수 있습니다. |
 | $[ prefix ]$snapshotPolicy | Body | Object | N | 볼륨 스냅숏 설정 객체 |
-| $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | N | 스냅숏 최대 저장 개수<br>30개까지 설정 가능하며, 최대 저장 개수에 도달하면 자동으로 생성된 스냅숏 중 가장 먼저 생성된 스냅숏이 삭제됩니다. |
+| $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | N | 스냅숏 최대 저장 개수<br>20개까지 설정 가능하며, 최대 저장 개수에 도달하면 자동으로 생성된 스냅숏 중 가장 먼저 생성된 스냅숏이 삭제됩니다. |
 | $[ prefix ]$snapshotPolicy.reservePercent | Body | Integer | N | 스냅숏 용량 비율 |
 | $[ prefix ]$snapshotPolicy.schedule | Body | Object | N | 스냅숏 자동 생성 객체<br>`null`일 경우 스냅숏 자동 생성이 설정되지 않습니다. |
 | $[ prefix ]$snapshotPolicy.schedule.time | Body | String | N | 스냅숏 자동 생성 시간 |
@@ -339,7 +339,7 @@ $[ volume_response_json(indent=6) ]$
 <!-- -->
 
 !!! tip "참고: 암호화 키 저장소 설정"
-    암호화 볼륨을 생성하면 암호화에 사용하는 대칭 키가 NHN Cloud Secure Key Manager 서비스의 키 저장소에 저장됩니다. 따라서 암호화 볼륨을 만들려면 미리 Secure Key Manager 서비스에서 [키 저장소를 생성](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_1)해야 합니다. [키 저장소의 ID를 확인](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#_2)하여 암호화 키 저장소 설정에 입력합니다.
+    암호화 볼륨을 생성하면 암호화에 사용하는 대칭 키가 NHN Cloud Secure Key Manager 서비스의 키 저장소에 저장됩니다. 따라서 암호화 볼륨을 생성하려면 미리 Secure Key Manager 서비스에서 [키 저장소를 생성](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#create-a-key-store)해야 합니다. [키 저장소의 ID를 확인](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#key-store-details)하여 암호화 키 저장소 설정에 입력합니다.
     생성한 키 저장소 ID는 콘솔의 **Storage > NAS > 암호화 키 저장소 설정** 창에서 입력할 수 있습니다. 암호화 볼륨을 생성하면 설정한 키 저장소에 대칭 키가 저장됩니다. 키 저장소에 저장된 대칭 키는 암호화 볼륨 사용 중에는 삭제할 수 없습니다. 암호화 볼륨을 삭제하면 대칭 키도 함께 삭제됩니다.
     키 저장소 ID를 변경하면 이후 생성하는 암호화 볼륨의 대칭 키가 변경된 키 저장소에 저장됩니다. 기존 키 저장소에 저장된 대칭 키는 유지됩니다.
 
