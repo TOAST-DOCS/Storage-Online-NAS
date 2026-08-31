@@ -1,6 +1,7 @@
 {%- if "gov" in build_flags -%}
   {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token-gov/" -%}
   {%- set terraform_guide_url = "/nhncloud/ko/terraform-guide-gov/" -%}
+  {%- set nas_service_url = "https://www.gov-nhncloud.com/kr/service/storage/nas" -%}
   {%- set terraform_support = true -%}
   {%- set encryption = false -%}
   {%- set monitoring = true -%}
@@ -45,6 +46,7 @@
   {#- public (기본값) -#}
   {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token/" -%}
   {%- set terraform_guide_url = "/nhncloud/ko/terraform-guide/" -%}
+  {%- set nas_service_url = "https://www.nhncloud.com/kr/service/storage/nas" -%}
   {%- set terraform_support = true -%}
   {%- set encryption = true -%}
   {%- set monitoring = true -%}

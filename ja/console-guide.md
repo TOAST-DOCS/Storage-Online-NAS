@@ -59,7 +59,7 @@ CIFS プロトコルを使用するには、CIFS 認証情報を作成する必�
 <a id="create_volume.encryption"></a>
 #### 暗号化キーストア設定
 
-NAS暗号化ボリュームは、暗号化に使用する共通鍵をNHN Cloud Secure Key Managerサービスのキーストアに保存します。したがって、暗号化ボリュームを作成するには、事前にSecure Key Managerサービスで[キーストアを作成](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_1)する必要があります。 [キーストアのIDを確認](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_2)して暗号化キーストア設定に入力します。
+暗号化ボリュームは、暗号化に使用する対称キーを NHN Cloud Secure Key Manager サービスのキーストアに保存します。そのため、暗号化ボリュームを作成するには、あらかじめ Secure Key Manager サービスで[キーストアを作成](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#create-a-key-store)する必要があります。[キーストアの ID を確認](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#key-store-details)して、暗号化キーストア設定に入力します。
 
 暗号化ボリュームを作成すると、設定したキーストアに共通鍵が保存されます。NASサービスがキーストアに保存した共通鍵は暗号化ボリュームの使用中は削除できません。暗号化ボリュームを削除すると、共通鍵も一緒に削除されます。
 
@@ -225,11 +225,11 @@ NAS暗号化ボリュームは、暗号化に使用する共通鍵をNHN Cloud S
     ボリューム複製はスナップショットを使用して行います。複製設定時に `{볼륨명}.mirror.%` 形式のスナップショットが自動的に作成され、削除することはできません。
 
 !!! tip "ご参考"
-    複製設定で作成されたターゲットボリュームは、NASサービス料金ポリシーに基づいてボリューム容量料金が請求されます。
+    複製設定によって作成されたターゲットボリュームは、NAS サービスの料金ポリシーに従ってボリューム容量の料金が請求されます。
 
-    複製により発生するネットワークトラフィックに対して、他のリージョン間トラフィック料金が請求されます。
+    複製によって発生するネットワークトラフィックに対して、リージョン間のトラフィック料金が請求されます。
 
-使用料金の詳細については、[NAS 料金案内](https://www.nhncloud.com/kr/service/storage/nas)を参照してください。
+    ご利用料金の詳細については、[NAS 料金案内]($[ nas_service_url ]$)を参照してください。
 
 <a id="replication.start"></a>
 ### 複製開始 { #replication.start }
