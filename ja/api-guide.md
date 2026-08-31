@@ -341,10 +341,9 @@ $[ volume_response_json(indent=6) ]$
 <!-- -->
 
 !!! tip "参考: 暗号化キーストア設定"
-    暗号化ボリュームを作成すると、暗号化に使用する共通鍵がNHN Cloud Secure Key Managerサービスのキーストアに保存されます。したがって、暗号化ボリュームを作成するには、事前にSecure Key Managerサービスで[キーストアを作成](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_1)する必要があります。[キーストアのIDを確認](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_2)し、暗号化キーストア設定に入力します。
-    作成したキーストアIDはコンソールの **Storage > NAS > 暗号化キーストア設定** ウィンドウで入力できます。暗号化ボリュームを作成すると、設定したキーストアに共通鍵が保存されます。 NASサービスによってキーストアに保存された共通鍵は暗号化ボリューム使用中には削除できません。暗号化ボリュームを削除すると、共通鍵も一緒に削除されます。
-    キーストアIDを変更すると、その後に作成する暗号化ボリュームの共通鍵が変更されたキーストアに保存されます。既存キーストアに保存された共通鍵は維持されます。
-
+    暗号化ボリュームを作成すると、暗号化に使用する対称キーが NHN Cloud Secure Key Manager サービスのキーストアに保存されます。したがって、暗号化ボリュームを作成するには、あらかじめ Secure Key Manager サービスで[キーストアを作成](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#create-a-key-store)する必要があります。[キーストアの ID を確認](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#key-store-details)し、暗号化キーストア設定に入力します。
+    作成したキーストア ID は、コンソールの **Storage > NAS > 暗号化キーストア設定** ウィンドウで入力できます。暗号化ボリュームを作成すると、設定したキーストアに対称キーが保存されます。キーストアに保存された対称キーは、暗号化ボリュームの使用中は削除することはできません。暗号化ボリュームを削除すると、対称キーも一緒に削除されます。
+    キーストア ID を変更すると、以降に作成する暗号化ボリュームの対称キーが変更されたキーストアに保存されます。既存のキーストアに保存された対称キーは維持されます。
 
 {% endif %}
 ```

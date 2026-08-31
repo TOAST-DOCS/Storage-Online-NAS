@@ -340,10 +340,9 @@ Create a new volume.
 <!-- -->
 
 !!! tip "Note: Setting up encryption key storage"
-    When an encrypted volume is created, the symmetric key used for encryption is stored in the NHN Cloud Secure Key Manager store. To create encrypted volume,[you must first create a keystore](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_1) in the Secure Key Manager service. After creating the keystore, [check its ID](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_2) and enter it in the encryption keystore settings.
-    You can enter the keystore ID from the **Storage > NAS > Encryption keystore settings** in the console. When you create encrypted volume, the symmetric key is stored in the specified keystore. The symmetric key stored in the keystore cannot be deleted while the encrypted volume is in use. When the encrypted volume is deleted, the corresponding symmetric key is also deleted.
-    If you change the keystore ID, symmetric keys for newly created encrypted volume will be stored in the new keystore. Symmetric keys already stored in the previous keystore are retained.
-
+    When you create an encrypted volume, the symmetric key used for encryption is stored in the key store of the NHN Cloud Secure Key Manager service. To create an encrypted volume, you must first [create a key store](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#create-a-key-store) in the Secure Key Manager service. [Check the key store ID](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#key-store-details) and enter it in the encryption key store settings.
+    You can enter the key store ID in the **Storage > NAS > Encryption Key Store Settings** window in the console. When you create an encrypted volume, the symmetric key is stored in the key store that you configured. The symmetric key stored in the key store cannot be deleted while the encrypted volume is in use. When you delete an encrypted volume, the symmetric key is also deleted.
+    When you change the key store ID, symmetric keys for encrypted volumes created afterward are stored in the new key store. Symmetric keys already stored in the previous key store are retained.
 
 {% endif %}
 ```
