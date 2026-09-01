@@ -1,10 +1,12 @@
 <!-- machine_translated: true -->
 
+<!-- pre-align:aligned sig=716f88137cb3 -->
+
 {% include-markdown '../_online-nas-vars.md' %}
 
 
 
-<!-- pre-align:aligned sig=cdac5f1b7499 -->
+
 
 <a id="storage-nas-console-user-guide"></a>
 ## Storage > NAS > Console User Guide { #storage-nas-console-user-guide }
