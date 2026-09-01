@@ -1,10 +1,10 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=716f88137cb3 -->
-
 {% include-markdown '../_online-nas-vars.md' %}
 
 
+
+<!-- pre-align:aligned sig=cdac5f1b7499 -->
 
 <a id="storage-nas-console-user-guide"></a>
 ## Storage > NAS > コンソール使用ガイド { #storage-nas-console-user-guide }
@@ -59,7 +59,7 @@ CIFS プロトコルを使用するには、CIFS 認証情報を作成する必�
 <a id="create_volume.encryption"></a>
 #### 暗号化キーストア設定
 
-NAS暗号化ボリュームは、暗号化に使用する共通鍵をNHN Cloud Secure Key Managerサービスのキーストアに保存します。したがって、暗号化ボリュームを作成するには、事前にSecure Key Managerサービスで[キーストアを作成](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_1)する必要があります。 [キーストアのIDを確認](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_2)して暗号化キーストア設定に入力します。
+暗号化ボリュームは、暗号化に使用する対称キーを NHN Cloud Secure Key Manager サービスのキーストアに保存します。したがって、暗号化ボリュームを作成するには、事前に Secure Key Manager サービスで [キーストアを作成](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#create-a-key-store) する必要があります。[キーストアの ID を確認](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#key-store-details) して、暗号化キーストア設定に入力します。
 
 暗号化ボリュームを作成すると、設定したキーストアに共通鍵が保存されます。NASサービスがキーストアに保存した共通鍵は暗号化ボリュームの使用中は削除できません。暗号化ボリュームを削除すると、共通鍵も一緒に削除されます。
 
@@ -225,11 +225,11 @@ NAS暗号化ボリュームは、暗号化に使用する共通鍵をNHN Cloud S
     ボリューム複製はスナップショットを使用して行います。複製設定時に `{볼륨명}.mirror.%` 形式のスナップショットが自動的に作成され、削除することはできません。
 
 !!! tip "ご参考"
-    複製設定で作成されたターゲットボリュームは、NASサービス料金ポリシーに基づいてボリューム容量料金が請求されます。
+    複製設定で作成される対象ボリュームは、NAS サービスの料金ポリシーに従い、ボリューム容量料金が課金されます。
 
-    複製により発生するネットワークトラフィックに対して、他のリージョン間トラフィック料金が請求されます。
+    複製により発生するネットワークトラフィックについて、異なるリージョン間のトラフィック料金が課金されます。
 
-使用料金の詳細については、[NAS 料金案内](https://www.nhncloud.com/kr/service/storage/nas)を参照してください。
+    使用料に関する詳細については、[NAS 料金ガイド]($[ nas_service_url ]$) を参照してください。
 
 <a id="replication.start"></a>
 ### 複製開始 { #replication.start }
@@ -238,9 +238,9 @@ NAS暗号化ボリュームは、暗号化に使用する共通鍵をNHN Cloud S
 元のボリュームに変更が発生すると、非同期的に複製が実行されます。複製が実行される前は、ソースボリュームとターゲットボリュームのデータが一致しない場合があります。
 
 !!! danger "注意"
-    ターゲットボリュームのサイズがソースボリュームのサイズより小さい場合、複製に失敗する可能性があります。
+    対象ボリュームのサイズが元のボリュームのサイズより小さい場合、複製に失敗する可能性があります。
 
-複製が実行されると、ターゲットボリュームの既存データはすべて削除され、ターゲットボリュームはソースボリュームと同じ状態になります。
+    複製が実行されると、対象ボリュームの既存データはすべて削除され、対象ボリュームは元のボリュームと同じ状態になります。
 
 <a id="replication.stop"></a>
 ### 複製停止 { #replication.stop }
