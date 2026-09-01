@@ -59,7 +59,7 @@ To use the CIFS protocol, you must create CIFS credentials. Credentials are mana
 <a id="create_volume.encryption"></a>
 #### Encryption Key Store Settings
 
-Encrypted volumes store symmetric keys used for encryption in a key store in the NHN Cloud Secure Key Manager service. Therefore, to create an encrypted volume, you must first [create a key store](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#create-a-key-store) in the Secure Key Manager service. [Check the key store ID](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#key-store-details) and enter it in the encryption key store settings.
+Encrypted volumes store symmetric keys used for encryption in a key store in the NHN Cloud Secure Key Manager service. Therefore, to create an encrypted volume, you must first [create a key store](/Security/Secure%20Key%20Manager/en/getting-started/#create-a-key-store) in the Secure Key Manager service. [Check the key store ID](/Security/Secure%20Key%20Manager/en/getting-started/#key-store-details) and enter it in the encryption key store settings.
 
 When you create encrypted volume, the symmetric key is stored in the key store you set up. The symmetric key stored in the key store by the NAS service cannot be deleted while using encrypted volume. If you delete encrypted volume, the symmetric key is also deleted.
 

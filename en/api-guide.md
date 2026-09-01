@@ -341,7 +341,7 @@ Create a new volume.
 <!-- -->
 
 !!! tip "Note: Setting up encryption key storage"
-    When you create an encrypted volume, the symmetric key used for encryption is stored in the key store of the NHN Cloud Secure Key Manager service. To create an encrypted volume, you must first [create a key store](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#create-a-key-store) in the Secure Key Manager service. [Check the key store ID](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#key-store-details) and enter it in the encryption key store settings.
+    When you create an encrypted volume, the symmetric key used for encryption is stored in the key store of the NHN Cloud Secure Key Manager service. To create an encrypted volume, you must first [create a key store](/Security/Secure%20Key%20Manager/en/getting-started/#create-a-key-store) in the Secure Key Manager service. [Check the key store ID](/Security/Secure%20Key%20Manager/en/getting-started/#key-store-details) and enter it in the encryption key store settings.
     You can enter the key store ID in the **Storage > NAS > Encryption Key Store Settings** window in the console. When you create an encrypted volume, the symmetric key is stored in the key store that you configured. The symmetric key stored in the key store cannot be deleted while the encrypted volume is in use. When you delete an encrypted volume, the symmetric key is also deleted.
     When you change the key store ID, symmetric keys for encrypted volumes created afterward are stored in the new key store. Symmetric keys already stored in the previous key store are retained.
 

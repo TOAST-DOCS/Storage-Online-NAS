@@ -57,7 +57,7 @@ CIFS 프로토콜을 사용하려면 CIFS 인증 정보를 생성해야 합니�
 <a id="create_volume.encryption"></a>
 #### 암호화 키 저장소 설정
 
-암호화 볼륨은 암호화에 사용하는 대칭 키를 NHN Cloud Secure Key Manager 서비스의 키 저장소에 저장합니다. 따라서 암호화 볼륨을 만들려면 미리 Secure Key Manager 서비스에서 [키 저장소를 생성](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#create-a-key-store)해야 합니다. [키 저장소의 ID를 확인](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#key-store-details)하여 암호화 키 저장소 설정에 입력합니다.
+암호화 볼륨은 암호화에 사용하는 대칭 키를 NHN Cloud Secure Key Manager 서비스의 키 저장소에 저장합니다. 따라서 암호화 볼륨을 만들려면 미리 Secure Key Manager 서비스에서 [키 저장소를 생성](/Security/Secure%20Key%20Manager/ko/getting-started/#create-a-key-store)해야 합니다. [키 저장소의 ID를 확인](/Security/Secure%20Key%20Manager/ko/getting-started/#key-store-details)하여 암호화 키 저장소 설정에 입력합니다.
 
 암호화 볼륨을 생성하면 설정한 키 저장소에 대칭 키가 저장됩니다. NAS 서비스가 키 저장소에 저장한 대칭 키는 암호화 볼륨 사용 중에는 삭제할 수 없습니다. 암호화 볼륨을 삭제하면 대칭 키도 함께 삭제됩니다.
 
