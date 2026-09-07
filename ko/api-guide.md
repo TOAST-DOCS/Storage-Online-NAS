@@ -117,11 +117,9 @@ $[ ' ' * indent ]$  "10.0.1.0/24"
 $[ ' ' * indent ]$],
 $[ ' ' * indent ]$"createdAt": "2025-04-01T06:44:25+00:00",
 $[ ' ' * indent ]$"description": "NAS for Testing",
-{%- if encryption %}
 $[ ' ' * indent ]$"encryption": {
-$[ ' ' * indent ]$  "enabled": false
+$[ ' ' * indent ]$  "enabled": $[ 'true' if encryption else 'false' ]$
 $[ ' ' * indent ]$},
-{%- endif %}
 $[ ' ' * indent ]$"id": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
 $[ ' ' * indent ]$"interfaces": [
 $[ ' ' * indent ]$  {
@@ -757,11 +755,15 @@ X-Auth-Token: {token-id}
 | header | Body | Object | 헤더 객체 |
 | usage | Body | Object | 볼륨 사용 현황 객체 |
 | usage.snapshotReserveGb | Body | Integer | 볼륨에서 스냅숏을 위해 예약한 공간 크기 |
+{%- if release_2026_05 %}
 | usage.snapshotUsedGb | Body | Integer | 스냅숏 사용량 |
 | usage.snapshotUsedGbInReservedSpace | Body | Integer | 스냅숏 예약 용량 내 사용량 |
 | usage.snapshotUsedGbInUserSpace | Body | Integer | 예약 용량 초과 스냅숏 사용량 |
+{%- endif %}
 | usage.usedGb | Body | Integer | 볼륨 사용량 |
+{%- if release_2026_05 %}
 | usage.userDataGb | Body | Integer | 사용자가 실제로 기록한 데이터 크기 |
+{%- endif %}
 
 <details>
   <summary>응답 예시</summary>
@@ -774,12 +776,17 @@ X-Auth-Token: {token-id}
     "resultMessage": "Success"
   },
   "usage": {
+{%- if release_2026_05 %}
     "snapshotReserveGb": 20,
     "snapshotUsedGb": 11,
     "snapshotUsedGbInReservedSpace": 11,
     "snapshotUsedGbInUserSpace": 0,
     "usedGb": 152,
     "userDataGb": 152
+{%- else %}
+    "snapshotReserveGb": 30,
+    "usedGb": 2
+{%- endif %}
   }
 }
 ```
