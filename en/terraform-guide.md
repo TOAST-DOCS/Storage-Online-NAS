@@ -119,19 +119,19 @@ resource "nhncloud_nas_storage_volume_v1" "volume_03" {
 | size_gb | Integer | Y | O | Volume size (GB)<br>The volume can be set from a minimum of 300 GB to a maximum of 10,000 GB, in 100 GB increments. |
 | acl | List | N | O | ACL list to set when creating a volume<br>Can be entered in IP or CIDR format. |
 {%- if encryption %}
-| encryption | Object | N | - | Encryption setting object when creating a volume |
-| encryption.enabled | Boolean | N | - | Whether encryption is enabled<br>Encryption is enabled when this field is set to `true` after the encryption keystore is set. |
+| encryption | Object | N | - | Encryption settings object when creating a volume |
+| encryption.enabled | Boolean | N | - | Whether to enable encryption<br>After the encryption keystore is set up, setting its field to `true` enables encryption. |
 {%- endif %}
-| mount_protocol | Object | N | - | Protocol setting object when creating a volume |
-| mount_protocol.cifs_auth_ids | List(String) | N | O | List of CIFS authentication IDs<br>No input required when selecting the NFS protocol |
-| mount_protocol.protocol | String | Y | - | Protocol specification when mounting a volume<br>You can select either `nfs` or `cifs`. |
-| snapshot_policy | Object | N | - | Volume snapshot setting object |
-| snapshot_policy.max_scheduled_count | Integer | N | O | Maximum number of snapshots to store<br>You can set up to 30. When the maximum number of snapshots is reached, the oldest snapshot among the automatically created snapshots will be deleted. |
+| mount_protocol | Object | N | - | Protocol settings object when creating a volume |
+| mount_protocol.cifs_auth_ids | List(String) | N | O | List of CIFS authentication IDs<br>No input required for NFS protocol selection |
+| mount_protocol.protocol | String | Y | - | Protocol to use when mounting a volume<br>You can select either `nfs` or `cifs`. |
+| snapshot_policy | Object | N | - | Volume snapshot settings object |
+| snapshot_policy.max_scheduled_count | Integer | N | O | Maximum number of snapshots to store<br>You can set a maximum of 20, and the first automatically created snapshot will be deleted when the maximum number of saves is reached. |
 | snapshot_policy.reserve_percent | Integer | N | O | Snapshot capacity ratio |
-| snapshot_policy.schedule | Object | N | - | Snapshot auto-generation object<br>If `null`, automatic snapshot generation is not set. |
-| snapshot_policy.schedule.time | String | N | O | Automatic snapshot generation time |
-| snapshot_policy.schedule.time_offset | String | N | O | Automatic snapshot generation time zone |
-| snapshot_policy.schedule.weekdays | List | N | O | Automatic snapshot generation days<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday).
+| snapshot_policy.schedule | Object | N | - | Snapshot auto-creation object<br>If `null`, snapshot auto-creation will not be configured. |
+| snapshot_policy.schedule.time | String | N | O | Snapshot auto-creation time |
+| snapshot_policy.schedule.time_offset | String | N | O | Time zone for snapshot auto-create |
+| snapshot_policy.schedule.weekdays | List | N | O | Days of the week for snapshot auto-creation<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |
 
 <a id="terraform-resources-connect-interface"></a>
 ### Attach an Interface to a Volume { #terraform-resources-connect-interface }
@@ -157,8 +157,9 @@ resource "nhncloud_nas_storage_volume_interface_v1" "nas_interface_01" {
 <a id="terraform-resources-set-replication"></a>
 ### Set up Replication { #terraform-resources-set-replication }
 
-Creating a replication configuration resource automatically generates a destination volume.
-While you can update the destination volume by modifying the `dst_volume` parameters within the replication resource, the destination volume is not automatically deleted even if the replication configuration resource is removed.
+When you create a Replication Settings resource, the target volume is automatically created.
+
+You can update the target volume by changing the `dst_volume` value in the Replication Settings resource, but deleting the Replication Settings resource does not automatically delete the target volume.
 
 !!! danger "Caution"
     Modifying certain values in the replication configuration resource may cause the existing resource to be destroyed and recreated; however, the original destination volume will persist.
@@ -197,21 +198,21 @@ resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
 | dst_volume.acl | List | N | O | ACL list to set when creating a volume<br>Can be entered in IP or CIDR format. |
 | dst_volume.description | String | N | O | Volume description |
 {%- if encryption %}
-| dst_volume.encryption | Object | N | - | Encryption setting object when creating a volume |
-| dst_volume.encryption.enabled | Boolean | N | - | Whether to enable encryption setting<br>Encryption is enabled when this field is set to `true` after the encryption keystore is set. |
+| dst_volume.encryption | Object | N | - | Encryption settings object for volume creation |
+| dst_volume.encryption.enabled | Boolean | N | - | Whether encryption settings are enabled<br>After the encryption keystore is set up, setting its field to `true` enables encryption. |
 {%- endif %}
-| dst_volume.mount_protocol | Object | N | - | Protocol setting object when creating a volume |
-| dst_volume.mount_protocol.cifs_auth_ids | List(String) | N | O | List of CIFS authentication IDs<br>No input required when selecting an NFS protocol |
-| dst_volume.mount_protocol.protocol | String | Y | - | Specify protocol when mounting a volume<br>You can select either `nfs` or `cifs`. |
+| dst_volume.mount_protocol | Object | N | - | Protocol settings object for volume creation |
+| dst_volume.mount_protocol.cifs_auth_ids | List(String) | N | O | List of CIFS authentication IDs<br>No input required for NFS protocol selection |
+| dst_volume.mount_protocol.protocol | String | Y | - | Protocol specified when mounting a volume<br>You can select either `nfs` or `cifs`. |
 | dst_volume.name | String | Y | - | Volume name |
-| dst_volume.size_gb | Integer | Y | O | Volume Size (GB)<br>The volume can be set from a minimum of 300 GB to a maximum of 10,000 GB, in 100 GB increments. |
-| dst_volume.snapshot_policy | Object | N | - | Volume Snapshot Setting Object |
-| dst_volume.snapshot_policy.max_scheduled_count | Integer | N | O | Maximum Number of Snapshots to Store<br>You can set up to 30. When the maximum number of snapshots is reached, the oldest automatically created snapshot will be deleted. |
-| dst_volume.snapshot_policy.reserve_percent | Integer | N | O | Snapshot Capacity Ratio |
-| dst_volume.snapshot_policy.schedule | Object | N | O | Automatic Snapshot Creation Object<br>If `null`, automatic snapshot creation is not set. |
-| dst_volume.snapshot_policy.schedule.time | String | N | O | Automatic snapshot creation time |
-| dst_volume.snapshot_policy.schedule.time_offset | String | N | O | Automatic snapshot creation time zone |
-| dst_volume.snapshot_policy.schedule.weekdays | List | N | O | Automatic snapshot creation days<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday).
+| dst_volume.size_gb | Integer | Y | O | Volume size (GB)<br>The volume can be set from a minimum of 300 GB to a maximum of 10,000 GB, in 100 GB increments. |
+| dst_volume.snapshot_policy | Object | N | - | Volume snapshot settings object |
+| dst_volume.snapshot_policy.max_scheduled_count | Integer | N | O | Maximum number of snapshots to store<br>You can set a maximum of 20, and the first automatically created snapshot will be deleted when the maximum number of saves is reached. |
+| dst_volume.snapshot_policy.reserve_percent | Integer | N | O | Snapshot capacity ratio |
+| dst_volume.snapshot_policy.schedule | Object | N | O | Snapshot auto-creation object<br>If `null`, snapshot auto-creation will not be configured. |
+| dst_volume.snapshot_policy.schedule.time | String | N | O | Snapshot auto-creation time |
+| dst_volume.snapshot_policy.schedule.time_offset | String | N | O | Time zone for snapshot auto-creation |
+| dst_volume.snapshot_policy.schedule.weekdays | List | N | O | Days of the week for snapshot auto-creation<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |
 {%- endif %}
 
 <a id="reference"></a>
