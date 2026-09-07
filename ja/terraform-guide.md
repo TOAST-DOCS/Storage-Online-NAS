@@ -121,18 +121,18 @@ resource "nhncloud_nas_storage_volume_v1" "volume_03" {
 | acl | List | N | O | ボリューム作成時に設定するACL一覧<br>IPまたはCIDR形式で入力できます。 |
 {%- if encryption %}
 | encryption | Object | N | - | ボリューム作成時の暗号化設定オブジェクト |
-| encryption.enabled | Boolean | N | - | 暗号化設定の有効化有無<br>暗号化キーストアが設定された後、該当フィールドを`true`に設定すると暗号化が有効になります。 |
+| encryption.enabled | Boolean | N | - | 暗号化設定の有効化フラグ<br>暗号化キーストアが設定された後、このフィールドを `true` に設定すると暗号化が有効になります。 |
 {%- endif %}
 | mount_protocol | Object | N | - | ボリューム作成時のプロトコル設定オブジェクト |
-| mount_protocol.cifs_auth_ids | List(String) | N | O | CIFS認証ID一覧<br>NFSプロトコル選択時は入力不要 |
-| mount_protocol.protocol | String | Y | - | ボリュームマウント時のプロトコル指定<br>`nfs`、`cifs`のいずれかを選択できます。 |
+| mount_protocol.cifs_auth_ids | List(String) | N | O | CIFS認証IDリスト<br>NFSプロトコル選択時は入力不要 |
+| mount_protocol.protocol | String | Y | - | ボリュームマウント時のプロトコル指定<br>`nfs`、`cifs` のいずれかを選択できます。 |
 | snapshot_policy | Object | N | - | ボリュームスナップショット設定オブジェクト |
-| snapshot_policy.max_scheduled_count | Integer | N | O | スナップショット最大保存数<br>30個まで設定可能であり、最大保存数に達すると、自動的に作成されたスナップショットの中で一番最初に作成されたスナップショットが削除されます。 |
-| snapshot_policy.reserve_percent | Integer | N | O | スナップショット容量の割合 |
-| snapshot_policy.schedule | Object | N | - | スナップショット自動作成オブジェクト<br>`null`の場合、スナップショット自動作成は設定されません。 |
-| snapshot_policy.schedule.time | String | N | O | スナップショット自動作成時間 |
-| snapshot_policy.schedule.time_offset | String | N | O | スナップショット自動作成基準タイムゾーン |
-| snapshot_policy.schedule.weekdays | List | N | O | スナップショット自動作成曜日<br>空のリストは毎日を意味し、曜日は0(日曜日)から6(土曜日)までの数字のリストで指定します。 |
+| snapshot_policy.max_scheduled_count | Integer | N | O | スナップショットの最大保存数<br>20個まで設定可能で、最大保存数に達すると、自動作成されたスナップショットのうち最も古いスナップショットが削除されます。 |
+| snapshot_policy.reserve_percent | Integer | N | O | スナップショットの容量割合 |
+| snapshot_policy.schedule | Object | N | - | スナップショット自動作成オブジェクト<br>`null` の場合、スナップショットの自動作成は設定されません。 |
+| snapshot_policy.schedule.time | String | N | O | スナップショット自動作成時刻 |
+| snapshot_policy.schedule.time_offset | String | N | O | スナップショット自動作成の基準タイムゾーン |
+| snapshot_policy.schedule.weekdays | List | N | O | スナップショット自動作成の曜日<br>空のリストは毎日を意味し、曜日は 0 (日曜日) から 6 (土曜日) までの数値リストで指定します。 |
 
 <a id="terraform-resources-connect-interface"></a>
 ### ボリュームにインターフェースを接続する { #terraform-resources-connect-interface }
@@ -201,20 +201,20 @@ resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
 | dst_volume.description | String | N | O | ボリューム説明 |
 {%- if encryption %}
 | dst_volume.encryption | Object | N | - | ボリューム作成時の暗号化設定オブジェクト |
-| dst_volume.encryption.enabled | Boolean | N | - | 暗号化設定の有効化有無<br>暗号化キーストアが設定された後、該当フィールドを`true`に設定すると暗号化が有効になります。 |
+| dst_volume.encryption.enabled | Boolean | N | - | 暗号化設定の有効化フラグ<br>暗号化キーストアが設定された後、このフィールドを `true` に設定すると暗号化が有効になります。 |
 {%- endif %}
 | dst_volume.mount_protocol | Object | N | - | ボリューム作成時のプロトコル設定オブジェクト |
 | dst_volume.mount_protocol.cifs_auth_ids | List(String) | N | O | CIFS認証ID一覧<br>NFSプロトコル選択時は入力不要 |
-| dst_volume.mount_protocol.protocol | String | Y | - | ボリュームマウント時のプロトコル指定<br>`nfs`、`cifs`のいずれかを選択できます。 |
+| dst_volume.mount_protocol.protocol | String | Y | - | ボリュームマウント時のプロトコル指定<br>`nfs`、`cifs` のいずれかを選択できます。 |
 | dst_volume.name | String | Y | - | ボリューム名 |
-| dst_volume.size_gb | Integer | Y | O | ボリュームサイズ(GB)<br>ボリュームは最小300GBから最大10,000GBまで、100GB単位で設定できます。 |
+| dst_volume.size_gb | Integer | Y | O | ボリュームサイズ (GB)<br>ボリュームは最小 300 GB から最大 10,000 GB まで、100 GB 単位で設定できます。 |
 | dst_volume.snapshot_policy | Object | N | - | ボリュームスナップショット設定オブジェクト |
-| dst_volume.snapshot_policy.max_scheduled_count | Integer | N | O | スナップショット最大保存数<br>30個まで設定可能であり、最大保存数に達すると、自動的に作成されたスナップショットの中で一番最初に作成されたスナップショットが削除されます。 |
+| dst_volume.snapshot_policy.max_scheduled_count | Integer | N | O | スナップショットの最大保存数<br>20 個まで設定可能で、最大保存数に達すると、自動作成されたスナップショットのうち最も古いものが削除されます。 |
 | dst_volume.snapshot_policy.reserve_percent | Integer | N | O | スナップショット容量の割合 |
-| dst_volume.snapshot_policy.schedule | Object | N | O | スナップショット自動作成オブジェクト<br>`null`の場合、スナップショット自動作成は設定されません。 |
-| dst_volume.snapshot_policy.schedule.time | String | N | O | スナップショット自動作成時間 |
-| dst_volume.snapshot_policy.schedule.time_offset | String | N | O | スナップショット自動作成基準タイムゾーン |
-| dst_volume.snapshot_policy.schedule.weekdays | List | N | O | スナップショット自動作成曜日<br>空のリストは毎日を意味し、曜日は0(日曜日)から6(土曜日)までの数字のリストで指定します。 |
+| dst_volume.snapshot_policy.schedule | Object | N | O | スナップショット自動作成オブジェクト<br>`null` の場合、スナップショットの自動作成は設定されません。 |
+| dst_volume.snapshot_policy.schedule.time | String | N | O | スナップショット自動作成時刻 |
+| dst_volume.snapshot_policy.schedule.time_offset | String | N | O | スナップショット自動作成の基準タイムゾーン |
+| dst_volume.snapshot_policy.schedule.weekdays | List | N | O | スナップショット自動作成の曜日<br>空のリストは毎日を意味し、曜日は 0 (日曜日) から 6 (土曜日) までの数値リストで指定します。 |
 {%- endif %}
 
 <a id="reference"></a>
