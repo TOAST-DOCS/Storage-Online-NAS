@@ -16,18 +16,18 @@
 | $[ prefix ]$role | Body | String | Replication role<br>- `SOURCE`: Source volume<br>- `DESTINATION`: Target volume |
 | $[ prefix ]$status | Body | String | Replication settings status<br>- `INITIALIZED`: Settings complete<br>- `UPDATING`: Updating settings<br>- `DELETING`: Deleting settings<br>- `PENDING`: Creating settings |
 | $[ prefix ]$direction | Body | String | Replication direction<br>- `FORWARD`: Source volume → Target volume<br>- `REVERSE`: Target volume → Source volume |
-| $[ prefix ]$directionChangedAt | Body | String | Replication direction change time |
-| $[ prefix ]$dstProjectId | Body | String | Replication target volume project ID |
-| $[ prefix ]$dstRegion | Body | String | Replication target volume region |
-| $[ prefix ]$dstTenantId | Body | String | Replication target volume tenant ID |
-| $[ prefix ]$dstVolumeId | Body | String | Replication target volume ID |
-| $[ prefix ]$dstVolumeName | Body | String | Replication target volume name |
-| $[ prefix ]$srcProjectId | Body | String | Source volume project ID |
-| $[ prefix ]$srcRegion | Body | String | Source volume region |
-| $[ prefix ]$srcTenantId | Body | String | Source volume tenant ID |
+| $[ prefix ]$directionChangedAt | Body | String | Time when the replication direction was changed |
+| $[ prefix ]$dstProjectId | Body | String | Project ID of the target volume |
+| $[ prefix ]$dstRegion | Body | String | Region of the target volume |
+| $[ prefix ]$dstTenantId | Body | String | Tenant ID of the target volume |
+| $[ prefix ]$dstVolumeId | Body | String | Target volume ID |
+| $[ prefix ]$dstVolumeName | Body | String | Target volume name |
+| $[ prefix ]$srcProjectId | Body | String | Project ID of the source volume |
+| $[ prefix ]$srcRegion | Body | String | Region of the source volume |
+| $[ prefix ]$srcTenantId | Body | String | Tenant ID of the source volume |
 | $[ prefix ]$srcVolumeId | Body | String | Source volume ID |
 | $[ prefix ]$srcVolumeName | Body | String | Source volume name |
-| $[ prefix ]$createdAt | Body | String | Replication creation time |{% endmacro %}
+| $[ prefix ]$createdAt | Body | String | Time when the replication was created |{% endmacro %}
 {# end macro volume_mirror_response_table #}
 {% macro volume_response_table(prefix='') -%}
 | $[ prefix ]$id | Body | String | Volume ID |
@@ -35,8 +35,8 @@
 | $[ prefix ]$status | Body | String | Volume status |
 | $[ prefix ]$description | Body | String | Volume description |
 | $[ prefix ]$sizeGb | Body | Integer | Volume size (GB) |
-| $[ prefix ]$projectId | Body | String | Project ID of the volume |
-| $[ prefix ]$tenantId | Body | String | Tenant ID of the volume |
+| $[ prefix ]$projectId | Body | String | Project ID that the volume belongs to |
+| $[ prefix ]$tenantId | Body | String | Tenant ID that the volume belongs to |
 | $[ prefix ]$acl | Body | List | Volume ACL list |
 {%- if encryption %}
 | $[ prefix ]$encryption | Body | Object | Volume encryption information |
@@ -57,17 +57,17 @@ $[ volume_mirror_response_table(prefix + 'mirrors.') ]$
 | $[ prefix ]$snapshotPolicy.reservePercent | Body | Integer | Snapshot reserve capacity ratio |
 | $[ prefix ]$snapshotPolicy.schedule | Body | Object | Snapshot auto-creation object |
 | $[ prefix ]$snapshotPolicy.schedule.time | Body | String | Snapshot auto-creation time |
-| $[ prefix ]$snapshotPolicy.schedule.timeOffset | Body | String | Snapshot auto-creation reference timezone |
+| $[ prefix ]$snapshotPolicy.schedule.timeOffset | Body | String | Snapshot auto-creation reference time zone |
 | $[ prefix ]$snapshotPolicy.schedule.weekdays | Body | List | Days of the week for snapshot auto-creation<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |
-| $[ prefix ]$createdAt | Body | String | Volume creation time |
-| $[ prefix ]$updatedAt | Body | String | Volume last modified time |{% endmacro %}
+| $[ prefix ]$createdAt | Body | String | Time when the volume was created |
+| $[ prefix ]$updatedAt | Body | String | Time when the volume was last modified |{% endmacro %}
 {# end macro volume_response_table #}
 {% macro volume_request_table(prefix='', method='') -%}
-| $[ prefix ]$acl | Body | List | N | ACL list to set when creating the volume<br>Can be entered in IP or CIDR format. |
+| $[ prefix ]$acl | Body | List | N | ACL list to set when creating a volume<br>Can be entered in IP or CIDR format. |
 | $[ prefix ]$description | Body | String | N | Volume description |
 {%- if method == 'post' %}
 {%- if encryption %}
-| $[ prefix ]$encryption | Body | Object | N | Encryption settings object when creating the volume |
+| $[ prefix ]$encryption | Body | Object | N | Encryption settings object when creating a volume |
 | $[ prefix ]$encryption.enabled | Body | Boolean | N | Whether encryption settings are enabled<br>After the encryption keystore is set up, setting this field to `true` enables encryption. |
 {%- endif %}
 {%- endif %}
@@ -75,13 +75,13 @@ $[ volume_mirror_response_table(prefix + 'mirrors.') ]$
 | $[ prefix ]$interfaces | Body | List | N | List of interfaces to access the volume |
 | $[ prefix ]$interfaces.subnetId | Body | String | N | Subnet ID of the volume interface |
 {%- endif %}
-| $[ prefix ]$mountProtocol | Body | Object | N | Protocol settings object when creating the volume |
+| $[ prefix ]$mountProtocol | Body | Object | N | Protocol settings object when creating a volume |
 {%- if method == 'post' %}
-| $[ prefix ]$mountProtocol.cifsAuthIds | Body | List | N | CIFS authentication ID list<br>Not required when selecting the NFS protocol |
-| $[ prefix ]$mountProtocol.protocol | Body | String | Y | Specify protocol when mounting the volume<br>You can choose either `nfs` or `cifs`. |
+| $[ prefix ]$mountProtocol.cifsAuthIds | Body | List | N | CIFS authentication ID list<br>Not required when the NFS protocol is selected |
+| $[ prefix ]$mountProtocol.protocol | Body | String | Y | Protocol to use when mounting a volume<br>You can select either `nfs` or `cifs`. |
 {%- elif method == 'patch' %}
 | $[ prefix ]$mountProtocol.cifsAuthIds | Body | List | N | CIFS authentication ID list |
-| $[ prefix ]$mountProtocol.protocol | Body | String | N | The protocol of an already-created volume cannot be changed.<br>When changing the `cifsAuthIds` field, you must specify `cifs` in this field. |
+| $[ prefix ]$mountProtocol.protocol | Body | String | N | The protocol of an already created volume cannot be changed.<br>When changing the `cifsAuthIds` field, you must specify `cifs` in this field. |
 {%- endif %}
 {%- if method == 'post' %}
 | $[ prefix ]$name | Body | String | Y | Volume name |
@@ -92,7 +92,7 @@ $[ volume_mirror_response_table(prefix + 'mirrors.') ]$
 | $[ prefix ]$snapshotPolicy.reservePercent | Body | Integer | N | Snapshot reserve capacity ratio |
 | $[ prefix ]$snapshotPolicy.schedule | Body | Object | N | Snapshot auto-creation object<br>If `null`, snapshot auto-creation will not be configured. |
 | $[ prefix ]$snapshotPolicy.schedule.time | Body | String | N | Snapshot auto-creation time |
-| $[ prefix ]$snapshotPolicy.schedule.timeOffset | Body | String | N | Snapshot auto-creation reference timezone |
+| $[ prefix ]$snapshotPolicy.schedule.timeOffset | Body | String | N | Snapshot auto-creation reference time zone |
 | $[ prefix ]$snapshotPolicy.schedule.weekdays | Body | List | N | Days of the week for snapshot auto-creation<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |{% endmacro %}
 {# end macro volume_request_table #}
 {% macro volume_mirror_response_json(indent=0, method='') -%}
@@ -119,11 +119,9 @@ $[ ' ' * indent ]$  "10.0.1.0/24"
 $[ ' ' * indent ]$],
 $[ ' ' * indent ]$"createdAt": "2025-04-01T06:44:25+00:00",
 $[ ' ' * indent ]$"description": "NAS for Testing",
-{%- if encryption %}
 $[ ' ' * indent ]$"encryption": {
-$[ ' ' * indent ]$  "enabled": false
+$[ ' ' * indent ]$  "enabled": $[ 'true' if encryption else 'false' ]$
 $[ ' ' * indent ]$},
-{%- endif %}
 $[ ' ' * indent ]$"id": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
 $[ ' ' * indent ]$"interfaces": [
 $[ ' ' * indent ]$  {
@@ -174,9 +172,9 @@ $[ ' ' * indent ]$"updatedAt": "2025-04-01T06:47:13+00:00"{% endmacro %}
 | $[ prefix ]$id | Body | String | Snapshot ID |
 | $[ prefix ]$name | Body | String | Snapshot name |
 | $[ prefix ]$size | Body | Integer | Snapshot size |
-| $[ prefix ]$type | Body | String | Snapshot type<br>- `NORMAL`: Snapshot created by the user<br>- `SCHEDULED`: Snapshot created by snapshot auto-creation<br>- `MIRROR`: Snapshot created by replication |
+| $[ prefix ]$type | Body | String | Snapshot type<br>- `NORMAL`: Snapshot created by the user<br>- `SCHEDULED`: Snapshot created by auto-creation<br>- `MIRROR`: Snapshot created by replication |
 | $[ prefix ]$preserved | Body | Boolean | Whether the snapshot is set as non-deletable by the system |
-| $[ prefix ]$createdAt | Body | String | Snapshot creation time |{% endmacro %}
+| $[ prefix ]$createdAt | Body | String | Time when the snapshot was created |{% endmacro %}
 {# end macro snapshot_response_table #}
 {% macro snapshot_response_json(indent=0) -%}
 $[ ' ' * indent ]$"createdAt": "2025-04-01T09:34:27+00:00",
@@ -341,7 +339,7 @@ Create a new volume.
 <!-- -->
 
 !!! tip "Note: Setting up encryption key storage"
-    When you create an encrypted volume, the symmetric key used for encryption is stored in the key store of the NHN Cloud Secure Key Manager service. To create an encrypted volume, you must first [create a key store](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#create-a-key-store) in the Secure Key Manager service. [Check the key store ID](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#key-store-details) and enter it in the encryption key store settings.
+    When you create an encrypted volume, the symmetric key used for encryption is stored in the key store of the NHN Cloud Secure Key Manager service. To create an encrypted volume, you must first [create a key store](/Security/Secure%20Key%20Manager/en/getting-started/#create-a-key-store) in the Secure Key Manager service. [Check the key store ID](/Security/Secure%20Key%20Manager/en/getting-started/#key-store-details) and enter it in the encryption key store settings.
     You can enter the key store ID in the **Storage > NAS > Encryption Key Store Settings** window in the console. When you create an encrypted volume, the symmetric key is stored in the key store that you configured. The symmetric key stored in the key store cannot be deleted while the encrypted volume is in use. When you delete an encrypted volume, the symmetric key is also deleted.
     When you change the key store ID, symmetric keys for encrypted volumes created afterward are stored in the new key store. Symmetric keys already stored in the previous key store are retained.
 
@@ -759,14 +757,18 @@ This API does not require a request body.
 | header | Body | Object | Header objects |
 | usage | Body | Object | Volume usage object |
 | usage.snapshotReserveGb | Body | Integer | The amount of space reserved for snapshots on the volume |
+{%- if release_2026_05 %}
 | usage.snapshotUsedGb | Body | Integer | Snapshot usage |
-| usage.snapshotUsedGbInReservedSpace | Body | Integer | Snapshot usage within the reserved capacity |
-| usage.snapshotUsedGbInUserSpace | Body | Integer | Snapshot usage exceeding the reserved capacity |
+| usage.snapshotUsedGbInReservedSpace | Body | Integer | Snapshot usage within reserved capacity |
+| usage.snapshotUsedGbInUserSpace | Body | Integer | Snapshot usage exceeding reserved capacity |
+{%- endif %}
 | usage.usedGb | Body | Integer | Volume usage |
-| usage.userDataGb | Body | Integer | The size of data actually written by the user |
+{%- if release_2026_05 %}
+| usage.userDataGb | Body | Integer | Size of data actually written by the user |
+{%- endif %}
 
 <details>
-  <summary>Example response</summary>
+  <summary>Response Example</summary>
 
 ```json
 {
@@ -776,12 +778,17 @@ This API does not require a request body.
     "resultMessage": "Success"
   },
   "usage": {
+{%- if release_2026_05 %}
     "snapshotReserveGb": 20,
     "snapshotUsedGb": 11,
     "snapshotUsedGbInReservedSpace": 11,
     "snapshotUsedGbInUserSpace": 0,
     "usedGb": 152,
     "userDataGb": 152
+{%- else %}
+    "snapshotReserveGb": 30,
+    "usedGb": 2
+{%- endif %}
   }
 }
 ```

@@ -59,7 +59,7 @@ CIFS プロトコルを使用するには、CIFS 認証情報を作成する必�
 <a id="create_volume.encryption"></a>
 #### 暗号化キーストア設定
 
-暗号化ボリュームは、暗号化に使用する対称キーを NHN Cloud Secure Key Manager サービスのキーストアに保存します。そのため、暗号化ボリュームを作成するには、あらかじめ Secure Key Manager サービスで[キーストアを作成](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#create-a-key-store)する必要があります。[キーストアの ID を確認](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#key-store-details)して、暗号化キーストア設定に入力します。
+暗号化ボリュームは、暗号化に使用する対称キーを NHN Cloud Secure Key Manager サービスのキーストアに保存します。そのため、暗号化ボリュームを作成するには、あらかじめ Secure Key Manager サービスで[キーストアを作成](/Security/Secure%20Key%20Manager/ja/getting-started/#create-a-key-store)する必要があります。[キーストアの ID を確認](/Security/Secure%20Key%20Manager/ja/getting-started/#key-store-details)して、暗号化キーストア設定に入力します。
 
 暗号化ボリュームを作成すると、設定したキーストアに共通鍵が保存されます。NASサービスがキーストアに保存した共通鍵は暗号化ボリュームの使用中は削除できません。暗号化ボリュームを削除すると、共通鍵も一緒に削除されます。
 

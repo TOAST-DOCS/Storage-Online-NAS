@@ -5,95 +5,95 @@
 <!-- pre-align:aligned sig=06dac106ebf2 -->
 
 {% macro interface_response_table(prefix='', desc_prefix='') -%}
-| $[ prefix ]$id | Body | String | $[ desc_prefix ]$インターフェースID |
-| $[ prefix ]$path | Body | String | $[ desc_prefix ]$インターフェースパス |
-| $[ prefix ]$status | Body | String | $[ desc_prefix ]$インターフェースステータス |
-| $[ prefix ]$subnetId | Body | String | $[ desc_prefix ]$インターフェースのサブネットID |
-| $[ prefix ]$tenantId | Body | String | $[ desc_prefix ]$インターフェースのテナントID |{% endmacro %}
+| $[ prefix ]$id | Body | String | $[ desc_prefix ]$インターフェイス ID |
+| $[ prefix ]$path | Body | String | $[ desc_prefix ]$インターフェイスのパス |
+| $[ prefix ]$status | Body | String | $[ desc_prefix ]$インターフェイスの状態 |
+| $[ prefix ]$subnetId | Body | String | $[ desc_prefix ]$インターフェイスのサブネット ID |
+| $[ prefix ]$tenantId | Body | String | $[ desc_prefix ]$インターフェイスのテナント ID |{% endmacro %}
 {# end macro interface_response_table #}
 {% macro volume_mirror_response_table(prefix='') -%}
-| $[ prefix ]$id | Body | String | 複製設定ID |
+| $[ prefix ]$id | Body | String | 複製設定 ID |
 | $[ prefix ]$role | Body | String | 複製ロール<br>- `SOURCE`: ソースボリューム<br>- `DESTINATION`: ターゲットボリューム |
-| $[ prefix ]$status | Body | String | 複製設定ステータス<br>- `INITIALIZED`: 設定完了<br>- `UPDATING`: 設定変更中<br>- `DELETING`: 設定削除中<br>- `PENDING`: 設定作成中 |
+| $[ prefix ]$status | Body | String | 複製設定の状態<br>- `INITIALIZED`: 設定完了<br>- `UPDATING`: 設定変更中<br>- `DELETING`: 設定削除中<br>- `PENDING`: 設定作成中 |
 | $[ prefix ]$direction | Body | String | 複製方向<br>- `FORWARD`: ソースボリューム → ターゲットボリューム<br>- `REVERSE`: ターゲットボリューム → ソースボリューム |
 | $[ prefix ]$directionChangedAt | Body | String | 複製方向変更日時 |
-| $[ prefix ]$dstProjectId | Body | String | 複製ターゲットボリュームのプロジェクトID |
+| $[ prefix ]$dstProjectId | Body | String | 複製ターゲットボリュームのプロジェクト ID |
 | $[ prefix ]$dstRegion | Body | String | 複製ターゲットボリュームのリージョン |
-| $[ prefix ]$dstTenantId | Body | String | 複製ターゲットボリュームのテナントID |
-| $[ prefix ]$dstVolumeId | Body | String | 複製ターゲットボリュームID |
+| $[ prefix ]$dstTenantId | Body | String | 複製ターゲットボリュームのテナント ID |
+| $[ prefix ]$dstVolumeId | Body | String | 複製ターゲットボリューム ID |
 | $[ prefix ]$dstVolumeName | Body | String | 複製ターゲットボリューム名 |
-| $[ prefix ]$srcProjectId | Body | String | ソースボリュームのプロジェクトID |
+| $[ prefix ]$srcProjectId | Body | String | ソースボリュームのプロジェクト ID |
 | $[ prefix ]$srcRegion | Body | String | ソースボリュームのリージョン |
-| $[ prefix ]$srcTenantId | Body | String | ソースボリュームのテナントID |
-| $[ prefix ]$srcVolumeId | Body | String | ソースボリュームID |
+| $[ prefix ]$srcTenantId | Body | String | ソースボリュームのテナント ID |
+| $[ prefix ]$srcVolumeId | Body | String | ソースボリューム ID |
 | $[ prefix ]$srcVolumeName | Body | String | ソースボリューム名 |
 | $[ prefix ]$createdAt | Body | String | 複製作成日時 |{% endmacro %}
 {# end macro volume_mirror_response_table #}
 {% macro volume_response_table(prefix='') -%}
-| $[ prefix ]$id | Body | String | ボリュームID |
+| $[ prefix ]$id | Body | String | ボリューム ID |
 | $[ prefix ]$name | Body | String | ボリューム名 |
-| $[ prefix ]$status | Body | String | ボリュームステータス |
+| $[ prefix ]$status | Body | String | ボリュームの状態 |
 | $[ prefix ]$description | Body | String | ボリュームの説明 |
 | $[ prefix ]$sizeGb | Body | Integer | ボリュームサイズ (GB) |
-| $[ prefix ]$projectId | Body | String | ボリュームが属するプロジェクトID |
-| $[ prefix ]$tenantId | Body | String | ボリュームが属するテナントID |
-| $[ prefix ]$acl | Body | List | ボリュームACLリスト |
+| $[ prefix ]$projectId | Body | String | ボリュームが属するプロジェクト ID |
+| $[ prefix ]$tenantId | Body | String | ボリュームが属するテナント ID |
+| $[ prefix ]$acl | Body | List | ボリュームの ACL リスト |
 {%- if encryption %}
-| $[ prefix ]$encryption | Body | Object | ボリューム暗号化情報 |
+| $[ prefix ]$encryption | Body | Object | ボリュームの暗号化情報 |
 | $[ prefix ]$encryption.enabled | Body | Boolean | ボリューム暗号化の有効状態 |
 | $[ prefix ]$encryption.keys | Body | List | ボリューム暗号化キー情報 |
 {%- endif %}
-| $[ prefix ]$interfaces | Body | List | ボリュームインターフェースオブジェクトリスト |
+| $[ prefix ]$interfaces | Body | List | ボリュームインターフェイスオブジェクトリスト |
 $[ interface_response_table(prefix + 'interfaces.') ]$
 {%- if replication %}
 | $[ prefix ]$mirrors | Body | List | ボリューム複製設定オブジェクトリスト |
 $[ volume_mirror_response_table(prefix + 'mirrors.') ]$
 {%- endif %}
-| $[ prefix ]$mountProtocol | Body | Object | ボリュームマウントプロトコル |
-| $[ prefix ]$mountProtocol.cifsAuthIds | Body | List | ボリュームCIFS認証IDリスト |
-| $[ prefix ]$mountProtocol.protocol | Body | String | ボリュームマウントプロトコル |
-| $[ prefix ]$snapshotPolicy | Body | Object | ボリュームスナップショット設定オブジェクト |
-| $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | スナップショット最大保存数 |
-| $[ prefix ]$snapshotPolicy.reservePercent | Body | Integer | スナップショット容量比率 |
-| $[ prefix ]$snapshotPolicy.schedule | Body | Object | スナップショット自動生成オブジェクト |
-| $[ prefix ]$snapshotPolicy.schedule.time | Body | String | スナップショット自動生成時間 |
-| $[ prefix ]$snapshotPolicy.schedule.timeOffset | Body | String | スナップショット自動生成基準タイムゾーン |
-| $[ prefix ]$snapshotPolicy.schedule.weekdays | Body | List | スナップショット自動生成曜日<br>空のリストは毎日を意味し、曜日は0（日曜日）から6（土曜日）までの数値リストで指定します。 |
+| $[ prefix ]$mountProtocol | Body | Object | ボリュームのマウントプロトコル |
+| $[ prefix ]$mountProtocol.cifsAuthIds | Body | List | ボリュームの CIFS 認証 ID リスト |
+| $[ prefix ]$mountProtocol.protocol | Body | String | ボリュームのマウントプロトコル |
+| $[ prefix ]$snapshotPolicy | Body | Object | ボリュームのスナップショット設定オブジェクト |
+| $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | スナップショットの最大保存数 |
+| $[ prefix ]$snapshotPolicy.reservePercent | Body | Integer | スナップショット容量の割合 |
+| $[ prefix ]$snapshotPolicy.schedule | Body | Object | スナップショット自動作成オブジェクト |
+| $[ prefix ]$snapshotPolicy.schedule.time | Body | String | スナップショット自動作成時刻 |
+| $[ prefix ]$snapshotPolicy.schedule.timeOffset | Body | String | スナップショット自動作成の基準タイムゾーン |
+| $[ prefix ]$snapshotPolicy.schedule.weekdays | Body | List | スナップショット自動作成の曜日<br>空のリストは毎日を意味し、曜日は 0 (日曜日) から 6 (土曜日) までの数値リストで指定します。 |
 | $[ prefix ]$createdAt | Body | String | ボリューム作成日時 |
-| $[ prefix ]$updatedAt | Body | String | ボリューム更新日時 |{% endmacro %}
+| $[ prefix ]$updatedAt | Body | String | ボリューム変更日時 |{% endmacro %}
 {# end macro volume_response_table #}
 {% macro volume_request_table(prefix='', method='') -%}
-| $[ prefix ]$acl | Body | List | N | ボリューム作成時に設定するACLリスト<br>IP または CIDR 形式で入力できます。 |
+| $[ prefix ]$acl | Body | List | N | ボリューム作成時に設定する ACL リスト<br>IP または CIDR 形式で入力できます。 |
 | $[ prefix ]$description | Body | String | N | ボリュームの説明 |
 {%- if method == 'post' %}
 {%- if encryption %}
 | $[ prefix ]$encryption | Body | Object | N | ボリューム作成時の暗号化設定オブジェクト |
-| $[ prefix ]$encryption.enabled | Body | Boolean | N | 暗号化設定の有効化の有無<br>暗号化キーストアが設定された後、このフィールドを`true`に設定すると、暗号化が有効になります。 |
+| $[ prefix ]$encryption.enabled | Body | Boolean | N | 暗号化設定の有効化フラグ<br>暗号化キーストアを設定後、このフィールドを `true` に設定すると暗号化が有効になります。 |
 {%- endif %}
 {%- endif %}
 {%- if method == 'post' %}
-| $[ prefix ]$interfaces | Body | List | N | ボリュームにアクセスするインターフェースリスト |
-| $[ prefix ]$interfaces.subnetId | Body | String | N | ボリュームインターフェースのサブネットID |
+| $[ prefix ]$interfaces | Body | List | N | ボリュームにアクセスするインターフェイスリスト |
+| $[ prefix ]$interfaces.subnetId | Body | String | N | ボリュームインターフェイスのサブネット ID |
 {%- endif %}
 | $[ prefix ]$mountProtocol | Body | Object | N | ボリューム作成時のプロトコル設定オブジェクト |
 {%- if method == 'post' %}
-| $[ prefix ]$mountProtocol.cifsAuthIds | Body | List | N | CIFS認証IDリスト<br>NFSプロトコル選択時は入力不要 |
+| $[ prefix ]$mountProtocol.cifsAuthIds | Body | List | N | CIFS 認証 ID リスト<br>NFS プロトコル選択時は入力不要 |
 | $[ prefix ]$mountProtocol.protocol | Body | String | Y | ボリュームマウント時のプロトコル指定<br>`nfs`、`cifs` のいずれかを選択できます。 |
 {%- elif method == 'patch' %}
-| $[ prefix ]$mountProtocol.cifsAuthIds | Body | List | N | CIFS認証IDリスト |
-| $[ prefix ]$mountProtocol.protocol | Body | String | N | 既に作成されたボリュームのプロトコルは変更できません。<br>`cifsAuthIds` フィールドを変更する際は、このフィールドに `cifs` を指定する必要があります。 |
+| $[ prefix ]$mountProtocol.cifsAuthIds | Body | List | N | CIFS 認証 ID リスト |
+| $[ prefix ]$mountProtocol.protocol | Body | String | N | 作成済みボリュームのプロトコルは変更できません。<br>`cifsAuthIds` フィールドを変更する場合は、このフィールドに `cifs` を指定する必要があります。 |
 {%- endif %}
 {%- if method == 'post' %}
 | $[ prefix ]$name | Body | String | Y | ボリューム名 |
 {%- endif %}
 | $[ prefix ]$sizeGb | Body | Integer | $[ 'Y' if method == 'post'  else 'N' ]$ | ボリュームサイズ (GB)<br>ボリュームは最小 300 GB から最大 10,000 GB まで、100 GB 単位で設定できます。 |
-| $[ prefix ]$snapshotPolicy | Body | Object | N | ボリュームスナップショット設定オブジェクト |
-| $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | N | スナップショット最大保存数<br>最大20個まで設定可能で、最大保存数に達すると、自動生成されたスナップショットの中で最も古いものが削除されます。 |
-| $[ prefix ]$snapshotPolicy.reservePercent | Body | Integer | N | スナップショット容量比率 |
-| $[ prefix ]$snapshotPolicy.schedule | Body | Object | N | スナップショット自動生成オブジェクト<br>`null` の場合、スナップショット自動生成は設定されません。 |
-| $[ prefix ]$snapshotPolicy.schedule.time | Body | String | N | スナップショット自動生成時間 |
-| $[ prefix ]$snapshotPolicy.schedule.timeOffset | Body | String | N | スナップショット自動生成基準タイムゾーン |
-| $[ prefix ]$snapshotPolicy.schedule.weekdays | Body | List | N | スナップショット自動生成曜日<br>空のリストは毎日を意味し、曜日は0（日曜日）から6（土曜日）までの数値リストで指定します。 |{% endmacro %}
+| $[ prefix ]$snapshotPolicy | Body | Object | N | ボリュームのスナップショット設定オブジェクト |
+| $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | N | スナップショットの最大保存数<br>最大 20 個まで設定可能で、最大保存数に達すると、自動作成されたスナップショットの中で最も古いものが削除されます。 |
+| $[ prefix ]$snapshotPolicy.reservePercent | Body | Integer | N | スナップショット容量の割合 |
+| $[ prefix ]$snapshotPolicy.schedule | Body | Object | N | スナップショット自動作成オブジェクト<br>`null` の場合、スナップショットの自動作成は設定されません。 |
+| $[ prefix ]$snapshotPolicy.schedule.time | Body | String | N | スナップショット自動作成時刻 |
+| $[ prefix ]$snapshotPolicy.schedule.timeOffset | Body | String | N | スナップショット自動作成の基準タイムゾーン |
+| $[ prefix ]$snapshotPolicy.schedule.weekdays | Body | List | N | スナップショット自動作成の曜日<br>空のリストは毎日を意味し、曜日は 0 (日曜日) から 6 (土曜日) までの数値リストで指定します。 |{% endmacro %}
 {# end macro volume_request_table #}
 {% macro volume_mirror_response_json(indent=0, method='') -%}
 $[ ' ' * indent ]$"createdAt":"2025-04-01T06:45:45+00:00",
@@ -119,11 +119,9 @@ $[ ' ' * indent ]$  "10.0.1.0/24"
 $[ ' ' * indent ]$],
 $[ ' ' * indent ]$"createdAt": "2025-04-01T06:44:25+00:00",
 $[ ' ' * indent ]$"description": "NAS for Testing",
-{%- if encryption %}
 $[ ' ' * indent ]$"encryption": {
-$[ ' ' * indent ]$  "enabled": false
+$[ ' ' * indent ]$  "enabled": $[ 'true' if encryption else 'false' ]$
 $[ ' ' * indent ]$},
-{%- endif %}
 $[ ' ' * indent ]$"id": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
 $[ ' ' * indent ]$"interfaces": [
 $[ ' ' * indent ]$  {
@@ -171,10 +169,10 @@ $[ ' ' * indent ]$"tenantId": "3b6179e5fa6b499386b827357c4cb8c4",
 $[ ' ' * indent ]$"updatedAt": "2025-04-01T06:47:13+00:00"{% endmacro %}
 {# end macro #}
 {% macro snapshot_response_table(prefix='') -%}
-| $[ prefix ]$id | Body | String | スナップショットID |
+| $[ prefix ]$id | Body | String | スナップショット ID |
 | $[ prefix ]$name | Body | String | スナップショット名 |
 | $[ prefix ]$size | Body | Integer | スナップショットサイズ |
-| $[ prefix ]$type | Body | String | スナップショットタイプ<br>- `NORMAL`: ユーザーが作成したスナップショット<br>- `SCHEDULED`: スナップショット自動生成で作成されたスナップショット<br>- `MIRROR`: 複製で作成されたスナップショット |
+| $[ prefix ]$type | Body | String | スナップショットタイプ<br>- `NORMAL`: ユーザーが作成したスナップショット<br>- `SCHEDULED`: スナップショット自動作成により作成されたスナップショット<br>- `MIRROR`: 複製により作成されたスナップショット |
 | $[ prefix ]$preserved | Body | Boolean | システムが削除不可に設定したスナップショットかどうか |
 | $[ prefix ]$createdAt | Body | String | スナップショット作成日時 |{% endmacro %}
 {# end macro snapshot_response_table #}
@@ -342,7 +340,7 @@ $[ volume_response_json(indent=6) ]$
 <!-- -->
 
 !!! tip "参考: 暗号化キーストア設定"
-    暗号化ボリュームを作成すると、暗号化に使用する対称キーが NHN Cloud Secure Key Manager サービスのキーストアに保存されます。したがって、暗号化ボリュームを作成するには、あらかじめ Secure Key Manager サービスで[キーストアを作成](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#create-a-key-store)する必要があります。[キーストアの ID を確認](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#key-store-details)し、暗号化キーストア設定に入力します。
+    暗号化ボリュームを作成すると、暗号化に使用する対称キーが NHN Cloud Secure Key Manager サービスのキーストアに保存されます。したがって、暗号化ボリュームを作成するには、あらかじめ Secure Key Manager サービスで[キーストアを作成](/Security/Secure%20Key%20Manager/ja/getting-started/#create-a-key-store)する必要があります。[キーストアの ID を確認](/Security/Secure%20Key%20Manager/ja/getting-started/#key-store-details)し、暗号化キーストア設定に入力します。
     作成したキーストア ID は、コンソールの **Storage > NAS > 暗号化キーストア設定** ウィンドウで入力できます。暗号化ボリュームを作成すると、設定したキーストアに対称キーが保存されます。キーストアに保存された対称キーは、暗号化ボリュームの使用中は削除することはできません。暗号化ボリュームを削除すると、対称キーも一緒に削除されます。
     キーストア ID を変更すると、以降に作成する暗号化ボリュームの対称キーが変更されたキーストアに保存されます。既存のキーストアに保存された対称キーは維持されます。
 
@@ -760,14 +758,18 @@ X-Auth-Token: {token-id}
 | header | Body | Object | ヘッダオブジェクト |
 | usage | Body | Object | ボリューム使用状況オブジェクト |
 | usage.snapshotReserveGb | Body | Integer | ボリュームでスナップショットのために予約したスペースサイズ |
+{%- if release_2026_05 %}
 | usage.snapshotUsedGb | Body | Integer | スナップショット使用量 |
 | usage.snapshotUsedGbInReservedSpace | Body | Integer | スナップショット予約容量内の使用量 |
-| usage.snapshotUsedGbInUserSpace | Body | Integer | 予約容量を超過したスナップショット使用量 |
+| usage.snapshotUsedGbInUserSpace | Body | Integer | 予約容量超過のスナップショット使用量 |
+{%- endif %}
 | usage.usedGb | Body | Integer | ボリューム使用量 |
-| usage.userDataGb | Body | Integer | ユーザーが実際に記録したデータサイズ |
+{%- if release_2026_05 %}
+| usage.userDataGb | Body | Integer | ユーザーが実際に書き込んだデータサイズ |
+{%- endif %}
 
 <details>
-  <summary>レスポンス例</summary>
+  <summary>応答例</summary>
 
 ```json
 {
@@ -777,12 +779,17 @@ X-Auth-Token: {token-id}
     "resultMessage": "Success"
   },
   "usage": {
+{%- if release_2026_05 %}
     "snapshotReserveGb": 20,
     "snapshotUsedGb": 11,
     "snapshotUsedGbInReservedSpace": 11,
     "snapshotUsedGbInUserSpace": 0,
     "usedGb": 152,
     "userDataGb": 152
+{%- else %}
+    "snapshotReserveGb": 30,
+    "usedGb": 2
+{%- endif %}
   }
 }
 ```

@@ -117,11 +117,9 @@ $[ ' ' * indent ]$  "10.0.1.0/24"
 $[ ' ' * indent ]$],
 $[ ' ' * indent ]$"createdAt": "2025-04-01T06:44:25+00:00",
 $[ ' ' * indent ]$"description": "NAS for Testing",
-{%- if encryption %}
 $[ ' ' * indent ]$"encryption": {
-$[ ' ' * indent ]$  "enabled": false
+$[ ' ' * indent ]$  "enabled": $[ 'true' if encryption else 'false' ]$
 $[ ' ' * indent ]$},
-{%- endif %}
 $[ ' ' * indent ]$"id": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
 $[ ' ' * indent ]$"interfaces": [
 $[ ' ' * indent ]$  {
@@ -339,7 +337,7 @@ $[ volume_response_json(indent=6) ]$
 <!-- -->
 
 !!! tip "참고: 암호화 키 저장소 설정"
-    암호화 볼륨을 생성하면 암호화에 사용하는 대칭 키가 NHN Cloud Secure Key Manager 서비스의 키 저장소에 저장됩니다. 따라서 암호화 볼륨을 생성하려면 미리 Secure Key Manager 서비스에서 [키 저장소를 생성](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#create-a-key-store)해야 합니다. [키 저장소의 ID를 확인](https://docs.nhncloud.com/ko/Security/Secure%20Key%20Manager/ko/getting-started/#key-store-details)하여 암호화 키 저장소 설정에 입력합니다.
+    암호화 볼륨을 생성하면 암호화에 사용하는 대칭 키가 NHN Cloud Secure Key Manager 서비스의 키 저장소에 저장됩니다. 따라서 암호화 볼륨을 생성하려면 미리 Secure Key Manager 서비스에서 [키 저장소를 생성](/Security/Secure%20Key%20Manager/ko/getting-started/#create-a-key-store)해야 합니다. [키 저장소의 ID를 확인](/Security/Secure%20Key%20Manager/ko/getting-started/#key-store-details)하여 암호화 키 저장소 설정에 입력합니다.
     생성한 키 저장소 ID는 콘솔의 **Storage > NAS > 암호화 키 저장소 설정** 창에서 입력할 수 있습니다. 암호화 볼륨을 생성하면 설정한 키 저장소에 대칭 키가 저장됩니다. 키 저장소에 저장된 대칭 키는 암호화 볼륨 사용 중에는 삭제할 수 없습니다. 암호화 볼륨을 삭제하면 대칭 키도 함께 삭제됩니다.
     키 저장소 ID를 변경하면 이후 생성하는 암호화 볼륨의 대칭 키가 변경된 키 저장소에 저장됩니다. 기존 키 저장소에 저장된 대칭 키는 유지됩니다.
 
@@ -757,11 +755,15 @@ X-Auth-Token: {token-id}
 | header | Body | Object | 헤더 객체 |
 | usage | Body | Object | 볼륨 사용 현황 객체 |
 | usage.snapshotReserveGb | Body | Integer | 볼륨에서 스냅숏을 위해 예약한 공간 크기 |
+{%- if release_2026_05 %}
 | usage.snapshotUsedGb | Body | Integer | 스냅숏 사용량 |
 | usage.snapshotUsedGbInReservedSpace | Body | Integer | 스냅숏 예약 용량 내 사용량 |
 | usage.snapshotUsedGbInUserSpace | Body | Integer | 예약 용량 초과 스냅숏 사용량 |
+{%- endif %}
 | usage.usedGb | Body | Integer | 볼륨 사용량 |
+{%- if release_2026_05 %}
 | usage.userDataGb | Body | Integer | 사용자가 실제로 기록한 데이터 크기 |
+{%- endif %}
 
 <details>
   <summary>응답 예시</summary>
@@ -774,12 +776,17 @@ X-Auth-Token: {token-id}
     "resultMessage": "Success"
   },
   "usage": {
+{%- if release_2026_05 %}
     "snapshotReserveGb": 20,
     "snapshotUsedGb": 11,
     "snapshotUsedGbInReservedSpace": 11,
     "snapshotUsedGbInUserSpace": 0,
     "usedGb": 152,
     "userDataGb": 152
+{%- else %}
+    "snapshotReserveGb": 30,
+    "usedGb": 2
+{%- endif %}
   }
 }
 ```
