@@ -58,8 +58,8 @@
 
 {%- else -%}
   {#- public (기본값) -#}
-  {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token/" -%}
-  {%- set terraform_guide_url = "/nhncloud/ko/terraform-guide/" -%}
+  {%- set identity_guide_url = "/nhncloud/" ~ language ~ "/public-api/iaas-token/" -%}
+  {%- set terraform_guide_url = "/nhncloud/" ~ language ~ "/terraform-guide/" -%}
   {%- set nas_service_url = "https://www.nhncloud.com/kr/service/storage/nas" -%}
   {%- set terraform_support = true -%}
   {%- set encryption = true -%}
